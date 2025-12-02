@@ -1,0 +1,60 @@
+using UnityEngine;
+
+#ROOTNAMESPACEBEGIN#
+/// <summary>
+/// #SCRIPTNAME# 클래스의 기능을 설명하세요.
+/// </summary>
+public class #SCRIPTNAME# : MonoBehaviour
+{
+    #region Events
+    
+    #endregion
+
+
+    #region Properties
+    
+    #endregion
+
+
+    #region Public Variables
+    
+    #endregion
+
+
+    #region Protected Variables
+    
+    #endregion
+
+
+    #region Private Variables
+    
+    #endregion
+
+
+    #region Unity Lifecycle
+    private void Awake()
+    {}
+
+    private void Start()
+    {}
+
+    private void Update()
+    {}
+    #endregion
+
+
+    #region Public Methods
+    
+    #endregion
+
+
+    #region Protected Methods
+    
+    #endregion
+
+
+    #region Private Methods
+    
+    #endregion
+}
+#ROOTNAMESPACEEND#

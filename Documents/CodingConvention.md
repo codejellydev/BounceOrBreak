@@ -1,0 +1,256 @@
+# Unity C# 네이밍 컨벤션
+
+## 📋 Region 구조
+
+### Region 순서 (필수)
+
+```csharp
+#region Nested Classes          // 필요시
+#region Events
+#region Properties
+#region Public Variables
+#region Protected Variables
+#region Private Variables
+#region Unity Lifecycle
+#region Public Methods
+#region Protected Methods
+#region Private Methods
+#region Input Action Callbacks  // 필요시
+#region Debug                   // 필요시
+```
+
+### Region 내부 정렬 규칙
+
+### 1. Region 간격
+
+Region과 Region 사이에는 **두 줄 띄어쓰기**
+
+### 2. 접근 제한자 순서
+
+각 region 내에서는 **public → protected → private** 순으로 정렬
+
+```csharp
+#region Events
+// public event들
+public event Action OnSomething;
+public event Action<int> OnValueChanged;
+
+// protected event들 (있다면)
+protected event Action OnProtectedEvent;
+
+// private event들 (있다면)
+private event Action OnPrivateEvent;
+#endregion
+
+#region Properties
+// public 프로퍼티들
+public int Health { get; set; }
+public Transform Target => _target;
+
+// protected 프로퍼티들 (있다면)
+protected bool IsInitialized { get; set; }
+
+// private 프로퍼티들 (있다면)
+private float PrivateValue { get; set; }
+#endregion
+```
+
+### 2. Variables에서 어트리뷰트 우선순위
+
+동일한 접근 제한자 내에서는 **어트리뷰트가 붙은 변수가 상단**에 위치
+
+```csharp
+#region Private Variables
+// 어트리뷰트가 붙은 변수들 (상단)
+[Header("Settings")]
+[SerializeField] private float _speed;
+[HideInInspector] [SerializeField] private bool _isDebug;
+
+// 일반 private 변수들 (하단)
+private Transform _target;
+private float _timer;
+#endregion
+```
+
+### 3. 어트리뷰트 표기법
+
+- `[SerializeField]`, `[HideInInspector]` 등 짧고 자주 사용되는 어트리뷰트는 **1줄로 표기**
+- 가능한 한 **변수 상단에 표기**
+
+```csharp
+// ✅ 권장
+[Header("Player Settings")]
+[SerializeField] private float _moveSpeed;
+
+// ❌ 지양
+[Header("Player Settings")]
+[SerializeField]
+private float _moveSpeed;
+```
+
+## 🔧 코드 스타일
+
+### 빈 함수 표기법
+
+빈 함수는 **한 줄로 표기**
+
+```csharp
+// ✅ 권장
+private void Awake()
+{}
+
+public void Initialize()
+{}
+
+// ❌ 지양
+private void Awake()
+{
+}
+```
+
+### Unity Lifecycle 순서
+
+일반적인 Unity 실행 순서를 따름
+
+```csharp
+#region Unity Lifecycle
+private void Awake()
+{}
+
+private void Start()
+{}
+
+private void OnEnable()
+{}
+
+private void Update()
+{}
+
+private void FixedUpdate()
+{}
+
+private void LateUpdate()
+{}
+
+private void OnDisable()
+{}
+
+private void OnDestroy()
+{}
+#endregion
+```
+
+### 제어 구문
+
+모든 제어 구문은 반드시 중괄호 사용, 한 줄 표기 금지
+
+```csharp
+// ✅ 권장
+if (condition)
+{
+    return;
+}
+
+// ❌ 지양
+if (condition) return;
+```
+
+## 📝 주석 및 문서화
+
+### Class Summary (필수)
+
+모든 클래스에 반드시 summary 작성
+
+```csharp
+/// <summary>
+/// 플레이어의 이동을 담당하는 컨트롤러 클래스.
+/// 입력에 따른 이동, 점프, 회전 등의 기능을 제공한다.
+/// </summary>
+public class PlayerController : MonoBehaviour
+{
+}
+
+```
+
+### Interface Summary (선택)
+
+복잡하거나 중요한 인터페이스에만 작성
+
+```csharp
+/// <summary>
+/// 상호작용 가능한 객체들에 대한 인터페이스.
+/// 플레이어와의 접촉 및 상호작용 로직을 정의한다.
+/// </summary>
+public interface IInteractable
+{
+    bool IsInteractable { get; }
+    void OnPlayerContact(IPlayer player);
+}
+
+```
+
+### Properties Summary (선택)
+
+복잡한 로직이나 중요한 프로퍼티에만 작성
+
+```csharp
+#region Nested Classes
+[System.Serializable]
+public class InputProfile
+{
+    public InputContext Context;
+    public bool Player;
+    public bool UI;
+    public bool System;
+}
+#endregion
+
+#region Properties
+/// <summary>
+/// 현재 플레이어가 땅에 닿아있는지 여부.
+/// GroundCheck를 통해 매 프레임 업데이트됨.
+/// </summary>
+public bool IsGrounded => _isGrounded;
+
+// 간단한 프로퍼티는 summary 생략 가능
+public float Speed { get; set; }
+#endregion
+
+```
+
+### 주석 위치
+
+제어 구문 주석은 구문 바로 위에 작성
+
+```csharp
+// ✅ 권장
+// 땅에 닿았을 때만 점프 허용
+if (IsGrounded)
+{
+    Jump();
+}
+
+// ❌ 지양
+if (IsGrounded) // 땅에 닿았을 때만 점프 허용
+{
+    Jump();
+}
+```
+
+## 📋 체크리스트
+
+### 새 클래스 작성시
+
+- [ ]  Class summary 작성
+- [ ]  Region 순서 준수
+- [ ]  접근 제한자별 정렬 (public → protected → private)
+- [ ]  어트리뷰트 변수 상단 배치
+- [ ]  빈 함수 한 줄 표기
+- [ ]  Unity Lifecycle 순서 준수
+
+### 코드 리뷰시
+
+- [ ]  Region convention 준수 여부
+- [ ]  변수 정렬 순서 확인
+- [ ]  Class summary 존재 여부
+- [ ]  코드 스타일 일관성
