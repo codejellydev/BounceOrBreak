@@ -15,7 +15,7 @@ To follow the project's coding conventions, apply the custom script template.
 Unity\Hub\Editor\6000.2.14f1\Editor\Data\Resources\ScriptTemplates\1-Scripting__MonoBehaviour Script-NewMonoBehaviourScript.cs.txt
 ```
 
-Replace the file at the above path with [`/Documents/Conventions/1-Scripting__MonoBehaviour Script-NewMonoBehaviourScript.cs.txt`](</Documents/Conventions/1-Scripting__MonoBehaviour Script-NewMonoBehaviourScript.cs.txt>).
+Replace the file at the above path with [`/Documents/Development/Convention/1-Scripting__MonoBehaviour Script-NewMonoBehaviourScript.cs.txt`](</Documents/Development/Convention/1-Scripting__MonoBehaviour Script-NewMonoBehaviourScript.cs.txt>).
 
 ---
 
@@ -23,4 +23,4 @@ Replace the file at the above path with [`/Documents/Conventions/1-Scripting__Mo
 
 ### Coding Conventions
 
-For coding conventions, refer to [`/Documents/Conventions/CodingConvention.md`](/Documents/Conventions/CodingConvention.md).
+For coding conventions, refer to [`/Documents/Development/Convention/CodingConvention.md`](/Documents/Development/Convention/CodingConvention.md).
