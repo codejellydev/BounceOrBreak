@@ -12,10 +12,10 @@ To follow the project's coding conventions, apply the custom script template.
 
 **Windows**:
 ```
-Unity\Hub\Editor\6000.2.14f1\Editor\Data\Resources\ScriptTemplates\1-Scripting__MonoBehaviour Script-NewMonoBehaviourScript.cs
+Unity\Hub\Editor\6000.2.14f1\Editor\Data\Resources\ScriptTemplates\1-Scripting__MonoBehaviour Script-NewMonoBehaviourScript.cs.txt
 ```
 
-Replace the file at the above path with [`/Documents/Conventions/1-Scripting__MonoBehaviour Script-NewMonoBehaviourScript.cs`](</Documents/Conventions/1-Scripting__MonoBehaviour Script-NewMonoBehaviourScript.cs>).
+Replace the file at the above path with [`/Documents/Conventions/1-Scripting__MonoBehaviour Script-NewMonoBehaviourScript.cs.txt`](</Documents/Conventions/1-Scripting__MonoBehaviour Script-NewMonoBehaviourScript.cs.txt>).
 
 ---
 
