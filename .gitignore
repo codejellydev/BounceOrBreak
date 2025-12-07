@@ -113,6 +113,3 @@ InitTestScene*.unity*
 
 # External Plugins
 /[Aa]ssets/Plugins/
-
-# NuGet packages (auto-downloaded)
-/[Aa]ssets/Packages/
