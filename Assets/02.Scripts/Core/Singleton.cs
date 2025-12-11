@@ -62,6 +62,9 @@ namespace CodeJelly.BounceOrBreak.Core
 
 
         #region Private Methods
+        /// <summary>
+        /// 새로운 GameObject를 생성하여 Singleton 인스턴스를 초기화합니다.
+        /// </summary>
         private static void SetInstance()
         {
             GameObject newObject = new GameObject()
