@@ -9,6 +9,7 @@ namespace CodeJelly.BounceOrBreak.Core.Logger
         /// 실제 로그 처리를 수행하는 내부 메서드.
         /// 에디터에서는 Unity 콘솔에 출력합니다.
         /// </summary>
+        [UnityEngine.HideInCallstack]
         static partial void LogInternal(LogLevel level, string message)
         {
             try

@@ -23,6 +23,7 @@ namespace CodeJelly.BounceOrBreak.Core.Logger
         /// Debug 로그를 출력합니다. (에디터 및 개발 빌드 전용)
         /// </summary>
         [System.Diagnostics.Conditional("UNITY_EDITOR"), System.Diagnostics.Conditional("DEVELOPMENT_BUILD")]
+        [UnityEngine.HideInCallstack]
         public static void Debug(string message)
         {
             LogInternal(LogLevel.Debug, message);
@@ -31,6 +32,7 @@ namespace CodeJelly.BounceOrBreak.Core.Logger
         /// <summary>
         /// Info 로그를 출력합니다.
         /// </summary>
+        [UnityEngine.HideInCallstack]
         public static void Info(string message)
         {
             LogInternal(LogLevel.Info, message);
@@ -39,6 +41,7 @@ namespace CodeJelly.BounceOrBreak.Core.Logger
         /// <summary>
         /// Warning 로그를 출력합니다.
         /// </summary>
+        [UnityEngine.HideInCallstack]
         public static void Warning(string message)
         {
             LogInternal(LogLevel.Warning, message);
@@ -47,6 +50,7 @@ namespace CodeJelly.BounceOrBreak.Core.Logger
         /// <summary>
         /// Error 로그를 출력합니다.
         /// </summary>
+        [UnityEngine.HideInCallstack]
         public static void Error(string message)
         {
             LogInternal(LogLevel.Error, message);
@@ -55,6 +59,7 @@ namespace CodeJelly.BounceOrBreak.Core.Logger
         /// <summary>
         /// Exception 로그를 출력합니다.
         /// </summary>
+        [UnityEngine.HideInCallstack]
         public static void Exception(Exception exception)
         {
             string message = $"{exception.Message}\n{exception.StackTrace}";
