@@ -8,12 +8,20 @@ using UnityEngine;
 
 namespace CodeJelly.BounceOrBreak.Core.Logger
 {
+    /// <summary>
+    /// Logger의 런타임 구현부. (빌드)
+    /// 백그라운드 스레드를 통해 비동기적으로 로그를 파일에 기록합니다.
+    /// </summary>
     public static partial class Logger
     {
         #region Private Variables
         private static ConcurrentQueue<string> _logQueue;
         private static string _logFilePath;
-        private static StreamWriter _fileWriter;
+        /// <summary>
+        /// StreamWriter는 thread-safe하지 않지만 현재 코드에서는 단일 쓰레드에서만 접근하기 때문에 동기화 문제 없음.
+        /// 추후 멀티쓰레드 Write가 필요한 경우 thread-safe한 래퍼 도입 검토 필요.
+        /// </summary>
+        private static StreamWriter _fileWriter; 
         private static Thread _writeThread;
         private static AutoResetEvent _writeARE;
         private static CancellationTokenSource _cts;

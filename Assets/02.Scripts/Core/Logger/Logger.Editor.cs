@@ -3,6 +3,9 @@ using System;
 
 namespace CodeJelly.BounceOrBreak.Core.Logger
 {
+    /// <summary>
+    /// Logger의 에디터 구현부.
+    /// </summary>
     public static partial class Logger
     {
         /// <summary>
