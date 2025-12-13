@@ -6,17 +6,18 @@ using System.Text;
 using System.Threading;
 using UnityEngine;
 
-namespace CodeJelly.BounceOrBreak.Core.Logger
+namespace CodeJelly.BounceOrBreak.Core.Logging
 {
     /// <summary>
-    /// Logger의 런타임 구현부. (빌드)
+    /// AppLogger의 런타임 구현부. (빌드)
     /// 백그라운드 스레드를 통해 비동기적으로 로그를 파일에 기록합니다.
     /// </summary>
-    public static partial class Logger
+    public static partial class AppLogger
     {
         #region Private Variables
         private static ConcurrentQueue<string> _logQueue;
         private static string _logFilePath;
+
         /// <summary>
         /// StreamWriter는 thread-safe하지 않지만 현재 코드에서는 단일 쓰레드에서만 접근하기 때문에 동기화 문제 없음.
         /// 추후 멀티쓰레드 Write가 필요한 경우 thread-safe한 래퍼 도입 검토 필요.
@@ -27,7 +28,7 @@ namespace CodeJelly.BounceOrBreak.Core.Logger
         private static CancellationTokenSource _cts;
         #endregion
 
-        static Logger()
+        static AppLogger()
         {
             InitializeFileLogging();
 
@@ -105,10 +106,10 @@ namespace CodeJelly.BounceOrBreak.Core.Logger
         {
             while (!token.IsCancellationRequested || _logQueue.Count > 0)
             {
-                _writeARE.WaitOne(AppConstants.Logger.WAIT_TIMEOUT_MS);
+                _writeARE.WaitOne(AppConstants.AppLogger.WAIT_TIMEOUT_MS);
 
                 int count = 0;
-                while (_logQueue.TryDequeue(out string log) && count < AppConstants.Logger.BATCH_SIZE)
+                while (_logQueue.TryDequeue(out string log) && count < AppConstants.AppLogger.BATCH_SIZE)
                 {
                     try
                     {
@@ -163,11 +164,11 @@ namespace CodeJelly.BounceOrBreak.Core.Logger
             _cts.Cancel();
             _writeARE?.Set();
 
-            if (_writeThread?.Join(AppConstants.Logger.SHUTDOWN_TIMEOUT_MS) == false)
+            if (_writeThread?.Join(AppConstants.AppLogger.SHUTDOWN_TIMEOUT_MS) == false)
             {
                 int remainingCount = _logQueue?.Count ?? 0;
                 UnityEngine.Debug.LogWarning(
-                    $"Logger thread did not finish within {AppConstants.Logger.SHUTDOWN_TIMEOUT_MS}ms. " +
+                    $"AppLogger thread did not finish within {AppConstants.AppLogger.SHUTDOWN_TIMEOUT_MS}ms. " +
                     $"{remainingCount} logs remaining in queue."
                 );
             }

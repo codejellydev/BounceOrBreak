@@ -5,7 +5,7 @@ namespace CodeJelly.BounceOrBreak.Core
     /// </summary>
     public static partial class AppConstants
     {
-        public static class Logger
+        public static class AppLogger
         {
             /// <summary>
             /// 로그 작성 쓰레드의 최대 대기시간
@@ -21,6 +21,20 @@ namespace CodeJelly.BounceOrBreak.Core
             /// 쓰레드 종료 대기 타임아웃 (ms)
             /// </summary>
             public const int SHUTDOWN_TIMEOUT_MS = 2000;
+        }
+
+        public static class Resource
+        {
+            /// <summary>
+            /// ResourceNode 오브젝트 풀의 초기 용량
+            /// (Addressables Group Key의 예상 개수)
+            /// </summary>
+            public const int INITIAL_CAPACITY = 50;
+
+            /// <summary>
+            /// ResourceNode 오브젝트 풀의 최대 크기
+            /// </summary>
+            public const int MAX_POOL_SIZE = 500;
         }
     }
 }

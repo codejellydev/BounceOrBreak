@@ -1,12 +1,12 @@
 #if UNITY_EDITOR
 using System;
 
-namespace CodeJelly.BounceOrBreak.Core.Logger
+namespace CodeJelly.BounceOrBreak.Core.Logging
 {
     /// <summary>
-    /// Logger의 에디터 구현부.
+    /// AppLogger의 에디터 구현부.
     /// </summary>
-    public static partial class Logger
+    public static partial class AppLogger
     {
         /// <summary>
         /// 실제 로그 처리를 수행하는 내부 메서드.
