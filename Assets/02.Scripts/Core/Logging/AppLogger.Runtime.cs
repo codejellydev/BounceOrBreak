@@ -70,7 +70,7 @@ namespace CodeJelly.BounceOrBreak.Core.Logging
         {
             // 로그 디렉토리 생성 (Application.persistentDataPath는 플랫폼별로 자동 설정)
             string logDir = Path.Combine(Application.persistentDataPath, "Logs");
-            if (!Directory.Exists(logDir))
+            if (Directory.Exists(logDir) == false)
             {
                 Directory.CreateDirectory(logDir);
             }
@@ -104,12 +104,12 @@ namespace CodeJelly.BounceOrBreak.Core.Logging
         /// </summary>
         private static void ProcessLogQueue(CancellationToken token)
         {
-            while (!token.IsCancellationRequested || _logQueue.Count > 0)
+            while (token.IsCancellationRequested == false || _logQueue.Count > 0)
             {
                 _writeARE.WaitOne(AppConstants.AppLogger.WAIT_TIMEOUT_MS);
 
                 int count = 0;
-                while (_logQueue.TryDequeue(out string log) && count < AppConstants.AppLogger.BATCH_SIZE)
+                while (_logQueue.TryDequeue(out string log) == true && count < AppConstants.AppLogger.BATCH_SIZE)
                 {
                     try
                     {
@@ -142,7 +142,7 @@ namespace CodeJelly.BounceOrBreak.Core.Logging
         private static void OnUnityLog(string condition, string stackTrace, LogType type)
         {
             string formattedLog = $"[{DateTime.Now:HH:mm:ss}] [Unity-{type}] {condition}";
-            if (!string.IsNullOrEmpty(stackTrace) && type == LogType.Exception)
+            if (string.IsNullOrEmpty(stackTrace) == false && type == LogType.Exception)
             {
                 formattedLog += $"\n{stackTrace}";
             }
