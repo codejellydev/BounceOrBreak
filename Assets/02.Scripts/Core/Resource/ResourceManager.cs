@@ -169,13 +169,13 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
         public void ReleaseAll()
         {
             int count = _resourceCache.Count;
-            foreach (var kvp in _resourceCache)
+            foreach (var resource in _resourceCache.Values)
             {
-                if (kvp.Value.Handle.IsValid() == true)
+                if (resource.Handle.IsValid() == true)
                 {
-                    Addressables.Release(kvp.Value.Handle);
+                    Addressables.Release(resource.Handle);
                 }
-                _resourceNodePool.Release(kvp.Value);
+                _resourceNodePool.Release(resource);
             }
 
             _resourceCache.Clear();
