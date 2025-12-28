@@ -33,6 +33,7 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
             Application.quitting += Dispose;
         }
 
+
         #region Properties
         public static ResourceManager Instance => _instance.Value;
 
