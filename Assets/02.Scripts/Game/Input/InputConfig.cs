@@ -37,6 +37,8 @@ namespace CodeJelly.BounceOrBreak.Game.Input
 
 
         #region Private Variables
+        [SerializeField] private InputProfile[] _profiles;
+
         /// <summary>
         /// Context별 기본 Input Map 설정.
         /// Reset() 시 이 값들로 초기화됩니다.
@@ -51,8 +53,6 @@ namespace CodeJelly.BounceOrBreak.Game.Input
             { InputContext.Gameplay, InputMapType.Player | InputMapType.UI | InputMapType.System },
             { InputContext.GameOver, InputMapType.UI | InputMapType.System },
         };
-
-        private InputProfile[] _profiles;
         #endregion
 
 
