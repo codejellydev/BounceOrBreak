@@ -10,12 +10,12 @@ namespace CodeJelly.BounceOrBreak.Game.Bounce
         /// <summary>
         /// 튕김 에너지.
         /// </summary>
-        public float Energy;
+        public float Energy { get; set; }
 
         /// <summary>
         /// 중앙 착지 여부.
         /// </summary>
-        public bool IsCenter;
+        public bool IsCenter { get; set; }
         #endregion
     }
 }
