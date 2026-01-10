@@ -1,3 +1,5 @@
+using CodeJelly.BounceOrBreak.Core.Logging;
+using CodeJelly.BounceOrBreak.Game.Bounce;
 using UnityEngine;
 
 namespace CodeJelly.BounceOrBreak.Game.Character
@@ -7,6 +9,23 @@ namespace CodeJelly.BounceOrBreak.Game.Character
     /// </summary>
     public class CharacterPresenter : MonoBehaviour
     {
+        #region Properties
+        public CharacterPhysics Physics
+        {
+            get
+            {
+                if (_physics == null)
+                {
+                    AppLogger.Warning($"[CharacterPresenter] CharacterPhysics not initialized, initializing.");
+                    InitializeComponents();
+                }
+
+                return _physics;
+            }
+        }
+        #endregion
+
+
         #region Private Variables
         [Header("Character Components")]
         [SerializeField] private CharacterPhysics _physics;
@@ -14,17 +33,48 @@ namespace CodeJelly.BounceOrBreak.Game.Character
 
 
         #region Public Methods
+        /// <summary>
+        /// 클래스를 사용 가능한 상태로 초기화합니다.
+        /// </summary>
         public void Initialize()
         {
             InitializeComponents();
+        }
+
+
+        /// <summary>
+        /// Bounce 이벤트를 처리합니다.
+        /// </summary>
+        public void HandleBounce(BounceParams parameters)
+        {
+            _physics?.ApplyBounce(parameters);
+        }
+
+        /// <summary>
+        /// Bounce 이벤트에 따른 결과를 처리합니다.
+        /// </summary>
+        public void HandleBounceResult(BounceResult result)
+        {
+            // TODO: Effect 적용 등 튕김에 따른 후속 처리 구현
         }
         #endregion
 
 
         #region Private Methods
+        /// <summary>
+        /// 필요한 컴포넌트들을 초기화합니다.
+        /// </summary>
         private void InitializeComponents()
         {
-            _physics ??= GetComponentInParent<CharacterPhysics>();
+            // Physics Initialization
+            _physics ??= GetComponent<CharacterPhysics>();
+            if (_physics == null)
+            {
+                AppLogger.Error("[CharacterPresenter] CharacterPhysics component is missing.");
+
+                return;
+            }
+            _physics.Initialize();
         }
         #endregion
     }
