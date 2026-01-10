@@ -18,9 +18,9 @@ namespace CodeJelly.BounceOrBreak.Game.Bounce
             get => _direction;
             set
             {
-                if(value.sqrMagnitude < GameConstants.Bounce.MIN_DIRECTION_MAGNITUDE_SQR)
+                if(value == Vector2.zero)
                 {
-                    AppLogger.Warning($"[BounceParams] Invalid Direction Magnitude: {value.sqrMagnitude}. Using Vector2.up as default.");
+                    AppLogger.Warning($"[BounceParams] Zero direction, using default.");
                     _direction = GameConstants.Bounce.DEFAULT_DIRECTION;
 
                     return;
