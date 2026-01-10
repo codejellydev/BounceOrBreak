@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace CodeJelly.BounceOrBreak.Game
 {
     /// <summary>
@@ -16,6 +18,19 @@ namespace CodeJelly.BounceOrBreak.Game
                 public const string LOADING_SCENE = "LoadingScene";
             }
 
+        }
+
+        public static class Bounce
+        {
+            /// <summary>
+            /// Bounce 방향 벡터 유효성 검증 임계값 (sqrMagnitude)
+            /// </summary>
+            public const float MIN_DIRECTION_MAGNITUDE_SQR = 0.0001f;
+
+            /// <summary>
+            /// 유효하지 않은 방향일 때 사용할 기본 방향 (Fallback)
+            /// </summary>
+            public static readonly Vector2 DEFAULT_DIRECTION = Vector2.up;
         }
     }
 }

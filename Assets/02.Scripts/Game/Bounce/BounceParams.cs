@@ -1,3 +1,4 @@
+using CodeJelly.BounceOrBreak.Core.Logging;
 using UnityEngine;
 
 namespace CodeJelly.BounceOrBreak.Game.Bounce
@@ -8,19 +9,40 @@ namespace CodeJelly.BounceOrBreak.Game.Bounce
     /// </summary>
     public struct BounceParams
     {
+        #region Properties
         /// <summary>
         /// 튕김 방향. (정규화된 벡터)
         /// </summary>
-        public Vector2 Direction;
+        public Vector2 Direction 
+        {
+            get => _direction;
+            set
+            {
+                if(value.sqrMagnitude < GameConstants.Bounce.MIN_DIRECTION_MAGNITUDE_SQR)
+                {
+                    AppLogger.Warning($"[BounceParams] Invalid Direction Magnitude: {value.sqrMagnitude}. Using Vector2.up as default.");
+                    _direction = GameConstants.Bounce.DEFAULT_DIRECTION;
+
+                    return;
+                }
+                _direction = value.normalized;
+            } 
+        }
 
         /// <summary>
         /// 튕김 세기.
         /// </summary>
-        public float Force;
+        public float Force { get; set; }
 
         /// <summary>
         /// 충돌 지점. (Optional)
         /// </summary>
-        public Vector2? ContactPoint;
+        public Vector2? ContactPoint { get; set; }
+        #endregion
+
+
+        #region Private Variables
+        private Vector2 _direction;
+        #endregion
     }
 }

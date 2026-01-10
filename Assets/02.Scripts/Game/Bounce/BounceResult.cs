@@ -6,6 +6,7 @@ namespace CodeJelly.BounceOrBreak.Game.Bounce
     /// </summary>
     public struct BounceResult
     {
+        #region Properties
         /// <summary>
         /// 튕김 에너지.
         /// </summary>
@@ -15,5 +16,6 @@ namespace CodeJelly.BounceOrBreak.Game.Bounce
         /// 중앙 착지 여부.
         /// </summary>
         public bool IsCenter;
+        #endregion
     }
 }
