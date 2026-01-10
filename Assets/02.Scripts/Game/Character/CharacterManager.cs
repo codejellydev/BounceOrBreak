@@ -11,6 +11,7 @@ namespace CodeJelly.BounceOrBreak.Game.Character
     {
         #region Properties
         public Transform Transform => transform;
+
         public Rigidbody2D Rigidbody { get; private set; }
         #endregion
 
@@ -29,14 +30,6 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         }
 
         public void OnBounced(BounceResult result)
-        {
-            throw new System.NotImplementedException();
-        }
-        #endregion
-
-
-        #region Private Methods
-        private void SubscribeInputActions()
         {
             throw new System.NotImplementedException();
         }
