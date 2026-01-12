@@ -31,6 +31,16 @@ namespace CodeJelly.BounceOrBreak.Game
         public static class Trampoline
         {
             /// <summary>
+            /// Addressables 키
+            /// </summary>
+            public static class Keys
+            {
+                public const string STRAIGHT_PREFAB = "StraightTrampolinePrefab";
+                public const string FREEFORM_PREFAB = "FreeformTrampolinePrefab";
+                public const string CONFIG = "TrampolineConfig";
+            }
+
+            /// <summary>
             /// 드로잉 중 포인트 간 최소 거리 (너무 밀집된 포인트 방지)
             /// </summary>
             public const float MIN_POINT_DISTANCE = 0.1f;
@@ -64,6 +74,16 @@ namespace CodeJelly.BounceOrBreak.Game
             /// 기본 중앙 판정 범위
             /// </summary>
             public const float DEFAULT_CENTER_THRESHOLD = 0.2f;
+
+            /// <summary>
+            /// ITrampoline 오브젝트 풀의 초기 용량
+            /// </summary>
+            public const int POOL_DEFAULT_CAPACITY = 20;
+
+            /// <summary>
+            /// ITrampoline 오브젝트 풀의 최대 크기
+            /// </summary>
+            public const int POOL_MAX_SIZE = 50;
         }
     }
 }
