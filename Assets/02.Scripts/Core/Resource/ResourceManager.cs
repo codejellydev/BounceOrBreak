@@ -26,8 +26,8 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
                 actionOnRelease: node => node.Release(),
                 actionOnDestroy: node => node.Destroy(),
                 collectionCheck: true, // 이미 Release된 오브젝트를 다시 Release 시도하는 경우 exception 발생
-                defaultCapacity: AppConstants.Resource.INITIAL_CAPACITY,
-                maxSize: AppConstants.Resource.MAX_POOL_SIZE
+                defaultCapacity: AppConstants.Resource.POOL_DEFAULT_CAPACITY,
+                maxSize: AppConstants.Resource.POOL_MAX_POOL_SIZE
             );
 
             Application.quitting += Dispose;
