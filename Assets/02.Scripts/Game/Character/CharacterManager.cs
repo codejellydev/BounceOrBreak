@@ -11,8 +11,14 @@ namespace CodeJelly.BounceOrBreak.Game.Character
     public class CharacterManager : MonoBehaviour, ICharacter
     {
         #region Properties
+        /// <summary>
+        /// ICharacter.Transform Implementation
+        /// </summary>
         public Transform Transform => transform;
 
+        /// <summary>
+        /// IBounceable.Rigidbody Implementation
+        /// </summary>
         public Rigidbody2D Rigidbody => _presenter.Physics.Rigidbody;
         #endregion
 
@@ -32,12 +38,17 @@ namespace CodeJelly.BounceOrBreak.Game.Character
             InitializeComponents();
         }
 
-        // IBounceable Implementation
+        /// <summary>
+        /// IBounceable.Bounce Implementation 
+        /// </summary>
         public void Bounce(BounceParams parameters)
         {
             _presenter.HandleBounce(parameters);
         }
 
+        /// <summary>
+        /// IBounceable.OnBounced Implementation 
+        /// </summary>
         public void OnBounced(BounceResult result)
         {
             _presenter.HandleBounceResult(result);

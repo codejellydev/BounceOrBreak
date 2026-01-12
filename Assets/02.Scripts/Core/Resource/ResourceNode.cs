@@ -70,9 +70,8 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
             ReferenceCount--;
         }
 
-        // IPoolable Implementation
         /// <summary>
-        /// ObjectPool에서 꺼낼 때 호출됩니다.
+        /// IPoolable.Get Implementation
         /// </summary>
         public void Get()
         {
@@ -80,7 +79,7 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
         }
 
         /// <summary>
-        /// ObjectPool에 반환될 때 호출됩니다.
+        /// IPoolable.Release Implementation
         /// </summary>
         public void Release()
         {
@@ -90,7 +89,7 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
         }
 
         /// <summary>
-        /// ObjectPool이 파괴될 때 호출됩니다.
+        /// IPoolable.Destroy Implementation
         /// </summary>
         public void Destroy()
         {
