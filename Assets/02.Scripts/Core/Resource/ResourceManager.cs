@@ -185,7 +185,9 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
             AppLogger.Info($"[ResourceManager] ReleaseAll Completed. ({count} items)");
         }
 
-        // IDisposable Implementation
+        /// <summary>
+        /// IDisposable.Dispose Implementation 
+        /// </summary>
         public void Dispose()
         {
             Application.quitting -= Dispose;

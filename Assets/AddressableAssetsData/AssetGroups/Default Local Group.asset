@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: Default Local Group
+  m_GUID: ff0b6b3515b0c0d49b9d79b23bc248d5
+  m_SerializeEntries:
+  - m_GUID: 46789d0d10d1f30429dcb4f3651c695f
+    m_Address: FreeformTrampolinePrefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    - Trampoline
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a831584289b0eb744a9e89b58014f323
+    m_Address: TrampolineConfig
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Config
+    - Trampoline
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 138794e5103dd254e84c25120f4458e0, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 269c6c65a6cd947448cd386e5e2f9fa7, type: 2}
+    - {fileID: 11400000, guid: 0a7123f2c6f2e5343beda4a9d0788265, type: 2}

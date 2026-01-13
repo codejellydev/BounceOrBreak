@@ -75,6 +75,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76808bb6ff7458a4b93c5303cf308030, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CodeJelly.BounceOrBreak.Game.Player.PlayerPhysics
+  _collider: {fileID: 5936413461002628530}
+  _rigidbody: {fileID: 1595740817225777198}
 --- !u!58 &5936413461002628530
 CircleCollider2D:
   m_ObjectHideFlags: 0
