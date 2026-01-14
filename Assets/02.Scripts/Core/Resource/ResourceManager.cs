@@ -135,7 +135,7 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
         /// <summary>
         /// 리소스의 참조 카운트를 감소시키고, 0이 되면 메모리에서 해제합니다.
         /// </summary>
-        public void Release(string key)
+        public void Release(string key, ResourceReleaseContext context = ResourceReleaseContext.Normal)
         {
             if (string.IsNullOrEmpty(key) == true)
             {
@@ -155,11 +155,25 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
 
                     _resourceCache.Remove(key);
                     _resourceNodePool.Release(node);
+
+                    AppLogger.Debug($"[ResourceManager] Released: {key} (RefCount reached 0)");
+                }
+                else
+                {
+                    AppLogger.Debug($"[ResourceManager] Decremented RefCount: {key} (Remaining: {node.ReferenceCount})");
                 }
             }
             else
             {
-                AppLogger.Warning($"[ResourceManager] Try to release unknown key: {key}");
+                // _resourceCache에 key가 없음
+                if (context == ResourceReleaseContext.Normal)
+                {
+                    AppLogger.Warning($"[ResourceManager] Resource not in cache: {key} (Already released, wrong key, or load failed)");
+                }
+                else // Cleanup
+                {
+                    AppLogger.Debug($"[ResourceManager] Resource not in cache: {key} (Already released or never loaded - normal during cleanup)");
+                }
             }
         }
 

@@ -51,7 +51,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         /// </summary>
         public void ReleaseAll()
         {
-            ResourceManager.Instance.Release(GameConstants.Trampoline.Keys.FREEFORM_PREFAB);
+            ResourceManager.Instance.Release(GameConstants.Trampoline.Keys.FREEFORM_PREFAB, ResourceReleaseContext.Cleanup);
 
             _prefabs.Clear();
         }
