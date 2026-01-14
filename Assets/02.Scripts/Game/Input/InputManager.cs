@@ -22,7 +22,7 @@ namespace CodeJelly.BounceOrBreak.Game.Input
         /// <summary>
         /// 플레이어 터치가 시작되었을 때 발생하는 이벤트.
         /// </summary>
-        public Observable<Unit> OnPlayerTouchStarted => _onPlayerTouchStarted;
+        public Observable<Vector2> OnPlayerTouchStarted => _onPlayerTouchStarted;
 
         /// <summary>
         /// 플레이어 터치가 취소되었을 때 발생하는 이벤트.
@@ -31,6 +31,7 @@ namespace CodeJelly.BounceOrBreak.Game.Input
 
         /// <summary>
         /// 플레이어 드래그가 수행되었을 때 발생하는 이벤트.
+        /// Screen Space에서의 현재 터치 위치를 전달합니다.
         /// </summary>
         public Observable<Vector2> OnPlayerDragPerformed => _onPlayerDragPerformed;
 
@@ -76,7 +77,7 @@ namespace CodeJelly.BounceOrBreak.Game.Input
         private Dictionary<InputMapType, InputActionMap> _actionMapTable;
 
         // Player Input Subjects
-        private readonly Subject<Unit> _onPlayerTouchStarted = new Subject<Unit>();
+        private readonly Subject<Vector2> _onPlayerTouchStarted = new Subject<Vector2>();
         private readonly Subject<Unit> _onPlayerTouchCanceled = new Subject<Unit>();
         private readonly Subject<Vector2> _onPlayerDragPerformed = new Subject<Vector2>();
         private readonly ReactiveProperty<Vector2> _playerTouchPosition = new ReactiveProperty<Vector2>();
@@ -276,7 +277,9 @@ namespace CodeJelly.BounceOrBreak.Game.Input
         {
             if (context.started == true)
             {
-                _onPlayerTouchStarted.OnNext(Unit.Default);
+                Vector2 position = _gameInputAction.Player.Position.ReadValue<Vector2>();
+                _playerTouchPosition.Value = position;
+                _onPlayerTouchStarted.OnNext(position);
             }
             else if (context.canceled == true)
             {
@@ -288,23 +291,24 @@ namespace CodeJelly.BounceOrBreak.Game.Input
         {
             if (context.performed == true)
             {
-                Vector2 dragValue = context.ReadValue<Vector2>();
-                _onPlayerDragPerformed.OnNext(dragValue);
+                Vector2 position = _gameInputAction.Player.Position.ReadValue<Vector2>();
+                _playerTouchPosition.Value = position;
+                _onPlayerDragPerformed.OnNext(position);
             }
         }
 
         void GameInputAction.IPlayerActions.OnPosition(InputAction.CallbackContext context)
         {
-            if (context.performed == true)
-            {
-                _playerTouchPosition.Value = context.ReadValue<Vector2>();
-            }
+            // IPlayerActions.OnTouch, IPlayerActions.OnDrag에서 _playerTouchPosition를 업데이트하기 때문에 중복 업데이트 방지를 위해 비움.
+            // _gameInputAction.Player.Position 접근을 위해 InputAction asset에는 존재 필요.
         }
 
         void GameInputAction.IUIActions.OnTouch(InputAction.CallbackContext context)
         {
             if (context.started == true)
             {
+                Vector2 position = _gameInputAction.UI.Position.ReadValue<Vector2>();
+                _uiTouchPosition.Value = position;
                 _onUITouchStarted.OnNext(Unit.Default);
             }
             else if (context.canceled == true)
@@ -315,10 +319,8 @@ namespace CodeJelly.BounceOrBreak.Game.Input
 
         void GameInputAction.IUIActions.OnPosition(InputAction.CallbackContext context)
         {
-            if (context.performed == true)
-            {
-                _uiTouchPosition.Value = context.ReadValue<Vector2>();
-            }
+            // IUIActions.OnTouch에서 _playerTouchPosition를 업데이트하기 때문에 중복 업데이트 방지를 위해 비움.
+            // _gameInputAction.UI.Position 접근을 위해 InputAction asset에는 존재 필요.
         }
 
         void GameInputAction.ISystemActions.OnBack(InputAction.CallbackContext context)

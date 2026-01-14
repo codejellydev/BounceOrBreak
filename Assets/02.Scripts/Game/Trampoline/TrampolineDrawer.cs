@@ -165,7 +165,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             var inputManager = InputManager.Instance;
 
             inputManager.OnPlayerTouchStarted
-                .Subscribe(_ => StartDrawing())
+                .Subscribe(position => StartDrawing(position))
                 .AddTo(_disposables);
 
             inputManager.OnPlayerTouchCanceled
@@ -173,7 +173,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
                 .AddTo(_disposables);
 
             inputManager.OnPlayerDragPerformed
-                .Subscribe(delta => UpdateDrawing())
+                .Subscribe(position => UpdateDrawing(position))
                 .AddTo(_disposables);
 
             AppLogger.Info("[TrampolineDrawer] Input events subscribed.");
@@ -190,12 +190,12 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         /// <summary>
         /// 드로잉을 시작합니다.
         /// </summary>
-        private void StartDrawing()
+        private void StartDrawing(Vector2 screenPosition)
         {
             _isDrawing = true;
             _currentDrawPoints.Clear();
 
-            Vector2 worldPosition = GetWorldPosition(InputManager.Instance.PlayerTouchPosition.CurrentValue);
+            Vector2 worldPosition = GetWorldPosition(screenPosition);
             _currentDrawPoints.Add(worldPosition);
 
             _drawingLineRenderer.positionCount = 1;
@@ -207,14 +207,14 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         /// <summary>
         /// 드로잉 중 라인을 업데이트합니다.
         /// </summary>
-        private void UpdateDrawing()
+        private void UpdateDrawing(Vector2 screenPosition)
         {
             if (_isDrawing == false)
             {
                 return;
             }
 
-            Vector2 worldPosition = GetWorldPosition(InputManager.Instance.PlayerTouchPosition.CurrentValue);
+            Vector2 worldPosition = GetWorldPosition(screenPosition);
 
             // _currentDrawPoints는 항상 1개 이상 있음이 보장됨. (StartDrawing에서 추가)
             Vector2 lastPoint = _currentDrawPoints[^1];
