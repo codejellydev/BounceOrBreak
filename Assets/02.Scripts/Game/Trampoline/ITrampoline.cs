@@ -1,4 +1,4 @@
-using CodeJelly.BounceOrBreak.Core;
+using CodeJelly.BounceOrBreak.Core.Pooling;
 using UnityEngine;
 
 namespace CodeJelly.BounceOrBreak.Game.Trampoline

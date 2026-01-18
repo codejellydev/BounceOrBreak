@@ -1,4 +1,5 @@
 using CodeJelly.BounceOrBreak.Core.Logging;
+using CodeJelly.BounceOrBreak.Core.Pooling;
 using CodeJelly.BounceOrBreak.Core.Resource;
 using CodeJelly.BounceOrBreak.Game.Input;
 using Cysharp.Threading.Tasks;
@@ -124,12 +125,9 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         /// </summary>
         private void InitializePool()
         {
-            _trampolinePool = new ObjectPool<ITrampoline>(
+            _trampolinePool = PoolExtensions.CreatePoolablePool
+            (
                 createFunc: CreateTrampolineInstance,
-                actionOnGet: trampoline => trampoline.Get(),
-                actionOnRelease: trampoline => trampoline.Release(),
-                actionOnDestroy: trampoline => trampoline.Destroy(),
-                collectionCheck: true,
                 defaultCapacity: GameConstants.Trampoline.POOL_DEFAULT_CAPACITY,
                 maxSize: GameConstants.Trampoline.POOL_MAX_SIZE
             );

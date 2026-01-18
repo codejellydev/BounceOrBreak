@@ -1,4 +1,5 @@
 using CodeJelly.BounceOrBreak.Core.Logging;
+using CodeJelly.BounceOrBreak.Core.Pooling;
 using Cysharp.Threading.Tasks;
 using R3;
 using System;
@@ -20,14 +21,11 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
         {
             _loadingCount = new ReactiveProperty<int>(0);
 
-            _resourceNodePool = new ObjectPool<ResourceNode>(
+            _resourceNodePool = PoolExtensions.CreatePoolablePool
+            (
                 createFunc: () => new ResourceNode(),
-                actionOnGet: node => node.Get(),
-                actionOnRelease: node => node.Release(),
-                actionOnDestroy: node => node.Destroy(),
-                collectionCheck: true, // 이미 Release된 오브젝트를 다시 Release 시도하는 경우 exception 발생
                 defaultCapacity: AppConstants.Resource.POOL_DEFAULT_CAPACITY,
-                maxSize: AppConstants.Resource.POOL_MAX_POOL_SIZE
+                maxSize: AppConstants.Resource.POOL_MAX_SIZE
             );
 
             Application.quitting += Dispose;
