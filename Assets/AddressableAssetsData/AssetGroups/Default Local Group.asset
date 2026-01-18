@@ -22,6 +22,13 @@ MonoBehaviour:
     - Prefab
     - Trampoline
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 76615ae3e006eb04cb4bd55d35098ed1
+    m_Address: StraightTrampolinePrefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    - Trampoline
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a831584289b0eb744a9e89b58014f323
     m_Address: TrampolineConfig
     m_ReadOnly: 0

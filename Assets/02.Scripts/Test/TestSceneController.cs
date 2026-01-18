@@ -39,6 +39,7 @@ public class TestSceneController : MonoBehaviour
             new Progress<float>(p => progress?.Report(p)),
             ct
         );
+        _trampolineDrawer.SetTrampolineType(TrampolineType.Straight);
 
         AppLogger.Debug("[GameplaySceneBootstrap] Initialization completed.");
     }

@@ -25,6 +25,9 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         {
             _prefabs = new Dictionary<TrampolineType, GameObject>();
 
+            var straight = await ResourceManager.Instance.LoadAsync<GameObject>(GameConstants.Trampoline.Keys.STRAIGHT_PREFAB, ct);
+            _prefabs[TrampolineType.Straight] = straight;
+
             var freeform = await ResourceManager.Instance.LoadAsync<GameObject>(GameConstants.Trampoline.Keys.FREEFORM_PREFAB, ct);
             _prefabs[TrampolineType.Freeform] = freeform;
         }
@@ -51,6 +54,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         /// </summary>
         public void ReleaseAll()
         {
+            ResourceManager.Instance.Release(GameConstants.Trampoline.Keys.STRAIGHT_PREFAB, ResourceReleaseContext.Cleanup);
             ResourceManager.Instance.Release(GameConstants.Trampoline.Keys.FREEFORM_PREFAB, ResourceReleaseContext.Cleanup);
 
             _prefabs.Clear();

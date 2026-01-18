@@ -27,7 +27,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
         private TrampolineConfig _config;
         private TrampolineFactory _factory;
-        private TrampolineType _activeType = TrampolineType.Freeform;
+        private TrampolineType _activeType = TrampolineType.Straight;
 
         private IObjectPool<ITrampoline> _trampolinePool;
         private CompositeDisposable _disposables;
