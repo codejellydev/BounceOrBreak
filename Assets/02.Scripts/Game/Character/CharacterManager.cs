@@ -1,4 +1,5 @@
 using CodeJelly.BounceOrBreak.Game.Bounce;
+using CodeJelly.BounceOrBreak.Game.Reflect;
 using UnityEngine;
 
 namespace CodeJelly.BounceOrBreak.Game.Character
@@ -15,11 +16,6 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         /// ICharacter.Transform Implementation
         /// </summary>
         public Transform Transform => transform;
-
-        /// <summary>
-        /// IBounceable.Rigidbody Implementation
-        /// </summary>
-        public Rigidbody2D Rigidbody => _presenter.Physics.Rigidbody;
         #endregion
 
 
@@ -52,6 +48,14 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         public void OnBounced(BounceResult result)
         {
             _presenter.HandleBounceResult(result);
+        }
+
+        /// <summary>
+        /// IReflectable.Reflect Implementation
+        /// </summary>
+        public void Reflect(ReflectParams parameters)
+        {
+            _presenter.HandleReflect(parameters);
         }
         #endregion
 

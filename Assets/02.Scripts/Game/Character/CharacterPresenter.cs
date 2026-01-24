@@ -1,5 +1,6 @@
 using CodeJelly.BounceOrBreak.Core.Logging;
 using CodeJelly.BounceOrBreak.Game.Bounce;
+using CodeJelly.BounceOrBreak.Game.Reflect;
 using UnityEngine;
 
 namespace CodeJelly.BounceOrBreak.Game.Character
@@ -9,23 +10,6 @@ namespace CodeJelly.BounceOrBreak.Game.Character
     /// </summary>
     public class CharacterPresenter : MonoBehaviour
     {
-        #region Properties
-        public CharacterPhysics Physics
-        {
-            get
-            {
-                if (_physics == null)
-                {
-                    AppLogger.Warning($"[CharacterPresenter] CharacterPhysics not initialized, initializing.");
-                    InitializeComponents();
-                }
-
-                return _physics;
-            }
-        }
-        #endregion
-
-
         #region Private Variables
         [Header("Character Components")]
         [SerializeField] private CharacterPhysics _physics;
@@ -56,6 +40,14 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         public void HandleBounceResult(BounceResult result)
         {
             // TODO: Effect 적용 등 튕김에 따른 후속 처리 구현
+        }
+
+        /// <summary>
+        /// Reflect 이벤트를 처리합니다.
+        /// </summary>
+        public void HandleReflect(ReflectParams parameters)
+        {
+            _physics?.ApplyReflect(parameters);
         }
         #endregion
 

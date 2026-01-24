@@ -15,7 +15,7 @@ MonoBehaviour:
   _lineWidth: 0.1
   _lineMaterial: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
   _lineColor: {r: 1, g: 1, b: 1, a: 1}
-  _bounceForce: 10
+  _bounceForce: 8
   _centerBounceMultiplier: 1.2
   _centerThreshold: 0.2
   _maxUsageCount: 1

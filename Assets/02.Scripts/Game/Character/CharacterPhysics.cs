@@ -1,5 +1,6 @@
 using CodeJelly.BounceOrBreak.Core.Logging;
 using CodeJelly.BounceOrBreak.Game.Bounce;
+using CodeJelly.BounceOrBreak.Game.Reflect;
 using UnityEngine;
 
 namespace CodeJelly.BounceOrBreak.Game.Character
@@ -10,23 +11,6 @@ namespace CodeJelly.BounceOrBreak.Game.Character
     [RequireComponent(typeof(CircleCollider2D), typeof(Rigidbody2D))]
     public class CharacterPhysics : MonoBehaviour
     {
-        #region Properties
-        public Rigidbody2D Rigidbody
-        {
-            get
-            {
-                if (_rigidbody == null)
-                {
-                    AppLogger.Warning($"[CharacterPhysics] Rigidbody not initialized, initializing.");
-                    InitializeComponents();
-                }
-
-                return _rigidbody;
-            }
-        }
-        #endregion
-
-
         #region Private Variables
         [SerializeField] private CircleCollider2D _collider;
         [SerializeField] private Rigidbody2D _rigidbody;
@@ -64,6 +48,20 @@ namespace CodeJelly.BounceOrBreak.Game.Character
             _rigidbody.AddForce(direction * adjustedForce, ForceMode2D.Impulse);
 
             AppLogger.Debug($"[CharacterPhysics] Bounced: direction={direction}, force={parameters.Force}");
+        }
+
+        /// <summary>
+        /// Reflect 파라미터를 받아 물리적 반사를 적용합니다.
+        /// </summary>
+        public void ApplyReflect(ReflectParams parameters)
+        {
+            // 전달받은 충돌 전 속도를 사용
+            Vector2 reflectedVelocity = Vector2.Reflect(parameters.VelocityBeforeCollision, parameters.Normal);
+
+            // 감쇠 적용
+            _rigidbody.linearVelocity = reflectedVelocity * parameters.Damping;
+
+            AppLogger.Debug($"[CharacterPhysics] Reflected: {parameters.VelocityBeforeCollision} -> {_rigidbody.linearVelocity}");
         }
         #endregion
 

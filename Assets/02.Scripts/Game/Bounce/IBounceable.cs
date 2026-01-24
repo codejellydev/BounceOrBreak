@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace CodeJelly.BounceOrBreak.Game.Bounce
 {
     /// <summary>
@@ -7,12 +5,6 @@ namespace CodeJelly.BounceOrBreak.Game.Bounce
     /// </summary>
     public interface IBounceable
     {
-        /// <summary>
-        /// Rigidbody2D 참조.
-        /// 물리 정보를 읽거나 직접 조작할 때 사용합니다.
-        /// </summary>
-        Rigidbody2D Rigidbody { get; }
-
         /// <summary>
         /// 튕김 파라미터를 받아 물리적 튕김을 적용합니다.
         /// </summary>

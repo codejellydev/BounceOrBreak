@@ -28,6 +28,14 @@ namespace CodeJelly.BounceOrBreak.Game
             public static readonly Vector2 DEFAULT_DIRECTION = Vector2.up;
         }
 
+        public static class Reflect
+        {
+            /// <summary>
+            /// 기본 속도 감쇠 비율
+            /// </summary>
+            public const float DEFAULT_DAMPING = 0.6f;
+        }
+
         public static class Trampoline
         {
             /// <summary>
