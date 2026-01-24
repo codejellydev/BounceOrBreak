@@ -20,7 +20,7 @@ namespace CodeJelly.BounceOrBreak.Game.Bounce
         public bool IsCenter { get; set; }
 
         /// <summary>
-        /// 충돌 지점.
+        /// 접촉 지점.
         /// </summary>
         public Vector2 ContactPoint { get; set; }
         #endregion

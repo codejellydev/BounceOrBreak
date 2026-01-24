@@ -5,7 +5,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 {
     /// <summary>
     /// TrampolineDrawer에 의해 그려지는 Trampoline 오브젝트의 공통 인터페이스.
-    /// IBounceable 객체와 충돌 시 튕김 처리를 수행합니다.
+    /// IBounceable 객체와 접촉 시 튕김 처리를 수행합니다.
     /// </summary>
     public interface ITrampoline : IPoolable
     {
