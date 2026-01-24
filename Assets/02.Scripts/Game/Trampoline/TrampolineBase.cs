@@ -7,7 +7,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
     /// <summary>
     /// Trampoline의 추상 클래스.
     /// </summary>
-    [RequireComponent(typeof(LineRenderer), typeof(EdgeCollider2D))]
+    [RequireComponent(typeof(LineRenderer), typeof(EdgeCollider2D), typeof(PlatformEffector2D))]
     public abstract class TrampolineBase : MonoBehaviour, ITrampoline
     {
         #region Nested Classes
@@ -61,8 +61,9 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         protected TrampolineDrawer _drawer;
         protected TrampolineConfig _config;
 
-        protected EdgeCollider2D _edgeCollider;
         protected LineRenderer _lineRenderer;
+        protected EdgeCollider2D _edgeCollider;
+        protected PlatformEffector2D _platformEffector;
 
         protected bool _isInitialized;
 
@@ -95,6 +96,12 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
             var bounceable = collision.gameObject.GetComponent<IBounceable>();
             if (bounceable == null)
+            {
+                return;
+            }
+
+            Vector2 relativeVelocity = collision.relativeVelocity;
+            if (relativeVelocity.y > 0f) // 위로 올라가는 중이면 무시
             {
                 return;
             }
@@ -167,11 +174,29 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         protected abstract void SetupCollider();
 
         /// <summary>
+        /// PlatformEffector를 설정합니다.
+        /// </summary>
+        protected virtual void SetupPlatformEffector()
+        {
+            // Platform Effector 설정
+            _edgeCollider.usedByEffector = true;
+
+            _platformEffector.useOneWay = true;
+            _platformEffector.surfaceArc = 180f;
+            _platformEffector.rotationalOffset = 0f;
+
+            // 측면 효과 비활성화
+            _platformEffector.useSideFriction = false;
+            _platformEffector.useSideBounce = false;
+            _platformEffector.sideArc = 0f;
+        }
+
+        /// <summary>
         /// 라인의 특정 지점에서의 접촉 정보를 계산합니다.
         /// </summary>
         protected abstract ContactInfo AnalyzeContactInfo(Vector2 contactPoint);
-       
-         /// <summary>
+
+        /// <summary>
         /// 필요한 컴포넌트들을 초기화합니다.
         /// </summary>
         protected virtual void InitializeComponents()
@@ -181,6 +206,9 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
             // EdgeCollider2D Initialization
             _edgeCollider ??= GetComponent<EdgeCollider2D>();
+
+            // PlatformEffector2D Initialization
+            _platformEffector ??= GetComponent<PlatformEffector2D>();
         }
 
         /// <summary>
