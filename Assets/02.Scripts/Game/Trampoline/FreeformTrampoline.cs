@@ -17,6 +17,11 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         private struct ContactInfo
         {
             /// <summary>
+            /// 충돌 지점
+            /// </summary>
+            public Vector2 ContactPoint { get; set; }
+
+            /// <summary>
             /// 충돌 지점으로부터 가장 가까운 선분의 인덱스
             /// </summary>
             public int ClosestSegmentIndex { get; set; }
@@ -248,15 +253,10 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         /// </summary>
         private void ProcessBounce(IBounceable bounceable, Vector2 contactPoint)
         {
+            // 접촉 정보 분석
             ContactInfo contactInfo = AnalyzeContactInfo(contactPoint);
 
-            Vector2 normal = contactInfo.Normal;
-
-            // 중앙 판정
-            float centerRatio = contactInfo.DistanceFromStart / _lineLength;
-            float lowerBound = 0.5f - _config.CenterThreshold;
-            float upperBound = 0.5f + _config.CenterThreshold;
-            bool isCenter = (lowerBound <= centerRatio) && (centerRatio <= upperBound);
+            bool isCenter = IsContactAtCenter(contactInfo);
 
             // 튕김 힘 설정
             float bounceForce = isCenter
@@ -266,19 +266,35 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             // IBounceable.Bounce
             bounceable.Bounce(new BounceParams
             {
-                Direction = normal,
+                Direction = contactInfo.Normal,
                 Force = bounceForce,
-                ContactPoint = contactPoint
             });
 
             // IBounceable.OnBounced
             bounceable.OnBounced(new BounceResult
             {
                 Energy = bounceForce,
-                IsCenter = isCenter
+                IsCenter = isCenter,
+                ContactPoint = contactPoint
             });
 
-            AppLogger.Debug($"[Trampoline] Bounce: force={bounceForce}, isCenter={isCenter}");
+            AppLogger.Debug($"[Trampoline] Bounce: force={bounceForce}, isCenter={isCenter}, contactPoint={contactPoint}.");
+        }
+
+        /// <summary>
+        /// 충돌 지점이 Trampoline 중앙 범위 내에 있는지 판정합니다.
+        /// </summary>
+        /// <param name="contactInfo">충돌 정보</param>
+        /// <returns>중앙 범위 내이면 true</returns>
+        private bool IsContactAtCenter(ContactInfo contactInfo)
+        {
+            float centerRatio = contactInfo.DistanceFromStart / _lineLength;
+
+            // 중앙 판정
+            float lowerBound = 0.5f - _config.CenterThreshold;
+            float upperBound = 0.5f + _config.CenterThreshold;
+
+            return (lowerBound <= centerRatio) && (centerRatio <= upperBound);
         }
 
         /// <summary>
@@ -323,6 +339,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
             return new ContactInfo
             {
+                ContactPoint = contactPoint,
                 ClosestSegmentIndex = closestSegmentIndex,
                 DistanceFromStart = distanceFromStart,
                 Normal = normal.normalized

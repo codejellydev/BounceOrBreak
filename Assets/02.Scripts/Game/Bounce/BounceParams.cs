@@ -13,12 +13,12 @@ namespace CodeJelly.BounceOrBreak.Game.Bounce
         /// <summary>
         /// 튕김 방향. (정규화된 벡터)
         /// </summary>
-        public Vector2 Direction 
+        public Vector2 Direction
         {
             get => _direction;
             set
             {
-                if(value == Vector2.zero)
+                if (value == Vector2.zero)
                 {
                     AppLogger.Warning($"[BounceParams] Zero direction, using default.");
                     _direction = GameConstants.Bounce.DEFAULT_DIRECTION;
@@ -26,18 +26,13 @@ namespace CodeJelly.BounceOrBreak.Game.Bounce
                     return;
                 }
                 _direction = value.normalized;
-            } 
+            }
         }
 
         /// <summary>
         /// 튕김 세기.
         /// </summary>
         public float Force { get; set; }
-
-        /// <summary>
-        /// 충돌 지점. (Optional)
-        /// </summary>
-        public Vector2? ContactPoint { get; set; }
         #endregion
 
 

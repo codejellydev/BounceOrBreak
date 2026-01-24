@@ -85,5 +85,23 @@ namespace CodeJelly.BounceOrBreak.Game
             /// </summary>
             public const int POOL_MAX_SIZE = 50;
         }
+
+        public static class Character
+        {
+            /// <summary>
+            /// 캐릭터가 받을 수 있는 최소 튕김 힘
+            /// </summary>
+            public const float MIN_BOUNCE_FORCE = 5f;
+
+            /// <summary>
+            /// 캐릭터가 받을 수 있는 최대 튕김 힘
+            /// </summary>
+            public const float MAX_BOUNCE_FORCE = 30f;
+
+            /// <summary>
+            /// 속도가 튕김 힘에 미치는 영향 계수
+            /// </summary>
+            public const float SPEED_BOUNCE_MULTIPLIER = 0.05f;
+        }
     }
 }

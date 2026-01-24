@@ -1,3 +1,5 @@
+using UnityEngine;
+
 namespace CodeJelly.BounceOrBreak.Game.Bounce
 {
     /// <summary>
@@ -16,6 +18,11 @@ namespace CodeJelly.BounceOrBreak.Game.Bounce
         /// 중앙 착지 여부.
         /// </summary>
         public bool IsCenter { get; set; }
+
+        /// <summary>
+        /// 충돌 지점.
+        /// </summary>
+        public Vector2 ContactPoint { get; set; }
         #endregion
     }
 }

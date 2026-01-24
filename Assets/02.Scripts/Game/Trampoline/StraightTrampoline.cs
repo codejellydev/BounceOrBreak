@@ -10,6 +10,35 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
     [RequireComponent(typeof(LineRenderer), typeof(EdgeCollider2D))]
     public class StraightTrampoline : MonoBehaviour, ITrampoline
     {
+        #region Nested Classes
+        /// <summary>
+        /// IBounceable과의 충돌 지점에 대한 계산 결과.
+        /// </summary>
+        private struct ContactInfo
+        {
+            /// <summary>
+            /// 충돌 지점
+            /// </summary>
+            public Vector2 ContactPoint { get; set; }
+
+            /// <summary>
+            /// 충돌 지점으로부터 가장 가까운 선분의 인덱스
+            /// </summary>
+            public int? ClosestSegmentIndex { get; set; }
+
+            /// <summary>
+            /// 라인의 시작점(0번 인덱스)부터 충돌 지점까지의 거리
+            /// </summary>
+            public float DistanceFromStart { get; set; }
+
+            /// <summary>
+            /// 노말 벡터
+            /// </summary>
+            public Vector2 Normal { get; set; }
+        }
+        #endregion
+
+
         #region Properties
         /// <summary>
         /// ITrampoline.Type Implementation
@@ -234,45 +263,61 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         /// </summary>
         private void ProcessBounce(IBounceable bounceable, Vector2 contactPoint)
         {
-            // 중앙 판정
-            bool isCenter = IsCenter(contactPoint);
+            // 접촉 정보 분석
+            ContactInfo contactInfo = AnalyzeContactInfo(contactPoint);
 
-            // 튕김 힘 설정
+            bool isCenter = IsContactAtCenter(contactInfo);
+
             float bounceForce = isCenter
                 ? _config.BounceForce * _config.CenterBounceMultiplier
                 : _config.BounceForce;
 
-            // IBounceable.Bounce
             bounceable.Bounce(new BounceParams
             {
-                Direction = _normal,
-                Force = bounceForce,
-                ContactPoint = contactPoint
+                Direction = contactInfo.Normal,
+                Force = bounceForce
             });
 
-            // IBounceable.OnBounced
             bounceable.OnBounced(new BounceResult
             {
                 Energy = bounceForce,
-                IsCenter = isCenter
+                IsCenter = isCenter,
+                ContactPoint = contactInfo.ContactPoint
             });
 
-            AppLogger.Debug($"[StraightTrampoline] Bounce: force={bounceForce}, isCenter={isCenter}");
+            AppLogger.Debug($"[StraightTrampoline] Bounce: force={bounceForce}, isCenter={isCenter}, contactPoint={contactPoint}.");
         }
 
         /// <summary>
-        /// 충돌 지점이 라인의 중앙 범위 내에 있는지 판정합니다.
+        /// 충돌 지점이 Trampoline 중앙 범위 내에 있는지 판정합니다.
         /// </summary>
-        private bool IsCenter(Vector2 contactPoint)
+        /// <param name="contactInfo">충돌 정보</param>
+        /// <returns>중앙 범위 내이면 true</returns>
+        private bool IsContactAtCenter(ContactInfo contactInfo)
         {
-            float distanceFromStart = Vector2.Distance(_startPoint, contactPoint);
-            float centerRatio = distanceFromStart / _lineLength;
+            float centerRatio = contactInfo.DistanceFromStart / _lineLength;
 
             // 중앙 판정
             float lowerBound = 0.5f - _config.CenterThreshold;
             float upperBound = 0.5f + _config.CenterThreshold;
 
             return (lowerBound <= centerRatio) && (centerRatio <= upperBound);
+        }
+
+        /// <summary>
+        /// 라인의 특정 지점에서의 충돌 정보를 계산합니다.
+        /// </summary>
+        private ContactInfo AnalyzeContactInfo(Vector2 contactPoint)
+        {
+            float distanceFromStart = Vector2.Distance(_startPoint, contactPoint);
+
+            return new ContactInfo
+            {
+                ContactPoint = contactPoint,
+                Normal = _normal,
+                DistanceFromStart = distanceFromStart,
+                ClosestSegmentIndex = 0  // 선분이 하나뿐이므로 항상 0
+            };
         }
         #endregion
     }
