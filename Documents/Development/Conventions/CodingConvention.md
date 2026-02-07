@@ -155,6 +155,31 @@ if (condition)
 if (condition) return;
 ```
 
+### 비동기 메서드 명명 규칙
+
+**Awaitable 메서드 (`UniTask`, `Task`)**
+- 반드시 이름 뒤에 **Async**를 붙인다.
+- 호출하는 쪽에서 `await`가 가능함을 명시한다.
+
+**Fire-and-Forget 메서드 (`UniTaskVoid`, `void`)**
+- 이름 뒤에 **Async를 붙이지 않는다.**
+- 이벤트 핸들러나 시작점(Root) 역할을 하므로, 일반 메서드처럼 명명한다.
+
+```csharp
+// ✅ 권장
+// Await 가능
+public async UniTask LoadDataAsync()
+{
+    await ...
+}
+
+// Await 불가능 (Fire-and-Forget)
+public async UniTaskVoid StartGameSequence()
+{
+    await ...
+}
+```
+
 ## 📝 주석 및 문서화
 
 ### Class Summary (필수)
@@ -247,6 +272,8 @@ if (IsGrounded) // 땅에 닿았을 때만 점프 허용
 - [ ]  어트리뷰트 변수 상단 배치
 - [ ]  빈 함수 한 줄 표기
 - [ ]  Unity Lifecycle 순서 준수
+- [ ]  인터페이스 구현 메서드에 Summary 작성 (I인터페이스명.메서드명 Implementation)
+- [ ]  비동기 메서드 명명 규칙 준수 (Async 접미사 여부)
 
 ### 코드 리뷰시
 
