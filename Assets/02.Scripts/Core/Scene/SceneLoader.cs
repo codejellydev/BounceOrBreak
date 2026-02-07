@@ -74,17 +74,34 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
         /// 씬을 비동기적으로 전환합니다.
         /// 초기화 로직, 로딩 씬, Payload 전달 등이 필요한 경우 사용합니다.
         /// </summary>
-        /// <param name="sceneKey">Addressables 씬 키</param>
+        /// <param name="config">씬 전환 설정</param>
         /// <param name="payload">씬에 전달할 데이터</param>
-        /// <param name="useLoadingScene">로딩 씬 사용 여부</param>
-        /// <param name="loadingSceneKey">로딩 씬 키</param>
+        /// <param name="ct">취소 토큰</param>
         public async UniTask LoadSceneAsync(
-            string sceneKey,
+            SceneTransitionConfig config,
             IPayload payload = null,
-            bool useLoadingScene = false,
-            string loadingSceneKey = null,
             CancellationToken ct = default)
         {
+            // Config 유효성 검사
+            if (config == null)
+            {
+                AppLogger.Error("[SceneLoader] SceneTransitionConfig is null.");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(config.TargetSceneKey) == true)
+            {
+                AppLogger.Error($"[SceneLoader] TargetSceneKey is empty in config: {config.name}");
+                return;
+            }
+
+            // Loading Scene 유효성 검사
+            if (config.UseLoadingScene == true && string.IsNullOrEmpty(config.LoadingSceneKey) == true)
+            {
+                AppLogger.Error($"[SceneLoader] LoadingSceneKey is empty but UseLoadingScene is true in config: {config.name}");
+                return;
+            }
+
             // 중복 요청 방지
             if (IsTransitioning == true)
             {
@@ -102,11 +119,18 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
 
             try
             {
-                await TransitionSceneAsync(sceneKey, payload, useLoadingScene, loadingSceneKey, _transitionCts.Token);
+                await TransitionSceneAsync
+                (
+                    config.TargetSceneKey,
+                    payload,
+                    config.UseLoadingScene,
+                    config.LoadingSceneKey,
+                    _transitionCts.Token
+                );
             }
             catch (OperationCanceledException)
             {
-                AppLogger.Info($"[SceneLoader] Transition to {sceneKey} was canceled.");
+                AppLogger.Info($"[SceneLoader] Transition to {config.TargetSceneKey} was canceled.");
                 throw; // 취소 exception은 상위 호출 스택으로 전파
             }
             catch (Exception ex)
