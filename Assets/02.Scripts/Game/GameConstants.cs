@@ -15,6 +15,7 @@ namespace CodeJelly.BounceOrBreak.Game
             /// </summary>
             public static class Keys
             {
+                public const string ENTRY_SCENE = "EntryScene";
                 public const string LOADING_SCENE = "LoadingScene";
             }
 
