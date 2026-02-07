@@ -62,8 +62,18 @@ namespace CodeJelly.BounceOrBreak.Core.Logging
         [UnityEngine.HideInCallstack]
         public static void Exception(Exception exception)
         {
-            string message = $"{exception.Message}\n{exception.StackTrace}";
+            string message = $"[Exception]: {exception.GetType().Name} - {exception.Message}\n{exception.StackTrace}";
             LogInternal(LogLevel.Error, message);
+        }
+
+        /// <summary>
+        /// Exception 로그와 함께 메시지를 출력합니다.
+        /// </summary>
+        [UnityEngine.HideInCallstack]
+        public static void Exception(Exception exception, string message)
+        {
+            string formattedMessage = $"{message}\n[Exception]: {exception.GetType().Name} - {exception.Message}\n{exception.StackTrace}";
+            LogInternal(LogLevel.Error, formattedMessage);
         }
         #endregion
 
