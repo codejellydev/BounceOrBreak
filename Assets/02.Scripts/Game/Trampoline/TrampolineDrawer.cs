@@ -55,7 +55,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             _currentDrawPoints = new List<Vector2>();
 
             // Config 로딩
-            _config = await ResourceManager.Instance.LoadAsync<TrampolineConfig>(GameConstants.Trampoline.Keys.CONFIG, ct);
+            _config = await ResourceManager.Instance.LoadAsync<TrampolineConfig>(GameConstants.Trampoline.Keys.DEFAULT_CONFIG, ct);
             progress?.Report(0.2f);
 
             if (_config == null)

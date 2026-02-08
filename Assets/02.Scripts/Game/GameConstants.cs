@@ -46,7 +46,8 @@ namespace CodeJelly.BounceOrBreak.Game
             {
                 public const string STRAIGHT_PREFAB = "StraightTrampolinePrefab";
                 public const string FREEFORM_PREFAB = "FreeformTrampolinePrefab";
-                public const string CONFIG = "TrampolineConfig";
+                public const string DEFAULT_CONFIG = "DefaultTrampolineConfig";
+                public const string STATIC_CONFIG = "StaticTrampolineConfig";
             }
 
             /// <summary>
@@ -73,6 +74,11 @@ namespace CodeJelly.BounceOrBreak.Game
             /// 기본 튕김 세기
             /// </summary>
             public const float DEFAULT_BOUNCE_FORCE = 10f;
+
+            /// <summary>
+            /// 기본 노말 방향 가중치 (0 = 완전 반사, 1 = 완전 노말)
+            /// </summary>
+            public const float DEFAULT_NORMAL_BIAS = 0.5f;
 
             /// <summary>
             /// 기본 중앙 착지 시 튕김 배율
@@ -110,7 +116,12 @@ namespace CodeJelly.BounceOrBreak.Game
             /// <summary>
             /// 속도가 튕김 힘에 미치는 영향 계수
             /// </summary>
-            public const float SPEED_BOUNCE_MULTIPLIER = 0.05f;
+            public const float SPEED_BOUNCE_MULTIPLIER = 0.02f;
+
+            /// <summary>
+            /// 반사 방향 계산 시 속도 임계값 (이하일 경우 노말 방향으로 fallback)
+            /// </summary>
+            public const float MIN_VELOCITY_FOR_REFLECT = 0.01f;
         }
     }
 }

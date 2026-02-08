@@ -108,7 +108,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
             // 접촉 지점 계산
             Vector2 contactPoint = collision.GetContact(0).point;
-            ProcessBounce(bounceable, contactPoint);
+            ProcessBounce(bounceable, contactPoint, relativeVelocity);
 
             UsageCount++;
 
@@ -214,7 +214,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         /// <summary>
         /// 튕김 처리를 수행합니다.
         /// </summary>
-        protected virtual void ProcessBounce(IBounceable bounceable, Vector2 contactPoint)
+        protected virtual void ProcessBounce(IBounceable bounceable, Vector2 contactPoint, Vector2 velocityBeforeCollision)
         {
             // 접촉 정보 분석
             ContactInfo contactInfo = AnalyzeContactInfo(contactPoint);
@@ -227,8 +227,10 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
             bounceable.Bounce(new BounceParams
             {
-                Direction = contactInfo.Normal,
-                Force = bounceForce
+                Normal = contactInfo.Normal,
+                Force = bounceForce,
+                VelocityBeforeCollision = velocityBeforeCollision,
+                NormalBias = _config.NormalBias
             });
 
             bounceable.OnBounced(new BounceResult

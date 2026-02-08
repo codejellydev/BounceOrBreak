@@ -45,7 +45,11 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         [Range(0f, 0.5f)]
         [SerializeField] private float _centerThreshold = GameConstants.Trampoline.DEFAULT_CENTER_THRESHOLD;
 
+        [Tooltip("노말 방향 가중치 (0 = 완전 반사, 1 = 완전 노말)")]
+        [Range(0f, 1f)]
+        [SerializeField] private float _normalBias = GameConstants.Trampoline.DEFAULT_NORMAL_BIAS;
 
+        public float NormalBias => _normalBias;
         [Header("Lifecycle Settings")]
         [Tooltip("최대 사용 횟수 (0 = 무제한)")]
         [SerializeField] private int _maxUsageCount = 0;

@@ -11,21 +11,21 @@ namespace CodeJelly.BounceOrBreak.Game.Bounce
     {
         #region Properties
         /// <summary>
-        /// 튕김 방향. (정규화된 벡터)
+        /// 튕긴 표면의 노말 벡터. (정규화된 벡터)
         /// </summary>
-        public Vector2 Direction
+        public Vector2 Normal
         {
-            get => _direction;
+            get => _normal;
             set
             {
                 if (value == Vector2.zero)
                 {
                     AppLogger.Warning($"[BounceParams] Zero direction, using default.");
-                    _direction = GameConstants.Bounce.DEFAULT_DIRECTION;
+                    _normal = GameConstants.Bounce.DEFAULT_DIRECTION;
 
                     return;
                 }
-                _direction = value.normalized;
+                _normal = value.normalized;
             }
         }
 
@@ -33,11 +33,22 @@ namespace CodeJelly.BounceOrBreak.Game.Bounce
         /// 튕김 세기.
         /// </summary>
         public float Force { get; set; }
+
+        /// <summary>
+        /// 충돌 전 속도.
+        /// 반사 방향 계산을 위해 충돌 시점의 정확한 속도가 필요하므로 외부에서 전달받습니다.
+        /// </summary>
+        public Vector2 VelocityBeforeCollision { get; set; }
+
+        /// <summary>
+        /// 노말 방향 가중치 (0 = 완전 반사, 1 = 완전 노말)
+        /// </summary>
+        public float NormalBias { get; set; }
         #endregion
 
 
         #region Private Variables
-        private Vector2 _direction;
+        private Vector2 _normal;
         #endregion
     }
 }

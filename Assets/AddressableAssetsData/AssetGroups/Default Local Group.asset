@@ -15,12 +15,49 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: ff0b6b3515b0c0d49b9d79b23bc248d5
   m_SerializeEntries:
+  - m_GUID: 0d851d314e47b6a4cb01102e10483495
+    m_Address: TrampolineDrawer
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1e3a9aae2134b184ea31953813bbfc06
+    m_Address: StaticTrampolinePrefab
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Prefab
+    - Trampoline
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 46789d0d10d1f30429dcb4f3651c695f
     m_Address: FreeformTrampolinePrefab
     m_ReadOnly: 0
     m_SerializedLabels:
     - Prefab
     - Trampoline
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 488e4b14077dcbd46ba3b739cee7e6d9
+    m_Address: EntryScene
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Scene
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4f92fa6a15dd0444db485eb217f5a94b
+    m_Address: StaticTrampolineConfig
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Config
+    - Trampoline
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5eb32e70255bc8342837b7ca739d0b1e
+    m_Address: WallConfig
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Config
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 75fef6d9261f1ba43a00751ab1258ec3
+    m_Address: InputConfig
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Config
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 76615ae3e006eb04cb4bd55d35098ed1
     m_Address: StraightTrampolinePrefab
@@ -29,8 +66,14 @@ MonoBehaviour:
     - Prefab
     - Trampoline
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 99c9720ab356a0642a771bea13969a05
+    m_Address: TestScene
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Scene
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a831584289b0eb744a9e89b58014f323
-    m_Address: TrampolineConfig
+    m_Address: DefaultTrampolineConfig
     m_ReadOnly: 0
     m_SerializedLabels:
     - Config

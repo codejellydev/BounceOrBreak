@@ -31,7 +31,8 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         /// </summary>
         public void ApplyBounce(BounceParams parameters)
         {
-            float currentSpeed = _rigidbody.linearVelocity.magnitude; // 현재 속력
+            Vector2 velocityBeforCollision = parameters.VelocityBeforeCollision; // 전달받은 충돌 전 속도
+            float currentSpeed = velocityBeforCollision.magnitude; // 전달받은 충돌 전 속력
             float speedMultiplier = GetSpeedMultiplier(currentSpeed); // 현재 속력 기반 보정
             float adjustedForce = parameters.Force * speedMultiplier; // 계산된 힘
 
@@ -42,7 +43,16 @@ namespace CodeJelly.BounceOrBreak.Game.Character
                 GameConstants.Character.MAX_BOUNCE_FORCE
             );
 
-            Vector2 direction = parameters.Direction;
+            Vector2 direction;
+            if (currentSpeed > GameConstants.Character.MIN_VELOCITY_FOR_REFLECT)
+            {
+                Vector2 reflected = Vector2.Reflect(velocityBeforCollision.normalized, parameters.Normal).normalized;
+                direction = Vector2.Lerp(reflected, parameters.Normal, parameters.NormalBias).normalized; // 노말 방향 가중치 고려하여 디렉션 블렌딩
+            }
+            else
+            {
+                direction = parameters.Normal;
+            }
 
             _rigidbody.linearVelocity = Vector2.zero;
             _rigidbody.AddForce(direction * adjustedForce, ForceMode2D.Impulse);
