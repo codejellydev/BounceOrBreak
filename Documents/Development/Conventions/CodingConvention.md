@@ -197,9 +197,9 @@ public class PlayerController : MonoBehaviour
 
 ```
 
-### Interface Summary (선택)
+### Interface Summary
 
-복잡하거나 중요한 인터페이스에만 작성
+**인터페이스 정의:** 복잡하거나 중요한 인터페이스에만 작성 (선택)
 
 ```csharp
 /// <summary>
@@ -212,6 +212,17 @@ public interface IInteractable
     void OnPlayerContact(IPlayer player);
 }
 
+```
+
+**인터페이스 구현:** 모든 인터페이스 메서드 구현체에 작성 (필수)
+```csharp
+/// <summary>
+/// IInteractable.OnPlayerContact Implementation
+/// </summary>
+public void OnPlayerContact(IPlayer player)
+{
+    // 구현 로직
+}
 ```
 
 ### Properties Summary (선택)
@@ -280,4 +291,5 @@ if (IsGrounded) // 땅에 닿았을 때만 점프 허용
 - [ ]  Region convention 준수 여부
 - [ ]  변수 정렬 순서 확인
 - [ ]  Class summary 존재 여부
+- [ ]  인터페이스 구현 Summary 형식 확인 (I인터페이스명.메서드명 Implementation)
 - [ ]  코드 스타일 일관성

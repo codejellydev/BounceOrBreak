@@ -1,4 +1,4 @@
-namespace CodeJelly.BounceOrBreak.Core
+namespace CodeJelly.BounceOrBreak.Core.Pooling
 {
     /// <summary>
     /// Unity ObjectPool에서 관리되는 오브젝트가 구현해야 하는 인터페이스.
