@@ -1,10 +1,9 @@
 using CodeJelly.BounceOrBreak.Core.Logging;
+using CodeJelly.BounceOrBreak.Core.Resource;
 using CodeJelly.BounceOrBreak.Core.Scene;
 using Cysharp.Threading.Tasks;
 using System;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace CodeJelly.BounceOrBreak.Game.Bootstrap
 {
@@ -37,7 +36,7 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
             AppLogger.Info("[Bootstrapper] Starting initialization...");
 
             // 리소스 시스템 초기화
-            if (await InitializeResourceSystemAsync() == false)
+            if (await ResourceManager.Instance.InitializeAsync() == false)
             {
                 AppLogger.Error("[Bootstrapper] Startup sequence aborted due to resource initialization failure.");
                 HandleInitializationFailure();
@@ -54,28 +53,6 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
 
             // EnterGameFlowAsync 성공 시 Entry 씬이 언로드되므로, 이 로그는 출력되지 않을 확률이 높음
             AppLogger.Info("[Bootstrapper] Initialization complete.");
-        }
-
-        /// <summary>
-        /// Addressables 리소스 관리 시스템을 초기화합니다.
-        /// </summary>
-        private async UniTask<bool> InitializeResourceSystemAsync()
-        {
-            AppLogger.Info("[Bootstrapper] Initializing Addressables system...");
-
-            var handle = Addressables.InitializeAsync();
-            await handle.ToUniTask();
-
-            if (handle.Status == AsyncOperationStatus.Succeeded)
-            {
-                AppLogger.Info("[Bootstrapper] Addressables system initialized successfully.");
-                return true;
-            }
-            else
-            {
-                AppLogger.Error($"[Bootstrapper] Failed to initialize Addressables. Status: {handle.Status}");
-                return false;
-            }
         }
 
         /// <summary>

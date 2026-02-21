@@ -57,6 +57,28 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
 
         #region Public Methods
         /// <summary>
+        /// Addressables 리소스 관리 시스템을 초기화합니다.
+        /// </summary>
+        public async UniTask<bool> InitializeAsync()
+        {
+            AppLogger.Info("[ResourceManager] Initializing Addressables system...");
+
+            var handle = Addressables.InitializeAsync();
+            await handle.ToUniTask();
+
+            if (handle.Status == AsyncOperationStatus.Succeeded)
+            {
+                AppLogger.Info("[ResourceManager] Addressables system initialized successfully.");
+                return true;
+            }
+            else
+            {
+                AppLogger.Error($"[ResourceManager] Failed to initialize Addressables. Status: {handle.Status}");
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Addressables 리소스를 비동기로 로드합니다.
         /// 이미 로드된 리소스는 캐시에서 반환하며, 참조 카운트를 증가시킵니다.
         /// <para>
