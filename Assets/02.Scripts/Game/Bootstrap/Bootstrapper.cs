@@ -1,9 +1,11 @@
 using CodeJelly.BounceOrBreak.Core.Logging;
 using CodeJelly.BounceOrBreak.Core.Resource;
 using CodeJelly.BounceOrBreak.Core.Scene;
+using CodeJelly.BounceOrBreak.Game.Input;
 using Cysharp.Threading.Tasks;
 using System;
-using UnityEngine;
+using System.Threading;
+using VContainer.Unity;
 
 namespace CodeJelly.BounceOrBreak.Game.Bootstrap
 {
@@ -11,18 +13,29 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
     /// 어플리케이션의 초기화를 담당합니다.
     /// Entry Scene에 배치되어 게임 실행 시 가장 먼저 실행됩니다.
     /// </summary>
-    public class Bootstrapper : MonoBehaviour
+    public class Bootstrapper : IAsyncStartable
     {
-        #region Private Variables
-        [Header("Scene Configuration")]
-        [SerializeField] private SceneTransitionConfig _sceneConfig;
+        #region Injection
+        private readonly InputManager _inputManager;
+        private readonly ResourceManager _resourceManager;
+        private readonly SceneLoader _sceneLoader;
+        private readonly SceneTransitionConfig _sceneConfig;
+
+        public Bootstrapper(InputManager inputManager, ResourceManager resourceManager, SceneLoader sceneLoader, SceneTransitionConfig sceneConfig)
+        {
+            _inputManager = inputManager;
+            _resourceManager = resourceManager;
+            _sceneLoader = sceneLoader;
+            _sceneConfig = sceneConfig;
+        }
         #endregion
 
 
-        #region Unity Lifecycle
-        private void Start()
+        #region VContainer Lifecycle
+        public UniTask StartAsync(CancellationToken cancellation = default)
         {
             InitializeAndTransition().Forget();
+            return UniTask.CompletedTask;
         }
         #endregion
 
@@ -36,9 +49,17 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
             AppLogger.Info("[Bootstrapper] Starting initialization...");
 
             // 리소스 시스템 초기화
-            if (await ResourceManager.Instance.InitializeAsync() == false)
+            if (await _resourceManager.InitializeAsync() == false)
             {
                 AppLogger.Error("[Bootstrapper] Startup sequence aborted due to resource initialization failure.");
+                HandleInitializationFailure();
+                return;
+            }
+
+            // 입력 시스템 초기화
+            if (await _inputManager.InitializeAsync() == false)
+            {
+                AppLogger.Error("[Bootstrapper] Startup sequence aborted due to input initialization failure.");
                 HandleInitializationFailure();
                 return;
             }
@@ -70,7 +91,7 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
 
             try
             {
-                await SceneLoader.Instance.LoadSceneAsync(_sceneConfig);
+                await _sceneLoader.LoadSceneAsync(_sceneConfig);
                 return true;
             }
             catch (Exception ex)

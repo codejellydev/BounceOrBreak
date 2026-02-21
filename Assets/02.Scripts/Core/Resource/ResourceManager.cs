@@ -5,7 +5,6 @@ using R3;
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Pool;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -17,7 +16,7 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
     /// </summary>
     public class ResourceManager : IDisposable
     {
-        ResourceManager()
+        public ResourceManager()
         {
             _loadingCount = new ReactiveProperty<int>(0);
 
@@ -27,14 +26,10 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
                 defaultCapacity: AppConstants.Resource.POOL_DEFAULT_CAPACITY,
                 maxSize: AppConstants.Resource.POOL_MAX_SIZE
             );
-
-            Application.quitting += Dispose;
         }
 
 
         #region Properties
-        public static ResourceManager Instance => _instance.Value;
-
         /// <summary>
         /// 현재 로딩 중인 리소스 개수.
         /// </summary>
@@ -43,9 +38,6 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
 
 
         #region Private Variables
-        private static readonly Lazy<ResourceManager> _instance =
-            new Lazy<ResourceManager>(() => new ResourceManager());
-
         private readonly Dictionary<string, ResourceNode> _resourceCache =
             new Dictionary<string, ResourceNode>();
 
@@ -224,8 +216,6 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
         /// </summary>
         public void Dispose()
         {
-            Application.quitting -= Dispose;
-
             ReleaseAll();
             _resourceNodePool.Clear();
             _loadingCount.Dispose();

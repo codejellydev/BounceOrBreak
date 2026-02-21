@@ -1,7 +1,10 @@
-using CodeJelly.BounceOrBreak.Core;
 using CodeJelly.BounceOrBreak.Core.Logging;
+using CodeJelly.BounceOrBreak.Core.Resource;
+using Cysharp.Threading.Tasks;
 using R3;
+using System;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,10 +15,10 @@ namespace CodeJelly.BounceOrBreak.Game.Input
     /// New Input System을 기반으로 Context별 Input Action Map을 관리합니다.
     /// Event Broadcasting 및 Property를 관리하고 실제 동작은 각 담당 클래스에서 처리.
     /// </summary>
-    public class InputManager : Singleton<InputManager>,
-        GameInputAction.IPlayerActions,
-        GameInputAction.IUIActions,
-        GameInputAction.ISystemActions
+    public class InputManager : IDisposable,
+                                GameInputAction.IPlayerActions,
+                                GameInputAction.IUIActions,
+                                GameInputAction.ISystemActions
     {
         #region Events
         // Player Input Events
@@ -68,9 +71,6 @@ namespace CodeJelly.BounceOrBreak.Game.Input
 
 
         #region Private Variables
-        [Header("Input Configuration")]
-        [SerializeField] private InputConfig _inputConfig;
-
         private GameInputAction _gameInputAction;
         private InputContext _currentInputContext = InputContext.None;
         private Dictionary<InputContext, InputConfig.InputProfile> _profileMap;
@@ -92,49 +92,38 @@ namespace CodeJelly.BounceOrBreak.Game.Input
         #endregion
 
 
-        #region Unity Lifecycle
-        protected override void Awake()
-        {
-            base.Awake();
+        #region Injection
+        private readonly ResourceManager _resourceManager;
 
+        public InputManager(ResourceManager resourceManager)
+        {
+            _resourceManager = resourceManager;
+        }
+        #endregion
+
+
+        #region Public Methods
+        /// <summary>
+        /// 입력 시스템을 초기화합니다.
+        /// </summary>
+        public async UniTask<bool> InitializeAsync(CancellationToken ct = default)
+        {
             InitializeInputActions();
-            InitializeProfileMap();
+
+            if (await InitializeProfileMapAsync(ct) == false)
+            {
+                return false;
+            }
 
             _gameInputAction.Enable();
             BindActionCallbacks();
 
             SwitchContext(InputContext.Loading);
 
-            AppLogger.Info("[InputManager] Initialized.");
+            AppLogger.Info("[InputManager] Input system initialized successfully.");
+            return true;
         }
 
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-
-            UnbindActionCallbacks();
-
-            _gameInputAction?.Disable();
-            _gameInputAction?.Dispose();
-
-            // Player Input
-            _onPlayerTouchStarted?.Dispose();
-            _onPlayerTouchCanceled?.Dispose();
-            _onPlayerDragPerformed?.Dispose();
-            _playerTouchPosition?.Dispose();
-
-            // UI Input
-            _onUITouchStarted?.Dispose();
-            _onUITouchEnded?.Dispose();
-            _uiTouchPosition?.Dispose();
-
-            // System Input
-            _onBackPressed?.Dispose();
-        }
-        #endregion
-
-
-        #region Public Methods
         /// <summary>
         /// Input Context를 변경하고 해당 Context의 Input Action Map을 활성화합니다.
         /// </summary>
@@ -156,6 +145,33 @@ namespace CodeJelly.BounceOrBreak.Game.Input
 
             _currentInputContext = newContext;
             ApplyContextSettings(newContext);
+        }
+
+        /// <summary>
+        /// IDisposable.Dispose Implementation 
+        /// </summary>
+        public void Dispose()
+        {
+            UnbindActionCallbacks();
+
+            _gameInputAction?.Disable();
+            _gameInputAction?.Dispose();
+
+            // Player Input
+            _onPlayerTouchStarted?.Dispose();
+            _onPlayerTouchCanceled?.Dispose();
+            _onPlayerDragPerformed?.Dispose();
+            _playerTouchPosition?.Dispose();
+
+            // UI Input
+            _onUITouchStarted?.Dispose();
+            _onUITouchEnded?.Dispose();
+            _uiTouchPosition?.Dispose();
+
+            // System Input
+            _onBackPressed?.Dispose();
+
+            AppLogger.Info("[InputManager] Disposed cleanly.");
         }
         #endregion
 
@@ -184,22 +200,26 @@ namespace CodeJelly.BounceOrBreak.Game.Input
         }
 
         /// <summary>
-        /// InputConfig의 Profile 배열을 Dictionary로 변환하여 캐싱합니다.
+        /// InputConfig를 로드하고 Profile 배열을 Dictionary로 변환하여 캐싱합니다.
         /// </summary>
-        private void InitializeProfileMap()
+        private async UniTask<bool> InitializeProfileMapAsync(CancellationToken ct = default)
         {
-            if (_inputConfig == null)
+            var inputConfig = await _resourceManager.LoadAsync<InputConfig>(GameConstants.Input.Keys.DEFAULT_CONFIG, ct);
+
+            if (inputConfig == null)
             {
-                AppLogger.Error("[InputManager] InputConfig is not assigned.");
-                return;
+                AppLogger.Error("[InputManager] Failed to load InputConfig.");
+                return false;
             }
 
             _profileMap = new Dictionary<InputContext, InputConfig.InputProfile>();
 
-            foreach (var profile in _inputConfig.Profiles)
+            foreach (var profile in inputConfig.Profiles)
             {
                 _profileMap[profile.Context] = profile;
             }
+
+            return true;
         }
 
         /// <summary>

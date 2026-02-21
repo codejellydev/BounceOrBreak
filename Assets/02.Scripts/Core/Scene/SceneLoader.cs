@@ -20,18 +20,14 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
     /// </summary>
     public class SceneLoader : IDisposable
     {
-        SceneLoader()
+        public SceneLoader()
         {
             _transitionProgress = new ReactiveProperty<float>(0f);
             IsTransitioning = false;
-
-            Application.quitting += Dispose;
         }
 
 
         #region Properties
-        public static SceneLoader Instance => _instance.Value;
-
         /// <summary>
         /// 현재 전환 진행률 (0.0 ~ 1.0)
         /// UI 바인딩에 주로 쓰일 수 있으므로 ReactiveProperty로 선언.
@@ -47,9 +43,6 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
 
 
         #region Private Variables
-        private static readonly Lazy<SceneLoader> _instance =
-            new Lazy<SceneLoader>(() => new SceneLoader());
-
         private readonly ReactiveProperty<float> _transitionProgress;
 
         private SceneInstance _previousSceneInstance;
@@ -151,8 +144,6 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
         // IDisposable Implementation
         public void Dispose()
         {
-            Application.quitting -= Dispose;
-
             _transitionCts?.Cancel();
             _transitionCts?.Dispose();
 
@@ -204,11 +195,11 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
                 // 2. 타겟 씬 로드 (진행률: 0~50%)
                 var targetHandle = Addressables.LoadSceneAsync(sceneKey, LoadSceneMode.Additive, activateOnLoad: false);
 
-                while (targetHandle.IsDone == false)
+                do
                 {
                     _transitionProgress.Value = targetHandle.PercentComplete * 0.5f; // 0~50%
                     await UniTask.Yield(ct);
-                }
+                } while (targetHandle.IsDone == false);
 
                 if (targetHandle.Status != AsyncOperationStatus.Succeeded)
                 {
