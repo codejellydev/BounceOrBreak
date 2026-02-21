@@ -12,15 +12,6 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
     /// </summary>
     public class ApplicationScope : LifetimeScope
     {
-        #region Unity Lifecycle
-        protected override void Awake()
-        {
-            DontDestroyOnLoad(gameObject);
-            base.Awake();
-        }
-        #endregion
-
-
         #region Protected Methods
         protected override void Configure(IContainerBuilder builder)
         {
