@@ -1,5 +1,6 @@
 using CodeJelly.BounceOrBreak.Core.Resource;
 using CodeJelly.BounceOrBreak.Core.Scene;
+using CodeJelly.BounceOrBreak.Game.Input;
 using VContainer;
 using VContainer.Unity;
 
@@ -23,6 +24,7 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
         #region Protected Methods
         protected override void Configure(IContainerBuilder builder)
         {
+            builder.Register<InputManager>(Lifetime.Singleton);
             builder.Register<ResourceManager>(Lifetime.Singleton);
             builder.Register<SceneLoader>(Lifetime.Singleton);
         }
