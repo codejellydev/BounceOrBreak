@@ -713,63 +713,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b8061b3a62cf834cbf0e562f8f4fe77, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CodeJelly.BounceOrBreak.Game.Trampoline.TrampolineDrawer
---- !u!1001 &1016161472
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 5767206095466730526, guid: 51cc8898d62974043b3e85e855f13baf, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5767206095466730526, guid: 51cc8898d62974043b3e85e855f13baf, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5767206095466730526, guid: 51cc8898d62974043b3e85e855f13baf, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5767206095466730526, guid: 51cc8898d62974043b3e85e855f13baf, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5767206095466730526, guid: 51cc8898d62974043b3e85e855f13baf, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5767206095466730526, guid: 51cc8898d62974043b3e85e855f13baf, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5767206095466730526, guid: 51cc8898d62974043b3e85e855f13baf, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5767206095466730526, guid: 51cc8898d62974043b3e85e855f13baf, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5767206095466730526, guid: 51cc8898d62974043b3e85e855f13baf, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5767206095466730526, guid: 51cc8898d62974043b3e85e855f13baf, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8643069687992123544, guid: 51cc8898d62974043b3e85e855f13baf, type: 3}
-      propertyPath: m_Name
-      value: InputManager
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 51cc8898d62974043b3e85e855f13baf, type: 3}
 --- !u!1 &1620554549
 GameObject:
   m_ObjectHideFlags: 0
@@ -807,6 +750,56 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1620554549}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1968177466
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1968177468}
+  - component: {fileID: 1968177467}
+  m_Layer: 0
+  m_Name: TestSceneScope
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1968177467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1968177466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4e571d74d6b74e40928b9b52b9068a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TestSceneScope
+  parentReference:
+    TypeName: CodeJelly.BounceOrBreak.Game.Scope.ApplicationScope
+  autoRun: 1
+  autoInjectGameObjects: []
+  _testSceneController: {fileID: 1620554550}
+  _trampolineDrawer: {fileID: 988203743}
+--- !u!4 &1968177468
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1968177466}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -938,9 +931,9 @@ SceneRoots:
   - {fileID: 832575519}
   - {fileID: 1620554551}
   - {fileID: 6955502966222531156}
-  - {fileID: 1016161472}
   - {fileID: 431662171}
   - {fileID: 365122860}
   - {fileID: 1964228687975844936}
   - {fileID: 474685449}
   - {fileID: 248704841}
+  - {fileID: 1968177468}
