@@ -6,6 +6,11 @@ using UnityEngine;
 /// </summary>
 public class #SCRIPTNAME# : MonoBehaviour
 {
+    #region Nested Classes // 필요시
+    
+    #endregion
+
+
     #region Events
     
     #endregion
@@ -27,6 +32,11 @@ public class #SCRIPTNAME# : MonoBehaviour
 
 
     #region Private Variables
+    
+    #endregion
+
+
+    #region Injection // VContainer 의존성 주입 시
     
     #endregion
 
@@ -54,6 +64,16 @@ public class #SCRIPTNAME# : MonoBehaviour
 
 
     #region Private Methods
+    
+    #endregion
+
+
+    #region Input Action Callbacks // 필요시
+    
+    #endregion
+
+
+    #region Debug // 필요시
     
     #endregion
 }

@@ -11,6 +11,7 @@
 #region Public Variables
 #region Protected Variables
 #region Private Variables
+#region Injection               // VContainer 의존성 주입 시
 #region Unity Lifecycle
 #region Public Methods
 #region Protected Methods
@@ -137,6 +138,23 @@ private void OnDisable()
 
 private void OnDestroy()
 {}
+#endregion
+```
+
+### Injection Region
+
+VContainer 의존성 주입 시 사용. 주입 필드와 Construct 메서드를 함께 배치.  
+메서드 주입(Construct)을 권장하며, 필드 주입([Inject] 필드)의 사용은 지양.
+
+```csharp
+#region Injection
+private SomeService _someService;
+
+[Inject]
+public void Construct(SomeService someService)
+{
+    _someService = someService;
+}
 #endregion
 ```
 
