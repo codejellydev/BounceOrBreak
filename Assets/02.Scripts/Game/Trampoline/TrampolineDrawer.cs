@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.Pool;
+using VContainer;
 
 namespace CodeJelly.BounceOrBreak.Game.Trampoline
 {
@@ -17,6 +18,19 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
     /// </summary>
     public class TrampolineDrawer : MonoBehaviour
     {
+        #region Injection
+        private ResourceManager _resourceManager;
+        private InputManager _inputManager;
+
+        [Inject]
+        public void Construct(ResourceManager resourceManager, InputManager inputManager)
+        {
+            _resourceManager = resourceManager;
+            _inputManager = inputManager;
+        }
+        #endregion
+
+
         #region Private Variables
         [Header("드로잉 중 피드백 시각화를 위한 renderer")]
         [SerializeField] private LineRenderer _drawingLineRenderer;
@@ -55,7 +69,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             _currentDrawPoints = new List<Vector2>();
 
             // Config 로딩
-            _config = await ResourceManager.Instance.LoadAsync<TrampolineConfig>(GameConstants.Trampoline.Keys.DEFAULT_CONFIG, ct);
+            _config = await _resourceManager.LoadAsync<TrampolineConfig>(GameConstants.Trampoline.Keys.DEFAULT_CONFIG, ct);
             progress?.Report(0.2f);
 
             if (_config == null)
@@ -66,7 +80,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             }
 
             // Factory 초기화
-            _factory = new TrampolineFactory();
+            _factory = new TrampolineFactory(_resourceManager);
             await _factory.InitializeAsync(ct);
             progress?.Report(0.5f);
 
@@ -160,17 +174,15 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         /// </summary>
         private void SubscribeInputEvents()
         {
-            var inputManager = InputManager.Instance;
-
-            inputManager.OnPlayerTouchStarted
+            _inputManager.OnPlayerTouchStarted
                 .Subscribe(position => StartDrawing(position))
                 .AddTo(_disposables);
 
-            inputManager.OnPlayerTouchCanceled
+            _inputManager.OnPlayerTouchCanceled
                 .Subscribe(_ => EndDrawing())
                 .AddTo(_disposables);
 
-            inputManager.OnPlayerDragPerformed
+            _inputManager.OnPlayerDragPerformed
                 .Subscribe(position => UpdateDrawing(position))
                 .AddTo(_disposables);
 

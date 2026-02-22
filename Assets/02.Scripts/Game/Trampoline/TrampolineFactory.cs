@@ -12,6 +12,16 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
     /// </summary>
     public class TrampolineFactory
     {
+        #region Injection
+        private readonly ResourceManager _resourceManager;
+
+        public TrampolineFactory(ResourceManager resourceManager)
+        {
+            _resourceManager = resourceManager;
+        }
+        #endregion
+
+
         #region Private Variables
         private Dictionary<TrampolineType, GameObject> _prefabs;
         #endregion
@@ -25,10 +35,10 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         {
             _prefabs = new Dictionary<TrampolineType, GameObject>();
 
-            var straight = await ResourceManager.Instance.LoadAsync<GameObject>(GameConstants.Trampoline.Keys.STRAIGHT_PREFAB, ct);
+            var straight = await _resourceManager.LoadAsync<GameObject>(GameConstants.Trampoline.Keys.STRAIGHT_PREFAB, ct);
             _prefabs[TrampolineType.Straight] = straight;
 
-            var freeform = await ResourceManager.Instance.LoadAsync<GameObject>(GameConstants.Trampoline.Keys.FREEFORM_PREFAB, ct);
+            var freeform = await _resourceManager.LoadAsync<GameObject>(GameConstants.Trampoline.Keys.FREEFORM_PREFAB, ct);
             _prefabs[TrampolineType.Freeform] = freeform;
         }
 
@@ -54,8 +64,8 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         /// </summary>
         public void ReleaseAll()
         {
-            ResourceManager.Instance.Release(GameConstants.Trampoline.Keys.STRAIGHT_PREFAB, ResourceReleaseContext.Cleanup);
-            ResourceManager.Instance.Release(GameConstants.Trampoline.Keys.FREEFORM_PREFAB, ResourceReleaseContext.Cleanup);
+            _resourceManager.Release(GameConstants.Trampoline.Keys.STRAIGHT_PREFAB, ResourceReleaseContext.Cleanup);
+            _resourceManager.Release(GameConstants.Trampoline.Keys.FREEFORM_PREFAB, ResourceReleaseContext.Cleanup);
 
             _prefabs.Clear();
         }
