@@ -25,19 +25,39 @@ public class TestSceneInitializer : ISceneInitializer
 
 
     #region ISceneInitializer Implementation
+    public SceneInitializationState State { get; private set; } = SceneInitializationState.None;
+
     public async UniTask InitializeAsync(IProgress<float> progress, CancellationToken ct)
     {
-        AppLogger.Debug("[TestSceneInitializer] Initialization started.");
+        if (State != SceneInitializationState.None)
+        {
+            AppLogger.Debug($"[TestSceneInitializer] State is {State}. Skipping.");
+            return;
+        }
 
-        _inputManager.SwitchContext(InputContext.Gameplay);
+        State = SceneInitializationState.Initializing;
 
-        await _trampolineDrawer.InitializeAsync(
-            new Progress<float>(p => progress?.Report(p)),
-            ct
-        );
-        _trampolineDrawer.SetTrampolineType(TrampolineType.Straight);
+        try
+        {
+            AppLogger.Debug("[TestSceneInitializer] Initialization started.");
 
-        AppLogger.Debug("[TestSceneInitializer] Initialization completed.");
+            _inputManager.SwitchContext(InputContext.Gameplay);
+
+            await _trampolineDrawer.InitializeAsync(
+                new Progress<float>(p => progress?.Report(p)),
+                ct
+            );
+            _trampolineDrawer.SetTrampolineType(TrampolineType.Straight);
+
+            State = SceneInitializationState.Completed;
+            AppLogger.Debug("[TestSceneInitializer] Initialization completed.");
+        }
+        catch (Exception ex)
+        {
+            State = SceneInitializationState.Failed;
+            AppLogger.Exception(ex, "[TestSceneInitializer] Initialization failed.");
+            throw;
+        }
     }
     #endregion
 }
