@@ -11,7 +11,7 @@ using UnityEngine.InputSystem;
 namespace CodeJelly.BounceOrBreak.Game.Input
 {
     /// <summary>
-    /// 게임 전체의 입력 시스템을 관리하는 Singleton Manager.
+    /// 게임 전역의 입력 시스템을 관리하는 클래스.
     /// New Input System을 기반으로 Context별 Input Action Map을 관리합니다.
     /// Event Broadcasting 및 Property를 관리하고 실제 동작은 각 담당 클래스에서 처리.
     /// </summary>
