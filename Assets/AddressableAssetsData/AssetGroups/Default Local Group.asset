@@ -54,7 +54,7 @@ MonoBehaviour:
     - Config
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 75fef6d9261f1ba43a00751ab1258ec3
-    m_Address: InputConfig
+    m_Address: DefaultInputConfig
     m_ReadOnly: 0
     m_SerializedLabels:
     - Config

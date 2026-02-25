@@ -5,6 +5,7 @@ namespace CodeJelly.BounceOrBreak.Core
 {
     /// <summary>
     /// Lazy initialization을 지원하는 Generic Singleton MonoBehaviour.
+    /// (VContainer 사용 시 본 클래스 대신 VContainer의 의존성 주입을 사용하는 것을 권장.)
     /// </summary>
     public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
     {

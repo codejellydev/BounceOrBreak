@@ -41,6 +41,11 @@ public class #SCRIPTNAME# : MonoBehaviour
     #endregion
 
 
+    #region VContainer Lifecycle    // VContainer 생명주기 인터페이스 구현 시
+
+    #endregion
+
+
     #region Unity Lifecycle
     private void Awake()
     {}

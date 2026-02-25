@@ -8,6 +8,14 @@ namespace CodeJelly.BounceOrBreak.Game
     /// </summary>
     public static partial class GameConstants
     {
+        public static class Input
+        {
+            public static class Keys
+            {
+                public const string DEFAULT_CONFIG = "DefaultInputConfig";
+            }
+        }
+
         public static class Scene
         {
             /// <summary>
