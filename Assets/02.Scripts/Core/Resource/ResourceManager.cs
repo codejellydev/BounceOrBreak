@@ -145,6 +145,26 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
         }
 
         /// <summary>
+        /// AssetReference를 통해 Addressables 리소스를 비동기로 로드합니다.
+        /// <para>
+        /// 취소 토큰 전달 시 호출부에서 try-catch로 OperationCanceledException 처리 필요.
+        /// 취소 로직이 불필요한 경우 CancellationToken 생략 가능.
+        /// </para>
+        /// </summary>
+        public async UniTask<T> LoadAsync<T>(AssetReference reference, CancellationToken ct = default) where T : UnityEngine.Object
+        {
+            string key = ResolveKey(reference);
+
+            if (key == null)
+            {
+                AppLogger.Error("[ResourceManager] AssetReference is null or has invalid RuntimeKey.");
+                return null;
+            }
+
+            return await LoadAsync<T>(key, ct);
+        }
+
+        /// <summary>
         /// 리소스의 참조 카운트를 감소시키고, 0이 되면 메모리에서 해제합니다.
         /// </summary>
         public void Release(string key, ResourceReleaseContext context = ResourceReleaseContext.Normal)
@@ -187,6 +207,21 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
                     AppLogger.Debug($"[ResourceManager] Resource not in cache: {key} (Already released or never loaded - normal during cleanup)");
                 }
             }
+        }
+
+        /// <summary>
+        /// AssetReference에 해당하는 리소스의 참조 카운트를 감소시키고, 0이 되면 메모리에서 해제합니다.
+        /// </summary>
+        public void Release(AssetReference reference, ResourceReleaseContext context = ResourceReleaseContext.Normal)
+        {
+            string key = ResolveKey(reference);
+
+            if (key == null)
+            {
+                return;
+            }
+
+            Release(key, context);
         }
 
         /// <summary>
@@ -241,6 +276,20 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
                 }
                 _resourceNodePool.Release(node);
             }
+        }
+
+        /// <summary>
+        /// AssetReference로부터 캐시 key로 사용할 문자열을 추출합니다.
+        /// </summary>
+        /// <returns>유효한 키 문자열. 유효하지 않으면 null.</returns>
+        private string ResolveKey(AssetReference reference)
+        {
+            if (reference == null || reference.RuntimeKeyIsValid() == false)
+            {
+                return null;
+            }
+
+            return reference.RuntimeKey.ToString();
         }
         #endregion
     }
