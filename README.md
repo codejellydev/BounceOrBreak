@@ -1,7 +1,7 @@
 # BounceOrBreak
 
 ## Project Information
-**Unity Version**: 6000.2.14f1
+**Unity Version**: 6000.3.9f1
 
 ---
 
@@ -12,7 +12,7 @@ To follow the project's coding conventions, apply the custom script template.
 
 **Windows**:
 ```
-Unity\Hub\Editor\6000.2.14f1\Editor\Data\Resources\ScriptTemplates\1-Scripting__MonoBehaviour Script-NewMonoBehaviourScript.cs.txt
+Unity\Hub\Editor\6000.3.9f1\Editor\Data\Resources\ScriptTemplates\1-Scripting__MonoBehaviour Script-NewMonoBehaviourScript.cs.txt
 ```
 
 Replace the file at the above path with [`/Documents/Development/Convention/1-Scripting__MonoBehaviour Script-NewMonoBehaviourScript.cs.txt`](</Documents/Development/Convention/1-Scripting__MonoBehaviour Script-NewMonoBehaviourScript.cs.txt>).
