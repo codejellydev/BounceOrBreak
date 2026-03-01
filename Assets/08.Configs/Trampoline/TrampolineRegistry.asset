@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5008e496927ea548a6aa664d9ebfbd3, type: 3}
+  m_Name: TrampolineRegistry
+  m_EditorClassIdentifier: Assembly-CSharp::CodeJelly.BounceOrBreak.Game.Trampoline.TrampolineRegistry
+  _entries:
+  - _type: 0
+    _prefab:
+      m_AssetGUID: 76615ae3e006eb04cb4bd55d35098ed1
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 0
+  - _type: 1
+    _prefab:
+      m_AssetGUID: 46789d0d10d1f30429dcb4f3651c695f
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 0
+  - _type: 2
+    _prefab:
+      m_AssetGUID: 1e3a9aae2134b184ea31953813bbfc06
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 0
