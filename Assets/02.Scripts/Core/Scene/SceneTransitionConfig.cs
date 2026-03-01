@@ -4,7 +4,7 @@ using UnityEngine;
 namespace CodeJelly.BounceOrBreak.Core.Scene
 {
     /// <summary>
-    /// 씬 전환 시 필요한 설정을 관리하는 ScriptableObject.
+    /// Scene 전환 시 필요한 설정을 관리하는 ScriptableObject.
     /// </summary>
     [CreateAssetMenu(fileName = "SceneTransitionConfig", menuName = "Configs/Core/Scene Transition Config")]
     public class SceneTransitionConfig : ScriptableObject
@@ -18,11 +18,11 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
 
         #region Private Variables
         [Header("Target Scene")]
-        [Tooltip("전환할 타겟 씬")]
+        [Tooltip("전환할 타겟 Scene")]
         [SerializeField] private SceneReference _targetScene;
 
         [Header("Loading Scene")]
-        [Tooltip("씬 전환 시 Loading Scene 사용 여부")]
+        [Tooltip("Scene 전환 시 Loading Scene 사용 여부")]
         [SerializeField] private bool _useLoadingScene = true;
 
         [SerializeField] private SceneReference _loadingScene;

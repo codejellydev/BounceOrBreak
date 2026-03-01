@@ -1,28 +1,31 @@
-using CodeJelly.BounceOrBreak.Core;
 using CodeJelly.BounceOrBreak.Core.Logging;
+using CodeJelly.BounceOrBreak.Core.Resource;
+using Cysharp.Threading.Tasks;
 using R3;
+using System;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace CodeJelly.BounceOrBreak.Game.Input
 {
     /// <summary>
-    /// 게임 전체의 입력 시스템을 관리하는 Singleton Manager.
+    /// 게임 전역의 입력 시스템을 관리하는 클래스.
     /// New Input System을 기반으로 Context별 Input Action Map을 관리합니다.
     /// Event Broadcasting 및 Property를 관리하고 실제 동작은 각 담당 클래스에서 처리.
     /// </summary>
-    public class InputManager : Singleton<InputManager>,
-        GameInputAction.IPlayerActions,
-        GameInputAction.IUIActions,
-        GameInputAction.ISystemActions
+    public class InputManager : IDisposable,
+                                GameInputAction.IPlayerActions,
+                                GameInputAction.IUIActions,
+                                GameInputAction.ISystemActions
     {
         #region Events
         // Player Input Events
         /// <summary>
         /// 플레이어 터치가 시작되었을 때 발생하는 이벤트.
         /// </summary>
-        public Observable<Unit> OnPlayerTouchStarted => _onPlayerTouchStarted;
+        public Observable<Vector2> OnPlayerTouchStarted => _onPlayerTouchStarted;
 
         /// <summary>
         /// 플레이어 터치가 취소되었을 때 발생하는 이벤트.
@@ -31,6 +34,7 @@ namespace CodeJelly.BounceOrBreak.Game.Input
 
         /// <summary>
         /// 플레이어 드래그가 수행되었을 때 발생하는 이벤트.
+        /// Screen Space에서의 현재 터치 위치를 전달합니다.
         /// </summary>
         public Observable<Vector2> OnPlayerDragPerformed => _onPlayerDragPerformed;
 
@@ -67,16 +71,13 @@ namespace CodeJelly.BounceOrBreak.Game.Input
 
 
         #region Private Variables
-        [Header("Input Configuration")]
-        [SerializeField] private InputConfig _inputConfig;
-
         private GameInputAction _gameInputAction;
         private InputContext _currentInputContext = InputContext.None;
         private Dictionary<InputContext, InputConfig.InputProfile> _profileMap;
         private Dictionary<InputMapType, InputActionMap> _actionMapTable;
 
         // Player Input Subjects
-        private readonly Subject<Unit> _onPlayerTouchStarted = new Subject<Unit>();
+        private readonly Subject<Vector2> _onPlayerTouchStarted = new Subject<Vector2>();
         private readonly Subject<Unit> _onPlayerTouchCanceled = new Subject<Unit>();
         private readonly Subject<Vector2> _onPlayerDragPerformed = new Subject<Vector2>();
         private readonly ReactiveProperty<Vector2> _playerTouchPosition = new ReactiveProperty<Vector2>();
@@ -91,49 +92,38 @@ namespace CodeJelly.BounceOrBreak.Game.Input
         #endregion
 
 
-        #region Unity Lifecycle
-        protected override void Awake()
-        {
-            base.Awake();
+        #region Injection
+        private readonly ResourceManager _resourceManager;
 
+        public InputManager(ResourceManager resourceManager)
+        {
+            _resourceManager = resourceManager;
+        }
+        #endregion
+
+
+        #region Public Methods
+        /// <summary>
+        /// 입력 시스템을 초기화합니다.
+        /// </summary>
+        public async UniTask<bool> InitializeAsync(CancellationToken ct = default)
+        {
             InitializeInputActions();
-            InitializeProfileMap();
+
+            if (await InitializeProfileMapAsync(ct) == false)
+            {
+                return false;
+            }
 
             _gameInputAction.Enable();
             BindActionCallbacks();
 
             SwitchContext(InputContext.Loading);
 
-            AppLogger.Info("[InputManager] Initialized.");
+            AppLogger.Info("[InputManager] Input system initialized successfully.");
+            return true;
         }
 
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-
-            UnbindActionCallbacks();
-
-            _gameInputAction?.Disable();
-            _gameInputAction?.Dispose();
-
-            // Player Input
-            _onPlayerTouchStarted?.Dispose();
-            _onPlayerTouchCanceled?.Dispose();
-            _onPlayerDragPerformed?.Dispose();
-            _playerTouchPosition?.Dispose();
-
-            // UI Input
-            _onUITouchStarted?.Dispose();
-            _onUITouchEnded?.Dispose();
-            _uiTouchPosition?.Dispose();
-
-            // System Input
-            _onBackPressed?.Dispose();
-        }
-        #endregion
-
-
-        #region Public Methods
         /// <summary>
         /// Input Context를 변경하고 해당 Context의 Input Action Map을 활성화합니다.
         /// </summary>
@@ -155,6 +145,33 @@ namespace CodeJelly.BounceOrBreak.Game.Input
 
             _currentInputContext = newContext;
             ApplyContextSettings(newContext);
+        }
+
+        /// <summary>
+        /// IDisposable.Dispose Implementation 
+        /// </summary>
+        public void Dispose()
+        {
+            UnbindActionCallbacks();
+
+            _gameInputAction?.Disable();
+            _gameInputAction?.Dispose();
+
+            // Player Input
+            _onPlayerTouchStarted?.Dispose();
+            _onPlayerTouchCanceled?.Dispose();
+            _onPlayerDragPerformed?.Dispose();
+            _playerTouchPosition?.Dispose();
+
+            // UI Input
+            _onUITouchStarted?.Dispose();
+            _onUITouchEnded?.Dispose();
+            _uiTouchPosition?.Dispose();
+
+            // System Input
+            _onBackPressed?.Dispose();
+
+            AppLogger.Info("[InputManager] Disposed cleanly.");
         }
         #endregion
 
@@ -183,22 +200,26 @@ namespace CodeJelly.BounceOrBreak.Game.Input
         }
 
         /// <summary>
-        /// InputConfig의 Profile 배열을 Dictionary로 변환하여 캐싱합니다.
+        /// InputConfig를 로드하고 Profile 배열을 Dictionary로 변환하여 캐싱합니다.
         /// </summary>
-        private void InitializeProfileMap()
+        private async UniTask<bool> InitializeProfileMapAsync(CancellationToken ct = default)
         {
-            if (_inputConfig == null)
+            var inputConfig = await _resourceManager.LoadAsync<InputConfig>(GameConstants.Input.Keys.DEFAULT_CONFIG, ct);
+
+            if (inputConfig == null)
             {
-                AppLogger.Error("[InputManager] InputConfig is not assigned.");
-                return;
+                AppLogger.Error("[InputManager] Failed to load InputConfig.");
+                return false;
             }
 
             _profileMap = new Dictionary<InputContext, InputConfig.InputProfile>();
 
-            foreach (var profile in _inputConfig.Profiles)
+            foreach (var profile in inputConfig.Profiles)
             {
                 _profileMap[profile.Context] = profile;
             }
+
+            return true;
         }
 
         /// <summary>
@@ -276,7 +297,9 @@ namespace CodeJelly.BounceOrBreak.Game.Input
         {
             if (context.started == true)
             {
-                _onPlayerTouchStarted.OnNext(Unit.Default);
+                Vector2 position = _gameInputAction.Player.Position.ReadValue<Vector2>();
+                _playerTouchPosition.Value = position;
+                _onPlayerTouchStarted.OnNext(position);
             }
             else if (context.canceled == true)
             {
@@ -288,23 +311,24 @@ namespace CodeJelly.BounceOrBreak.Game.Input
         {
             if (context.performed == true)
             {
-                Vector2 dragValue = context.ReadValue<Vector2>();
-                _onPlayerDragPerformed.OnNext(dragValue);
+                Vector2 position = _gameInputAction.Player.Position.ReadValue<Vector2>();
+                _playerTouchPosition.Value = position;
+                _onPlayerDragPerformed.OnNext(position);
             }
         }
 
         void GameInputAction.IPlayerActions.OnPosition(InputAction.CallbackContext context)
         {
-            if (context.performed == true)
-            {
-                _playerTouchPosition.Value = context.ReadValue<Vector2>();
-            }
+            // IPlayerActions.OnTouch, IPlayerActions.OnDrag에서 _playerTouchPosition를 업데이트하기 때문에 중복 업데이트 방지를 위해 비움.
+            // _gameInputAction.Player.Position 접근을 위해 InputAction asset에는 존재 필요.
         }
 
         void GameInputAction.IUIActions.OnTouch(InputAction.CallbackContext context)
         {
             if (context.started == true)
             {
+                Vector2 position = _gameInputAction.UI.Position.ReadValue<Vector2>();
+                _uiTouchPosition.Value = position;
                 _onUITouchStarted.OnNext(Unit.Default);
             }
             else if (context.canceled == true)
@@ -315,10 +339,8 @@ namespace CodeJelly.BounceOrBreak.Game.Input
 
         void GameInputAction.IUIActions.OnPosition(InputAction.CallbackContext context)
         {
-            if (context.performed == true)
-            {
-                _uiTouchPosition.Value = context.ReadValue<Vector2>();
-            }
+            // IUIActions.OnTouch에서 _playerTouchPosition를 업데이트하기 때문에 중복 업데이트 방지를 위해 비움.
+            // _gameInputAction.UI.Position 접근을 위해 InputAction asset에는 존재 필요.
         }
 
         void GameInputAction.ISystemActions.OnBack(InputAction.CallbackContext context)

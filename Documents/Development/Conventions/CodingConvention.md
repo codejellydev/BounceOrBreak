@@ -11,6 +11,8 @@
 #region Public Variables
 #region Protected Variables
 #region Private Variables
+#region Injection               // VContainer 의존성 주입 시
+#region VContainer Lifecycle    // VContainer 생명주기 인터페이스 구현 시
 #region Unity Lifecycle
 #region Public Methods
 #region Protected Methods
@@ -140,6 +142,35 @@ private void OnDestroy()
 #endregion
 ```
 
+### Injection Region
+
+VContainer 의존성 주입 시 사용. 주입 필드와 생성자 또는 Construct 메서드를 함께 배치.
+
+- **non-MonoBehaviour**: 생성자 주입 사용 (`readonly` 보장, `[Inject]` 어트리뷰트 불필요)
+- **MonoBehaviour**: 생성자를 Unity가 관리하므로 `[Inject]` Construct 메서드 주입 사용. 필드 주입(`[Inject]` 필드)은 지양.
+```csharp
+// non-MB
+#region Injection
+private readonly SomeService _someService;
+
+public SomeClass(SomeService someService)
+{
+    _someService = someService;
+}
+#endregion
+
+// MB
+#region Injection
+private SomeService _someService;
+
+[Inject]
+public void Construct(SomeService someService)
+{
+    _someService = someService;
+}
+#endregion
+```
+
 ### 제어 구문
 
 모든 제어 구문은 반드시 중괄호 사용, 한 줄 표기 금지
@@ -197,9 +228,9 @@ public class PlayerController : MonoBehaviour
 
 ```
 
-### Interface Summary (선택)
+### Interface Summary
 
-복잡하거나 중요한 인터페이스에만 작성
+**인터페이스 정의:** 복잡하거나 중요한 인터페이스에만 작성 (선택)
 
 ```csharp
 /// <summary>
@@ -212,6 +243,17 @@ public interface IInteractable
     void OnPlayerContact(IPlayer player);
 }
 
+```
+
+**인터페이스 구현:** 모든 인터페이스 메서드 구현체에 작성 (필수)
+```csharp
+/// <summary>
+/// IInteractable.OnPlayerContact Implementation
+/// </summary>
+public void OnPlayerContact(IPlayer player)
+{
+    // 구현 로직
+}
 ```
 
 ### Properties Summary (선택)
@@ -280,4 +322,5 @@ if (IsGrounded) // 땅에 닿았을 때만 점프 허용
 - [ ]  Region convention 준수 여부
 - [ ]  변수 정렬 순서 확인
 - [ ]  Class summary 존재 여부
+- [ ]  인터페이스 구현 Summary 형식 확인 (I인터페이스명.메서드명 Implementation)
 - [ ]  코드 스타일 일관성

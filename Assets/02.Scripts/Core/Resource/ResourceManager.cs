@@ -1,10 +1,10 @@
 using CodeJelly.BounceOrBreak.Core.Logging;
+using CodeJelly.BounceOrBreak.Core.Pooling;
 using Cysharp.Threading.Tasks;
 using R3;
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.Pool;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -16,27 +16,20 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
     /// </summary>
     public class ResourceManager : IDisposable
     {
-        ResourceManager()
+        public ResourceManager()
         {
             _loadingCount = new ReactiveProperty<int>(0);
 
-            _resourceNodePool = new ObjectPool<ResourceNode>(
+            _resourceNodePool = PoolExtensions.CreatePoolablePool
+            (
                 createFunc: () => new ResourceNode(),
-                actionOnGet: node => node.Get(),
-                actionOnRelease: node => node.Release(),
-                actionOnDestroy: node => node.Destroy(),
-                collectionCheck: true, // 이미 Release된 오브젝트를 다시 Release 시도하는 경우 exception 발생
-                defaultCapacity: AppConstants.Resource.INITIAL_CAPACITY,
-                maxSize: AppConstants.Resource.MAX_POOL_SIZE
+                defaultCapacity: AppConstants.Resource.POOL_DEFAULT_CAPACITY,
+                maxSize: AppConstants.Resource.POOL_MAX_SIZE
             );
-
-            Application.quitting += Dispose;
         }
 
 
         #region Properties
-        public static ResourceManager Instance => _instance.Value;
-
         /// <summary>
         /// 현재 로딩 중인 리소스 개수.
         /// </summary>
@@ -45,9 +38,6 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
 
 
         #region Private Variables
-        private static readonly Lazy<ResourceManager> _instance =
-            new Lazy<ResourceManager>(() => new ResourceManager());
-
         private readonly Dictionary<string, ResourceNode> _resourceCache =
             new Dictionary<string, ResourceNode>();
 
@@ -58,6 +48,28 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
 
 
         #region Public Methods
+        /// <summary>
+        /// Addressables 리소스 관리 시스템을 초기화합니다.
+        /// </summary>
+        public async UniTask<bool> InitializeAsync()
+        {
+            AppLogger.Info("[ResourceManager] Initializing Addressables system...");
+
+            var handle = Addressables.InitializeAsync();
+            await handle.ToUniTask();
+
+            if (handle.Status == AsyncOperationStatus.Succeeded)
+            {
+                AppLogger.Info("[ResourceManager] Addressables system initialized successfully.");
+                return true;
+            }
+            else
+            {
+                AppLogger.Error($"[ResourceManager] Failed to initialize Addressables. Status: {handle.Status}");
+                return false;
+            }
+        }
+
         /// <summary>
         /// Addressables 리소스를 비동기로 로드합니다.
         /// 이미 로드된 리소스는 캐시에서 반환하며, 참조 카운트를 증가시킵니다.
@@ -135,7 +147,7 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
         /// <summary>
         /// 리소스의 참조 카운트를 감소시키고, 0이 되면 메모리에서 해제합니다.
         /// </summary>
-        public void Release(string key)
+        public void Release(string key, ResourceReleaseContext context = ResourceReleaseContext.Normal)
         {
             if (string.IsNullOrEmpty(key) == true)
             {
@@ -155,11 +167,25 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
 
                     _resourceCache.Remove(key);
                     _resourceNodePool.Release(node);
+
+                    AppLogger.Debug($"[ResourceManager] Released: {key} (RefCount reached 0)");
+                }
+                else
+                {
+                    AppLogger.Debug($"[ResourceManager] Decremented RefCount: {key} (Remaining: {node.ReferenceCount})");
                 }
             }
             else
             {
-                AppLogger.Warning($"[ResourceManager] Try to release unknown key: {key}");
+                // _resourceCache에 key가 없음
+                if (context == ResourceReleaseContext.Normal)
+                {
+                    AppLogger.Warning($"[ResourceManager] Resource not in cache: {key} (Already released, wrong key, or load failed)");
+                }
+                else // Cleanup
+                {
+                    AppLogger.Debug($"[ResourceManager] Resource not in cache: {key} (Already released or never loaded - normal during cleanup)");
+                }
             }
         }
 
@@ -185,11 +211,11 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
             AppLogger.Info($"[ResourceManager] ReleaseAll Completed. ({count} items)");
         }
 
-        // IDisposable Implementation
+        /// <summary>
+        /// IDisposable.Dispose Implementation 
+        /// </summary>
         public void Dispose()
         {
-            Application.quitting -= Dispose;
-
             ReleaseAll();
             _resourceNodePool.Clear();
             _loadingCount.Dispose();
