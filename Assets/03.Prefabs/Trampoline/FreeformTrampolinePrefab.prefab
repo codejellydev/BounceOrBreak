@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8395588966853606891}
+  - component: {fileID: 2038303183284348962}
   - component: {fileID: 3285667234039101728}
   - component: {fileID: 223065661200586916}
-  - component: {fileID: 2038303183284348962}
   - component: {fileID: 1486914694424839910}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: FreeformTrampolinePrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35,9 +35,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2038303183284348962
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015052467934008646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be8c27280d5fc024da741691479415aa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CodeJelly.BounceOrBreak.Game.Trampoline.FreeformTrampoline
 --- !u!120 &3285667234039101728
 LineRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -83,6 +95,7 @@ LineRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Positions: []
   m_Parameters:
     serializedVersion: 3
@@ -139,7 +152,6 @@ LineRenderer:
     textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
-  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
@@ -184,18 +196,6 @@ EdgeCollider2D:
   m_AdjacentEndPoint: {x: 0, y: 0}
   m_UseAdjacentStartPoint: 0
   m_UseAdjacentEndPoint: 0
---- !u!114 &2038303183284348962
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2015052467934008646}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be8c27280d5fc024da741691479415aa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CodeJelly.BounceOrBreak.Game.Trampoline.FreeformTrampoline
 --- !u!251 &1486914694424839910
 PlatformEffector2D:
   m_ObjectHideFlags: 0
@@ -207,7 +207,7 @@ PlatformEffector2D:
   m_UseColliderMask: 1
   m_ColliderMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 64
   m_RotationalOffset: 0
   m_UseOneWay: 1
   m_UseOneWayGrouping: 0
