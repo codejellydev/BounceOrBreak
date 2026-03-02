@@ -80,6 +80,12 @@ MonoBehaviour:
     - Config
     - Trampoline
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d6d4e787ed25bde48b90bff4f28dcd9c
+    m_Address: LobbyScene
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Scene
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e894c8b4dfe5bfa43a7febe516ccca06
     m_Address: TrampolineRegistry
     m_ReadOnly: 0
