@@ -51,9 +51,9 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             SetupCollider();
 
             UsageCount = 0;
-            Lifetime = 0f;
-
             _isInitialized = true;
+
+            StartLifetimeTimer();
 
             AppLogger.Debug("[StraightTrampoline] Initialized.");
         }
