@@ -124,6 +124,13 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
                 AppLogger.Info($"[SceneLoader] Transition to {config.TargetSceneKey} was canceled.");
                 throw; // 취소 exception은 상위 호출 스택으로 전파
             }
+            catch (NullReferenceException ex)
+            {
+                AppLogger.Exception(ex, $"[SceneLoader] NullReferenceException during transition to '{config.TargetSceneKey}'. " +
+                                        $"previousScene.IsValid={_previousSceneInstance.Scene.IsValid()}, " +
+                                        $"useLoadingScene={config.UseLoadingScene}");
+                throw;
+            }
             catch (Exception ex)
             {
                 AppLogger.Exception(ex);
@@ -258,7 +265,8 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
                 // 6. 이전 Scene 정리
                 if (_previousSceneInstance.Scene.IsValid() == true)
                 {
-                    await Addressables.UnloadSceneAsync(_previousSceneInstance).ToUniTask(default);
+                    // 언로드는 취소되면 안 되는 정리 작업이므로 ct 넘기지 않음
+                    await Addressables.UnloadSceneAsync(_previousSceneInstance).ToUniTask();
                 }
                 else
                 {
@@ -266,7 +274,7 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
                     var currentActiveScene = SceneManager.GetActiveScene();
                     if (currentActiveScene.IsValid() == true && currentActiveScene != targetSceneInstance.Scene)
                     {
-                        await SceneManager.UnloadSceneAsync(currentActiveScene).ToUniTask(default);
+                        await SceneManager.UnloadSceneAsync(currentActiveScene).ToUniTask();
                     }
                 }
 
@@ -278,7 +286,7 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
 
                 if (useLoadingScene == true && _loadingSceneInstance.Scene.IsValid() == true)
                 {
-                    await Addressables.UnloadSceneAsync(_loadingSceneInstance).ToUniTask(default);
+                    await Addressables.UnloadSceneAsync(_loadingSceneInstance).ToUniTask();
                 }
 
                 AppLogger.Info($"[SceneLoader] Transition to {sceneKey} completed successfully.");
@@ -295,11 +303,11 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
                     {
                         if (useLoadingScene == true && _loadingSceneInstance.Scene.IsValid() == true)
                         {
-                            await Addressables.UnloadSceneAsync(_loadingSceneInstance).ToUniTask(default);
+                            await Addressables.UnloadSceneAsync(_loadingSceneInstance).ToUniTask();
                         }
                         if (targetSceneInstance.Scene.IsValid() == true)
                         {
-                            await Addressables.UnloadSceneAsync(targetSceneInstance).ToUniTask(default);
+                            await Addressables.UnloadSceneAsync(targetSceneInstance).ToUniTask();
                         }
                     }
                     catch (Exception ex)
