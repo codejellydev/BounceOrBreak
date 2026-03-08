@@ -11,6 +11,11 @@ public class #SCRIPTNAME# : MonoBehaviour
     #endregion
 
 
+    #region Injection // VContainer 의존성 주입 시
+    
+    #endregion
+
+
     #region Events
     
     #endregion
@@ -32,11 +37,6 @@ public class #SCRIPTNAME# : MonoBehaviour
 
 
     #region Private Variables
-    
-    #endregion
-
-
-    #region Injection // VContainer 의존성 주입 시
     
     #endregion
 
