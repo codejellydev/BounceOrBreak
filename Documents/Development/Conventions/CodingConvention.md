@@ -6,12 +6,12 @@
 
 ```csharp
 #region Nested Classes          // 필요시
+#region Injection               // VContainer 의존성 주입 시
 #region Events
 #region Properties
 #region Public Variables
 #region Protected Variables
 #region Private Variables
-#region Injection               // VContainer 의존성 주입 시
 #region VContainer Lifecycle    // VContainer 생명주기 인터페이스 구현 시
 #region Unity Lifecycle
 #region Public Methods

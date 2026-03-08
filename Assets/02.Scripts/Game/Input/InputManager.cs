@@ -20,6 +20,16 @@ namespace CodeJelly.BounceOrBreak.Game.Input
                                 GameInputAction.IUIActions,
                                 GameInputAction.ISystemActions
     {
+        #region Injection
+        private readonly ResourceManager _resourceManager;
+
+        public InputManager(ResourceManager resourceManager)
+        {
+            _resourceManager = resourceManager;
+        }
+        #endregion
+
+
         #region Events
         // Player Input Events
         /// <summary>
@@ -89,16 +99,6 @@ namespace CodeJelly.BounceOrBreak.Game.Input
 
         // System Input Subjects
         private readonly Subject<Unit> _onBackPressed = new Subject<Unit>();
-        #endregion
-
-
-        #region Injection
-        private readonly ResourceManager _resourceManager;
-
-        public InputManager(ResourceManager resourceManager)
-        {
-            _resourceManager = resourceManager;
-        }
         #endregion
 
 
