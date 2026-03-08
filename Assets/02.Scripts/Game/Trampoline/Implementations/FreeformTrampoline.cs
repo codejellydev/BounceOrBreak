@@ -40,9 +40,9 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             CalculateLineLength();
 
             UsageCount = 0;
-            Lifetime = 0f;
-
             _isInitialized = true;
+
+            StartLifetimeTimer();
 
             AppLogger.Debug($"[FreeformTrampoline] Initialized with {points.Length} points");
         }

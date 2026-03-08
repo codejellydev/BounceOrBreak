@@ -18,7 +18,8 @@ MonoBehaviour:
   - m_GUID: 0d851d314e47b6a4cb01102e10483495
     m_Address: TrampolineDrawer
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Trampoline
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1e3a9aae2134b184ea31953813bbfc06
     m_Address: StaticTrampolinePrefab
@@ -74,6 +75,19 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a831584289b0eb744a9e89b58014f323
     m_Address: DefaultTrampolineConfig
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Config
+    - Trampoline
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d6d4e787ed25bde48b90bff4f28dcd9c
+    m_Address: LobbyScene
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Scene
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e894c8b4dfe5bfa43a7febe516ccca06
+    m_Address: TrampolineRegistry
     m_ReadOnly: 0
     m_SerializedLabels:
     - Config

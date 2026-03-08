@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8395588966853606891}
+  - component: {fileID: -957093102446799902}
   - component: {fileID: 3285667234039101728}
   - component: {fileID: 223065661200586916}
   - component: {fileID: 1486914694424839910}
-  - component: {fileID: -957093102446799902}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: StaticTrampolinePrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -35,9 +35,24 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-957093102446799902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015052467934008646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1a96e7737f61a24fadb6725513c2669, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CodeJelly.BounceOrBreak.Game.Trampoline.StaticTrampoline
+  _staticConfig: {fileID: 11400000, guid: 4f92fa6a15dd0444db485eb217f5a94b, type: 2}
+  _startPoint: {x: 0, y: 0}
+  _endPoint: {x: 0, y: 0}
 --- !u!120 &3285667234039101728
 LineRenderer:
-  serializedVersion: 2
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -83,6 +98,7 @@ LineRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_Positions: []
   m_Parameters:
     serializedVersion: 3
@@ -139,7 +155,6 @@ LineRenderer:
     textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
-  m_MaskInteraction: 0
   m_UseWorldSpace: 1
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
@@ -195,7 +210,7 @@ PlatformEffector2D:
   m_UseColliderMask: 1
   m_ColliderMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 64
   m_RotationalOffset: 0
   m_UseOneWay: 1
   m_UseOneWayGrouping: 0
@@ -203,18 +218,3 @@ PlatformEffector2D:
   m_UseSideFriction: 0
   m_UseSideBounce: 0
   m_SideArc: 1
---- !u!114 &-957093102446799902
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2015052467934008646}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1a96e7737f61a24fadb6725513c2669, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CodeJelly.BounceOrBreak.Game.Trampoline.StaticTrampoline
-  _staticConfig: {fileID: 11400000, guid: 4f92fa6a15dd0444db485eb217f5a94b, type: 2}
-  _startPoint: {x: 0, y: 0}
-  _endPoint: {x: 0, y: 0}

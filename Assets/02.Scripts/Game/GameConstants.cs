@@ -52,8 +52,7 @@ namespace CodeJelly.BounceOrBreak.Game
             /// </summary>
             public static class Keys
             {
-                public const string STRAIGHT_PREFAB = "StraightTrampolinePrefab";
-                public const string FREEFORM_PREFAB = "FreeformTrampolinePrefab";
+                public const string REGISTRY = "TrampolineRegistry";
                 public const string DEFAULT_CONFIG = "DefaultTrampolineConfig";
                 public const string STATIC_CONFIG = "StaticTrampolineConfig";
             }

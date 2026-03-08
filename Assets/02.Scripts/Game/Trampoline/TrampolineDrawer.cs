@@ -40,6 +40,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         private List<Vector2> _currentDrawPoints;
 
         private TrampolineConfig _config;
+        private TrampolineRegistry _registry;
         private TrampolineFactory _factory;
         private TrampolineType _activeType = TrampolineType.Straight;
 
@@ -54,6 +55,11 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             _factory?.ReleaseAll();
             _trampolinePool?.Clear();
             _disposables?.Dispose();
+
+            if (_registry != null)
+            {
+                _resourceManager.Release(GameConstants.Trampoline.Keys.REGISTRY, ResourceReleaseContext.Cleanup);
+            }
         }
         #endregion
 
@@ -79,17 +85,21 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
                 return;
             }
 
-            // Factory 초기화
-            _factory = new TrampolineFactory(_resourceManager);
-            await _factory.InitializeAsync(ct);
-            progress?.Report(0.5f);
+            // Registry 로딩
+            _registry = await _resourceManager.LoadAsync<TrampolineRegistry>(GameConstants.Trampoline.Keys.REGISTRY, ct);
+            progress?.Report(0.35f);
 
-            if (_factory == null)
+            if (_registry == null)
             {
-                AppLogger.Error("[TrampolineDrawer] Failed to initialize Factory.");
+                AppLogger.Error("[TrampolineDrawer] Failed to load TrampolineRegistry.");
 
                 return;
             }
+
+            // Factory 초기화
+            _factory = new TrampolineFactory(_resourceManager, _registry);
+            await _factory.InitializeAsync(ct);
+            progress?.Report(0.5f);
 
             // Pool 초기화
             _disposables = new CompositeDisposable();
