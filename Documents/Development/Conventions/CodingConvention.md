@@ -256,6 +256,10 @@ public void OnPlayerContact(IPlayer player)
 }
 ```
 
+**예외: Lifecycle 성격의 인터페이스는 Summary 생략 가능**
+
+Unity Lifecycle(`Awake`, `Start` 등)과 VContainer Lifecycle(`IStartable.Start`, `IAsyncStartable.StartAsync` 등)은 프레임워크가 정의한 잘 알려진 계약이므로 Summary를 생략 가능하다.
+
 ### Properties Summary (선택)
 
 복잡한 로직이나 중요한 프로퍼티에만 작성
@@ -314,7 +318,7 @@ if (IsGrounded) // 땅에 닿았을 때만 점프 허용
 - [ ]  어트리뷰트 변수 상단 배치
 - [ ]  빈 함수 한 줄 표기
 - [ ]  Unity Lifecycle 순서 준수
-- [ ]  인터페이스 구현 메서드에 Summary 작성 (I인터페이스명.메서드명 Implementation)
+- [ ]  인터페이스 구현 메서드에 Summary 작성 (I인터페이스명.메서드명 Implementation / Lifecycle 인터페이스 제외 가능)
 - [ ]  비동기 메서드 명명 규칙 준수 (Async 접미사 여부)
 
 ### 코드 리뷰시

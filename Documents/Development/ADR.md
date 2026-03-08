@@ -17,6 +17,10 @@ UniTask를 프로젝트의 비동기 처리 표준으로 사용
 - Unity에 최적화된 async/await 지원 
 - R3와 통합 설계되어 리액티브 프로그래밍과 시너지
 
+**Notes**:
+- UniTask의 Addressables 지원(AsyncOperationHandle 전용 ToUniTask 오버로드)은 UniTask.Addressables asmdef에 별도 정의됨. Addressables와 함께 사용하는 asmdef는 반드시 UniTask.Addressables를 참조에 추가할 것. 누락 시 IEnumerator 오버로드로 fallback되어 런타임 에러 발생. 
+(2026-03-08)
+
 ---
 
 ## ADR-2: R3
