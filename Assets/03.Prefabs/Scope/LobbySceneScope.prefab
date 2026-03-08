@@ -48,3 +48,5 @@ MonoBehaviour:
     TypeName: CodeJelly.BounceOrBreak.Game.Scope.ApplicationScope
   autoRun: 1
   autoInjectGameObjects: []
+  _lobbySceneConfig: {fileID: 11400000, guid: 3481274a660ce9445ba56f0adf80614a, type: 2}
+  _lobbyView: {fileID: 0}
