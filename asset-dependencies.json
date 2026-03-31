@@ -1,0 +1,16 @@
+{
+  "assets": [
+    {
+      "name": "DOTween Pro",
+      "installPath": "Assets/Plugins/Demigiant",
+      "version": "1.0.410",
+      "storeUrl": "https://assetstore.unity.com/packages/tools/visual-scripting/dotween-pro-32416"
+    },
+    {
+      "name": "Fantasy Warrior HUD - Synty INTERFACE - GUI",
+      "installPath": "Assets/Synty",
+      "version": "1.0.4",
+      "storeUrl": "https://assetstore.unity.com/packages/2d/gui/fantasy-warrior-hud-synty-interface-gui-292533"
+    }
+  ]
+}

@@ -101,15 +101,11 @@ InitTestScene*.unity*
 
 ## Custom ignore
 
-# Assets
-/[Aa]ssets/AssetLibrary/
+# Paid Assets (Asset Store)
+/[Aa]ssets/Synty/
+/[Aa]ssets/Plugins/
 
-# Unity TMP
+# Unity Built-in
 /[Aa]ssets/TextMesh Pro/
-
-# Unity Ads Mediation
 /[Aa]ssets/LevelPlay/
 /[Aa]ssets/MobileDependencyResolver/
-
-# External Plugins
-/[Aa]ssets/Plugins/

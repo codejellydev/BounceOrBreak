@@ -17,6 +17,13 @@ Unity\Hub\Editor\6000.3.9f1\Editor\Data\Resources\ScriptTemplates\1-Scripting__M
 
 Replace the file at the above path with [`/Documents/Development/Convention/1-Scripting__MonoBehaviour Script-NewMonoBehaviourScript.cs.txt`](</Documents/Development/Convention/1-Scripting__MonoBehaviour Script-NewMonoBehaviourScript.cs.txt>).
 
+### External Assets
+
+Assets listed in [`asset-dependencies.json`](/asset-dependencies.json) are not included in this repository due to licensing restrictions.
+Download and import each asset manually from the Unity Asset Store before running the project.
+
+**Note**: All other packages are managed automatically via `Packages/manifest.json`.
+
 ---
 
 ## Development Guidelines
@@ -24,3 +31,12 @@ Replace the file at the above path with [`/Documents/Development/Convention/1-Sc
 ### Coding Conventions
 
 For coding conventions, refer to [`/Documents/Development/Convention/CodingConvention.md`](/Documents/Development/Convention/CodingConvention.md).
+
+### Asset Management
+
+Paid assets are tracked in [`asset-dependencies.json`](/asset-dependencies.json).
+When modifying paid assets, update this file manually:
+
+- **Adding an asset**: Add an entry to `asset-dependencies.json` and add the install path to `.gitignore`
+- **Updating an asset**: Update the `version` field in `asset-dependencies.json`
+- **Removing an asset**: Remove the entry from `asset-dependencies.json` and remove the install path from `.gitignore`
