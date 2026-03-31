@@ -171,19 +171,37 @@ public void Construct(SomeService someService)
 #endregion
 ```
 
+### bool 비교
+
+`bool` 조건은 `== true` / `== false`로 명시 비교한다.
+
+```csharp
+// ✅ 권장
+if (IsGrounded == true)
+{
+    Jump();
+}
+
+// ❌ 지양
+if (IsGrounded)
+{
+    Jump();
+}
+```
+
 ### 제어 구문
 
 모든 제어 구문은 반드시 중괄호 사용, 한 줄 표기 금지
 
 ```csharp
 // ✅ 권장
-if (condition)
+if (condition == true)
 {
     return;
 }
 
 // ❌ 지양
-if (condition) return;
+if (condition == true) return;
 ```
 
 ### 비동기 메서드 명명 규칙
@@ -296,13 +314,13 @@ public float Speed { get; set; }
 ```csharp
 // ✅ 권장
 // 땅에 닿았을 때만 점프 허용
-if (IsGrounded)
+if (IsGrounded == true)
 {
     Jump();
 }
 
 // ❌ 지양
-if (IsGrounded) // 땅에 닿았을 때만 점프 허용
+if (IsGrounded == true) // 땅에 닿았을 때만 점프 허용
 {
     Jump();
 }
