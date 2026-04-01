@@ -22,6 +22,14 @@ Replace the file at the above path with [`/Documents/Development/Convention/1-Sc
 Assets listed in [`asset-dependencies.json`](/asset-dependencies.json) are not included in this repository due to licensing restrictions.
 Download and import each asset manually from the Unity Asset Store before running the project.
 
+Each entry contains the following fields:
+
+- `name`: Asset name
+- `installPath`: Where the asset should be placed in the project
+- `version`: Currently used version
+- `storeUrl`: Unity Asset Store link
+- `privateRepo`: Private repository name containing the asset
+
 **Note**: All other packages are managed automatically via `Packages/manifest.json`.
 
 ---
@@ -34,9 +42,13 @@ For coding conventions, refer to [`/Documents/Development/Convention/CodingConve
 
 ### Asset Management
 
+### Asset Management
+
 Paid assets are tracked in [`asset-dependencies.json`](/asset-dependencies.json).
 When modifying paid assets, update this file manually:
 
-- **Adding an asset**: Add an entry to `asset-dependencies.json` and add the install path to `.gitignore`
+- **Adding an asset**: Add an entry to `asset-dependencies.json` and add the `installPath` to `.gitignore`
 - **Updating an asset**: Update the `version` field in `asset-dependencies.json`
-- **Removing an asset**: Remove the entry from `asset-dependencies.json` and remove the install path from `.gitignore`
+- **Removing an asset**: Remove the entry from `asset-dependencies.json` and remove the `installPath` from `.gitignore`
+
+The private repository must mirror the `installPath` structure so assets can be placed at the correct location.
