@@ -26,6 +26,17 @@ jobs:
         with:
           lfs: true
 
+      - name: Free disk space
+        uses: jlumbroso/free-disk-space@main
+        with:
+          tool-cache: false
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          docker-images: true
+          swap-storage: true
+
       - name: Install paid assets
         run: |
           git clone https://x-access-token:${{ secrets.PAT_ASSET }}@github.com/${{ github.repository_owner }}/BounceOrBreak-Assets.git $HOME/paid-assets
