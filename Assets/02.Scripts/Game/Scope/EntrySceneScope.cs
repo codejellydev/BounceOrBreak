@@ -25,6 +25,7 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterInstance(_entrySceneConfig);
+
             builder.RegisterEntryPoint<Bootstrapper>();
         }
         #endregion

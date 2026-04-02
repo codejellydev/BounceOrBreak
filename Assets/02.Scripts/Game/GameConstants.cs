@@ -25,6 +25,8 @@ namespace CodeJelly.BounceOrBreak.Game
             {
                 public const string ENTRY_SCENE = "EntryScene";
                 public const string LOADING_SCENE = "LoadingScene";
+                public const string LOBBY_SCENE = "LobbyScene";
+                public const string GAME_SCENE = "GameScene";
             }
 
         }
