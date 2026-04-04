@@ -3,7 +3,6 @@
 ## 개요
 
 `.github/workflows/` 하위 yml 파일로 관리되는 GitHub Actions 기반 자동화 파이프라인.
-유료 에셋은 Private 저장소에서 빌드 시 자동으로 설치됨. ([`PaidAssetCICD.md`](PaidAssetCICD.md) 참고)
 
 ---
 
