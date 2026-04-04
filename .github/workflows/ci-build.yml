@@ -1,28 +1,21 @@
-name: Unity Build
+name: CI / Build (Android)
 
 on:
   push:
     branches:
       - main
-      - develop
-  pull_request:
-    branches:
-      - main
-      - develop
     paths:
       - 'Assets/**'
       - 'Packages/**'
       - 'ProjectSettings/**'
-      - 'scripts/**'
 
 jobs:
   build:
-    name: Build for Android
+    name: Build (Android)
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           lfs: true
 
@@ -43,7 +36,7 @@ jobs:
           node Scripts/install-paid-assets.js
 
       - name: Cache Unity Library
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: Library
           key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
@@ -61,7 +54,7 @@ jobs:
           targetPlatform: Android
 
       - name: Upload build artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: Build-Android
           path: build/Android
