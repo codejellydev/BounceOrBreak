@@ -42,8 +42,6 @@ For coding conventions, refer to [`/Documents/Development/Convention/CodingConve
 
 ### Asset Management
 
-### Asset Management
-
 Paid assets are tracked in [`asset-dependencies.json`](/asset-dependencies.json).
 When modifying paid assets, update this file manually:
 
