@@ -38,7 +38,11 @@ Each entry contains the following fields:
 
 ### Coding Conventions
 
-For coding conventions, refer to [`/Documents/Development/Convention/CodingConvention.md`](/Documents/Development/Convention/CodingConvention.md).
+For coding conventions, refer to [`/Documents/Development/Convention/CodingConvention.md`](/Documents/Development/Conventions/CodingConvention.md).
+
+### CI/CD
+
+For CI/CD workflow, refer to [`/Documents/Development/CICDWorkflow.md`](/Documents/Development/CICDWorkflow.md).
 
 ### Asset Management
 
