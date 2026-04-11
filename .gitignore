@@ -104,6 +104,8 @@ InitTestScene*.unity*
 # Paid Assets (Asset Store)
 /[Aa]ssets/Synty/
 /[Aa]ssets/Plugins/
+/[Aa]ssets/Feel
+/[Aa]ssets/GUIPackCartoon
 
 # Unity Built-in
 /[Aa]ssets/TextMesh Pro/
