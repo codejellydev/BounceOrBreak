@@ -1,5 +1,17 @@
 # Unity C# 네이밍 컨벤션
 
+## 🔤 약어(Acronym) 표기 규칙
+
+약어가 포함된 이름을 지을 때는 글자 수에 따라 대소문자를 구분하여 작성한다.
+
+* **2글자 약어:** 모두 대문자로 표기한다.
+  * **예시:** `UI`, `IO`, `DB`, `ID`, `OS`
+  * **적용:** `UIPanel`, `DBConnection`, `PlayerID`
+* **3글자 이상 약어:** 첫 글자만 대문자, 나머지는 소문자로 표기한다 
+  * **예시:** `Api`, `Xml`, `Bgm`, `Sfx`, `Html`
+  * **적용:** `BgmVolume` (O) / `BGMVolume` (X)
+  * **적용:** `AppManager` (O) / `APPManager` (X)
+
 ## 📋 Region 구조
 
 ### Region 순서 (필수)
