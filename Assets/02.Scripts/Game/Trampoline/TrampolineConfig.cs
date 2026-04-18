@@ -16,6 +16,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         public float BounceForce => _bounceForce;
         public float CenterBounceMultiplier => _centerBounceMultiplier;
         public float CenterThreshold => _centerThreshold;
+        public float NormalBias => _normalBias;
 
         public int MaxUsageCount => _maxUsageCount;
         public float MaxLifetime => _maxLifetime;
@@ -49,7 +50,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         [Range(0f, 1f)]
         [SerializeField] private float _normalBias = GameConstants.Trampoline.DEFAULT_NORMAL_BIAS;
 
-        public float NormalBias => _normalBias;
+
         [Header("Lifecycle Settings")]
         [Tooltip("최대 사용 횟수 (0 = 무제한)")]
         [SerializeField] private int _maxUsageCount = 0;

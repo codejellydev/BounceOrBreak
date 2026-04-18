@@ -25,6 +25,8 @@ namespace CodeJelly.BounceOrBreak.Game
             {
                 public const string ENTRY_SCENE = "EntryScene";
                 public const string LOADING_SCENE = "LoadingScene";
+                public const string LOBBY_SCENE = "LobbyScene";
+                public const string GAME_SCENE = "GameScene";
             }
 
         }
@@ -52,8 +54,7 @@ namespace CodeJelly.BounceOrBreak.Game
             /// </summary>
             public static class Keys
             {
-                public const string STRAIGHT_PREFAB = "StraightTrampolinePrefab";
-                public const string FREEFORM_PREFAB = "FreeformTrampolinePrefab";
+                public const string REGISTRY = "TrampolineRegistry";
                 public const string DEFAULT_CONFIG = "DefaultTrampolineConfig";
                 public const string STATIC_CONFIG = "StaticTrampolineConfig";
             }

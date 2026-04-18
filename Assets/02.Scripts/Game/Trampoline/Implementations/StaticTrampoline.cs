@@ -122,8 +122,10 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
                 return;
             }
 
-            _isInitialized = false;
             AppLogger.Info($"[{Type}Trampoline] Despawned. UsageCount: {UsageCount}, Lifetime: {Lifetime:F2}s");
+
+            _isInitialized = false;
+            CancelLifetimeTimer();
 
             if (_isPlacedOnScene == true)
             {
@@ -153,9 +155,9 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             SetupPlatformEffector();
 
             UsageCount = 0;
-            Lifetime = 0f;
-
             _isInitialized = true;
+
+            StartLifetimeTimer();
 
             AppLogger.Debug("[StaticTrampoline] Initialized (Internal).");
         }

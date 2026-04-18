@@ -17,6 +17,10 @@ UniTask를 프로젝트의 비동기 처리 표준으로 사용
 - Unity에 최적화된 async/await 지원 
 - R3와 통합 설계되어 리액티브 프로그래밍과 시너지
 
+**Notes**:
+- UniTask의 Addressables 지원(AsyncOperationHandle 전용 ToUniTask 오버로드)은 UniTask.Addressables asmdef에 별도 정의됨. Addressables와 함께 사용하는 asmdef는 반드시 UniTask.Addressables를 참조에 추가할 것. 누락 시 IEnumerator 오버로드로 fallback되어 런타임 에러 발생. 
+(2026-03-08)
+
 ---
 
 ## ADR-2: R3
@@ -138,3 +142,21 @@ VContainer를 DI 컨테이너로 도입하고, 전역 시스템 및 씬 단위 �
 - 기존 Singleton 패턴을 VContainer의 생명주기 관리로 대체하여 일관성 확보
 - UniTask, R3 등 기존 스택과 통합 지원
 - Zenject 대비 경량이며 Unity 6 호환성 안정적
+
+---
+
+## ADR-8: GitHub Actions
+**작성일**: 2026-04-04
+
+**배경**:
+Repository가 Public으로 전환될 경우 발생할 유료 에셋 라이선스 이슈로 에셋을 저장소에서 분리하게 됨.
+이로 인해 새 환경에서 프로젝트를 실행하려면 에셋을 수동으로 설치해야 하는 구조가 됨.
+자동화된 빌드 환경에서 이 과정을 처리하고, 추가로 기존에 예정 중이었던 테스트 자동화 환경을 미리 구축.
+
+**결정**:
+GitHub Actions를 CI/CD 도구로 사용
+
+**근거**:
+- 별도 서버 구성 없이 GitHub 저장소와 네이티브 통합
+- game-ci 등 Unity 특화 Action 생태계 활용 가능
+- 현재 프로젝트 규모에서 무료 플랜으로 충분

@@ -18,7 +18,8 @@ MonoBehaviour:
   - m_GUID: 0d851d314e47b6a4cb01102e10483495
     m_Address: TrampolineDrawer
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Trampoline
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1e3a9aae2134b184ea31953813bbfc06
     m_Address: StaticTrampolinePrefab
@@ -26,6 +27,13 @@ MonoBehaviour:
     m_SerializedLabels:
     - Prefab
     - Trampoline
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3481274a660ce9445ba56f0adf80614a
+    m_Address: LobbySceneConfig
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Config
+    - Scene
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 46789d0d10d1f30429dcb4f3651c695f
     m_Address: FreeformTrampolinePrefab
@@ -66,6 +74,19 @@ MonoBehaviour:
     - Prefab
     - Trampoline
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 77e2c89fd4edf984f9b61520e8a6f895
+    m_Address: GameScene
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Scene
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 81364c656483f14429727f6df7cfaac9
+    m_Address: EntrySceneConfig
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Config
+    - Scene
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 99c9720ab356a0642a771bea13969a05
     m_Address: TestScene
     m_ReadOnly: 0
@@ -74,6 +95,19 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a831584289b0eb744a9e89b58014f323
     m_Address: DefaultTrampolineConfig
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Config
+    - Trampoline
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d6d4e787ed25bde48b90bff4f28dcd9c
+    m_Address: LobbyScene
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Scene
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e894c8b4dfe5bfa43a7febe516ccca06
+    m_Address: TrampolineRegistry
     m_ReadOnly: 0
     m_SerializedLabels:
     - Config

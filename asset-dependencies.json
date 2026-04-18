@@ -1,0 +1,32 @@
+{
+  "assets": [
+    {
+      "name": "DOTween Pro",
+      "installPath": "Assets/Plugins/Demigiant",
+      "version": "1.0.410",
+      "storeUrl": "https://assetstore.unity.com/packages/tools/visual-scripting/dotween-pro-32416",
+      "privateRepo": "BounceOrBreak-Assets"
+    },
+    {
+      "name": "Fantasy Warrior HUD - Synty INTERFACE - GUI",
+      "installPath": "Assets/Synty",
+      "version": "1.0.4",
+      "storeUrl": "https://assetstore.unity.com/packages/2d/gui/fantasy-warrior-hud-synty-interface-gui-292533",
+      "privateRepo": "BounceOrBreak-Assets"
+    },
+    {
+      "name": "Feel",
+      "installPath": "Assets/Feel",
+      "version": "5.9.1",
+      "storeUrl": "https://assetstore.unity.com/packages/tools/particles-effects/feel-183370",
+      "privateRepo": "BounceOrBreak-Assets"
+    },
+    {
+      "name": "Cartoon GUI Pack",
+      "installPath": "Assets/GUIPackCartoon",
+      "version": "2.0.5",
+      "storeUrl": "https://assetstore.unity.com/packages/2d/gui/cartoon-gui-pack-48850",
+      "privateRepo": "BounceOrBreak-Assets"
+    }
+  ]
+}

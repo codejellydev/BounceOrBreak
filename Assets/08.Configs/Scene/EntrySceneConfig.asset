@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: CodeJelly.BounceOrBreak.Core::CodeJelly.BounceOrBreak.Core.Scene.SceneTransitionConfig
   _targetScene:
     _sceneAsset:
-      m_AssetGUID: 99c9720ab356a0642a771bea13969a05
+      m_AssetGUID: d6d4e787ed25bde48b90bff4f28dcd9c
       m_SubObjectName: 
       m_SubObjectType: 
       m_SubObjectGUID: 

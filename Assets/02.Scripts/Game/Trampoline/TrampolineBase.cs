@@ -1,5 +1,7 @@
 using CodeJelly.BounceOrBreak.Core.Logging;
 using CodeJelly.BounceOrBreak.Game.Bounce;
+using Cysharp.Threading.Tasks;
+using System.Threading;
 using UnityEngine;
 
 namespace CodeJelly.BounceOrBreak.Game.Trampoline
@@ -53,7 +55,9 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         /// <summary>
         /// ITrampoline.Lifetime Implementation
         /// </summary>
-        public float Lifetime { get; protected set; }
+        public float Lifetime => (_isInitialized == true)
+                              ? Time.time - _lifetimeStartTime
+                              : 0f;
         #endregion
 
 
@@ -71,22 +75,13 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         #endregion
 
 
+        #region Private Variables
+        private CancellationTokenSource _lifetimeCts;
+        private float _lifetimeStartTime;
+        #endregion
+
+
         #region Unity Lifecycle
-        protected virtual void Update()
-        {
-            if (_isInitialized == false)
-            {
-                return;
-            }
-
-            Lifetime += Time.deltaTime;
-
-            if (_config.MaxLifetime > 0f && Lifetime >= _config.MaxLifetime)
-            {
-                Despawn();
-            }
-        }
-
         protected virtual void OnCollisionEnter2D(Collision2D collision)
         {
             if (_isInitialized == false)
@@ -117,6 +112,11 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
                 Despawn();
             }
         }
+
+        protected virtual void OnDestroy()
+        {
+            CancelLifetimeTimer();
+        }
         #endregion
 
 
@@ -135,7 +135,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         public virtual void Get()
         {
             UsageCount = 0;
-            Lifetime = 0f;
+            _lifetimeStartTime = 0f;
             _isInitialized = false;
 
             gameObject.SetActive(true);
@@ -146,6 +146,8 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         /// </summary>
         public virtual void Release()
         {
+            CancelLifetimeTimer();
+
             _lineLength = 0f;
             _isInitialized = false;
 
@@ -157,6 +159,8 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         /// </summary>
         public virtual void Destroy()
         {
+            CancelLifetimeTimer();
+
             _config = null;
         }
         #endregion
@@ -209,6 +213,30 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
             // PlatformEffector2D Initialization
             _platformEffector ??= GetComponent<PlatformEffector2D>();
+        }
+
+        /// <summary>
+        /// Lifetime 타이머를 시작합니다.
+        /// Initialize 완료 후 호출해야 합니다.
+        /// </summary>
+        protected void StartLifetimeTimer()
+        {
+            CancelLifetimeTimer();
+
+            _lifetimeStartTime = Time.time;
+            _lifetimeCts = new CancellationTokenSource();
+            RunLifetimeTimer(_lifetimeCts.Token).Forget();
+        }
+
+        /// <summary>
+        /// Lifetime 타이머를 중지합니다.
+        /// </summary>
+        protected void CancelLifetimeTimer()
+        {
+            _lifetimeCts?.Cancel();
+            _lifetimeCts?.Dispose();
+
+            _lifetimeCts = null;
         }
 
         /// <summary>
@@ -269,10 +297,29 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
                 return;
             }
 
-            _isInitialized = false;
             AppLogger.Info($"[{Type}Trampoline] Despawned. UsageCount: {UsageCount}, Lifetime: {Lifetime:F2}s");
+            
+            _isInitialized = false;
+            CancelLifetimeTimer();
 
             _drawer?.ReturnToPool(this);
+        }
+        #endregion
+
+
+        #region Private Methods
+        /// <summary>
+        /// MaxLifetime 경과 시 Trampoline을 Despawn합니다.
+        /// </summary>
+        private async UniTaskVoid RunLifetimeTimer(CancellationToken ct)
+        {
+            if (_config.MaxLifetime <= 0f)
+            {
+                return;
+            }
+
+            await UniTask.WaitForSeconds(_config.MaxLifetime, cancellationToken: ct);
+            Despawn();
         }
         #endregion
     }

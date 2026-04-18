@@ -1,3 +1,4 @@
+using CodeJelly.BounceOrBreak.Core.Logging;
 using CodeJelly.BounceOrBreak.Core.Resource;
 using Cysharp.Threading.Tasks;
 using System;
@@ -14,10 +15,12 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
     {
         #region Injection
         private readonly ResourceManager _resourceManager;
+        private readonly TrampolineRegistry _registry;
 
-        public TrampolineFactory(ResourceManager resourceManager)
+        public TrampolineFactory(ResourceManager resourceManager, TrampolineRegistry registry)
         {
             _resourceManager = resourceManager;
+            _registry = registry;
         }
         #endregion
 
@@ -29,17 +32,34 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
         #region Public Methods
         /// <summary>
-        /// Factory를 초기화하고 Prefab들을 로딩합니다.
+        /// Factory를 초기화하고 Registry에 등록된 Prefab들을 로딩합니다.
         /// </summary>
         public async UniTask InitializeAsync(CancellationToken ct)
         {
             _prefabs = new Dictionary<TrampolineType, GameObject>();
 
-            var straight = await _resourceManager.LoadAsync<GameObject>(GameConstants.Trampoline.Keys.STRAIGHT_PREFAB, ct);
-            _prefabs[TrampolineType.Straight] = straight;
+            foreach (TrampolineEntry entry in _registry.Entries)
+            {
+                if (entry.IsValid == false)
+                {
+                    AppLogger.Warning($"[TrampolineFactory] Invalid AssetReference for type: {entry.Type}. Skipping.");
+                    continue;
+                }
 
-            var freeform = await _resourceManager.LoadAsync<GameObject>(GameConstants.Trampoline.Keys.FREEFORM_PREFAB, ct);
-            _prefabs[TrampolineType.Freeform] = freeform;
+                GameObject prefab = await _resourceManager.LoadAsync<GameObject>(entry.Prefab, ct);
+
+                if (prefab != null)
+                {
+                    _prefabs[entry.Type] = prefab;
+                    AppLogger.Debug($"[TrampolineFactory] Loaded prefab for type: {entry.Type}");
+                }
+                else
+                {
+                    AppLogger.Error($"[TrampolineFactory] Failed to load prefab for type: {entry.Type}");
+                }
+            }
+
+            AppLogger.Info($"[TrampolineFactory] Initialized. ({_prefabs.Count}/{_registry.Entries.Count} prefabs loaded)");
         }
 
         /// <summary>
@@ -55,7 +75,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             }
             else
             {
-                throw new ArgumentException($"Unknown TrampolineType: {type}");
+                throw new ArgumentException($"[TrampolineFactory] No prefab loaded for TrampolineType: {type}");
             }
         }
 
@@ -64,10 +84,17 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         /// </summary>
         public void ReleaseAll()
         {
-            _resourceManager.Release(GameConstants.Trampoline.Keys.STRAIGHT_PREFAB, ResourceReleaseContext.Cleanup);
-            _resourceManager.Release(GameConstants.Trampoline.Keys.FREEFORM_PREFAB, ResourceReleaseContext.Cleanup);
+            foreach (TrampolineEntry entry in _registry.Entries)
+            {
+                if (entry.IsValid == true)
+                {
+                    _resourceManager.Release(entry.Prefab, ResourceReleaseContext.Cleanup);
+                }
+            }
 
             _prefabs.Clear();
+
+            AppLogger.Debug("[TrampolineFactory] All resources released.");
         }
         #endregion
     }
