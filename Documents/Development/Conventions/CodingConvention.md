@@ -171,6 +171,31 @@ public void Construct(SomeService someService)
 #endregion
 ```
 
+### Injection 파라미터 줄바꿈
+
+Injection region의 생성자/Construct 메서드 파라미터가 **2개 이상**일 경우,
+각 파라미터를 **한 줄씩** 배치한다.
+
+의존성 목록이 세로로 정렬되어 각 의존성을 한눈에 파악하기 쉽고,
+Git diff에서도 의존성 추가/제거가 명확히 드러난다.
+
+```csharp
+// ✅ 권장
+public SomeClass(
+    SomeService someService,
+    AnotherService anotherService)
+{
+    _someService = someService;
+    _anotherService = anotherService;
+}
+
+// ❌ 지양
+public SomeClass(SomeService someService, AnotherService anotherService)
+{
+    ...
+}
+```
+
 ### bool 비교
 
 `bool` 조건은 `== true` / `== false`로 명시 비교한다.
