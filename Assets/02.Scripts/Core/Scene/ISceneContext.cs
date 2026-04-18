@@ -8,6 +8,6 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
         /// <summary>
         /// Scene의 컨텍스트를 설정합니다.
         /// </summary>
-        void SetContext(IPayload payload);
+        void SetContext(IScenePayload payload);
     }
 }
