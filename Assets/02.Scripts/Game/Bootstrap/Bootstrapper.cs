@@ -21,7 +21,11 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
         private readonly SceneLoader _sceneLoader;
         private readonly SceneTransitionConfig _sceneConfig;
 
-        public Bootstrapper(InputManager inputManager, ResourceManager resourceManager, SceneLoader sceneLoader, SceneTransitionConfig sceneConfig)
+        public Bootstrapper(
+            InputManager inputManager, 
+            ResourceManager resourceManager, 
+            SceneLoader sceneLoader, 
+            SceneTransitionConfig sceneConfig)
         {
             _inputManager = inputManager;
             _resourceManager = resourceManager;

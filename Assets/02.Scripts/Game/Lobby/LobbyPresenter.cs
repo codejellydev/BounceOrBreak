@@ -17,7 +17,10 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
         private readonly SceneLoader _sceneLoader;
         private readonly SceneTransitionConfig _lobbySceneConfig;
 
-        public LobbyPresenter(LobbyView view, SceneLoader sceneLoader, SceneTransitionConfig lobbySceneConfig)
+        public LobbyPresenter(
+            LobbyView view, 
+            SceneLoader sceneLoader, 
+            SceneTransitionConfig lobbySceneConfig)
         {
             _view = view;
             _sceneLoader = sceneLoader;

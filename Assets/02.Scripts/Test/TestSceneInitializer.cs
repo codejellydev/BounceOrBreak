@@ -16,7 +16,9 @@ public class TestSceneInitializer : ISceneInitializer
     private readonly InputManager _inputManager;
     private readonly TrampolineDrawer _trampolineDrawer;
 
-    public TestSceneInitializer(InputManager inputManager, TrampolineDrawer trampolineDrawer)
+    public TestSceneInitializer(
+        InputManager inputManager, 
+        TrampolineDrawer trampolineDrawer)
     {
         _inputManager = inputManager;
         _trampolineDrawer = trampolineDrawer;
