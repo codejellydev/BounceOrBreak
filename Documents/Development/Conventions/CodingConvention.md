@@ -317,20 +317,10 @@ Unity Lifecycle(`Awake`, `Start` 등)과 VContainer Lifecycle(`IStartable.Start`
 
 ### Properties Summary (선택)
 
-복잡한 로직이나 중요한 프로퍼티에만 작성
+복잡한 로직이나 중요한 프로퍼티에만 작성.
+이름만으로 의도가 자명하거나, 간단한 프로퍼티는 생략이 가능하다.
 
 ```csharp
-#region Nested Classes
-[System.Serializable]
-public class InputProfile
-{
-    public InputContext Context;
-    public bool Player;
-    public bool UI;
-    public bool System;
-}
-#endregion
-
 #region Properties
 /// <summary>
 /// 현재 플레이어가 땅에 닿아있는지 여부.
@@ -341,7 +331,31 @@ public bool IsGrounded => _isGrounded;
 // 간단한 프로퍼티는 summary 생략 가능
 public float Speed { get; set; }
 #endregion
+```
 
+Backing field에 `[Tooltip]`이 있고 프로퍼티가 단순 getter라면 summary를 **생략 가능**하다.
+IDE에서 `[Tooltip]` 내용이 프로퍼티 호버 시에도 표시되므로 중복이 된다.
+
+```csharp
+// ✅ 권장 — [Tooltip]이 있으므로 summary 생략
+#region Properties
+public float Speed => _speed;
+public int MaxCount => _maxCount;
+#endregion
+
+#region Private Variables
+[Tooltip("이동 속도 (m/s)")]
+[SerializeField] private float _speed = 5f;
+
+[Tooltip("최대 오브젝트 개수")]
+[SerializeField] private int _maxCount = 10;
+#endregion
+
+// ❌ 지양 — [Tooltip]과 동일한 내용의 summary 중복 작성
+/// <summary>
+/// 이동 속도 (m/s).
+/// </summary>
+public float Speed => _speed;
 ```
 
 ### 주석 위치
