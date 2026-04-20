@@ -1,5 +1,6 @@
 using CodeJelly.BounceOrBreak.Core.Logging;
 using CodeJelly.BounceOrBreak.Core.Scene;
+using CodeJelly.BounceOrBreak.Game.Settings;
 using Cysharp.Threading.Tasks;
 using R3;
 using System;
@@ -16,15 +17,18 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
         private readonly LobbyView _view;
         private readonly SceneLoader _sceneLoader;
         private readonly SceneTransitionConfig _lobbySceneConfig;
+        private readonly SettingsPanelPresenter _settingsPanelPresenter;
 
         public LobbyPresenter(
             LobbyView view, 
             SceneLoader sceneLoader, 
-            SceneTransitionConfig lobbySceneConfig)
+            SceneTransitionConfig lobbySceneConfig,
+            SettingsPanelPresenter settingsPanelPresenter)
         {
             _view = view;
             _sceneLoader = sceneLoader;
             _lobbySceneConfig = lobbySceneConfig;
+            _settingsPanelPresenter = settingsPanelPresenter;
         }
         #endregion
 
@@ -63,6 +67,11 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
                  .OnClickAsObservable()
                  .Subscribe(_ => OnStartButtonClicked())
                  .AddTo(_disposables);
+
+            _view.SettingsButton
+                 .OnClickAsObservable()
+                 .Subscribe(_ => OnSettingsButtonClicked())
+                 .AddTo(_disposables);
         }
 
         /// <summary>
@@ -72,6 +81,15 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
         {
             AppLogger.Info("[LobbyPresenter] Start button clicked. Transitioning to GameScene...");
             _sceneLoader.LoadSceneAsync(_lobbySceneConfig).Forget();
+        }
+
+        /// <summary>
+        /// Settings 버튼 클릭 이벤트를 처리합니다.
+        /// </summary>
+        private void OnSettingsButtonClicked()
+        {
+            AppLogger.Info("[LobbyPresenter] Settings button clicked.");
+            _settingsPanelPresenter.Open();
         }
         #endregion
     }

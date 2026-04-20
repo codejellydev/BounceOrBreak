@@ -2,6 +2,8 @@ using CodeJelly.BounceOrBreak.Core.Resource;
 using CodeJelly.BounceOrBreak.Core.Scene;
 using CodeJelly.BounceOrBreak.Core.Settings;
 using CodeJelly.BounceOrBreak.Game.Input;
+using CodeJelly.BounceOrBreak.Game.Settings.Audio;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -13,6 +15,12 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
     /// </summary>
     public class ApplicationScope : LifetimeScope
     {
+        #region Private Variables
+        [Header("Audio Settings")]
+        [SerializeField] private AudioMixerConfig _audioSettingsConfig;
+        #endregion
+
+
         #region Protected Methods
         protected override void Configure(IContainerBuilder builder)
         {
@@ -21,6 +29,8 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
             builder.Register<SceneLoader>(Lifetime.Singleton);
 
             builder.Register<ISettingsRepository, PlayerPrefsSettingsRepository>(Lifetime.Singleton);
+            builder.RegisterInstance(_audioSettingsConfig);
+            builder.Register<IAudioSettingsApplier, AudioMixerApplier>(Lifetime.Singleton);
         }
         #endregion
     }

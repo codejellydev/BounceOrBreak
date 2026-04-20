@@ -33,8 +33,8 @@ namespace CodeJelly.BounceOrBreak.Game.Settings
         #region VContainer Lifecycle
         public void Start()
         {
-            BindView();
             _view.SetPanelActive(false);
+            BindView();
         }
         #endregion
 
@@ -84,16 +84,21 @@ namespace CodeJelly.BounceOrBreak.Game.Settings
         {
             _view.CloseButton
                  .OnClickAsObservable()
-                 .Subscribe(_ => OnCloseButtonClicked())
+                 .Subscribe(_ => OnCloseRequested())
+                 .AddTo(_disposables);
+
+            _view.DimBackgroundButton
+                 .OnClickAsObservable()
+                 .Subscribe(_ => OnCloseRequested())
                  .AddTo(_disposables);
         }
 
-        /// <summary>
-        /// 닫기 버튼 클릭 이벤트를 처리합니다.
+        //// <summary>
+        /// 닫기 요청 이벤트를 처리합니다.
         /// </summary>
-        private void OnCloseButtonClicked()
+        private void OnCloseRequested()
         {
-            AppLogger.Info("[SettingsPanelPresenter] Close button clicked.");
+            AppLogger.Info("[SettingsPanelPresenter] Settings panel close requested.");
             Close();
         }
         #endregion

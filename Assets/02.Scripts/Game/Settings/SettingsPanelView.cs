@@ -9,7 +9,15 @@ namespace CodeJelly.BounceOrBreak.Game.Settings
     public class SettingsPanelView : MonoBehaviour
     {
         #region Properties
+        /// <summary>
+        /// 패널을 닫는 버튼.
+        /// </summary>
         public Button CloseButton => _closeButton;
+
+        /// <summary>
+        /// 패널 외부(Dim 영역) 클릭으로 패널을 닫는 버튼.
+        /// </summary>
+        public Button DimBackgroundButton => _dimBackgroundButton;
         #endregion
 
 
@@ -19,6 +27,7 @@ namespace CodeJelly.BounceOrBreak.Game.Settings
 
         [Header("Buttons")]
         [SerializeField] private Button _closeButton;
+        [SerializeField] private Button _dimBackgroundButton;
         #endregion
 
 

@@ -11,12 +11,14 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
     {
         #region Properties
         public Button StartButton => _startButton;
+        public Button SettingsButton => _settingsButton;
         #endregion
 
 
         #region Private Variables
         [Header("Buttons")]
         [SerializeField] private Button _startButton;
+        [SerializeField] private Button _settingsButton;
         #endregion
     }
 }
