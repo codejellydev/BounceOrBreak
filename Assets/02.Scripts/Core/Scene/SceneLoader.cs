@@ -70,7 +70,7 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
         /// <param name="ct">취소 토큰</param>
         public async UniTask LoadSceneAsync(
             SceneTransitionConfig config,
-            IPayload payload = null,
+            IScenePayload payload = null,
             CancellationToken ct = default)
         {
             // Config 유효성 검사
@@ -167,7 +167,7 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
         /// </summary>
         private async UniTask TransitionSceneAsync(
             string sceneKey,
-            IPayload payload,
+            IScenePayload payload,
             bool useLoadingScene,
             string loadingSceneKey,
             CancellationToken ct)

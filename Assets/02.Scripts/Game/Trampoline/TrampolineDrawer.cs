@@ -23,7 +23,9 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         private InputManager _inputManager;
 
         [Inject]
-        public void Construct(ResourceManager resourceManager, InputManager inputManager)
+        public void Construct(
+            ResourceManager resourceManager, 
+            InputManager inputManager)
         {
             _resourceManager = resourceManager;
             _inputManager = inputManager;

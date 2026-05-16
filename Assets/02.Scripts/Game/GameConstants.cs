@@ -132,5 +132,86 @@ namespace CodeJelly.BounceOrBreak.Game
             /// </summary>
             public const float MIN_VELOCITY_FOR_REFLECT = 0.01f;
         }
+
+        public static class Audio
+        {
+            public static class Keys
+            {
+                /// <summary>
+                /// AudioSettings가 ISettingsRepository에 저장될 때 사용되는 키
+                /// </summary>
+                public const string REPOSITORY_KEY = "AudioSettings";
+            }
+
+            /// <summary>
+            /// 볼륨 관련 상수
+            /// </summary>
+            public static class Volume
+            {
+                /// <summary>
+                /// 볼륨의 기본값 (최대)
+                /// </summary>
+                public const float DEFAULT = 1f;
+
+                /// <summary>
+                /// 음소거로 간주할 최소 정규화 볼륨 임계값
+                /// </summary>
+                public const float MIN_NORMALIZED_THRESHOLD = 0.0001f;
+
+                /// <summary>
+                /// 음소거 상태의 dB 값.
+                /// </summary>
+                public const float MUTED_DECIBEL = -80f;
+
+                /// <summary>
+                /// 정규화된 볼륨값을 dB로 변환할 때 사용되는 계수. (음향학 표준: 20 * log10(normalizedValue))
+                /// </summary>
+                public const float DECIBEL_MULTIPLIER = 20f;
+            }
+        }
+
+        public static class Graphics
+        {
+            public static class Keys
+            {
+                /// <summary>
+                /// GraphicsSettings가 ISettingsRepository에 저장될 때 사용되는 키
+                /// </summary>
+                public const string REPOSITORY_KEY = "GraphicsSettings";
+            }
+
+            /// <summary>
+            /// 그래픽 품질 수준. Unity Quality Settings 인덱스에 매핑.
+            /// </summary>
+            public static class Quality
+            {
+                public const int DEFAULT = MEDIUM;
+
+                public const int LOW = 0;
+                public const int MEDIUM = 1;
+                public const int HIGH = 2;
+            }
+        }
+
+        public static class Language
+        {
+            public static class Keys
+            {
+                /// <summary>
+                /// LanguageSettings가 ISettingsRepository에 저장될 때 사용되는 키
+                /// </summary>
+                public const string REPOSITORY_KEY = "LanguageSettings";
+            }
+
+            /// <summary>
+            /// Unity Localization 패키지의 Locale Identifier 코드.
+            /// </summary>
+            public static class LocaleCode
+            {
+                public const string DEFAULT = ENGLISH;
+
+                public const string ENGLISH = "en";
+            }
+        }
     }
 }
