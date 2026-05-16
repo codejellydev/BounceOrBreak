@@ -1483,6 +1483,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc12a1ff6f9ef7143b97e479aabf02df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CodeJelly.BounceOrBreak.Game.Settings.SettingsPanelView
+--- !u!114 &1879410463 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 253311503436559816, guid: 35e48deb76ab26b439e361fca624c690, type: 3}
+  m_PrefabInstance: {fileID: 1879410459}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d829dc714b70a07468694e1c449431b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CodeJelly.BounceOrBreak.Game.Settings.Language.LanguageSettingsView
+--- !u!114 &1879410464 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4365727767584511239, guid: 35e48deb76ab26b439e361fca624c690, type: 3}
+  m_PrefabInstance: {fileID: 1879410459}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccfe67cb728dc2346b2664c95a1a168e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CodeJelly.BounceOrBreak.Game.Settings.Graphics.GraphicsSettingsView
 --- !u!1 &1968711890
 GameObject:
   m_ObjectHideFlags: 0
@@ -1588,6 +1610,14 @@ PrefabInstance:
       propertyPath: _settingsPanelView
       value: 
       objectReference: {fileID: 1879410462}
+    - target: {fileID: 8645126962555703811, guid: 0fff033b6b92db1499aeb3c02c744ab0, type: 3}
+      propertyPath: _graphicsSettingsView
+      value: 
+      objectReference: {fileID: 1879410464}
+    - target: {fileID: 8645126962555703811, guid: 0fff033b6b92db1499aeb3c02c744ab0, type: 3}
+      propertyPath: _languageSettingsView
+      value: 
+      objectReference: {fileID: 1879410463}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

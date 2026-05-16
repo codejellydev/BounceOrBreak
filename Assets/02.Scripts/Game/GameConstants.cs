@@ -169,5 +169,49 @@ namespace CodeJelly.BounceOrBreak.Game
                 public const float DECIBEL_MULTIPLIER = 20f;
             }
         }
+
+        public static class Graphics
+        {
+            public static class Keys
+            {
+                /// <summary>
+                /// GraphicsSettings가 ISettingsRepository에 저장될 때 사용되는 키
+                /// </summary>
+                public const string REPOSITORY_KEY = "GraphicsSettings";
+            }
+
+            /// <summary>
+            /// 그래픽 품질 수준. Unity Quality Settings 인덱스에 매핑.
+            /// </summary>
+            public static class Quality
+            {
+                public const int DEFAULT = MEDIUM;
+
+                public const int LOW = 0;
+                public const int MEDIUM = 1;
+                public const int HIGH = 2;
+            }
+        }
+
+        public static class Language
+        {
+            public static class Keys
+            {
+                /// <summary>
+                /// LanguageSettings가 ISettingsRepository에 저장될 때 사용되는 키
+                /// </summary>
+                public const string REPOSITORY_KEY = "LanguageSettings";
+            }
+
+            /// <summary>
+            /// Unity Localization 패키지의 Locale Identifier 코드.
+            /// </summary>
+            public static class LocaleCode
+            {
+                public const string DEFAULT = ENGLISH;
+
+                public const string ENGLISH = "en";
+            }
+        }
     }
 }

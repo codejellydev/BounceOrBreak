@@ -2,6 +2,8 @@ using CodeJelly.BounceOrBreak.Core.Scene;
 using CodeJelly.BounceOrBreak.Game.Lobby;
 using CodeJelly.BounceOrBreak.Game.Settings;
 using CodeJelly.BounceOrBreak.Game.Settings.Audio;
+using CodeJelly.BounceOrBreak.Game.Settings.Graphics;
+using CodeJelly.BounceOrBreak.Game.Settings.Language;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -24,6 +26,8 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
         [Header("Settings")]
         [SerializeField] private SettingsPanelView _settingsPanelView;
         [SerializeField] private AudioSettingsView _audioSettingsView;
+        [SerializeField] private GraphicsSettingsView _graphicsSettingsView;
+        [SerializeField] private LanguageSettingsView _languageSettingsView;
         #endregion
 
 
@@ -43,6 +47,16 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
             // Audio Settings
             builder.RegisterComponent(_audioSettingsView);
             builder.RegisterEntryPoint<AudioSettingsPresenter>()
+                   .As<ISettingsCategoryPresenter>();
+
+            // Graphics Settings
+            builder.RegisterComponent(_graphicsSettingsView);
+            builder.RegisterEntryPoint<GraphicsSettingsPresenter>()
+                   .As<ISettingsCategoryPresenter>();
+
+            // Language Settings
+            builder.RegisterComponent(_languageSettingsView);
+            builder.RegisterEntryPoint<LanguageSettingsPresenter>()
                    .As<ISettingsCategoryPresenter>();
         }
         #endregion

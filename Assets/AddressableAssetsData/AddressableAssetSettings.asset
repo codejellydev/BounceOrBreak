@@ -15,7 +15,7 @@ MonoBehaviour:
   m_DefaultGroup: ff0b6b3515b0c0d49b9d79b23bc248d5
   m_currentHash:
     serializedVersion: 2
-    Hash: 3721559672484e5e104e66e985037cfe
+    Hash: c848e05dd366bec796b7bd1f3119d408
   m_OptimizeCatalogSize: 0
   m_BuildRemoteCatalog: 0
   m_CatalogRequestsTimeout: 0
@@ -60,6 +60,7 @@ MonoBehaviour:
   m_BuildAddressablesWithPlayerBuild: 0
   m_overridePlayerVersion: '[UnityEditor.PlayerSettings.bundleVersion]'
   m_GroupAssets:
+  - {fileID: 11400000, guid: f7e6c12f2574869418ae5cd3e8edf907, type: 2}
   - {fileID: 11400000, guid: bc356b893439bc74f92b783280ba9d97, type: 2}
   m_BuildSettings:
     m_LogResourceManagerExceptions: 1
@@ -104,6 +105,7 @@ MonoBehaviour:
     - Config
     - Prefab
     - Scene
+    - Locale
   m_SchemaTemplates: []
   m_GroupTemplateObjects:
   - {fileID: 11400000, guid: 2649a6ecadbe43d4da1658c15902e13c, type: 2}

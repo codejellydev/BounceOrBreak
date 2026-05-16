@@ -1,3 +1,4 @@
+using CodeJelly.BounceOrBreak.Core.Localization;
 using CodeJelly.BounceOrBreak.Core.Logging;
 using CodeJelly.BounceOrBreak.Core.Resource;
 using CodeJelly.BounceOrBreak.Core.Scene;
@@ -18,17 +19,20 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
         #region Injection
         private readonly InputManager _inputManager;
         private readonly ResourceManager _resourceManager;
+        private readonly LocalizationManager _localizationManager;
         private readonly SceneLoader _sceneLoader;
         private readonly SceneTransitionConfig _sceneConfig;
 
         public Bootstrapper(
             InputManager inputManager, 
             ResourceManager resourceManager, 
+            LocalizationManager localizationManager,
             SceneLoader sceneLoader, 
             SceneTransitionConfig sceneConfig)
         {
             _inputManager = inputManager;
             _resourceManager = resourceManager;
+            _localizationManager = localizationManager;
             _sceneLoader = sceneLoader;
             _sceneConfig = sceneConfig;
         }
@@ -64,6 +68,14 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
             if (await _inputManager.InitializeAsync() == false)
             {
                 AppLogger.Error("[Bootstrapper] Startup sequence aborted due to input initialization failure.");
+                HandleInitializationFailure();
+                return;
+            }
+
+            // 로컬라이제이션 시스템 초기화
+            if (await _localizationManager.InitializeAsync() == false)
+            {
+                AppLogger.Error("[Bootstrapper] Startup sequence aborted due to localization initialization failure.");
                 HandleInitializationFailure();
                 return;
             }
