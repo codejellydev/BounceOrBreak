@@ -9,6 +9,8 @@ on:
       - 'Assets/**'
       - 'Packages/**'
       - 'ProjectSettings/**'
+  
+  workflow_dispatch:
 
 jobs:
   test:

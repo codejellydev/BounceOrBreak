@@ -25,8 +25,7 @@ namespace CodeJelly.BounceOrBreak.Game.Wall
 
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            var reflectable = collision.gameObject.GetComponent<IReflectable>();
-            if (reflectable == null)
+            if (collision.gameObject.TryGetComponent<IReflectable>(out var reflectable) == false)
             {
                 return;
             }

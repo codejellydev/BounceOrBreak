@@ -89,8 +89,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
                 return;
             }
 
-            var bounceable = collision.gameObject.GetComponent<IBounceable>();
-            if (bounceable == null)
+            if (collision.gameObject.TryGetComponent<IBounceable>(out var bounceable) == false)
             {
                 return;
             }
