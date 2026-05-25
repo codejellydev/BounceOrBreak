@@ -223,11 +223,13 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
 
                 ISceneInitializer initializer = null;
                 ISceneContext context = null;
+                ISceneActivatable activatable = null;
 
                 if (sceneScope != null)
                 {
                     sceneScope.Container.TryResolve(out initializer);
                     sceneScope.Container.TryResolve(out context);
+                    sceneScope.Container.TryResolve(out activatable);
                 }
 
                 // 4. Context 설정
@@ -290,6 +292,20 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
                 }
 
                 AppLogger.Info($"[SceneLoader] Transition to {sceneKey} completed successfully.");
+
+                // 8. 활성화 통지
+                if (activatable != null)
+                {
+                    // 전환된 Scene의 OnActivated에서 예외가 발생하더라도 전환 자체는 성공으로 간주 (예외는 로그 처리)
+                    try
+                    {
+                        activatable.OnActivated();
+                    }
+                    catch (Exception ex)
+                    {
+                        AppLogger.Exception(ex, "[SceneLoader] OnActivated threw.");
+                    }
+                }
 
                 transitionSucceeded = true;
             }
