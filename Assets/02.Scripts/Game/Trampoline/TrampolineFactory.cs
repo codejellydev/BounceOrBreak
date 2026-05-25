@@ -17,7 +17,9 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         private readonly ResourceManager _resourceManager;
         private readonly TrampolineRegistry _registry;
 
-        public TrampolineFactory(ResourceManager resourceManager, TrampolineRegistry registry)
+        public TrampolineFactory(
+            ResourceManager resourceManager, 
+            TrampolineRegistry registry)
         {
             _resourceManager = resourceManager;
             _registry = registry;

@@ -1,5 +1,17 @@
 # Unity C# 네이밍 컨벤션
 
+## 🔤 약어(Acronym) 표기 규칙
+
+약어가 포함된 이름을 지을 때는 글자 수에 따라 대소문자를 구분하여 작성한다.
+
+* **2글자 약어:** 모두 대문자로 표기한다.
+  * **예시:** `UI`, `IO`, `DB`, `ID`, `OS`
+  * **적용:** `UIPanel`, `DBConnection`, `PlayerID`
+* **3글자 이상 약어:** 첫 글자만 대문자, 나머지는 소문자로 표기한다 
+  * **예시:** `Api`, `Xml`, `Bgm`, `Sfx`, `Html`
+  * **적용:** `BgmVolume` (O) / `BGMVolume` (X)
+  * **적용:** `AppManager` (O) / `APPManager` (X)
+
 ## 📋 Region 구조
 
 ### Region 순서 (필수)
@@ -171,6 +183,31 @@ public void Construct(SomeService someService)
 #endregion
 ```
 
+### Injection 파라미터 줄바꿈
+
+Injection region의 생성자/Construct 메서드 파라미터가 **2개 이상**일 경우,
+각 파라미터를 **한 줄씩** 배치한다.
+
+의존성 목록이 세로로 정렬되어 각 의존성을 한눈에 파악하기 쉽고,
+Git diff에서도 의존성 추가/제거가 명확히 드러난다.
+
+```csharp
+// ✅ 권장
+public SomeClass(
+    SomeService someService,
+    AnotherService anotherService)
+{
+    _someService = someService;
+    _anotherService = anotherService;
+}
+
+// ❌ 지양
+public SomeClass(SomeService someService, AnotherService anotherService)
+{
+    ...
+}
+```
+
 ### bool 비교
 
 `bool` 조건은 `== true` / `== false`로 명시 비교한다.
@@ -280,20 +317,10 @@ Unity Lifecycle(`Awake`, `Start` 등)과 VContainer Lifecycle(`IStartable.Start`
 
 ### Properties Summary (선택)
 
-복잡한 로직이나 중요한 프로퍼티에만 작성
+복잡한 로직이나 중요한 프로퍼티에만 작성.
+이름만으로 의도가 자명하거나, 간단한 프로퍼티는 생략이 가능하다.
 
 ```csharp
-#region Nested Classes
-[System.Serializable]
-public class InputProfile
-{
-    public InputContext Context;
-    public bool Player;
-    public bool UI;
-    public bool System;
-}
-#endregion
-
 #region Properties
 /// <summary>
 /// 현재 플레이어가 땅에 닿아있는지 여부.
@@ -304,7 +331,31 @@ public bool IsGrounded => _isGrounded;
 // 간단한 프로퍼티는 summary 생략 가능
 public float Speed { get; set; }
 #endregion
+```
 
+Backing field에 `[Tooltip]`이 있고 프로퍼티가 단순 getter라면 summary를 **생략 가능**하다.
+IDE에서 `[Tooltip]` 내용이 프로퍼티 호버 시에도 표시되므로 중복이 된다.
+
+```csharp
+// ✅ 권장 — [Tooltip]이 있으므로 summary 생략
+#region Properties
+public float Speed => _speed;
+public int MaxCount => _maxCount;
+#endregion
+
+#region Private Variables
+[Tooltip("이동 속도 (m/s)")]
+[SerializeField] private float _speed = 5f;
+
+[Tooltip("최대 오브젝트 개수")]
+[SerializeField] private int _maxCount = 10;
+#endregion
+
+// ❌ 지양 — [Tooltip]과 동일한 내용의 summary 중복 작성
+/// <summary>
+/// 이동 속도 (m/s).
+/// </summary>
+public float Speed => _speed;
 ```
 
 ### 주석 위치
