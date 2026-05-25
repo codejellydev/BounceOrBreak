@@ -13,7 +13,7 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
         /// <summary>
         /// Scene 초기화 상태
         /// </summary>
-        SceneInitializationState State { get; }
+        SceneInitializationState InitializationState { get; }
 
         /// <summary>
         /// Scene을 비동기적으로 초기화합니다.

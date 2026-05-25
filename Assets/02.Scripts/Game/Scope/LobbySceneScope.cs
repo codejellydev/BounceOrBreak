@@ -37,7 +37,7 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
             // Lobby
             builder.RegisterInstance(_lobbySceneConfig);
             builder.RegisterComponent(_lobbyView);
-            builder.RegisterEntryPoint<LobbyPresenter>(); // 구체 타입이지만
+            builder.RegisterEntryPoint<LobbyPresenter>();
 
             // Settings Panel
             builder.RegisterComponent(_settingsPanelView);

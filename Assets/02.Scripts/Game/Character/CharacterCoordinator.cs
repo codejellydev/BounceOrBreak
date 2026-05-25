@@ -6,9 +6,9 @@ using UnityEngine;
 namespace CodeJelly.BounceOrBreak.Game.Character
 {
     /// <summary>
-    /// Character의 제어 로직을 담당하는 Presenter 클래스.
+    /// Character의 제어 로직을 담당하는 Coordinator 클래스.
     /// </summary>
-    public class CharacterPresenter : MonoBehaviour
+    public class CharacterCoordinator : MonoBehaviour
     {
         #region Private Variables
         [Header("Character Components")]
@@ -62,7 +62,7 @@ namespace CodeJelly.BounceOrBreak.Game.Character
             _physics ??= GetComponent<CharacterPhysics>();
             if (_physics == null)
             {
-                AppLogger.Error("[CharacterPresenter] CharacterPhysics component is missing.");
+                AppLogger.Error("[CharacterCoordinator] CharacterPhysics component is missing.");
 
                 return;
             }
