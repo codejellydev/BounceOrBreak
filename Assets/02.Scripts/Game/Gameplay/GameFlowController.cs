@@ -11,9 +11,19 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
     /// </summary>
     public class GameFlowController : ISceneInitializer, ISceneActivatable, IDisposable
     {
+        #region Injection
+        private readonly FallDetector _fallDetector;
+
+        public GameFlowController(FallDetector fallDetector)
+        {
+            _fallDetector = fallDetector;
+        }
+        #endregion
+
+
         #region Properties
         /// <summary>
-        /// ISceneInitializer.State Implementation
+        /// ISceneInitializer.InitializationState Implementation
         /// </summary>
         public SceneInitializationState InitializationState { get; private set; } = SceneInitializationState.None;
 
@@ -26,6 +36,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
 
         #region Private Variables
         private readonly ReactiveProperty<GamePhase> _phase = new ReactiveProperty<GamePhase>(GamePhase.Loading);
+        private readonly CompositeDisposable _disposables = new CompositeDisposable();
         #endregion
 
 
@@ -37,7 +48,9 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         {
             InitializationState = SceneInitializationState.Initializing;
 
-            // TODO: 게임 시스템 설정
+            _fallDetector.OnCharacterFell
+                         .Subscribe(_ => TriggerGameOver())
+                         .AddTo(_disposables);
 
             progress?.Report(1f);
             InitializationState = SceneInitializationState.Completed;
@@ -57,7 +70,24 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         /// </summary>
         public void Dispose()
         {
+            _disposables.Dispose();
             _phase.Dispose();
+        }
+        #endregion
+
+
+        #region Private Methods
+        /// <summary>
+        /// 게임을 게임오버 상태로 전환합니다.
+        /// </summary>
+        private void TriggerGameOver()
+        {
+            if (_phase.Value != GamePhase.Playing)
+            {
+                return;
+            }
+
+            _phase.Value = GamePhase.GameOver;
         }
         #endregion
     }
