@@ -35,6 +35,14 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         }
 
         /// <summary>
+        /// ICharacter.ResetState Implementation
+        /// </summary>
+        public void ResetState()
+        {
+            _coordinator.ResetState();
+        }
+
+        /// <summary>
         /// IBounceable.Bounce Implementation 
         /// </summary>
         public void Bounce(BounceParams parameters)
@@ -66,7 +74,7 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         /// </summary>
         private void InitializeComponents()
         {
-            // Presenter Initialization
+            // Coordinator Initialization
             _coordinator ??= GetComponent<CharacterCoordinator>();
             _coordinator.Initialize();
         }

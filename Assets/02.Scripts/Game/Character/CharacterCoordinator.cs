@@ -25,6 +25,13 @@ namespace CodeJelly.BounceOrBreak.Game.Character
             InitializeComponents();
         }
 
+        /// <summary>
+        /// 캐릭터 상태를 초기화한다.
+        /// </summary>
+        public void ResetState()
+        {
+            _physics?.ResetState();
+        }
 
         /// <summary>
         /// Bounce 이벤트를 처리합니다.

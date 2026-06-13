@@ -13,5 +13,10 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         /// Transform 참조.
         /// </summary>
         Transform Transform { get; }
+
+        /// <summary>
+        /// 캐릭터의 상태를 초기 상태로 되돌린다.
+        /// </summary>
+        void ResetState();
     }
 }
