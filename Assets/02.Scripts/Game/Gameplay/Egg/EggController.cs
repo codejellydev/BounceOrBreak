@@ -12,9 +12,9 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
     {
         #region Properties
         /// <summary>
-        /// 계란의 종류.
+        /// 계란의 타입 데이터.
         /// </summary>
-        public EggType Type { get; private set; }
+        public EggTypeData Data { get; private set; }
         #endregion
 
 
@@ -33,11 +33,12 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
 
         #region Public Methods
         /// <summary>
-        /// 계란을 지정된 종류로 초기화한다.
+        /// 계란을 지정된 타입 데이터로 초기화합니다.
         /// </summary>
-        public void Initialize(EggType type)
+        public void Initialize(EggTypeData data)
         {
-            Type = type;
+            Data = data;
+            // TODO: data 기반 IEggBehavior 장착
         }
 
         /// <summary>

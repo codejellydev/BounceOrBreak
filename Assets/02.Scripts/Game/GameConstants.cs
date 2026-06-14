@@ -31,6 +31,28 @@ namespace CodeJelly.BounceOrBreak.Game
 
         }
 
+        public static class Egg
+        {
+            /// <summary>
+            /// Addressables 키
+            /// </summary>
+            public static class Keys
+            {
+                public const string PREFAB = "EggPrefab";
+                public const string REGISTRY = "EggRegistry";
+            }
+
+            /// <summary>
+            /// 계란 오브젝트 풀의 초기 용량
+            /// </summary>
+            public const int POOL_DEFAULT_CAPACITY = 20;
+
+            /// <summary>
+            /// 계란 오브젝트 풀의 최대 크기
+            /// </summary>
+            public const int POOL_MAX_SIZE = 50;
+        }
+
         public static class Bounce
         {
             /// <summary>

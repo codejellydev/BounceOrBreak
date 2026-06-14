@@ -1,7 +1,7 @@
 namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
 {
     /// <summary>
-    /// 계란의 종류를 정의한다.
+    /// 계란의 종류를 정의합니다.
     /// </summary>
     public enum EggType
     {
