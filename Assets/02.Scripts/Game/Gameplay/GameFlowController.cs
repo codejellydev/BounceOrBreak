@@ -1,4 +1,5 @@
 using CodeJelly.BounceOrBreak.Core.Scene;
+using CodeJelly.BounceOrBreak.Game.Gameplay.Egg;
 using Cysharp.Threading.Tasks;
 using R3;
 using System;
@@ -13,10 +14,14 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
     {
         #region Injection
         private readonly FallDetector _fallDetector;
+        private readonly EggSpawner _eggSpawner;
 
-        public GameFlowController(FallDetector fallDetector)
+        public GameFlowController(
+            FallDetector fallDetector,
+            EggSpawner eggSpawner)
         {
             _fallDetector = fallDetector;
+            _eggSpawner = eggSpawner;
         }
         #endregion
 
@@ -44,7 +49,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         /// <summary>
         /// ISceneInitializer.InitializeAsync Implementation
         /// </summary>
-        public UniTask InitializeAsync(IProgress<float> progress, CancellationToken ct)
+        public async UniTask InitializeAsync(IProgress<float> progress, CancellationToken ct)
         {
             InitializationState = SceneInitializationState.Initializing;
 
@@ -52,9 +57,10 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
                          .Subscribe(_ => TriggerGameOver())
                          .AddTo(_disposables);
 
+            await _eggSpawner.InitializeAsync(ct);
             progress?.Report(1f);
+
             InitializationState = SceneInitializationState.Completed;
-            return UniTask.CompletedTask;
         }
 
         /// <summary>
@@ -63,6 +69,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         public void OnActivated()
         {
             _phase.Value = GamePhase.Playing;
+            _eggSpawner.StartSpawning();
         }
 
         /// <summary>
@@ -88,6 +95,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
             }
 
             _phase.Value = GamePhase.GameOver;
+            _eggSpawner.StopSpawning();
         }
         #endregion
     }

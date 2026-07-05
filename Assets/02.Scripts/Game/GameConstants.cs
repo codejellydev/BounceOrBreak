@@ -40,6 +40,7 @@ namespace CodeJelly.BounceOrBreak.Game
             {
                 public const string PREFAB = "EggPrefab";
                 public const string REGISTRY = "EggRegistry";
+                public const string SPAWN_CONFIG = "EggSpawnConfig";
             }
 
             /// <summary>
