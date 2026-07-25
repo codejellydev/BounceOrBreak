@@ -33,21 +33,31 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
 
         #region Public Methods
         /// <summary>
-        /// 계란을 지정된 타입 데이터로 초기화합니다.
+        /// 계란을 지정된 타입 데이터로 초기화하고 활성화합니다.
+        /// TODO: data 기반 IEggBehavior 장착
         /// </summary>
-        public void Initialize(EggTypeData data)
+        /// <returns>초기화 성공 시 true</returns>
+        public bool Initialize(EggTypeData data)
         {
+            if (data == null)
+            {
+                AppLogger.Error("[EggController] EggTypeData is null.");
+
+                return false;
+            }
+
             Data = data;
-            // TODO: data 기반 IEggBehavior 장착
+
+            gameObject.SetActive(true);
+
+            return true;
         }
 
         /// <summary>
         /// IPoolable.Get Implementation
         /// </summary>
         public void Get()
-        {
-            gameObject.SetActive(true);
-        }
+        { }
 
         /// <summary>
         /// IPoolable.Release Implementation
@@ -55,6 +65,9 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         public void Release()
         {
             _character.ResetState();
+
+            Data = null;
+
             gameObject.SetActive(false);
         }
 
@@ -62,7 +75,15 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         /// IPoolable.Destroy Implementation
         /// </summary>
         public void Destroy()
-        { }
+        {
+            // Scene 해체 중에는 이미 파괴되었을 수 있음
+            if (this == null)
+            {
+                return;
+            }
+
+            GameObject.Destroy(gameObject);
+        }
         #endregion
 
 

@@ -24,7 +24,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
         [Inject]
         public void Construct(
-            ResourceManager resourceManager, 
+            ResourceManager resourceManager,
             InputManager inputManager)
         {
             _resourceManager = resourceManager;
@@ -332,7 +332,13 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
                     return;
                 }
 
-                trampoline.Initialize(this, _config, points);
+                if (trampoline.Initialize(this, _config, points) == false)
+                {
+                    AppLogger.Error("[TrampolineDrawer] Failed to initialize Trampoline. Returning to pool.");
+                    _trampolinePool.Release(trampoline);
+
+                    return;
+                }
 
                 AppLogger.Debug("[TrampolineDrawer] Trampoline spawned.");
             }

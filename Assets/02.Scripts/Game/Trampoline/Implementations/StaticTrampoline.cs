@@ -52,12 +52,14 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         /// ITrampoline.Initialize Implementation
         /// 런타임에 동적 생성 시 사용됩니다.
         /// </summary>
-        public override void Initialize(TrampolineDrawer drawer, TrampolineConfig config, Vector2[] points)
+        /// <returns>초기화 성공 시 true</returns>
+        public override bool Initialize(TrampolineDrawer drawer, TrampolineConfig config, Vector2[] points)
         {
             if (points.Length != 2)
             {
                 AppLogger.Error($"[StaticTrampoline] Invalid points count: {points.Length}. Expected 2.");
-                return;
+
+                return false;
             }
 
             _drawer = drawer;
@@ -67,6 +69,8 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
             InitializeInternal(config);
             AppLogger.Debug("[StaticTrampoline] Initialized (Runtime).");
+
+            return true;
         }
         #endregion
 
@@ -154,10 +158,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             SetupCollider();
             SetupPlatformEffector();
 
-            UsageCount = 0;
-            _isInitialized = true;
-
-            StartLifetimeTimer();
+            Spawn();
 
             AppLogger.Debug("[StaticTrampoline] Initialized (Internal).");
         }

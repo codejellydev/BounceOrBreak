@@ -28,7 +28,8 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         /// <param name="drawer">Trampoline을 생성한 Drawer</param>
         /// <param name="config">Trampoline 설정</param>
         /// <param name="points">LineRenderer의 point 배열</param>
-        public override void Initialize(TrampolineDrawer drawer, TrampolineConfig config, Vector2[] points)
+        /// <returns>초기화 성공 시 true</returns>
+        public override bool Initialize(TrampolineDrawer drawer, TrampolineConfig config, Vector2[] points)
         {
             _drawer = drawer;
             _config = config;
@@ -39,12 +40,11 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             SetupCollider();
             CalculateLineLength();
 
-            UsageCount = 0;
-            _isInitialized = true;
-
-            StartLifetimeTimer();
+            Spawn();
 
             AppLogger.Debug($"[FreeformTrampoline] Initialized with {points.Length} points");
+
+            return true;
         }
 
         /// <summary>

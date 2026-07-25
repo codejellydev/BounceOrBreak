@@ -126,7 +126,12 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
             EggTypeData data = _registry.GetData(type);
 
             egg.transform.position = _config.SpawnPosition;
-            egg.Initialize(data);
+
+            if (egg.Initialize(data) == false)
+            {
+                AppLogger.Error($"[EggSpawner] Failed to initialize egg. Type: {type}.");
+                _pool.Release(egg);
+            }
         }
 
         /// <summary>
