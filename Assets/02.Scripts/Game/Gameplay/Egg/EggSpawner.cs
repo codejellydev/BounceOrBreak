@@ -139,7 +139,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         /// </summary>
         private EggType SelectNextType()
         {
-            // TODO : 웨이브 기반 선택 로직
+            // TODO: 웨이브 기반 선택 로직
             return EggType.Default;
         }
         #endregion
