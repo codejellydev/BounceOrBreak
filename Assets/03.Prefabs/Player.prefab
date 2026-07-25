@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cac97e747421aa468e3a4b5fe58d875, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CodeJelly.BounceOrBreak.Game.Player.PlayerManager
-  _presenter: {fileID: 2113343572090372456}
+  _coordinator: {fileID: 2113343572090372456}
 --- !u!114 &2113343572090372456
 MonoBehaviour:
   m_ObjectHideFlags: 0
