@@ -179,5 +179,44 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             }
         }
         #endregion
+
+
+        #region Debug
+#if UNITY_EDITOR
+        /// <summary>
+        /// Scene 뷰에서 Trampoline의 배치를 시각화합니다.
+        /// 위치 조정은 Transform 이동이 아닌 startPoint/endPoint 값으로 해야 합니다.
+        /// </summary>
+        private void OnDrawGizmos()
+        {
+            if (_startPoint == _endPoint)
+            {
+                return;
+            }
+
+            Color lineColor = (_staticConfig != null) ? _staticConfig.LineColor : Color.white;
+            float endPointRadius = (_staticConfig != null) ? _staticConfig.LineWidth : GameConstants.Trampoline.DEFAULT_LINE_WIDTH;
+
+            // 라인 본체와 양 끝점
+            Gizmos.color = lineColor;
+            Gizmos.DrawLine(_startPoint, _endPoint);
+            Gizmos.DrawSphere(_startPoint, endPointRadius);
+            Gizmos.DrawSphere(_endPoint, endPointRadius);
+
+            if (_staticConfig == null)
+            {
+                return;
+            }
+
+            // 중앙 보너스 판정 구간 (CenterBounceMultiplier 적용 범위)
+            Vector2 center = (_startPoint + _endPoint) * 0.5f;
+            Vector2 direction = (_endPoint - _startPoint).normalized;
+            float halfRange = Vector2.Distance(_startPoint, _endPoint) * _staticConfig.CenterThreshold;
+
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(center - direction * halfRange, center + direction * halfRange);
+        }
+#endif
+        #endregion
     }
 }
