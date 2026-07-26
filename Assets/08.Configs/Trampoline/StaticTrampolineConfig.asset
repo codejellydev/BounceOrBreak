@@ -19,5 +19,5 @@ MonoBehaviour:
   _centerBounceMultiplier: 1.4
   _centerThreshold: 0.1
   _normalBias: 0.3
-  _maxUsageCount: 0
+  _maxUsageCount: 2
   _maxLifetime: 0
