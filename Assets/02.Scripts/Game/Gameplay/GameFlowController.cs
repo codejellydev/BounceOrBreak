@@ -1,5 +1,7 @@
 using CodeJelly.BounceOrBreak.Core.Scene;
 using CodeJelly.BounceOrBreak.Game.Gameplay.Egg;
+using CodeJelly.BounceOrBreak.Game.Input;
+using CodeJelly.BounceOrBreak.Game.Trampoline;
 using Cysharp.Threading.Tasks;
 using R3;
 using System;
@@ -15,13 +17,19 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         #region Injection
         private readonly FallDetector _fallDetector;
         private readonly EggSpawner _eggSpawner;
+        private readonly TrampolineDrawer _trampolineDrawer;
+        private readonly InputManager _inputManager;
 
         public GameFlowController(
             FallDetector fallDetector,
-            EggSpawner eggSpawner)
+            EggSpawner eggSpawner,
+            TrampolineDrawer trampolineDrawer,
+            InputManager inputManager)
         {
             _fallDetector = fallDetector;
             _eggSpawner = eggSpawner;
+            _trampolineDrawer = trampolineDrawer;
+            _inputManager = inputManager;
         }
         #endregion
 
@@ -56,6 +64,11 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
             _fallDetector.OnCharacterFell
                          .Subscribe(_ => TriggerGameOver())
                          .AddTo(_disposables);
+
+            _inputManager.SwitchContext(InputContext.Gameplay);
+
+            await _trampolineDrawer.InitializeAsync(null, ct);
+            _trampolineDrawer.SetTrampolineType(TrampolineType.Straight);
 
             await _eggSpawner.InitializeAsync(ct);
             progress?.Report(1f);

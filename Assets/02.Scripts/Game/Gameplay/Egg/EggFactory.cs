@@ -23,6 +23,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
 
         #region Private Variables
         private GameObject _eggPrefab;
+        private Transform _root;
         #endregion
 
 
@@ -41,11 +42,31 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         }
 
         /// <summary>
+        /// 생성된 계란들이 배치될 루트를 준비합니다.
+        /// </summary>
+        public void PrepareRoot()
+        {
+            if (_root != null)
+            {
+                return;
+            }
+
+            _root = new GameObject(GameConstants.Egg.ROOT_NAME).transform;
+        }
+
+        /// <summary>
         /// 계란 인스턴스를 생성합니다.
         /// </summary>
         public EggController Create()
         {
-            GameObject instance = UnityEngine.Object.Instantiate(_eggPrefab);
+            if (_root == null)
+            {
+                AppLogger.Error("[EggFactory] Root is not prepared. Call PrepareRoot after scene activation.");
+
+                return null;
+            }
+
+            GameObject instance = UnityEngine.Object.Instantiate(_eggPrefab, _root);
             return instance.GetComponent<EggController>();
         }
 
@@ -56,6 +77,12 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         {
             _resourceManager.Release(GameConstants.Egg.Keys.PREFAB, ResourceReleaseContext.Cleanup);
             _eggPrefab = null;
+
+            if (_root != null)
+            {
+                UnityEngine.Object.Destroy(_root.gameObject);
+                _root = null;
+            }
         }
         #endregion
     }

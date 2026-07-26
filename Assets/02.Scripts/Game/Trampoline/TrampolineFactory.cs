@@ -16,13 +16,16 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         #region Injection
         private readonly ResourceManager _resourceManager;
         private readonly TrampolineRegistry _registry;
+        private readonly Transform _root;
 
         public TrampolineFactory(
-            ResourceManager resourceManager, 
-            TrampolineRegistry registry)
+            ResourceManager resourceManager,
+            TrampolineRegistry registry,
+            Transform root)
         {
             _resourceManager = resourceManager;
             _registry = registry;
+            _root = root;
         }
         #endregion
 
@@ -71,7 +74,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         {
             if (_prefabs.TryGetValue(type, out GameObject prefab) == true)
             {
-                GameObject instance = UnityEngine.Object.Instantiate(prefab);
+                GameObject instance = UnityEngine.Object.Instantiate(prefab, _root);
 
                 return instance.GetComponent<ITrampoline>();
             }

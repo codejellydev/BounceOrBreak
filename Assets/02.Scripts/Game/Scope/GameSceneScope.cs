@@ -1,6 +1,7 @@
 using CodeJelly.BounceOrBreak.Core.Scene;
 using CodeJelly.BounceOrBreak.Game.Gameplay;
 using CodeJelly.BounceOrBreak.Game.Gameplay.Egg;
+using CodeJelly.BounceOrBreak.Game.Trampoline;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -14,14 +15,18 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
     {
         #region Private Variables
         [Header("Gameplay")]
+        [SerializeField] private Camera _mainCamera;
         [SerializeField] private FallDetector _fallDetector;
+        [SerializeField] private TrampolineDrawer _trampolineDrawer;
         #endregion
 
 
         #region Protected Methods
         protected override void Configure(IContainerBuilder builder)
         {
+            builder.RegisterComponent(_mainCamera);
             builder.RegisterComponent(_fallDetector);
+            builder.RegisterComponent(_trampolineDrawer);
 
             builder.Register<EggSpawner>(Lifetime.Scoped);
             builder.Register<GameFlowController>(Lifetime.Scoped)

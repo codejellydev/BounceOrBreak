@@ -57,6 +57,8 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         {
             StopSpawning();
 
+            _factory.PrepareRoot();
+
             _spawnCts = new CancellationTokenSource();
             RunSpawnLoop(_spawnCts.Token).Forget();
         }

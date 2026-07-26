@@ -25,6 +25,11 @@ namespace CodeJelly.BounceOrBreak.Core.Pooling
                 createFunc: () =>
                 {
                     T item = createFunc();
+                    if (item == null)
+                    {
+                        throw new InvalidOperationException($"[PoolExtensions] createFunc returned null. (Type: {typeof(T).Name})");
+                    }
+
                     item.Release();
 
                     return item;

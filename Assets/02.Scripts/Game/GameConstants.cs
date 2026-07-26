@@ -52,6 +52,11 @@ namespace CodeJelly.BounceOrBreak.Game
             /// 계란 오브젝트 풀의 최대 크기
             /// </summary>
             public const int POOL_MAX_SIZE = 50;
+
+            /// <summary>
+            /// 생성된 계란들이 배치될 루트 GameObject 이름
+            /// </summary>
+            public const string ROOT_NAME = "EggRoot";
         }
 
         public static class Bounce
@@ -131,6 +136,11 @@ namespace CodeJelly.BounceOrBreak.Game
             /// ITrampoline 오브젝트 풀의 최대 크기
             /// </summary>
             public const int POOL_MAX_SIZE = 50;
+
+            /// <summary>
+            /// 생성된 Trampoline들이 배치될 루트 GameObject 이름
+            /// </summary>
+            public const string ROOT_NAME = "TrampolineRoot";
         }
 
         public static class Character
