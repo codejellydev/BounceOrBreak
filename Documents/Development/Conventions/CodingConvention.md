@@ -111,10 +111,10 @@ private float _moveSpeed;
 ```csharp
 // ✅ 권장
 private void Awake()
-{}
+{ }
 
 public void Initialize()
-{}
+{ }
 
 // ❌ 지양
 private void Awake()
@@ -129,28 +129,28 @@ private void Awake()
 ```csharp
 #region Unity Lifecycle
 private void Awake()
-{}
+{ }
 
 private void Start()
-{}
+{ }
 
 private void OnEnable()
-{}
+{ }
 
 private void Update()
-{}
+{ }
 
 private void FixedUpdate()
-{}
+{ }
 
 private void LateUpdate()
-{}
+{ }
 
 private void OnDisable()
-{}
+{ }
 
 private void OnDestroy()
-{}
+{ }
 #endregion
 ```
 
