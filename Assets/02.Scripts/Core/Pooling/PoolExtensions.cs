@@ -21,7 +21,19 @@ namespace CodeJelly.BounceOrBreak.Core.Pooling
         {
             return new ObjectPool<T>
             (
-                createFunc: createFunc,
+                // 신규 인스턴스도 Release를 거쳐 재사용 객체와 동일한 풀 상태로 편입
+                createFunc: () =>
+                {
+                    T item = createFunc();
+                    if (item == null)
+                    {
+                        throw new InvalidOperationException($"[PoolExtensions] createFunc returned null. (Type: {typeof(T).Name})");
+                    }
+
+                    item.Release();
+
+                    return item;
+                },
                 actionOnGet: item => item.Get(),
                 actionOnRelease: item => item.Release(),
                 actionOnDestroy: item => item.Destroy(),

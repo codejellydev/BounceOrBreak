@@ -52,12 +52,14 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         /// ITrampoline.Initialize Implementation
         /// 런타임에 동적 생성 시 사용됩니다.
         /// </summary>
-        public override void Initialize(TrampolineDrawer drawer, TrampolineConfig config, Vector2[] points)
+        /// <returns>초기화 성공 시 true</returns>
+        public override bool Initialize(TrampolineDrawer drawer, TrampolineConfig config, Vector2[] points)
         {
             if (points.Length != 2)
             {
                 AppLogger.Error($"[StaticTrampoline] Invalid points count: {points.Length}. Expected 2.");
-                return;
+
+                return false;
             }
 
             _drawer = drawer;
@@ -67,6 +69,8 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
             InitializeInternal(config);
             AppLogger.Debug("[StaticTrampoline] Initialized (Runtime).");
+
+            return true;
         }
         #endregion
 
@@ -154,10 +158,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             SetupCollider();
             SetupPlatformEffector();
 
-            UsageCount = 0;
-            _isInitialized = true;
-
-            StartLifetimeTimer();
+            Spawn();
 
             AppLogger.Debug("[StaticTrampoline] Initialized (Internal).");
         }
@@ -177,6 +178,45 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
                 _normal = -_normal;
             }
         }
+        #endregion
+
+
+        #region Debug
+#if UNITY_EDITOR
+        /// <summary>
+        /// Scene 뷰에서 Trampoline의 배치를 시각화합니다.
+        /// 위치 조정은 Transform 이동이 아닌 startPoint/endPoint 값으로 해야 합니다.
+        /// </summary>
+        private void OnDrawGizmos()
+        {
+            if (_startPoint == _endPoint)
+            {
+                return;
+            }
+
+            Color lineColor = (_staticConfig != null) ? _staticConfig.LineColor : Color.white;
+            float endPointRadius = (_staticConfig != null) ? _staticConfig.LineWidth : GameConstants.Trampoline.DEFAULT_LINE_WIDTH;
+
+            // 라인 본체와 양 끝점
+            Gizmos.color = lineColor;
+            Gizmos.DrawLine(_startPoint, _endPoint);
+            Gizmos.DrawSphere(_startPoint, endPointRadius);
+            Gizmos.DrawSphere(_endPoint, endPointRadius);
+
+            if (_staticConfig == null)
+            {
+                return;
+            }
+
+            // 중앙 보너스 판정 구간 (CenterBounceMultiplier 적용 범위)
+            Vector2 center = (_startPoint + _endPoint) * 0.5f;
+            Vector2 direction = (_endPoint - _startPoint).normalized;
+            float halfRange = Vector2.Distance(_startPoint, _endPoint) * _staticConfig.CenterThreshold;
+
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(center - direction * halfRange, center + direction * halfRange);
+        }
+#endif
         #endregion
     }
 }

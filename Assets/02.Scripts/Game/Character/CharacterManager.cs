@@ -8,7 +8,7 @@ namespace CodeJelly.BounceOrBreak.Game.Character
     /// Character 관련 핵심 컴포넌트들을 통합 관리하는 Manager.
     /// 외부와의 상호작용 및 내부 컴포넌트들로의 작업 분배 수행. (Facade)
     /// </summary>
-    [RequireComponent(typeof(CharacterPresenter))]
+    [RequireComponent(typeof(CharacterCoordinator))]
     public class CharacterManager : MonoBehaviour, ICharacter
     {
         #region Properties
@@ -21,7 +21,7 @@ namespace CodeJelly.BounceOrBreak.Game.Character
 
         #region Private Variables
         [Header("Character Components")]
-        [SerializeField] private CharacterPresenter _presenter;
+        [SerializeField] private CharacterCoordinator _coordinator;
         #endregion
 
 
@@ -35,11 +35,19 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         }
 
         /// <summary>
+        /// ICharacter.ResetState Implementation
+        /// </summary>
+        public void ResetState()
+        {
+            _coordinator.ResetState();
+        }
+
+        /// <summary>
         /// IBounceable.Bounce Implementation 
         /// </summary>
         public void Bounce(BounceParams parameters)
         {
-            _presenter.HandleBounce(parameters);
+            _coordinator.HandleBounce(parameters);
         }
 
         /// <summary>
@@ -47,7 +55,7 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         /// </summary>
         public void OnBounced(BounceResult result)
         {
-            _presenter.HandleBounceResult(result);
+            _coordinator.HandleBounceResult(result);
         }
 
         /// <summary>
@@ -55,7 +63,7 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         /// </summary>
         public void Reflect(ReflectParams parameters)
         {
-            _presenter.HandleReflect(parameters);
+            _coordinator.HandleReflect(parameters);
         }
         #endregion
 
@@ -66,9 +74,9 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         /// </summary>
         private void InitializeComponents()
         {
-            // Presenter Initialization
-            _presenter ??= GetComponent<CharacterPresenter>();
-            _presenter.Initialize();
+            // Coordinator Initialization
+            _coordinator ??= GetComponent<CharacterCoordinator>();
+            _coordinator.Initialize();
         }
         #endregion
     }

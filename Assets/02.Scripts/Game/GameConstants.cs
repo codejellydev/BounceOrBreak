@@ -31,6 +31,34 @@ namespace CodeJelly.BounceOrBreak.Game
 
         }
 
+        public static class Egg
+        {
+            /// <summary>
+            /// Addressables 키
+            /// </summary>
+            public static class Keys
+            {
+                public const string PREFAB = "EggPrefab";
+                public const string REGISTRY = "EggRegistry";
+                public const string SPAWN_CONFIG = "EggSpawnConfig";
+            }
+
+            /// <summary>
+            /// 계란 오브젝트 풀의 초기 용량
+            /// </summary>
+            public const int POOL_DEFAULT_CAPACITY = 20;
+
+            /// <summary>
+            /// 계란 오브젝트 풀의 최대 크기
+            /// </summary>
+            public const int POOL_MAX_SIZE = 50;
+
+            /// <summary>
+            /// 생성된 계란들이 배치될 루트 GameObject 이름
+            /// </summary>
+            public const string ROOT_NAME = "EggRoot";
+        }
+
         public static class Bounce
         {
             /// <summary>
@@ -108,6 +136,11 @@ namespace CodeJelly.BounceOrBreak.Game
             /// ITrampoline 오브젝트 풀의 최대 크기
             /// </summary>
             public const int POOL_MAX_SIZE = 50;
+
+            /// <summary>
+            /// 생성된 Trampoline들이 배치될 루트 GameObject 이름
+            /// </summary>
+            public const string ROOT_NAME = "TrampolineRoot";
         }
 
         public static class Character

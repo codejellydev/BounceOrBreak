@@ -27,17 +27,17 @@ public class TestSceneInitializer : ISceneInitializer
 
 
     #region ISceneInitializer Implementation
-    public SceneInitializationState State { get; private set; } = SceneInitializationState.None;
+    public SceneInitializationState InitializationState { get; private set; } = SceneInitializationState.None;
 
     public async UniTask InitializeAsync(IProgress<float> progress, CancellationToken ct)
     {
-        if (State != SceneInitializationState.None)
+        if (InitializationState != SceneInitializationState.None)
         {
-            AppLogger.Debug($"[TestSceneInitializer] State is {State}. Skipping.");
+            AppLogger.Debug($"[TestSceneInitializer] State is {InitializationState}. Skipping.");
             return;
         }
 
-        State = SceneInitializationState.Initializing;
+        InitializationState = SceneInitializationState.Initializing;
 
         try
         {
@@ -51,12 +51,12 @@ public class TestSceneInitializer : ISceneInitializer
             );
             _trampolineDrawer.SetTrampolineType(TrampolineType.Straight);
 
-            State = SceneInitializationState.Completed;
+            InitializationState = SceneInitializationState.Completed;
             AppLogger.Debug("[TestSceneInitializer] Initialization completed.");
         }
         catch (Exception ex)
         {
-            State = SceneInitializationState.Failed;
+            InitializationState = SceneInitializationState.Failed;
             AppLogger.Exception(ex, "[TestSceneInitializer] Initialization failed.");
             throw;
         }

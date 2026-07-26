@@ -67,8 +67,8 @@ namespace CodeJelly.BounceOrBreak.Core.Localization
 
         /// <summary>
         /// Locale을 변경합니다. 해당 Locale이 사용 가능하지 않으면 false 반환.
-        /// </summary>
         /// TODO: 언어팩 다운로드 기능 도입 시 await DownloadLocaleAsync 추가 및 async 승격.
+        /// </summary>
         public UniTask<bool> SetLocaleAsync(string localeCode, CancellationToken ct = default)
         {
             if (string.IsNullOrEmpty(localeCode) == true)

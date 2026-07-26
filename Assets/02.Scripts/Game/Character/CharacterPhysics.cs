@@ -27,6 +27,16 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         }
 
         /// <summary>
+        /// 물리 상태를 초기화한다.
+        /// </summary>
+        public void ResetState()
+        {
+            // Rigidbody 잔여 속도 해제 
+            _rigidbody.linearVelocity = Vector2.zero;
+            _rigidbody.angularVelocity = 0f;
+        }
+
+        /// <summary>
         /// Bounce 파라미터를 받아 물리적 튕김을 적용합니다.
         /// </summary>
         public void ApplyBounce(BounceParams parameters)

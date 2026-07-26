@@ -22,7 +22,7 @@ namespace CodeJelly.BounceOrBreak.Core.Logging
         /// StreamWriter는 thread-safe하지 않지만 현재 코드에서는 단일 쓰레드에서만 접근하기 때문에 동기화 문제 없음.
         /// 추후 멀티쓰레드 Write가 필요한 경우 thread-safe한 래퍼 도입 검토 필요.
         /// </summary>
-        private static StreamWriter _fileWriter; 
+        private static StreamWriter _fileWriter;
         private static Thread _writeThread;
         private static AutoResetEvent _writeARE;
         private static CancellationTokenSource _cts;
@@ -109,7 +109,7 @@ namespace CodeJelly.BounceOrBreak.Core.Logging
                 _writeARE.WaitOne(AppConstants.AppLogger.WAIT_TIMEOUT_MS);
 
                 int count = 0;
-                while (_logQueue.TryDequeue(out string log) == true && count < AppConstants.AppLogger.BATCH_SIZE)
+                while (count < AppConstants.AppLogger.BATCH_SIZE && _logQueue.TryDequeue(out string log) == true)
                 {
                     try
                     {
