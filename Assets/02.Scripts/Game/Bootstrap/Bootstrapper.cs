@@ -1,8 +1,5 @@
-using CodeJelly.BounceOrBreak.Core.Localization;
 using CodeJelly.BounceOrBreak.Core.Logging;
-using CodeJelly.BounceOrBreak.Core.Resource;
 using CodeJelly.BounceOrBreak.Core.Scene;
-using CodeJelly.BounceOrBreak.Game.Input;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Threading;
@@ -17,22 +14,16 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
     public class Bootstrapper : IAsyncStartable
     {
         #region Injection
-        private readonly InputManager _inputManager;
-        private readonly ResourceManager _resourceManager;
-        private readonly LocalizationManager _localizationManager;
+        private readonly AppInitializer _appInitializer;
         private readonly SceneLoader _sceneLoader;
         private readonly SceneTransitionConfig _sceneConfig;
 
         public Bootstrapper(
-            InputManager inputManager, 
-            ResourceManager resourceManager, 
-            LocalizationManager localizationManager,
-            SceneLoader sceneLoader, 
+            AppInitializer appInitializer,
+            SceneLoader sceneLoader,
             SceneTransitionConfig sceneConfig)
         {
-            _inputManager = inputManager;
-            _resourceManager = resourceManager;
-            _localizationManager = localizationManager;
+            _appInitializer = appInitializer;
             _sceneLoader = sceneLoader;
             _sceneConfig = sceneConfig;
         }
@@ -56,26 +47,10 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
         {
             AppLogger.Info("[Bootstrapper] Starting initialization...");
 
-            // 리소스 시스템 초기화
-            if (await _resourceManager.InitializeAsync() == false)
+            // 애플리케이션 필수 시스템 초기화
+            if (await _appInitializer.EnsureInitializedAsync() == false)
             {
-                AppLogger.Error("[Bootstrapper] Startup sequence aborted due to resource initialization failure.");
-                HandleInitializationFailure();
-                return;
-            }
-
-            // 입력 시스템 초기화
-            if (await _inputManager.InitializeAsync() == false)
-            {
-                AppLogger.Error("[Bootstrapper] Startup sequence aborted due to input initialization failure.");
-                HandleInitializationFailure();
-                return;
-            }
-
-            // 로컬라이제이션 시스템 초기화
-            if (await _localizationManager.InitializeAsync() == false)
-            {
-                AppLogger.Error("[Bootstrapper] Startup sequence aborted due to localization initialization failure.");
+                AppLogger.Error("[Bootstrapper] Startup sequence aborted due to system initialization failure.");
                 HandleInitializationFailure();
                 return;
             }
