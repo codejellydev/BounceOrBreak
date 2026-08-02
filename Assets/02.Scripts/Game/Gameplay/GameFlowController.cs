@@ -1,3 +1,4 @@
+using CodeJelly.BounceOrBreak.Core.Logging;
 using CodeJelly.BounceOrBreak.Core.Scene;
 using CodeJelly.BounceOrBreak.Game.Gameplay.Egg;
 using CodeJelly.BounceOrBreak.Game.Input;
@@ -59,6 +60,13 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         /// </summary>
         public async UniTask InitializeAsync(IProgress<float> progress, CancellationToken ct)
         {
+            if (InitializationState != SceneInitializationState.None)
+            {
+                AppLogger.Debug($"[GameFlowController] State is {InitializationState}. Skipping.");
+
+                return;
+            }
+
             InitializationState = SceneInitializationState.Initializing;
 
             _fallDetector.OnCharacterFell

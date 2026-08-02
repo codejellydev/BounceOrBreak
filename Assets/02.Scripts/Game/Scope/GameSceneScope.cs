@@ -1,4 +1,5 @@
 using CodeJelly.BounceOrBreak.Core.Scene;
+using CodeJelly.BounceOrBreak.Game.Bootstrap;
 using CodeJelly.BounceOrBreak.Game.Gameplay;
 using CodeJelly.BounceOrBreak.Game.Gameplay.Egg;
 using CodeJelly.BounceOrBreak.Game.Trampoline;
@@ -33,6 +34,11 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
                    .As<ISceneInitializer>()
                    .As<ISceneActivatable>() // VContainer EntryPoint가 아닌, Core.Scene의 ISceneActivatable로 등록 (씬 활성화 시점에 자동으로 OnActivated 호출)
                    .AsSelf();
+
+#if UNITY_EDITOR
+            // Scene 단독 실행 시의 초기화 대행
+            builder.RegisterEntryPoint<StandaloneSceneBootstrapper>();
+#endif
         }
         #endregion
     }
