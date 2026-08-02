@@ -23,6 +23,10 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
 
         #region Private Variables
         private GameObject _eggPrefab;
+
+        /// <summary>
+        /// 생성된 계란들이 배치될 루트.
+        /// </summary>
         private Transform _root;
         #endregion
 

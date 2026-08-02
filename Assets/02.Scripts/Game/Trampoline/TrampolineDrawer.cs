@@ -48,8 +48,13 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         private TrampolineFactory _factory;
         private TrampolineType _activeType = TrampolineType.Straight;
 
-        private IObjectPool<ITrampoline> _trampolinePool;
-        private Transform _trampolineRoot;
+        private IObjectPool<ITrampoline> _pool;
+
+        /// <summary>
+        /// 생성된 Trampoline들이 배치될 루트.
+        /// </summary>
+        private Transform _root;
+
         private CompositeDisposable _disposables;
         #endregion
 
@@ -58,7 +63,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         private void OnDestroy()
         {
             _factory?.ReleaseAll();
-            _trampolinePool?.Clear();
+            _pool?.Clear();
             _disposables?.Dispose();
 
             if (_registry != null)
@@ -100,13 +105,12 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
                 return;
             }
 
-            // 생성될 Trampoline들의 루트 준비
-            // (자식으로 두어 부모의 소속 Scene을 따르므로, 초기화 시점의 활성 Scene과 무관)
-            _trampolineRoot = new GameObject(GameConstants.Trampoline.ROOT_NAME).transform;
-            _trampolineRoot.SetParent(transform, false);
+            // 자식으로 두어 부모의 소속 Scene을 따르므로, 초기화 시점의 활성 Scene과 무관
+            _root = new GameObject(GameConstants.Trampoline.ROOT_NAME).transform;
+            _root.SetParent(transform, false);
 
             // Factory 초기화
-            _factory = new TrampolineFactory(_resourceManager, _registry, _trampolineRoot);
+            _factory = new TrampolineFactory(_resourceManager, _registry, _root);
             await _factory.InitializeAsync(ct);
             progress?.Report(0.5f);
 
@@ -137,7 +141,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         /// <param name="trampoline">반환할 Trampoline</param>
         public void ReturnToPool(ITrampoline trampoline)
         {
-            _trampolinePool.Release(trampoline);
+            _pool.Release(trampoline);
         }
 
         /// <summary>
@@ -158,7 +162,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         /// </summary>
         private void InitializePool()
         {
-            _trampolinePool = PoolExtensions.CreatePoolablePool
+            _pool = PoolExtensions.CreatePoolablePool
             (
                 createFunc: CreateTrampolineInstance,
                 defaultCapacity: GameConstants.Trampoline.POOL_DEFAULT_CAPACITY,
@@ -330,7 +334,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         {
             try
             {
-                ITrampoline trampoline = _trampolinePool.Get();
+                ITrampoline trampoline = _pool.Get();
 
                 if (trampoline == null)
                 {
@@ -342,7 +346,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
                 if (trampoline.Initialize(this, _config, points) == false)
                 {
                     AppLogger.Error("[TrampolineDrawer] Failed to initialize Trampoline. Returning to pool.");
-                    _trampolinePool.Release(trampoline);
+                    _pool.Release(trampoline);
 
                     return;
                 }

@@ -16,6 +16,10 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         #region Injection
         private readonly ResourceManager _resourceManager;
         private readonly TrampolineRegistry _registry;
+
+        /// <summary>
+        /// 생성된 Trampoline들이 배치될 루트.
+        /// </summary>
         private readonly Transform _root;
 
         public TrampolineFactory(
