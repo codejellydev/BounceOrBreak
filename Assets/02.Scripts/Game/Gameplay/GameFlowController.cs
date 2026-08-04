@@ -1,6 +1,7 @@
 using CodeJelly.BounceOrBreak.Core.Logging;
 using CodeJelly.BounceOrBreak.Core.Scene;
 using CodeJelly.BounceOrBreak.Game.Gameplay.Egg;
+using CodeJelly.BounceOrBreak.Game.Gameplay.Goal;
 using CodeJelly.BounceOrBreak.Game.Input;
 using CodeJelly.BounceOrBreak.Game.Trampoline;
 using Cysharp.Threading.Tasks;
@@ -17,17 +18,20 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
     {
         #region Injection
         private readonly FallDetector _fallDetector;
+        private readonly GoalPort[] _goalPorts;
         private readonly EggSpawner _eggSpawner;
         private readonly TrampolineDrawer _trampolineDrawer;
         private readonly InputManager _inputManager;
 
         public GameFlowController(
             FallDetector fallDetector,
+            GoalPort[] goalPorts,
             EggSpawner eggSpawner,
             TrampolineDrawer trampolineDrawer,
             InputManager inputManager)
         {
             _fallDetector = fallDetector;
+            _goalPorts = goalPorts;
             _eggSpawner = eggSpawner;
             _trampolineDrawer = trampolineDrawer;
             _inputManager = inputManager;
@@ -73,6 +77,8 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
                          .Subscribe(_ => TriggerGameOver())
                          .AddTo(_disposables);
 
+            SubscribeGoalPorts();
+
             _inputManager.SwitchContext(InputContext.Gameplay);
 
             await _trampolineDrawer.InitializeAsync(null, ct);
@@ -105,6 +111,42 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
 
 
         #region Private Methods
+        /// <summary>
+        /// 모든 GoalPort의 도달 이벤트를 구독합니다.
+        /// </summary>
+        private void SubscribeGoalPorts()
+        {
+            if (_goalPorts == null || _goalPorts.Length == 0)
+            {
+                AppLogger.Error("[GameFlowController] No GoalPort is registered.");
+
+                return;
+            }
+
+            foreach (GoalPort port in _goalPorts)
+            {
+                port.OnEggArrived
+                    .Subscribe(HandleGoalArrival)
+                    .AddTo(_disposables);
+            }
+        }
+
+        /// <summary>
+        /// 계란의 GoalPort 도달을 처리합니다.
+        /// </summary>
+        private void HandleGoalArrival(GoalArrival arrival)
+        {
+            if (_phase.Value != GamePhase.Playing)
+            {
+                return;
+            }
+
+            // TODO: 일치 시 득점, 불일치 시 재처리
+            AppLogger.Debug($"[GameFlowController] Egg arrived at goal. Matched: {arrival.IsMatched}.");
+
+            _eggSpawner.Despawn(arrival.Egg);
+        }
+
         /// <summary>
         /// 게임을 게임오버 상태로 전환합니다.
         /// </summary>

@@ -2,6 +2,7 @@ using CodeJelly.BounceOrBreak.Core.Scene;
 using CodeJelly.BounceOrBreak.Game.Bootstrap;
 using CodeJelly.BounceOrBreak.Game.Gameplay;
 using CodeJelly.BounceOrBreak.Game.Gameplay.Egg;
+using CodeJelly.BounceOrBreak.Game.Gameplay.Goal;
 using CodeJelly.BounceOrBreak.Game.Trampoline;
 using UnityEngine;
 using VContainer;
@@ -18,6 +19,7 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
         [Header("Gameplay")]
         [SerializeField] private Camera _mainCamera;
         [SerializeField] private FallDetector _fallDetector;
+        [SerializeField] private GoalPort[] _goalPorts;
         [SerializeField] private TrampolineDrawer _trampolineDrawer;
         #endregion
 
@@ -27,6 +29,7 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
         {
             builder.RegisterComponent(_mainCamera);
             builder.RegisterComponent(_fallDetector);
+            builder.RegisterInstance(_goalPorts);
             builder.RegisterComponent(_trampolineDrawer);
 
             builder.Register<EggSpawner>(Lifetime.Scoped);

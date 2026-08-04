@@ -74,6 +74,22 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         }
 
         /// <summary>
+        /// 계란을 풀에 반납합니다.
+        /// </summary>
+        /// <param name="egg">반납할 계란</param>
+        public void Despawn(EggController egg)
+        {
+            if (egg == null)
+            {
+                AppLogger.Error("[EggSpawner] Cannot despawn a null egg.");
+
+                return;
+            }
+
+            _pool.Release(egg);
+        }
+
+        /// <summary>
         /// IDisposable.Dispose Implementation
         /// </summary>
         public void Dispose()
