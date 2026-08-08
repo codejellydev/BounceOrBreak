@@ -5,7 +5,7 @@ using UnityEngine;
 namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
 {
     /// <summary>
-    /// 계란 종류별 데이터 매핑을 관리하는 Registry SO.
+    /// Egg 종류별 데이터 매핑을 관리하는 Registry SO.
     /// </summary>
     [CreateAssetMenu(fileName = "EggRegistry", menuName = "Configs/Game/Egg Registry")]
     public class EggRegistry : ScriptableObject

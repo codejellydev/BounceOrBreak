@@ -105,7 +105,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
                 return;
             }
 
-            // 자식으로 두어 부모의 소속 Scene을 따르므로, 초기화 시점의 활성 Scene과 무관
+            // 자식으로 두어 부모의 소속 씬을 따르므로, 초기화 시점의 활성 씬과 무관
             _root = new GameObject(GameConstants.Trampoline.ROOT_NAME).transform;
             _root.SetParent(transform, false);
 
@@ -114,7 +114,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             await _factory.InitializeAsync(ct);
             progress?.Report(0.5f);
 
-            // Pool 초기화
+            // 풀 초기화
             _disposables = new CompositeDisposable();
 
             InitializePool();
@@ -136,7 +136,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         }
 
         /// <summary>
-        /// Trampoline을 Pool에 반환합니다.
+        /// Trampoline을 풀에 반환합니다.
         /// </summary>
         /// <param name="trampoline">반환할 Trampoline</param>
         public void ReturnToPool(ITrampoline trampoline)
@@ -328,7 +328,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         }
 
         /// <summary>
-        /// Trampoline 오브젝트를 Pool에서 가져와 생성합니다.
+        /// Trampoline 오브젝트를 풀에서 가져와 생성합니다.
         /// </summary>
         private void SpawnTrampoline(Vector2[] points)
         {

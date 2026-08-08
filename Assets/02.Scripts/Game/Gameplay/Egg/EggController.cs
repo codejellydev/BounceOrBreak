@@ -6,13 +6,13 @@ using UnityEngine;
 namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
 {
     /// <summary>
-    /// 계란 캐릭터의 도메인 로직을 담당하는 클래스.
+    /// Egg의 도메인 로직을 담당하는 클래스.
     /// </summary>
     public class EggController : MonoBehaviour, IPoolable
     {
         #region Properties
         /// <summary>
-        /// 계란의 타입 데이터.
+        /// Egg의 타입 데이터.
         /// </summary>
         public EggTypeData Data { get; private set; }
         #endregion
@@ -33,7 +33,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
 
         #region Public Methods
         /// <summary>
-        /// 계란을 지정된 타입 데이터로 초기화하고 활성화합니다.
+        /// Egg를 지정된 타입 데이터로 초기화하고 활성화합니다.
         /// TODO: data 기반 IEggBehavior 장착
         /// </summary>
         /// <returns>초기화 성공 시 true</returns>
@@ -76,7 +76,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         /// </summary>
         public void Destroy()
         {
-            // Scene 해체 중에는 이미 파괴되었을 수 있음
+            // 씬 해체 중에는 이미 파괴되었을 수 있음
             if (this == null)
             {
                 return;

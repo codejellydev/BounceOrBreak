@@ -19,7 +19,7 @@ namespace CodeJelly.BounceOrBreak.Game
         public static class Scene
         {
             /// <summary>
-            /// 씬 관련 Addresables 키
+            /// 씬 관련 Addressables 키
             /// </summary>
             public static class Keys
             {
@@ -44,17 +44,17 @@ namespace CodeJelly.BounceOrBreak.Game
             }
 
             /// <summary>
-            /// 계란 오브젝트 풀의 초기 용량
+            /// Egg 오브젝트 풀의 초기 용량
             /// </summary>
             public const int POOL_DEFAULT_CAPACITY = 20;
 
             /// <summary>
-            /// 계란 오브젝트 풀의 최대 크기
+            /// Egg 오브젝트 풀의 최대 크기
             /// </summary>
             public const int POOL_MAX_SIZE = 50;
 
             /// <summary>
-            /// 생성된 계란들이 배치될 루트 GameObject 이름
+            /// 생성된 Egg들이 배치될 루트 GameObject 이름
             /// </summary>
             public const string ROOT_NAME = "EggRoot";
         }
@@ -146,12 +146,12 @@ namespace CodeJelly.BounceOrBreak.Game
         public static class Character
         {
             /// <summary>
-            /// 캐릭터가 받을 수 있는 최소 튕김 힘
+            /// Character가 받을 수 있는 최소 튕김 힘
             /// </summary>
             public const float MIN_BOUNCE_FORCE = 5f;
 
             /// <summary>
-            /// 캐릭터가 받을 수 있는 최대 튕김 힘
+            /// Character가 받을 수 있는 최대 튕김 힘
             /// </summary>
             public const float MAX_BOUNCE_FORCE = 30f;
 

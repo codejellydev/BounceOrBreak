@@ -1,7 +1,7 @@
 namespace CodeJelly.BounceOrBreak.Game.Gameplay
 {
     /// <summary>
-    /// Game Scene의 진행 단계를 정의합니다.
+    /// GameScene의 진행 단계를 정의합니다.
     /// </summary>
     public enum GamePhase
     {

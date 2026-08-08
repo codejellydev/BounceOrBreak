@@ -6,7 +6,7 @@ using UnityEngine;
 namespace CodeJelly.BounceOrBreak.Game.Gameplay.Goal
 {
     /// <summary>
-    /// 계란의 도달을 감지하는 목표 지점 클래스.
+    /// Egg의 도달을 감지하는 목표 지점 클래스.
     /// 도달 사실과 타입 일치 여부만 발행하며, 득점 여부 판단은 구독 클래스가 처리합니다.
     /// TODO: IEgg 인터페이스로 추후 변경 예정 (ICharacter는 타입 정보가 없어 대체 불가)
     /// </summary>
@@ -14,13 +14,10 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Goal
     public class GoalPort : MonoBehaviour
     {
         #region Properties
-        /// <summary>
-        /// 이 GoalPort가 요구하는 계란 타입.
-        /// </summary>
         public EggType TargetType => _targetType;
 
         /// <summary>
-        /// 계란이 도달했을 때 발행
+        /// Egg가 도달했을 때 발행
         /// </summary>
         public Observable<GoalArrival> OnEggArrived => _onEggArrived;
         #endregion
@@ -49,7 +46,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Goal
                 return;
             }
 
-            // Data가 없으면 스폰이 완료되지 않은 계란이므로 판정에서 제외
+            // Data가 없으면 스폰이 완료되지 않은 Egg이므로 판정에서 제외
             if (egg.Data == null)
             {
                 return;

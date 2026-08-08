@@ -3,18 +3,18 @@ using CodeJelly.BounceOrBreak.Game.Gameplay.Egg;
 namespace CodeJelly.BounceOrBreak.Game.Gameplay.Goal
 {
     /// <summary>
-    /// 계란의 골 도달 데이터.
+    /// Egg의 Goal 도달 데이터.
     /// </summary>
     public struct GoalArrival
     {
         #region Properties
         /// <summary>
-        /// 계란이 도달한 GoalPort.
+        /// Egg가 도달한 GoalPort.
         /// </summary>
         public GoalPort Port { get; set; }
 
         /// <summary>
-        /// 도달한 계란.
+        /// 도달한 Egg.
         /// </summary>
         public EggController Egg { get; set; }
 

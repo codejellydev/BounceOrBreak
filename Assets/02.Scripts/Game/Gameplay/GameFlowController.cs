@@ -132,7 +132,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         }
 
         /// <summary>
-        /// 계란의 GoalPort 도달을 처리합니다.
+        /// Egg의 GoalPort 도달을 처리합니다.
         /// </summary>
         private void HandleGoalArrival(GoalArrival arrival)
         {

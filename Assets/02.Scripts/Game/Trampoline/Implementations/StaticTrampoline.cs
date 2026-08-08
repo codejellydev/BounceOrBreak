@@ -184,7 +184,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         #region Debug
 #if UNITY_EDITOR
         /// <summary>
-        /// Scene 뷰에서 Trampoline의 배치를 시각화합니다.
+        /// 씬 뷰에서 Trampoline의 배치를 시각화합니다.
         /// 위치 조정은 Transform 이동이 아닌 startPoint/endPoint 값으로 해야 합니다.
         /// </summary>
         private void OnDrawGizmos()

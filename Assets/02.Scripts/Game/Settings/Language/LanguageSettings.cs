@@ -11,7 +11,7 @@ namespace CodeJelly.BounceOrBreak.Game.Settings.Language
     {
         #region Properties
         /// <summary>
-        /// 선택된 Locale 식별자 코드.
+        /// 선택된 로케일 식별자 코드.
         /// </summary>
         public string LocaleCode
         {

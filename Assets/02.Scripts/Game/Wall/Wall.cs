@@ -5,7 +5,7 @@ using UnityEngine;
 namespace CodeJelly.BounceOrBreak.Game.Wall
 {
     /// <summary>
-    /// 씬에 배치되는 벽 객체를 관리하는 클래스.
+    /// 씬에 배치되는 Wall 객체를 관리하는 클래스.
     /// </summary>
     [RequireComponent(typeof(Collider2D))]
     public class Wall : MonoBehaviour

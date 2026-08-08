@@ -9,7 +9,7 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
 {
     /// <summary>
     /// 애플리케이션 필수 시스템의 초기화를 담당하는 클래스.
-    /// Scene 진입 경로와 무관하게 단 한 번만 초기화되도록 보장합니다.
+    /// 씬 진입 경로와 무관하게 단 한 번만 초기화되도록 보장합니다.
     /// </summary>
     public class AppInitializer
     {

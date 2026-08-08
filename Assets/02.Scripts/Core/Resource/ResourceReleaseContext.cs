@@ -1,7 +1,7 @@
 namespace CodeJelly.BounceOrBreak.Core.Resource
 {
     /// <summary>
-    /// Resource의 호출 Context를 정의합니다.
+    /// 리소스의 호출 Context를 정의합니다.
     /// </summary>
     public enum ResourceReleaseContext
     {

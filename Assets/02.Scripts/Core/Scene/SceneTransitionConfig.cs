@@ -4,7 +4,7 @@ using UnityEngine;
 namespace CodeJelly.BounceOrBreak.Core.Scene
 {
     /// <summary>
-    /// Scene 전환 시 필요한 설정을 관리하는 ScriptableObject.
+    /// 씬 전환 시 필요한 설정을 관리하는 ScriptableObject.
     /// </summary>
     [CreateAssetMenu(fileName = "SceneTransitionConfig", menuName = "Configs/Core/Scene Transition Config")]
     public class SceneTransitionConfig : ScriptableObject

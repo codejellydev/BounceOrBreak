@@ -9,7 +9,7 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
 {
     /// <summary>
     /// 어플리케이션의 초기화를 담당합니다.
-    /// Entry Scene에 배치되어 게임 실행 시 가장 먼저 실행됩니다.
+    /// EntryScene에 배치되어 게임 실행 시 가장 먼저 실행됩니다.
     /// </summary>
     public class Bootstrapper : IAsyncStartable
     {
@@ -41,7 +41,7 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
 
         #region Private Methods
         /// <summary>
-        /// 애플리케이션 필수 시스템을 초기화하고, 메인 컨텍스트로 실행 흐름을 이관합니다.
+        /// 애플리케이션 필수 시스템을 초기화하고, 메인 게임 플로우로 진입합니다.
         /// </summary>
         private async UniTaskVoid InitializeAndTransition()
         {
@@ -63,7 +63,7 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
                 return;
             }
 
-            // EnterGameFlowAsync 성공 시 Entry 씬이 언로드되므로, 이 로그는 출력되지 않을 확률이 높음
+            // EnterGameFlowAsync 성공 시 EntryScene이 언로드되므로, 이 로그는 출력되지 않을 확률이 높음
             AppLogger.Info("[Bootstrapper] Initialization complete.");
         }
 

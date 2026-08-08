@@ -7,7 +7,7 @@ using UnityEngine;
 namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
 {
     /// <summary>
-    /// 계란 생성을 담당하는 Factory 클래스.
+    /// Egg 생성을 담당하는 Factory 클래스.
     /// </summary>
     public class EggFactory
     {
@@ -25,7 +25,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         private GameObject _eggPrefab;
 
         /// <summary>
-        /// 생성된 계란들이 배치될 루트.
+        /// 생성된 Egg들이 배치될 루트.
         /// </summary>
         private Transform _root;
         #endregion
@@ -33,7 +33,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
 
         #region Public Methods
         /// <summary>
-        /// Factory를 초기화하고 계란 Prefab을 로딩합니다.
+        /// Factory를 초기화하고 Egg 프리팹을 로딩합니다.
         /// </summary>
         public async UniTask InitializeAsync(CancellationToken ct)
         {
@@ -46,7 +46,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         }
 
         /// <summary>
-        /// 생성된 계란들이 배치될 루트를 준비합니다.
+        /// 생성된 Egg들이 배치될 루트를 준비합니다.
         /// </summary>
         public void PrepareRoot()
         {
@@ -59,7 +59,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         }
 
         /// <summary>
-        /// 계란 인스턴스를 생성합니다.
+        /// Egg 인스턴스를 생성합니다.
         /// </summary>
         public EggController Create()
         {

@@ -61,7 +61,7 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
                    .As<ISettingsCategoryPresenter>();
 
 #if UNITY_EDITOR
-            // Scene 단독 실행 시의 초기화 대행
+            // 씬 단독 실행 시의 초기화 대행
             builder.RegisterEntryPoint<StandaloneSceneBootstrapper>();
 #endif
         }

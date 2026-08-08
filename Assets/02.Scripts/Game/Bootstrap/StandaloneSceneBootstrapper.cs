@@ -8,7 +8,7 @@ using VContainer.Unity;
 namespace CodeJelly.BounceOrBreak.Game.Bootstrap
 {
     /// <summary>
-    /// SceneLoader를 거치지 않고 단독 실행된 Scene의 초기화를 대행하는 클래스.
+    /// SceneLoader를 거치지 않고 단독 실행된 씬의 초기화를 대행하는 클래스.
     /// SceneLoader가 구동한 경우에는 동작하지 않습니다.
     /// </summary>
     public class StandaloneSceneBootstrapper : IAsyncStartable
@@ -56,7 +56,7 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
 
         #region Private Methods
         /// <summary>
-        /// Scene의 ISceneInitializer가 존재하면 초기화를 수행합니다.
+        /// 씬의 ISceneInitializer가 존재하면 초기화를 수행합니다.
         /// </summary>
         private async UniTask InitializeSceneAsync(CancellationToken ct)
         {
@@ -69,7 +69,7 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
         }
 
         /// <summary>
-        /// Scene의 ISceneActivatable이 존재하면 활성화를 통지합니다.
+        /// 씬의 ISceneActivatable이 존재하면 활성화를 통지합니다.
         /// </summary>
         private void ActivateScene()
         {

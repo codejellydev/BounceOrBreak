@@ -26,7 +26,7 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         }
 
         /// <summary>
-        /// 캐릭터 상태를 초기화한다.
+        /// Character 상태를 초기화한다.
         /// </summary>
         public void ResetState()
         {
