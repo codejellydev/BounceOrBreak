@@ -16,6 +16,10 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         #region Injection
         private readonly ResourceManager _resourceManager;
         private readonly TrampolineRegistry _registry;
+
+        /// <summary>
+        /// 생성된 Trampoline들이 배치될 루트.
+        /// </summary>
         private readonly Transform _root;
 
         public TrampolineFactory(
@@ -37,7 +41,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
         #region Public Methods
         /// <summary>
-        /// Factory를 초기화하고 Registry에 등록된 Prefab들을 로딩합니다.
+        /// Factory를 초기화하고 Registry에 등록된 프리팹들을 로딩합니다.
         /// </summary>
         public async UniTask InitializeAsync(CancellationToken ct)
         {

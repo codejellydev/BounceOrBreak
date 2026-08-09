@@ -19,7 +19,7 @@ namespace CodeJelly.BounceOrBreak.Game
         public static class Scene
         {
             /// <summary>
-            /// 씬 관련 Addresables 키
+            /// 씬 관련 Addressables 키
             /// </summary>
             public static class Keys
             {
@@ -44,17 +44,17 @@ namespace CodeJelly.BounceOrBreak.Game
             }
 
             /// <summary>
-            /// 계란 오브젝트 풀의 초기 용량
+            /// Egg 오브젝트 풀의 초기 용량
             /// </summary>
             public const int POOL_DEFAULT_CAPACITY = 20;
 
             /// <summary>
-            /// 계란 오브젝트 풀의 최대 크기
+            /// Egg 오브젝트 풀의 최대 크기
             /// </summary>
             public const int POOL_MAX_SIZE = 50;
 
             /// <summary>
-            /// 생성된 계란들이 배치될 루트 GameObject 이름
+            /// 생성된 Egg들이 배치될 루트 GameObject 이름
             /// </summary>
             public const string ROOT_NAME = "EggRoot";
         }
@@ -146,12 +146,12 @@ namespace CodeJelly.BounceOrBreak.Game
         public static class Character
         {
             /// <summary>
-            /// 캐릭터가 받을 수 있는 최소 튕김 힘
+            /// Character가 받을 수 있는 최소 튕김 힘
             /// </summary>
             public const float MIN_BOUNCE_FORCE = 5f;
 
             /// <summary>
-            /// 캐릭터가 받을 수 있는 최대 튕김 힘
+            /// Character가 받을 수 있는 최대 튕김 힘
             /// </summary>
             public const float MAX_BOUNCE_FORCE = 30f;
 
@@ -164,6 +164,22 @@ namespace CodeJelly.BounceOrBreak.Game
             /// 반사 방향 계산 시 속도 임계값 (이하일 경우 노말 방향으로 fallback)
             /// </summary>
             public const float MIN_VELOCITY_FOR_REFLECT = 0.01f;
+        }
+
+        public static class Score
+        {
+            public static class Keys
+            {
+                /// <summary>
+                /// ScoreRecord가 ISettingsRepository에 저장될 때 사용되는 키
+                /// </summary>
+                public const string REPOSITORY_KEY = "ScoreRecord";
+            }
+
+            /// <summary>
+            /// 타입이 일치하는 Egg가 도달했을 때 얻는 점수
+            /// </summary>
+            public const int MATCHED = 1;
         }
 
         public static class Audio

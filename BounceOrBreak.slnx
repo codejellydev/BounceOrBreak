@@ -10,5 +10,4 @@
   <Project Path="DOTweenPro.EditorScripts.csproj" />
   <Project Path="CodeJelly.BounceOrBreak.Input.csproj" />
   <Project Path="DOTweenPro.Scripts.csproj" />
-  <Project Path="Assembly-CSharp.csproj" />
 </Solution>

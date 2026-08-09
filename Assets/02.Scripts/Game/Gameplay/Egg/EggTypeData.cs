@@ -3,7 +3,7 @@ using UnityEngine;
 namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
 {
     /// <summary>
-    /// 계란 타입별 데이터를 정의하는 ScriptableObject.
+    /// Egg 타입별 데이터를 정의하는 ScriptableObject.
     /// </summary>
     [CreateAssetMenu(fileName = "EggTypeData", menuName = "Configs/Game/Egg Type Data")]
     public class EggTypeData : ScriptableObject

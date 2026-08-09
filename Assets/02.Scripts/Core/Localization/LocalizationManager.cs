@@ -21,7 +21,7 @@ namespace CodeJelly.BounceOrBreak.Core.Localization
 
         #region Properties
         /// <summary>
-        /// 현재 적용된 Locale 코드 (ex. "en"). 미초기화 시 빈 문자열.
+        /// 현재 적용된 로케일 코드 (ex. "en"). 미초기화 시 빈 문자열.
         /// </summary>
         public ReadOnlyReactiveProperty<string> CurrentLocaleCode => _currentLocaleCode.ToReadOnlyReactiveProperty();
         #endregion
@@ -35,7 +35,7 @@ namespace CodeJelly.BounceOrBreak.Core.Localization
         #region Public Methods
         /// <summary>
         /// Localization 시스템을 초기화합니다.
-        /// 빌드 내 Fallback Locale이 최소 1개 이상 보장되어야 성공으로 간주합니다.
+        /// 빌드 내 Fallback 로케일이 최소 1개 이상 보장되어야 성공으로 간주합니다.
         /// </summary>
         public async UniTask<bool> InitializeAsync()
         {
@@ -66,7 +66,7 @@ namespace CodeJelly.BounceOrBreak.Core.Localization
         }
 
         /// <summary>
-        /// Locale을 변경합니다. 해당 Locale이 사용 가능하지 않으면 false 반환.
+        /// 로케일을 변경합니다. 해당 로케일이 사용 가능하지 않으면 false 반환.
         /// TODO: 언어팩 다운로드 기능 도입 시 await DownloadLocaleAsync 추가 및 async 승격.
         /// </summary>
         public UniTask<bool> SetLocaleAsync(string localeCode, CancellationToken ct = default)
@@ -92,7 +92,7 @@ namespace CodeJelly.BounceOrBreak.Core.Localization
         }
 
         /// <summary>
-        /// 사용 가능한 Locale 코드 목록을 반환합니다.
+        /// 사용 가능한 로케일 코드 목록을 반환합니다.
         /// </summary>
         public IReadOnlyList<string> GetAvailableLocaleCodes()
         {

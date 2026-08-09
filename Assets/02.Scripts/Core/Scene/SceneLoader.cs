@@ -14,18 +14,18 @@ using VContainer.Unity;
 namespace CodeJelly.BounceOrBreak.Core.Scene
 {
     /// <summary>
-    /// Addressables + VContainer 기반 Scene 로딩 클래스.
+    /// Addressables + VContainer 기반 씬 로딩 클래스.
     /// SceneManager와 혼용을 권장하지 않습니다.
-    /// (권장 구조: Unity Build Settings에는 Entry Scene만 포함하고, 나머지는 모두 Addressables로 관리)
-    /// Target Scene은 경량으로 유지하고, 무거운 Asset은 ISceneInitializer에서 비동기 로드합니다.
+    /// (권장 구조: Unity Build Settings에는 EntryScene만 포함하고, 나머지는 모두 Addressables로 관리)
+    /// 타겟 씬은 경량으로 유지하고, 무거운 Asset은 ISceneInitializer에서 비동기 로드합니다.
     ///
-    /// TODO: Scene key enum 자동 생성 및 빌드 프로세스에서의 키 검증 도입
+    /// TODO: 씬 키 enum 자동 생성 및 빌드 프로세스에서의 키 검증 도입
     /// </summary>
     public class SceneLoader : IDisposable
     {
         #region Nested Classes
         /// <summary>
-        /// 타겟 Scene에서 resolve된 컴포넌트 집합.
+        /// 타겟 씬에서 resolve된 컴포넌트 집합.
         /// </summary>
         private readonly struct SceneComponents
         {
@@ -68,7 +68,7 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
             _transitionProgress.ToReadOnlyReactiveProperty();
 
         /// <summary>
-        /// 현재 Scene 전환 중인지 여부
+        /// 현재 씬 전환 중인지 여부
         /// </summary>
         public bool IsTransitioning { get; private set; }
         #endregion
@@ -86,11 +86,11 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
 
         #region Public Methods
         /// <summary>
-        /// Scene을 비동기적으로 전환합니다.
-        /// 초기화 로직, Loading Scene, Payload 전달 등이 필요한 경우 사용합니다.
+        /// 씬을 비동기적으로 전환합니다.
+        /// 초기화 로직, LoadingScene, Payload 전달 등이 필요한 경우 사용합니다.
         /// </summary>
-        /// <param name="config">Scene 전환 설정</param>
-        /// <param name="payload">Scene에 전달할 데이터</param>
+        /// <param name="config">씬 전환 설정</param>
+        /// <param name="payload">씬에 전달할 데이터</param>
         /// <param name="ct">취소 토큰</param>
         public async UniTask LoadSceneAsync(
             SceneTransitionConfig config,
@@ -166,7 +166,7 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
 
         #region Private Methods
         /// <summary>
-        /// 실제 Scene 전환 로직을 실행합니다.
+        /// 실제 씬 전환 로직을 실행합니다.
         /// </summary>
         private async UniTask TransitionSceneAsync(
             SceneTransitionConfig config,
@@ -178,19 +178,19 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
 
             try
             {
-                // 1. Loading Scene 로드 (필요 시)
+                // 1. LoadingScene 로드 (필요 시)
                 if (config.UseLoadingScene == true)
                 {
                     _loadingSceneInstance = await LoadLoadingSceneAsync(config.LoadingSceneKey, ct);
                 }
 
-                // 2. 타겟 Scene 로드 (진행률: 0~50%)
+                // 2. 타겟 씬 로드 (진행률: 0~50%)
                 targetSceneInstance = await LoadTargetSceneAsync(
                     config.TargetSceneKey,
                     MapProgress(0f, 0.5f),
                     ct);
 
-                // 3. SceneScope에서 Scene 컴포넌트 resolve
+                // 3. SceneScope에서 씬 컴포넌트 resolve
                 SceneComponents components = ResolveSceneComponents(targetSceneInstance);
 
                 // 4. Context 설정
@@ -203,13 +203,13 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
                     MapProgress(0.5f, 1f),
                     ct);
 
-                // 6. 이전 Scene 정리
+                // 6. 이전 씬 정리
                 await UnloadPreviousSceneAsync(targetSceneInstance);
 
                 _previousSceneInstance = targetSceneInstance;
                 SceneManager.SetActiveScene(targetSceneInstance.Scene);
 
-                // 7. Loading Scene 언로드
+                // 7. LoadingScene 언로드
                 await UnloadLoadingSceneAsync(config.UseLoadingScene, ct);
 
                 AppLogger.Info($"[SceneLoader] Transition to {config.TargetSceneKey} completed successfully.");
@@ -221,7 +221,7 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
             }
             finally
             {
-                // 전환 실패 시 로드된 Scene들 정리
+                // 전환 실패 시 로드된 씬들 정리
                 if (transitionSucceeded == false)
                 {
                     await CleanupOnFailureAsync(config.UseLoadingScene, targetSceneInstance);
@@ -246,7 +246,7 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
                 return false;
             }
 
-            // Loading Scene 유효성 검사
+            // LoadingScene 유효성 검사
             if (config.UseLoadingScene == true && string.IsNullOrEmpty(config.LoadingSceneKey) == true)
             {
                 AppLogger.Error($"[SceneLoader] LoadingSceneKey is empty but UseLoadingScene is true in config: {config.name}");
@@ -257,8 +257,8 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
         }
 
         /// <summary>
-        /// Loading Scene을 Additive로 로드합니다.
-        /// Loading Scene은 가볍기 때문에 진행률 추적 없이 단순 대기합니다.
+        /// LoadingScene을 Additive로 로드합니다.
+        /// LoadingScene은 가볍기 때문에 진행률 추적 없이 단순 대기합니다.
         /// </summary>
         private async UniTask<SceneInstance> LoadLoadingSceneAsync(string loadingSceneKey, CancellationToken ct)
         {
@@ -280,7 +280,7 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
         }
 
         /// <summary>
-        /// 타겟 Scene을 Additive로 로드하면서 진행률을 보고합니다.
+        /// 타겟 씬을 Additive로 로드하면서 진행률을 보고합니다.
         /// </summary>
         private async UniTask<SceneInstance> LoadTargetSceneAsync(
             string sceneKey,
@@ -307,7 +307,7 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
         }
 
         /// <summary>
-        /// 타겟 Scene의 LifetimeScope에서 컴포넌트들을 resolve합니다.
+        /// 타겟 씬의 LifetimeScope에서 컴포넌트들을 resolve합니다.
         /// </summary>
         private SceneComponents ResolveSceneComponents(SceneInstance targetSceneInstance)
         {
@@ -348,7 +348,7 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
 
         /// <summary>
         /// ISceneInitializer가 존재하면 비동기 초기화를 수행하고 진행률을 보고합니다.
-        /// 초기화 로직은 Loading Scene이 foreground에 있는 동안 실행됩니다.
+        /// 초기화 로직은 LoadingScene이 foreground에 있는 동안 실행됩니다.
         /// </summary>
         private async UniTask RunInitializationAsync(
             ISceneInitializer initializer,
@@ -368,8 +368,8 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
         }
 
         /// <summary>
-        /// 이전 Scene을 언로드합니다.
-        /// 이전 Scene이 없으면(Entry Scene) SceneManager로 현재 active scene을 직접 언로드합니다.
+        /// 이전 씬을 언로드합니다.
+        /// 이전 씬이 없으면(EntryScene) SceneManager로 현재 활성 씬을 직접 언로드합니다.
         /// 언로드는 취소되면 안 되는 정리 작업이므로 ct를 전달하지 않습니다.
         /// </summary>
         private async UniTask UnloadPreviousSceneAsync(SceneInstance targetSceneInstance)
@@ -380,7 +380,7 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
                 return;
             }
 
-            // _previousSceneInstance가 없다는 것은 Entry Scene이므로 SceneManager로 직접 언로드
+            // _previousSceneInstance가 없다는 것은 EntryScene이므로 SceneManager로 직접 언로드
             var currentActiveScene = SceneManager.GetActiveScene();
             if (currentActiveScene.IsValid() == true && currentActiveScene != targetSceneInstance.Scene)
             {
@@ -389,8 +389,8 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
         }
 
         /// <summary>
-        /// Loading Scene을 언로드합니다.
-        /// 언로드 직전 한 프레임 양보하여 타겟 Scene이 foreground에 안정적으로 올라오도록 합니다.
+        /// LoadingScene을 언로드합니다.
+        /// 언로드 직전 한 프레임 양보하여 타겟 씬이 foreground에 안정적으로 올라오도록 합니다.
         /// </summary>
         private async UniTask UnloadLoadingSceneAsync(bool useLoadingScene, CancellationToken ct)
         {
@@ -403,7 +403,7 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
         }
 
         /// <summary>
-        /// 전환된 Scene의 ISceneActivatable에 활성화를 통지합니다.
+        /// 전환된 씬의 ISceneActivatable에 활성화를 통지합니다.
         /// OnActivated에서 예외가 발생하더라도 전환 자체는 성공으로 간주합니다. (예외는 로그 처리)
         /// </summary>
         private void NotifyActivated(ISceneActivatable activatable, string sceneKey)
@@ -426,7 +426,7 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
         }
 
         /// <summary>
-        /// 전환 실패 시 로드된 Scene들을 정리합니다.
+        /// 전환 실패 시 로드된 씬들을 정리합니다.
         /// 정리 중 예외가 발생하더라도 원래 예외 보존을 위해 catch 처리합니다.
         /// </summary>
         private async UniTask CleanupOnFailureAsync(bool useLoadingScene, SceneInstance targetSceneInstance)

@@ -159,7 +159,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
             _config = null;
 
-            // Scene 해체 중에는 이미 파괴되었을 수 있음
+            // 씬 해체 중에는 이미 파괴되었을 수 있음
             if (this == null)
             {
                 return;
@@ -305,7 +305,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         }
 
         /// <summary>
-        /// Trampoline을 비활성화하고 Pool에 반환합니다.
+        /// Trampoline을 비활성화하고 풀에 반환합니다.
         /// </summary>
         protected virtual void Despawn()
         {

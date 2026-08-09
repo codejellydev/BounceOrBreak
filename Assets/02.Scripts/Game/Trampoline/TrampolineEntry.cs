@@ -5,7 +5,7 @@ using UnityEngine.AddressableAssets;
 namespace CodeJelly.BounceOrBreak.Game.Trampoline
 {
     /// <summary>
-    /// TrampolineType과 해당 Prefab의 매핑 단위.
+    /// TrampolineType과 해당 프리팹의 매핑 단위.
     /// TrampolineRegistry에서 사용됩니다.
     /// </summary>
     [Serializable]

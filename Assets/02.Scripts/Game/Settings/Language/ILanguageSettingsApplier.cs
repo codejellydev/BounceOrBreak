@@ -9,7 +9,7 @@ namespace CodeJelly.BounceOrBreak.Game.Settings.Language
     public interface ILanguageSettingsApplier
     {
         /// <summary>
-        /// Locale 코드를 적용합니다.
+        /// 로케일 코드를 적용합니다.
         /// </summary>
         UniTask ApplyLanguageAsync(string localeCode, CancellationToken cancellationToken = default);
 

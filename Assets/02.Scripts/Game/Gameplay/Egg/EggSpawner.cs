@@ -3,13 +3,14 @@ using CodeJelly.BounceOrBreak.Core.Pooling;
 using CodeJelly.BounceOrBreak.Core.Resource;
 using Cysharp.Threading.Tasks;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using UnityEngine.Pool;
 
 namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
 {
     /// <summary>
-    /// 스폰 로직에 따라 계란을 생성하는 클래스.
+    /// 스폰 로직에 따라 Egg를 생성하는 클래스.
     /// </summary>
     public class EggSpawner : IDisposable
     {
@@ -24,6 +25,11 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
 
 
         #region Private Variables
+        /// <summary>
+        /// 풀에서 꺼내져 활성 상태인 Egg 집합.
+        /// </summary>
+        private readonly HashSet<EggController> _activeEggs = new HashSet<EggController>();
+
         private EggFactory _factory;
         private EggRegistry _registry;
         private EggSpawnConfig _config;
@@ -56,6 +62,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         public void StartSpawning()
         {
             StopSpawning();
+            DespawnAll();
 
             _factory.PrepareRoot();
 
@@ -74,11 +81,45 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         }
 
         /// <summary>
+        /// Egg를 풀에 반납합니다.
+        /// </summary>
+        /// <param name="egg">반납할 Egg</param>
+        public void Despawn(EggController egg)
+        {
+            if (egg == null)
+            {
+                AppLogger.Error("[EggSpawner] Cannot despawn a null egg.");
+
+                return;
+            }
+
+            _activeEggs.Remove(egg);
+            _pool.Release(egg);
+        }
+
+        /// <summary>
+        /// 활성 상태인 모든 Egg를 풀에 반납합니다.
+        /// </summary>
+        public void DespawnAll()
+        {
+            // Despawn은 순회 중 컬렉션을 수정하므로 풀에 직접 반납함
+            foreach (EggController egg in _activeEggs)
+            {
+                _pool.Release(egg);
+            }
+
+            _activeEggs.Clear();
+        }
+
+        /// <summary>
         /// IDisposable.Dispose Implementation
         /// </summary>
         public void Dispose()
         {
             StopSpawning();
+
+            // Clear는 풀에 있는 Egg만 파괴하므로, 먼저 회수해야 모두 Destroy를 거침
+            DespawnAll();
 
             _pool?.Clear();
             _factory?.ReleaseAll();
@@ -106,7 +147,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         }
 
         /// <summary>
-        /// 스폰 간격마다 계란을 스폰합니다.
+        /// 스폰 간격마다 Egg를 스폰합니다.
         /// </summary>
         private async UniTaskVoid RunSpawnLoop(CancellationToken ct)
         {
@@ -118,7 +159,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         }
 
         /// <summary>
-        /// 다음 계란을 풀에서 꺼내 스폰합니다.
+        /// 다음 Egg를 풀에서 꺼내 스폰합니다.
         /// </summary>
         private void SpawnNext()
         {
@@ -133,11 +174,15 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
             {
                 AppLogger.Error($"[EggSpawner] Failed to initialize egg. Type: {type}.");
                 _pool.Release(egg);
+
+                return;
             }
+
+            _activeEggs.Add(egg);
         }
 
         /// <summary>
-        /// 다음에 스폰할 계란 종류를 결정합니다.
+        /// 다음에 스폰할 Egg 종류를 결정합니다.
         /// </summary>
         private EggType SelectNextType()
         {

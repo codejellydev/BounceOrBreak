@@ -24,7 +24,8 @@ MonoBehaviour:
   - m_GUID: 1ab1f211223e9ec448c68503325d349e
     m_Address: EggSpawnConfig
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Config
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 1e3a9aae2134b184ea31953813bbfc06
     m_Address: StaticTrampolinePrefab
@@ -43,7 +44,8 @@ MonoBehaviour:
   - m_GUID: 3cdbe6249060c4641ab6b6da958d3818
     m_Address: EggRegistry
     m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - Config
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 46789d0d10d1f30429dcb4f3651c695f
     m_Address: FreeformTrampolinePrefab
@@ -101,12 +103,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels:
     - Config
-    - Scene
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 99c9720ab356a0642a771bea13969a05
-    m_Address: TestScene
-    m_ReadOnly: 0
-    m_SerializedLabels:
     - Scene
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a831584289b0eb744a9e89b58014f323

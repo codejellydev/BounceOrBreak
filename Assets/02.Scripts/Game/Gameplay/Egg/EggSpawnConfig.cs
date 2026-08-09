@@ -3,7 +3,7 @@ using UnityEngine;
 namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
 {
     /// <summary>
-    /// 계란 스폰 동작을 정의하는 ScriptableObject.
+    /// Egg 스폰 동작을 정의하는 ScriptableObject.
     /// </summary>
     [CreateAssetMenu(fileName = "EggSpawnConfig", menuName = "Configs/Game/Egg Spawn Config")]
     public class EggSpawnConfig : ScriptableObject
