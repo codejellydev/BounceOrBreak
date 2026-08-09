@@ -36,7 +36,7 @@ jobs:
       - name: Install paid assets
         run: |
           git clone https://x-access-token:${{ secrets.PAT_ASSET }}@github.com/${{ github.repository_owner }}/BounceOrBreak-Assets.git $HOME/paid-assets
-          node Scripts/install-paid-assets.js
+          node Tools/install-paid-assets.js
 
       - name: Cache Unity Library
         uses: actions/cache@v6
