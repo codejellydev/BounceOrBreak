@@ -2,6 +2,7 @@ using CodeJelly.BounceOrBreak.Core.Logging;
 using CodeJelly.BounceOrBreak.Core.Scene;
 using CodeJelly.BounceOrBreak.Game.Gameplay.Egg;
 using CodeJelly.BounceOrBreak.Game.Gameplay.Goal;
+using CodeJelly.BounceOrBreak.Game.Gameplay.Score;
 using CodeJelly.BounceOrBreak.Game.Input;
 using CodeJelly.BounceOrBreak.Game.Trampoline;
 using Cysharp.Threading.Tasks;
@@ -20,6 +21,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         private readonly FallDetector _fallDetector;
         private readonly GoalPort[] _goalPorts;
         private readonly EggSpawner _eggSpawner;
+        private readonly ScoreService _scoreService;
         private readonly TrampolineDrawer _trampolineDrawer;
         private readonly InputManager _inputManager;
 
@@ -27,12 +29,14 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
             FallDetector fallDetector,
             GoalPort[] goalPorts,
             EggSpawner eggSpawner,
+            ScoreService scoreService,
             TrampolineDrawer trampolineDrawer,
             InputManager inputManager)
         {
             _fallDetector = fallDetector;
             _goalPorts = goalPorts;
             _eggSpawner = eggSpawner;
+            _scoreService = scoreService;
             _trampolineDrawer = trampolineDrawer;
             _inputManager = inputManager;
         }
@@ -85,6 +89,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
             _trampolineDrawer.SetTrampolineType(TrampolineType.Straight);
 
             await _eggSpawner.InitializeAsync(ct);
+            await _scoreService.InitializeAsync();
             progress?.Report(1f);
 
             InitializationState = SceneInitializationState.Completed;
@@ -141,9 +146,12 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
                 return;
             }
 
-            // TODO: 일치 시 득점, 불일치 시 재처리
-            AppLogger.Debug($"[GameFlowController] Egg arrived at goal. Matched: {arrival.IsMatched}.");
+            if (arrival.IsMatched == true)
+            {
+                _scoreService.AddScore();
+            }
 
+            // TODO: 불일치 시 재처리
             _eggSpawner.Despawn(arrival.Egg);
         }
 
@@ -159,6 +167,12 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
 
             _phase.Value = GamePhase.GameOver;
             _eggSpawner.StopSpawning();
+
+            // 저장 완료를 기다릴 이유가 없으므로 게임오버 처리를 막지 않음
+            if (_scoreService.TryUpdateBestScore() == true)
+            {
+                _scoreService.SaveBestScoreAsync().Forget();
+            }
         }
         #endregion
     }

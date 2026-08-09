@@ -166,6 +166,22 @@ namespace CodeJelly.BounceOrBreak.Game
             public const float MIN_VELOCITY_FOR_REFLECT = 0.01f;
         }
 
+        public static class Score
+        {
+            public static class Keys
+            {
+                /// <summary>
+                /// ScoreRecord가 ISettingsRepository에 저장될 때 사용되는 키
+                /// </summary>
+                public const string REPOSITORY_KEY = "ScoreRecord";
+            }
+
+            /// <summary>
+            /// 타입이 일치하는 Egg가 도달했을 때 얻는 점수
+            /// </summary>
+            public const int MATCHED = 1;
+        }
+
         public static class Audio
         {
             public static class Keys
