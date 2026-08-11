@@ -9,7 +9,7 @@ using UnityEngine.Localization.Settings;
 namespace CodeJelly.BounceOrBreak.Core.Localization
 {
     /// <summary>
-    /// Unity Localization 패키지 기반의 로컬라이제이션 관리 클래스.
+    /// Unity Localization 패키지를 감싸는 관리 클래스.
     /// </summary>
     public class LocalizationManager : IDisposable
     {

@@ -21,7 +21,7 @@ namespace CodeJelly.BounceOrBreak.Core.Pooling
         {
             return new ObjectPool<T>
             (
-                // 신규 인스턴스도 Release를 거쳐 재사용 객체와 동일한 풀 상태로 편입
+                // 신규 인스턴스도 Release를 거쳐 재사용 객체와 동일한 Pool 상태로 편입
                 createFunc: () =>
                 {
                     T item = createFunc();

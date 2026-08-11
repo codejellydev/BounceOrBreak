@@ -16,10 +16,10 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
 
 
         #region Private Variables
-        [Tooltip("계란 타입")]
+        [Tooltip("Egg 타입")]
         [SerializeField] private EggType _type;
 
-        [Tooltip("계란 색")]
+        [Tooltip("Egg 색")]
         [SerializeField] private Color _color = Color.white;
         #endregion
     }

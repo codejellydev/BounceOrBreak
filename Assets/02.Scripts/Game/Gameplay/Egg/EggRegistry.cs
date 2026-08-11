@@ -19,7 +19,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
 
 
         #region Private Variables
-        [Tooltip("타입별 계란 데이터 목록")]
+        [Tooltip("타입별 Egg 데이터 목록")]
         [SerializeField] private List<EggTypeData> _entries = new List<EggTypeData>();
         #endregion
 

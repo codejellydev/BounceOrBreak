@@ -64,7 +64,7 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
                 return false;
             }
 
-            // 로컬라이제이션 시스템 초기화
+            // Localization 시스템 초기화
             if (await _localizationManager.InitializeAsync() == false)
             {
                 AppLogger.Error("[AppInitializer] Failed to initialize localization system.");

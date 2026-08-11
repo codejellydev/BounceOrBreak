@@ -26,7 +26,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
 
         #region Private Variables
         /// <summary>
-        /// 풀에서 꺼내져 활성 상태인 Egg 집합.
+        /// Pool에서 꺼내져 활성 상태인 Egg 집합.
         /// </summary>
         private readonly HashSet<EggController> _activeEggs = new HashSet<EggController>();
 
@@ -81,7 +81,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         }
 
         /// <summary>
-        /// Egg를 풀에 반납합니다.
+        /// Egg를 Pool에 반납합니다.
         /// </summary>
         /// <param name="egg">반납할 Egg</param>
         public void Despawn(EggController egg)
@@ -98,11 +98,11 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         }
 
         /// <summary>
-        /// 활성 상태인 모든 Egg를 풀에 반납합니다.
+        /// 활성 상태인 모든 Egg를 Pool에 반납합니다.
         /// </summary>
         public void DespawnAll()
         {
-            // Despawn은 순회 중 컬렉션을 수정하므로 풀에 직접 반납함
+            // Despawn은 순회 중 컬렉션을 수정하므로 Pool에 직접 반납함
             foreach (EggController egg in _activeEggs)
             {
                 _pool.Release(egg);
@@ -118,7 +118,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         {
             StopSpawning();
 
-            // Clear는 풀에 있는 Egg만 파괴하므로, 먼저 회수해야 모두 Destroy를 거침
+            // Clear는 Pool에 있는 Egg만 파괴하므로, 먼저 회수해야 모두 Destroy를 거침
             DespawnAll();
 
             _pool?.Clear();
@@ -159,7 +159,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         }
 
         /// <summary>
-        /// 다음 Egg를 풀에서 꺼내 스폰합니다.
+        /// 다음 Egg를 Pool에서 꺼내 스폰합니다.
         /// </summary>
         private void SpawnNext()
         {
