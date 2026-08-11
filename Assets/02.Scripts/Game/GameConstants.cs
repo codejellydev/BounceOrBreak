@@ -230,6 +230,11 @@ namespace CodeJelly.BounceOrBreak.Game
             }
 
             /// <summary>
+            /// 목표 프레임레이트 (미설정 시 모바일은 30fps로 고정)
+            /// </summary>
+            public const int TARGET_FRAME_RATE = 60;
+
+            /// <summary>
             /// 그래픽 품질 수준. Unity Quality Settings 인덱스에 매핑.
             /// </summary>
             public static class Quality

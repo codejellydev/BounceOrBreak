@@ -11,6 +11,11 @@ namespace CodeJelly.BounceOrBreak.Game.Settings.Graphics
         void ApplyQualityLevel(int qualityLevel);
 
         /// <summary>
+        /// 목표 프레임레이트를 적용합니다.
+        /// </summary>
+        void ApplyTargetFrameRate(int targetFrameRate);
+
+        /// <summary>
         /// 모든 그래픽 설정을 적용합니다.
         /// </summary>
         void ApplySettings(GraphicsSettings settings);
