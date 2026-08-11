@@ -2,6 +2,7 @@ using CodeJelly.BounceOrBreak.Core.Localization;
 using CodeJelly.BounceOrBreak.Core.Logging;
 using CodeJelly.BounceOrBreak.Core.Resource;
 using CodeJelly.BounceOrBreak.Game.Input;
+using CodeJelly.BounceOrBreak.Game.Settings.Graphics;
 using Cysharp.Threading.Tasks;
 using System.Threading;
 
@@ -17,15 +18,18 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
         private readonly ResourceManager _resourceManager;
         private readonly InputManager _inputManager;
         private readonly LocalizationManager _localizationManager;
+        private readonly IGraphicsSettingsApplier _graphicsApplier;
 
         public AppInitializer(
             ResourceManager resourceManager,
             InputManager inputManager,
-            LocalizationManager localizationManager)
+            LocalizationManager localizationManager,
+            IGraphicsSettingsApplier graphicsApplier)
         {
             _resourceManager = resourceManager;
             _inputManager = inputManager;
             _localizationManager = localizationManager;
+            _graphicsApplier = graphicsApplier;
         }
         #endregion
 
@@ -47,6 +51,9 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
             {
                 return true;
             }
+
+            // 목표 프레임레이트 적용
+            _graphicsApplier.ApplyTargetFrameRate(GameConstants.Graphics.TARGET_FRAME_RATE);
 
             // 리소스 시스템 초기화
             if (await _resourceManager.InitializeAsync() == false)

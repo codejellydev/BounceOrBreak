@@ -28,6 +28,21 @@ namespace CodeJelly.BounceOrBreak.Game.Settings.Graphics
         }
 
         /// <summary>
+        /// IGraphicsSettingsApplier.ApplyTargetFrameRate Implementation
+        /// </summary>
+        public void ApplyTargetFrameRate(int targetFrameRate)
+        {
+            if (targetFrameRate <= 0)
+            {
+                AppLogger.Error($"[UnityGraphicsApplier] Invalid target frame rate: {targetFrameRate}.");
+                return;
+            }
+
+            Application.targetFrameRate = targetFrameRate;
+            AppLogger.Info($"[UnityGraphicsApplier] Target frame rate applied: {targetFrameRate}");
+        }
+
+        /// <summary>
         /// IGraphicsSettingsApplier.ApplySettings Implementation
         /// </summary>
         public void ApplySettings(GraphicsSettings settings)
