@@ -85,7 +85,7 @@ namespace CodeJelly.BounceOrBreak.Game.Settings.Language
 
         #region Private Methods
         /// <summary>
-        /// 저장된 설정을 불러오고 로컬라이제이션 시스템에 적용합니다.
+        /// 저장된 설정을 불러오고 Localization 시스템에 적용합니다.
         /// </summary>
         private async UniTaskVoid LoadAndApplySettings()
         {

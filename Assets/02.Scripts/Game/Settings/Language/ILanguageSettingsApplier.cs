@@ -4,7 +4,7 @@ using Cysharp.Threading.Tasks;
 namespace CodeJelly.BounceOrBreak.Game.Settings.Language
 {
     /// <summary>
-    /// 언어 설정값을 실제 로컬라이제이션 시스템에 적용하는 인터페이스.
+    /// 언어 설정값을 실제 Localization 시스템에 적용하는 인터페이스.
     /// </summary>
     public interface ILanguageSettingsApplier
     {

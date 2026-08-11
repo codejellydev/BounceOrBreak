@@ -16,10 +16,10 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
 
 
         #region Private Variables
-        [Tooltip("계란 스폰 간격 (초)")]
+        [Tooltip("Egg 스폰 간격 (초)")]
         [SerializeField] private float _spawnInterval = 10f;
 
-        [Tooltip("계란 스폰 위치 (월드 좌표)")]
+        [Tooltip("Egg 스폰 위치 (월드 좌표)")]
         [SerializeField] private Vector2 _spawnPosition;
         #endregion
     }

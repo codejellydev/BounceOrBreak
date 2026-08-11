@@ -24,7 +24,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Goal
 
 
         #region Private Variables
-        [Tooltip("요구하는 계란 타입")]
+        [Tooltip("요구하는 Egg 타입")]
         [SerializeField] private EggType _targetType;
 
         private readonly Subject<GoalArrival> _onEggArrived = new Subject<GoalArrival>();

@@ -305,7 +305,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         }
 
         /// <summary>
-        /// Trampoline을 비활성화하고 풀에 반환합니다.
+        /// Trampoline을 비활성화하고 Pool에 반환합니다.
         /// </summary>
         protected virtual void Despawn()
         {

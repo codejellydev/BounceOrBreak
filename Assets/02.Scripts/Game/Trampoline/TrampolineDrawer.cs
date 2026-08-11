@@ -114,7 +114,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             await _factory.InitializeAsync(ct);
             progress?.Report(0.5f);
 
-            // 풀 초기화
+            // Pool 초기화
             _disposables = new CompositeDisposable();
 
             InitializePool();
@@ -136,7 +136,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         }
 
         /// <summary>
-        /// Trampoline을 풀에 반환합니다.
+        /// Trampoline을 Pool에 반환합니다.
         /// </summary>
         /// <param name="trampoline">반환할 Trampoline</param>
         public void ReturnToPool(ITrampoline trampoline)
@@ -328,7 +328,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         }
 
         /// <summary>
-        /// Trampoline 오브젝트를 풀에서 가져와 생성합니다.
+        /// Trampoline 오브젝트를 Pool에서 가져와 생성합니다.
         /// </summary>
         private void SpawnTrampoline(Vector2[] points)
         {

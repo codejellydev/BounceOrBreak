@@ -44,12 +44,12 @@ namespace CodeJelly.BounceOrBreak.Game
             }
 
             /// <summary>
-            /// Egg 오브젝트 풀의 초기 용량
+            /// Egg 오브젝트 Pool의 초기 용량
             /// </summary>
             public const int POOL_DEFAULT_CAPACITY = 20;
 
             /// <summary>
-            /// Egg 오브젝트 풀의 최대 크기
+            /// Egg 오브젝트 Pool의 최대 크기
             /// </summary>
             public const int POOL_MAX_SIZE = 50;
 
@@ -128,12 +128,12 @@ namespace CodeJelly.BounceOrBreak.Game
             public const float DEFAULT_CENTER_THRESHOLD = 0.2f;
 
             /// <summary>
-            /// ITrampoline 오브젝트 풀의 초기 용량
+            /// ITrampoline 오브젝트 Pool의 초기 용량
             /// </summary>
             public const int POOL_DEFAULT_CAPACITY = 20;
 
             /// <summary>
-            /// ITrampoline 오브젝트 풀의 최대 크기
+            /// ITrampoline 오브젝트 Pool의 최대 크기
             /// </summary>
             public const int POOL_MAX_SIZE = 50;
 
@@ -161,7 +161,7 @@ namespace CodeJelly.BounceOrBreak.Game
             public const float SPEED_BOUNCE_MULTIPLIER = 0.02f;
 
             /// <summary>
-            /// 반사 방향 계산 시 속도 임계값 (이하일 경우 노말 방향으로 fallback)
+            /// 반사 방향 계산 시 속도 임계값 (이하일 경우 노말 방향으로 Fallback)
             /// </summary>
             public const float MIN_VELOCITY_FOR_REFLECT = 0.01f;
         }

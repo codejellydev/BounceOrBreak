@@ -15,7 +15,7 @@ To follow the project's coding conventions, apply the custom script template.
 Unity\Hub\Editor\6000.3.9f1\Editor\Data\Resources\ScriptTemplates\1-Scripting__MonoBehaviour Script-NewMonoBehaviourScript.cs.txt
 ```
 
-Replace the file at the above path with [`/Documents/Development/Convention/1-Scripting__MonoBehaviour Script-NewMonoBehaviourScript.cs.txt`](</Documents/Development/Convention/1-Scripting__MonoBehaviour Script-NewMonoBehaviourScript.cs.txt>).
+Replace the file at the above path with [`/Documents/Development/Conventions/1-Scripting__MonoBehaviour Script-NewMonoBehaviourScript.cs.txt`](</Documents/Development/Conventions/1-Scripting__MonoBehaviour Script-NewMonoBehaviourScript.cs.txt>).
 
 ### External Assets
 
@@ -38,7 +38,7 @@ Each entry contains the following fields:
 
 ### Coding Conventions
 
-For coding conventions, refer to [`/Documents/Development/Convention/CodingConvention.md`](/Documents/Development/Conventions/CodingConvention.md).
+For coding conventions, refer to [`/Documents/Development/Conventions/CodingConvention.md`](/Documents/Development/Conventions/CodingConvention.md).
 
 ### CI/CD
 
