@@ -13,10 +13,12 @@ namespace CodeJelly.BounceOrBreak.Core.Localization
     /// </summary>
     public class LocalizationManager : IDisposable
     {
+        #region Constructors
         public LocalizationManager()
         {
             _currentLocaleCode = new ReactiveProperty<string>(string.Empty);
         }
+        #endregion
 
 
         #region Properties
