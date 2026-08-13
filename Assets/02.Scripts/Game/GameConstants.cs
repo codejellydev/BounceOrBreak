@@ -19,7 +19,7 @@ namespace CodeJelly.BounceOrBreak.Game
         public static class Scene
         {
             /// <summary>
-            /// 씬 관련 Addresables 키
+            /// 씬 관련 Addressables 키
             /// </summary>
             public static class Keys
             {
@@ -29,6 +29,34 @@ namespace CodeJelly.BounceOrBreak.Game
                 public const string GAME_SCENE = "GameScene";
             }
 
+        }
+
+        public static class Egg
+        {
+            /// <summary>
+            /// Addressables 키
+            /// </summary>
+            public static class Keys
+            {
+                public const string PREFAB = "EggPrefab";
+                public const string REGISTRY = "EggRegistry";
+                public const string SPAWN_CONFIG = "EggSpawnConfig";
+            }
+
+            /// <summary>
+            /// Egg 오브젝트 Pool의 초기 용량
+            /// </summary>
+            public const int POOL_DEFAULT_CAPACITY = 20;
+
+            /// <summary>
+            /// Egg 오브젝트 Pool의 최대 크기
+            /// </summary>
+            public const int POOL_MAX_SIZE = 50;
+
+            /// <summary>
+            /// 생성된 Egg들이 배치될 루트 GameObject 이름
+            /// </summary>
+            public const string ROOT_NAME = "EggRoot";
         }
 
         public static class Bounce
@@ -100,25 +128,30 @@ namespace CodeJelly.BounceOrBreak.Game
             public const float DEFAULT_CENTER_THRESHOLD = 0.2f;
 
             /// <summary>
-            /// ITrampoline 오브젝트 풀의 초기 용량
+            /// ITrampoline 오브젝트 Pool의 초기 용량
             /// </summary>
             public const int POOL_DEFAULT_CAPACITY = 20;
 
             /// <summary>
-            /// ITrampoline 오브젝트 풀의 최대 크기
+            /// ITrampoline 오브젝트 Pool의 최대 크기
             /// </summary>
             public const int POOL_MAX_SIZE = 50;
+
+            /// <summary>
+            /// 생성된 Trampoline들이 배치될 루트 GameObject 이름
+            /// </summary>
+            public const string ROOT_NAME = "TrampolineRoot";
         }
 
         public static class Character
         {
             /// <summary>
-            /// 캐릭터가 받을 수 있는 최소 튕김 힘
+            /// Character가 받을 수 있는 최소 튕김 힘
             /// </summary>
             public const float MIN_BOUNCE_FORCE = 5f;
 
             /// <summary>
-            /// 캐릭터가 받을 수 있는 최대 튕김 힘
+            /// Character가 받을 수 있는 최대 튕김 힘
             /// </summary>
             public const float MAX_BOUNCE_FORCE = 30f;
 
@@ -128,9 +161,25 @@ namespace CodeJelly.BounceOrBreak.Game
             public const float SPEED_BOUNCE_MULTIPLIER = 0.02f;
 
             /// <summary>
-            /// 반사 방향 계산 시 속도 임계값 (이하일 경우 노말 방향으로 fallback)
+            /// 반사 방향 계산 시 속도 임계값 (이하일 경우 노말 방향으로 Fallback)
             /// </summary>
             public const float MIN_VELOCITY_FOR_REFLECT = 0.01f;
+        }
+
+        public static class Score
+        {
+            public static class Keys
+            {
+                /// <summary>
+                /// ScoreRecord가 ISettingsRepository에 저장될 때 사용되는 키
+                /// </summary>
+                public const string REPOSITORY_KEY = "ScoreRecord";
+            }
+
+            /// <summary>
+            /// 타입이 일치하는 Egg가 도달했을 때 얻는 점수
+            /// </summary>
+            public const int MATCHED = 1;
         }
 
         public static class Audio
@@ -179,6 +228,11 @@ namespace CodeJelly.BounceOrBreak.Game
                 /// </summary>
                 public const string REPOSITORY_KEY = "GraphicsSettings";
             }
+
+            /// <summary>
+            /// 목표 프레임레이트 (미설정 시 모바일은 30fps로 고정)
+            /// </summary>
+            public const int TARGET_FRAME_RATE = 60;
 
             /// <summary>
             /// 그래픽 품질 수준. Unity Quality Settings 인덱스에 매핑.

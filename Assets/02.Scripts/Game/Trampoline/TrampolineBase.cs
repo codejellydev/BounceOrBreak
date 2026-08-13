@@ -126,19 +126,14 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         /// <param name="drawer">Trampoline을 생성한 Drawer</param>
         /// <param name="config">Trampoline 설정</param>
         /// <param name="points">LineRenderer의 point 배열</param>
-        public abstract void Initialize(TrampolineDrawer drawer, TrampolineConfig config, Vector2[] points);
+        /// <returns>초기화 성공 시 true</returns>
+        public abstract bool Initialize(TrampolineDrawer drawer, TrampolineConfig config, Vector2[] points);
 
         /// <summary>
         /// IPoolable.Get Implementation
         /// </summary>
         public virtual void Get()
-        {
-            UsageCount = 0;
-            _lifetimeStartTime = 0f;
-            _isInitialized = false;
-
-            gameObject.SetActive(true);
-        }
+        { }
 
         /// <summary>
         /// IPoolable.Release Implementation
@@ -147,6 +142,8 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         {
             CancelLifetimeTimer();
 
+            UsageCount = 0;
+            _lifetimeStartTime = 0f;
             _lineLength = 0f;
             _isInitialized = false;
 
@@ -161,6 +158,14 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             CancelLifetimeTimer();
 
             _config = null;
+
+            // 씬 해체 중에는 이미 파괴되었을 수 있음
+            if (this == null)
+            {
+                return;
+            }
+
+            GameObject.Destroy(gameObject);
         }
         #endregion
 
@@ -212,6 +217,19 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
             // PlatformEffector2D Initialization
             _platformEffector ??= GetComponent<PlatformEffector2D>();
+        }
+
+        /// <summary>
+        /// Trampoline을 활성화하고 수명을 시작합니다.
+        /// 구현체의 설정이 모두 끝난 뒤 호출해야 합니다.
+        /// </summary>
+        protected void Spawn()
+        {
+            _isInitialized = true;
+
+            StartLifetimeTimer();
+
+            gameObject.SetActive(true);
         }
 
         /// <summary>
@@ -297,7 +315,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             }
 
             AppLogger.Info($"[{Type}Trampoline] Despawned. UsageCount: {UsageCount}, Lifetime: {Lifetime:F2}s");
-            
+
             _isInitialized = false;
             CancelLifetimeTimer();
 

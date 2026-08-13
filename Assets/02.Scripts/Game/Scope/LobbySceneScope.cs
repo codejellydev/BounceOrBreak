@@ -1,4 +1,5 @@
 using CodeJelly.BounceOrBreak.Core.Scene;
+using CodeJelly.BounceOrBreak.Game.Bootstrap;
 using CodeJelly.BounceOrBreak.Game.Lobby;
 using CodeJelly.BounceOrBreak.Game.Settings;
 using CodeJelly.BounceOrBreak.Game.Settings.Audio;
@@ -37,7 +38,7 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
             // Lobby
             builder.RegisterInstance(_lobbySceneConfig);
             builder.RegisterComponent(_lobbyView);
-            builder.RegisterEntryPoint<LobbyPresenter>(); // 구체 타입이지만
+            builder.RegisterEntryPoint<LobbyPresenter>();
 
             // Settings Panel
             builder.RegisterComponent(_settingsPanelView);
@@ -58,6 +59,11 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
             builder.RegisterComponent(_languageSettingsView);
             builder.RegisterEntryPoint<LanguageSettingsPresenter>()
                    .As<ISettingsCategoryPresenter>();
+
+#if UNITY_EDITOR
+            // 씬 단독 실행 시의 초기화 대행
+            builder.RegisterEntryPoint<StandaloneSceneBootstrapper>();
+#endif
         }
         #endregion
     }

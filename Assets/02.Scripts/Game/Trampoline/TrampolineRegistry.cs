@@ -5,7 +5,7 @@ using UnityEngine;
 namespace CodeJelly.BounceOrBreak.Game.Trampoline
 {
     /// <summary>
-    /// Trampoline 타입별 Prefab 매핑을 관리하는 Registry SO.
+    /// Trampoline 타입별 프리팹 매핑을 관리하는 Registry SO.
     /// </summary>
     [CreateAssetMenu(fileName = "TrampolineRegistry", menuName = "Configs/Game/Trampoline Registry")]
     public class TrampolineRegistry : ScriptableObject

@@ -5,6 +5,16 @@ namespace CodeJelly.BounceOrBreak.Core.Settings
     /// </summary>
     public readonly struct SettingsResult<T> where T : class
     {
+        #region Constructors
+        private SettingsResult(bool isSuccess, T value, SettingsResultError error)
+        {
+            IsSuccess = isSuccess;
+            Value = value;
+            Error = error;
+        }
+        #endregion
+
+
         #region Properties
         /// <summary>
         /// 성공 여부.
@@ -20,16 +30,6 @@ namespace CodeJelly.BounceOrBreak.Core.Settings
         /// 에러 유형. IsSuccess가 false인 경우에만 유의미한 값을 가집니다.
         /// </summary>
         public SettingsResultError Error { get; }
-        #endregion
-
-
-        #region Private Variables
-        private SettingsResult(bool isSuccess, T value, SettingsResultError error)
-        {
-            IsSuccess = isSuccess;
-            Value = value;
-            Error = error;
-        }
         #endregion
 
 
@@ -58,6 +58,15 @@ namespace CodeJelly.BounceOrBreak.Core.Settings
     /// </summary>
     public readonly struct SettingsResult
     {
+        #region Constructors
+        private SettingsResult(bool isSuccess, SettingsResultError error)
+        {
+            IsSuccess = isSuccess;
+            Error = error;
+        }
+        #endregion
+
+
         #region Properties
         /// <summary>
         /// 성공 여부.
@@ -68,15 +77,6 @@ namespace CodeJelly.BounceOrBreak.Core.Settings
         /// 에러 유형. IsSuccess가 false인 경우에만 유의미한 값을 가집니다.
         /// </summary>
         public SettingsResultError Error { get; }
-        #endregion
-
-
-        #region Private Variables
-        private SettingsResult(bool isSuccess, SettingsResultError error)
-        {
-            IsSuccess = isSuccess;
-            Error = error;
-        }
         #endregion
 
 

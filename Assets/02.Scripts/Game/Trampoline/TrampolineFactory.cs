@@ -17,12 +17,19 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         private readonly ResourceManager _resourceManager;
         private readonly TrampolineRegistry _registry;
 
+        /// <summary>
+        /// 생성된 Trampoline들이 배치될 루트.
+        /// </summary>
+        private readonly Transform _root;
+
         public TrampolineFactory(
-            ResourceManager resourceManager, 
-            TrampolineRegistry registry)
+            ResourceManager resourceManager,
+            TrampolineRegistry registry,
+            Transform root)
         {
             _resourceManager = resourceManager;
             _registry = registry;
+            _root = root;
         }
         #endregion
 
@@ -34,7 +41,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
         #region Public Methods
         /// <summary>
-        /// Factory를 초기화하고 Registry에 등록된 Prefab들을 로딩합니다.
+        /// Factory를 초기화하고 Registry에 등록된 프리팹들을 로딩합니다.
         /// </summary>
         public async UniTask InitializeAsync(CancellationToken ct)
         {
@@ -71,7 +78,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         {
             if (_prefabs.TryGetValue(type, out GameObject prefab) == true)
             {
-                GameObject instance = UnityEngine.Object.Instantiate(prefab);
+                GameObject instance = UnityEngine.Object.Instantiate(prefab, _root);
 
                 return instance.GetComponent<ITrampoline>();
             }

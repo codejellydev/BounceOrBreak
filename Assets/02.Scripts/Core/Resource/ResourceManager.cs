@@ -16,6 +16,7 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
     /// </summary>
     public class ResourceManager : IDisposable
     {
+        #region Constructors
         public ResourceManager()
         {
             _loadingCount = new ReactiveProperty<int>(0);
@@ -27,6 +28,7 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
                 maxSize: AppConstants.Resource.POOL_MAX_SIZE
             );
         }
+        #endregion
 
 
         #region Properties

@@ -21,14 +21,17 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         #region Injection
         private ResourceManager _resourceManager;
         private InputManager _inputManager;
+        private Camera _mainCamera;
 
         [Inject]
         public void Construct(
-            ResourceManager resourceManager, 
-            InputManager inputManager)
+            ResourceManager resourceManager,
+            InputManager inputManager,
+            Camera mainCamera)
         {
             _resourceManager = resourceManager;
             _inputManager = inputManager;
+            _mainCamera = mainCamera;
         }
         #endregion
 
@@ -37,7 +40,6 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         [Header("드로잉 중 피드백 시각화를 위한 renderer")]
         [SerializeField] private LineRenderer _drawingLineRenderer;
 
-        private Camera _mainCamera;
         private bool _isDrawing;
         private List<Vector2> _currentDrawPoints;
 
@@ -46,7 +48,13 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         private TrampolineFactory _factory;
         private TrampolineType _activeType = TrampolineType.Straight;
 
-        private IObjectPool<ITrampoline> _trampolinePool;
+        private IObjectPool<ITrampoline> _pool;
+
+        /// <summary>
+        /// 생성된 Trampoline들이 배치될 루트.
+        /// </summary>
+        private Transform _root;
+
         private CompositeDisposable _disposables;
         #endregion
 
@@ -55,7 +63,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         private void OnDestroy()
         {
             _factory?.ReleaseAll();
-            _trampolinePool?.Clear();
+            _pool?.Clear();
             _disposables?.Dispose();
 
             if (_registry != null)
@@ -72,7 +80,6 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         /// </summary>
         public async UniTask InitializeAsync(IProgress<float> progress, CancellationToken ct)
         {
-            _mainCamera = Camera.main;
             _isDrawing = false;
             _currentDrawPoints = new List<Vector2>();
 
@@ -98,8 +105,12 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
                 return;
             }
 
+            // 자식으로 두어 부모의 소속 씬을 따르므로, 초기화 시점의 활성 씬과 무관
+            _root = new GameObject(GameConstants.Trampoline.ROOT_NAME).transform;
+            _root.SetParent(transform, false);
+
             // Factory 초기화
-            _factory = new TrampolineFactory(_resourceManager, _registry);
+            _factory = new TrampolineFactory(_resourceManager, _registry, _root);
             await _factory.InitializeAsync(ct);
             progress?.Report(0.5f);
 
@@ -130,7 +141,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         /// <param name="trampoline">반환할 Trampoline</param>
         public void ReturnToPool(ITrampoline trampoline)
         {
-            _trampolinePool.Release(trampoline);
+            _pool.Release(trampoline);
         }
 
         /// <summary>
@@ -151,7 +162,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         /// </summary>
         private void InitializePool()
         {
-            _trampolinePool = PoolExtensions.CreatePoolablePool
+            _pool = PoolExtensions.CreatePoolablePool
             (
                 createFunc: CreateTrampolineInstance,
                 defaultCapacity: GameConstants.Trampoline.POOL_DEFAULT_CAPACITY,
@@ -323,7 +334,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         {
             try
             {
-                ITrampoline trampoline = _trampolinePool.Get();
+                ITrampoline trampoline = _pool.Get();
 
                 if (trampoline == null)
                 {
@@ -332,7 +343,13 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
                     return;
                 }
 
-                trampoline.Initialize(this, _config, points);
+                if (trampoline.Initialize(this, _config, points) == false)
+                {
+                    AppLogger.Error("[TrampolineDrawer] Failed to initialize Trampoline. Returning to pool.");
+                    _pool.Release(trampoline);
+
+                    return;
+                }
 
                 AppLogger.Debug("[TrampolineDrawer] Trampoline spawned.");
             }

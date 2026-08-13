@@ -2,6 +2,7 @@ using CodeJelly.BounceOrBreak.Core.Localization;
 using CodeJelly.BounceOrBreak.Core.Resource;
 using CodeJelly.BounceOrBreak.Core.Scene;
 using CodeJelly.BounceOrBreak.Core.Settings;
+using CodeJelly.BounceOrBreak.Game.Bootstrap;
 using CodeJelly.BounceOrBreak.Game.Input;
 using CodeJelly.BounceOrBreak.Game.Settings.Audio;
 using CodeJelly.BounceOrBreak.Game.Settings.Graphics;
@@ -31,6 +32,7 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
             builder.Register<ResourceManager>(Lifetime.Singleton);
             builder.Register<LocalizationManager>(Lifetime.Singleton);
             builder.Register<SceneLoader>(Lifetime.Singleton);
+            builder.Register<AppInitializer>(Lifetime.Singleton);
 
             builder.Register<ISettingsRepository, PlayerPrefsSettingsRepository>(Lifetime.Singleton);
             builder.RegisterInstance(_audioSettingsConfig);

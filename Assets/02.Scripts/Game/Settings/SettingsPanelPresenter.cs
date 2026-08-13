@@ -16,7 +16,7 @@ namespace CodeJelly.BounceOrBreak.Game.Settings
         private readonly IReadOnlyList<ISettingsCategoryPresenter> _categoryPresenters;
 
         public SettingsPanelPresenter(
-            SettingsPanelView view, 
+            SettingsPanelView view,
             IReadOnlyList<ISettingsCategoryPresenter> categoryPresenters)
         {
             _view = view;
@@ -93,7 +93,7 @@ namespace CodeJelly.BounceOrBreak.Game.Settings
                  .AddTo(_disposables);
         }
 
-        //// <summary>
+        /// <summary>
         /// 닫기 요청 이벤트를 처리합니다.
         /// </summary>
         private void OnCloseRequested()

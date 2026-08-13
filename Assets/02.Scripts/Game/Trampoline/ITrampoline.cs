@@ -27,6 +27,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         /// <summary>
         /// Trampoline을 초기화합니다.
         /// </summary>
-        void Initialize(TrampolineDrawer drawer, TrampolineConfig config, Vector2[] points);
+        /// <returns>초기화 성공 시 true</returns>
+        bool Initialize(TrampolineDrawer drawer, TrampolineConfig config, Vector2[] points);
     }
 }

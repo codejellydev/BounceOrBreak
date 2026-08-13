@@ -27,13 +27,13 @@ namespace CodeJelly.BounceOrBreak.Core
         public static class Resource
         {
             /// <summary>
-            /// ResourceNode 오브젝트 풀의 초기 용량
+            /// ResourceNode 오브젝트 Pool의 초기 용량
             /// (Addressables Group Key의 예상 개수)
             /// </summary>
             public const int POOL_DEFAULT_CAPACITY = 30;
 
             /// <summary>
-            /// ResourceNode 오브젝트 풀의 최대 크기
+            /// ResourceNode 오브젝트 Pool의 최대 크기
             /// </summary>
             public const int POOL_MAX_SIZE = 500;
         }
