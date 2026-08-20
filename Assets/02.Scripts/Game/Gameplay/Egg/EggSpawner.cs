@@ -36,6 +36,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
 
         private IObjectPool<EggController> _pool;
         private CancellationTokenSource _spawnCts;
+        private int _nextCycleIndex;
         #endregion
 
 
@@ -63,6 +64,9 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         {
             StopSpawning();
             DespawnAll();
+
+            // 실행마다 같은 순서로 스폰되도록 초기화
+            _nextCycleIndex = 0;
 
             _factory.PrepareRoot();
 
@@ -164,15 +168,13 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         private void SpawnNext()
         {
             EggController egg = _pool.Get();
-
-            EggType type = SelectNextType();
-            EggTypeData data = _registry.GetData(type);
+            EggData data = SelectNextData();
 
             egg.transform.position = _config.SpawnPosition;
 
             if (egg.Initialize(data) == false)
             {
-                AppLogger.Error($"[EggSpawner] Failed to initialize egg. Type: {type}.");
+                AppLogger.Error("[EggSpawner] Failed to initialize egg.");
                 _pool.Release(egg);
 
                 return;
@@ -182,12 +184,24 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         }
 
         /// <summary>
-        /// 다음에 스폰할 Egg 종류를 결정합니다.
+        /// 다음에 스폰할 EggData를 결정합니다.
+        /// TODO: 웨이브 기반 선택 로직
         /// </summary>
-        private EggType SelectNextType()
+        private EggData SelectNextData()
         {
-            // TODO: 웨이브 기반 선택 로직
-            return EggType.Default;
+            IReadOnlyList<EggColor> cycle = _config.SpawnCycle;
+
+            if (cycle.Count == 0)
+            {
+                AppLogger.Error("[EggSpawner] Spawn cycle is empty.");
+
+                return null;
+            }
+
+            EggColor color = cycle[_nextCycleIndex % cycle.Count];
+            _nextCycleIndex++;
+
+            return _registry.GetData(color);
         }
         #endregion
     }

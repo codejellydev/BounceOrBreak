@@ -177,7 +177,7 @@ namespace CodeJelly.BounceOrBreak.Game
             }
 
             /// <summary>
-            /// 타입이 일치하는 Egg가 도달했을 때 얻는 점수
+            /// EggColor가 일치하는 Egg가 도달했을 때 얻는 점수
             /// </summary>
             public const int MATCHED = 1;
         }

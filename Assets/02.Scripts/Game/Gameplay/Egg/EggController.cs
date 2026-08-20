@@ -14,11 +14,13 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         /// <summary>
         /// Egg의 타입 데이터.
         /// </summary>
-        public EggTypeData Data { get; private set; }
+        public EggData Data { get; private set; }
         #endregion
 
 
         #region Private Variables
+        [SerializeField] private EggRenderer _renderer;
+
         private ICharacter _character;
         #endregion
 
@@ -37,16 +39,18 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         /// TODO: data 기반 IEggBehavior 장착
         /// </summary>
         /// <returns>초기화 성공 시 true</returns>
-        public bool Initialize(EggTypeData data)
+        public bool Initialize(EggData data)
         {
             if (data == null)
             {
-                AppLogger.Error("[EggController] EggTypeData is null.");
+                AppLogger.Error("[EggController] EggData is null.");
 
                 return false;
             }
 
             Data = data;
+
+            _renderer.ApplyData(data);
 
             gameObject.SetActive(true);
 
@@ -97,6 +101,16 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
             if (_character == null)
             {
                 AppLogger.Error("[EggController] ICharacter component is missing.");
+            }
+
+            if (_renderer == null)
+            {
+                _renderer = GetComponentInChildren<EggRenderer>();
+
+                if (_renderer == null)
+                {
+                    AppLogger.Error("[EggController] EggRenderer component is missing.");
+                }
             }
         }
         #endregion

@@ -5,40 +5,40 @@ using UnityEngine;
 namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
 {
     /// <summary>
-    /// Egg 종류별 데이터 매핑을 관리하는 Registry SO.
+    /// EggColor별 데이터 매핑을 관리하는 Registry SO.
     /// </summary>
     [CreateAssetMenu(fileName = "EggRegistry", menuName = "Configs/Game/Egg Registry")]
     public class EggRegistry : ScriptableObject
     {
         #region Properties
         /// <summary>
-        /// 등록된 EggTypeData 목록
+        /// 등록된 EggData 목록
         /// </summary>
-        public IReadOnlyList<EggTypeData> Entries => _entries;
+        public IReadOnlyList<EggData> Entries => _entries;
         #endregion
 
 
         #region Private Variables
-        [Tooltip("타입별 Egg 데이터 목록")]
-        [SerializeField] private List<EggTypeData> _entries = new List<EggTypeData>();
+        [Tooltip("EggColor별 EggData 목록")]
+        [SerializeField] private List<EggData> _entries = new List<EggData>();
         #endregion
 
 
         #region Public Methods
         /// <summary>
-        /// 지정된 타입에 해당하는 EggTypeData를 반환합니다.
+        /// 지정된 EggColor에 해당하는 EggData를 반환합니다.
         /// </summary>
-        public EggTypeData GetData(EggType type)
+        public EggData GetData(EggColor color)
         {
             for (int i = 0; i < _entries.Count; i++)
             {
-                if (_entries[i].Type == type)
+                if (_entries[i].Color == color)
                 {
                     return _entries[i];
                 }
             }
 
-            AppLogger.Warning($"[EggRegistry] Data not found for type: {type}");
+            AppLogger.Warning($"[EggRegistry] Data not found for color: {color}");
             return null;
         }
         #endregion
@@ -57,11 +57,12 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         #region Private Methods
         /// <summary>
         /// Entry 목록의 유효성을 검증합니다.
+        /// TODO: CI 테스트 적용 후 ContextMenu 수동 검증은 제거 예정
         /// </summary>
         [ContextMenu("Validate Entries")]
         private void ValidateEntries()
         {
-            HashSet<EggType> registeredTypes = new HashSet<EggType>();
+            HashSet<EggColor> registeredColors = new HashSet<EggColor>();
 
             for (int i = 0; i < _entries.Count; i++)
             {
@@ -73,10 +74,10 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
                     continue;
                 }
 
-                // 중복 타입 검증
-                if (registeredTypes.Add(data.Type) == false)
+                // 중복 EggColor 검증
+                if (registeredColors.Add(data.Color) == false)
                 {
-                    AppLogger.Warning($"[EggRegistry] Duplicate type detected: {data.Type} at index {i}");
+                    AppLogger.Warning($"[EggRegistry] Duplicate color detected: {data.Color} at index {i}");
                 }
             }
 

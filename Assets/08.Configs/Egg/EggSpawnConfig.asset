@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c33b1999c2361945b432c2dce0307e2, type: 3}
   m_Name: EggSpawnConfig
   m_EditorClassIdentifier: CodeJelly.BounceOrBreak.Game::CodeJelly.BounceOrBreak.Game.Gameplay.Egg.EggSpawnConfig
-  _spawnInterval: 5
+  _spawnInterval: 4
   _spawnPosition: {x: 0, y: 9}
+  _spawnCycle: 0000000001000000

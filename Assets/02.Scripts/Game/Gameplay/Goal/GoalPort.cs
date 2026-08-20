@@ -14,7 +14,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Goal
     public class GoalPort : MonoBehaviour
     {
         #region Properties
-        public EggType TargetType => _targetType;
+        public EggColor TargetColor => _targetColor;
 
         /// <summary>
         /// Egg가 도달했을 때 발행
@@ -24,8 +24,8 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Goal
 
 
         #region Private Variables
-        [Tooltip("요구하는 Egg 타입")]
-        [SerializeField] private EggType _targetType;
+        [Tooltip("요구하는 EggColor")]
+        [SerializeField] private EggColor _targetColor;
 
         private readonly Subject<GoalArrival> _onEggArrived = new Subject<GoalArrival>();
 
@@ -56,10 +56,10 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Goal
             {
                 Port = this,
                 Egg = egg,
-                IsMatched = egg.Data.Type == _targetType
+                IsMatched = egg.Data.Color == _targetColor
             };
 
-            AppLogger.Debug($"[GoalPort] Egg arrived: {egg.Data.Type}, matched={arrival.IsMatched}.");
+            AppLogger.Debug($"[GoalPort] Egg arrived: {egg.Data.Color}, matched={arrival.IsMatched}.");
 
             _onEggArrived.OnNext(arrival);
         }
