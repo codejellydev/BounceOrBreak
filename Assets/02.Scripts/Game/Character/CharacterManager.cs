@@ -75,7 +75,10 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         private void InitializeComponents()
         {
             // Coordinator Initialization
-            _coordinator ??= GetComponent<CharacterCoordinator>();
+            if (_coordinator == null)
+            {
+                _coordinator = GetComponent<CharacterCoordinator>();
+            }
             _coordinator.Initialize();
         }
         #endregion

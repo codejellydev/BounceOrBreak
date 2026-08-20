@@ -1,4 +1,3 @@
-using CodeJelly.BounceOrBreak.Core.Logging;
 using CodeJelly.BounceOrBreak.Game.Bounce;
 using CodeJelly.BounceOrBreak.Game.Reflect;
 using UnityEngine;
@@ -8,6 +7,7 @@ namespace CodeJelly.BounceOrBreak.Game.Character
     /// <summary>
     /// Character의 제어 로직을 담당하는 Coordinator 클래스.
     /// </summary>
+    [RequireComponent(typeof(CharacterPhysics))]
     public class CharacterCoordinator : MonoBehaviour
     {
         #region Private Variables
@@ -30,7 +30,7 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         /// </summary>
         public void ResetState()
         {
-            _physics?.ResetState();
+            _physics.ResetState();
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         /// </summary>
         public void HandleBounce(BounceParams parameters)
         {
-            _physics?.ApplyBounce(parameters);
+            _physics.ApplyBounce(parameters);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         /// </summary>
         public void HandleReflect(ReflectParams parameters)
         {
-            _physics?.ApplyReflect(parameters);
+            _physics.ApplyReflect(parameters);
         }
         #endregion
 
@@ -66,13 +66,11 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         private void InitializeComponents()
         {
             // Physics Initialization
-            _physics ??= GetComponent<CharacterPhysics>();
             if (_physics == null)
             {
-                AppLogger.Error("[CharacterCoordinator] CharacterPhysics component is missing.");
-
-                return;
+                _physics = GetComponent<CharacterPhysics>();
             }
+
             _physics.Initialize();
         }
         #endregion

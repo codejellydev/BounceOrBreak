@@ -93,10 +93,16 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         private void InitializeComponents()
         {
             // Collider Initialization
-            _collider ??= GetComponent<CircleCollider2D>();
+            if (_collider == null)
+            {
+                _collider = GetComponent<CircleCollider2D>();
+            }
 
             // Rigidbody Initialization
-            _rigidbody ??= GetComponent<Rigidbody2D>();
+            if (_rigidbody == null)
+            {
+                _rigidbody = GetComponent<Rigidbody2D>();
+            }
         }
 
         /// <summary>
