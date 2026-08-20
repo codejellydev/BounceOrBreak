@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: EggSpawnConfig
   m_EditorClassIdentifier: CodeJelly.BounceOrBreak.Game::CodeJelly.BounceOrBreak.Game.Gameplay.Egg.EggSpawnConfig
   _spawnInterval: 5
-  _spawnPosition: {x: -3, y: 8}
+  _spawnPosition: {x: 0, y: 9}

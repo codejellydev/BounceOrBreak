@@ -37,5 +37,24 @@ namespace CodeJelly.BounceOrBreak.Core
             /// </summary>
             public const int POOL_MAX_SIZE = 500;
         }
+
+        public static class Viewport
+        {
+            /// <summary>
+            /// 보장 영역의 기본 기준 화면비 (9:16 세로 화면)
+            /// </summary>
+            public const float DEFAULT_DESIGN_ASPECT = 0.5625f;
+
+            /// <summary>
+            /// 기본으로 보장할 최소 화면비 (9:22.5 세로 화면)
+            /// </summary>
+            public const float DEFAULT_MIN_ASPECT = 0.4f;
+
+            /// <summary>
+            /// 화면비와 크기에 허용되는 최솟값
+            /// (0 이하 입력 시 계산 발산 방지를 위해 하한으로 사용)
+            /// </summary>
+            public const float MIN_SETTING_VALUE = 0.01f;
+        }
     }
 }
