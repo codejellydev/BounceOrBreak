@@ -5,7 +5,7 @@ using UnityEngine;
 namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
 {
     /// <summary>
-    /// EggColor별 데이터 매핑을 관리하는 Registry SO.
+    /// EggType별 데이터 매핑을 관리하는 Registry SO.
     /// </summary>
     [CreateAssetMenu(fileName = "EggRegistry", menuName = "Configs/Game/Egg Registry")]
     public class EggRegistry : ScriptableObject
@@ -19,26 +19,26 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
 
 
         #region Private Variables
-        [Tooltip("EggColor별 EggData 목록")]
+        [Tooltip("EggType별 EggData 목록")]
         [SerializeField] private List<EggData> _entries = new List<EggData>();
         #endregion
 
 
         #region Public Methods
         /// <summary>
-        /// 지정된 EggColor에 해당하는 EggData를 반환합니다.
+        /// 지정된 EggType에 해당하는 EggData를 반환합니다.
         /// </summary>
-        public EggData GetData(EggColor color)
+        public EggData GetData(EggType type)
         {
             for (int i = 0; i < _entries.Count; i++)
             {
-                if (_entries[i].Color == color)
+                if (_entries[i].Type == type)
                 {
                     return _entries[i];
                 }
             }
 
-            AppLogger.Warning($"[EggRegistry] Data not found for color: {color}");
+            AppLogger.Warning($"[EggRegistry] Data not found for type: {type}");
             return null;
         }
         #endregion
@@ -62,7 +62,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         [ContextMenu("Validate Entries")]
         private void ValidateEntries()
         {
-            HashSet<EggColor> registeredColors = new HashSet<EggColor>();
+            HashSet<EggType> registeredTypes = new HashSet<EggType>();
 
             for (int i = 0; i < _entries.Count; i++)
             {
@@ -74,10 +74,10 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
                     continue;
                 }
 
-                // 중복 EggColor 검증
-                if (registeredColors.Add(data.Color) == false)
+                // 중복 EggType 검증
+                if (registeredTypes.Add(data.Type) == false)
                 {
-                    AppLogger.Warning($"[EggRegistry] Duplicate color detected: {data.Color} at index {i}");
+                    AppLogger.Warning($"[EggRegistry] Duplicate type detected: {data.Type} at index {i}");
                 }
             }
 

@@ -189,7 +189,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         /// </summary>
         private EggData SelectNextData()
         {
-            IReadOnlyList<EggColor> cycle = _config.SpawnCycle;
+            IReadOnlyList<EggType> cycle = _config.SpawnCycle;
 
             if (cycle.Count == 0)
             {
@@ -198,10 +198,10 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
                 return null;
             }
 
-            EggColor color = cycle[_nextCycleIndex % cycle.Count];
+            EggType type = cycle[_nextCycleIndex % cycle.Count];
             _nextCycleIndex++;
 
-            return _registry.GetData(color);
+            return _registry.GetData(type);
         }
         #endregion
     }

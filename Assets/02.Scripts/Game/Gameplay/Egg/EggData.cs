@@ -9,6 +9,8 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
     public class EggData : ScriptableObject
     {
         #region Properties
+        public EggType Type => _type;
+
         public EggColor Color => _color;
 
         public Sprite BaseSprite => _baseSprite;
@@ -16,6 +18,9 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
 
 
         #region Private Variables
+        [Tooltip("EggRegistry 조회에 사용되는 EggType")]
+        [SerializeField] private EggType _type;
+
         [Tooltip("Goal 매칭에 사용되는 EggColor")]
         [SerializeField] private EggColor _color;
 
