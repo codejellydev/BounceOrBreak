@@ -2,11 +2,12 @@
   <Project Path="MoreMountains.Tools.csproj" />
   <Project Path="CodeJelly.BounceOrBreak.Core.csproj" />
   <Project Path="MoreMountains.Tools.Editor.csproj" />
-  <Project Path="Lofelt.NiceVibrations.csproj" />
   <Project Path="CodeJelly.BounceOrBreak.Game.csproj" />
+  <Project Path="Lofelt.NiceVibrations.csproj" />
   <Project Path="DOTween.Modules.csproj" />
   <Project Path="Lofelt.NiceVibrations.Demo.csproj" />
   <Project Path="Lofelt.NiceVibrations.Editor.csproj" />
+  <Project Path="CodeJelly.BounceOrBreak.Tests.csproj" />
   <Project Path="DOTweenPro.EditorScripts.csproj" />
   <Project Path="CodeJelly.BounceOrBreak.Input.csproj" />
   <Project Path="DOTweenPro.Scripts.csproj" />

@@ -1,0 +1,25 @@
+{
+    "name": "CodeJelly.BounceOrBreak.Tests",
+    "rootNamespace": "CodeJelly.BounceOrBreak.Tests",
+    "references": [
+        "GUID:930d2aacd6a5fd344bde7d69142ce350",
+        "GUID:3a794817f0ed37c47a4be13fa6f0d656",
+        "GUID:f51ebe6a0ceec4240a699833d6309b23",
+        "GUID:77221876cc6b8244180b96e320b1bcd4",
+        "GUID:27619889b8ba8c24980f49ee34dbb44a",
+        "GUID:0acc523941302664db1f4e527237feb3"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
