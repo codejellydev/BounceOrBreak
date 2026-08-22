@@ -68,9 +68,15 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         /// </summary>
         public void Release()
         {
-            _character.ResetState();
-
             Data = null;
+
+            // 씬 해체 중에는 이미 파괴되었을 수 있음
+            if (this == null)
+            {
+                return;
+            }
+
+            _character.ResetState();
 
             gameObject.SetActive(false);
         }

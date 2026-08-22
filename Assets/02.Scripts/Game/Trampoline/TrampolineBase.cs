@@ -147,6 +147,12 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             _lineLength = 0f;
             _isInitialized = false;
 
+            // 씬 해체 중에는 이미 파괴되었을 수 있음
+            if (this == null)
+            {
+                return;
+            }
+
             gameObject.SetActive(false);
         }
 
