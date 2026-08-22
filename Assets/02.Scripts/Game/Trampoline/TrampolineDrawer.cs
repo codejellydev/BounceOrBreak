@@ -308,7 +308,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             if (_activeType == TrampolineType.Straight)
             {
                 Vector2 start = _currentDrawPoints[0];
-                Vector2 end = _currentDrawPoints[_currentDrawPoints.Count - 1];
+                Vector2 end = _currentDrawPoints[^1];
 
                 return new Vector2[] { start, end };
             }
