@@ -89,6 +89,8 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
             _trampolineDrawer.SetTrampolineType(TrampolineType.Straight);
 
             await _eggSpawner.InitializeAsync(ct);
+            ValidateGoalPortColors();
+
             await _scoreService.InitializeAsync();
             progress?.Report(1f);
 
@@ -133,6 +135,27 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
                 port.OnEggArrived
                     .Subscribe(HandleGoalArrival)
                     .AddTo(_disposables);
+            }
+        }
+
+        /// <summary>
+        /// 각 GoalPort가 요구하는 EggColor가 실제로 스폰되는지 검증합니다.
+        /// </summary>
+        private void ValidateGoalPortColors()
+        {
+            if (_goalPorts == null || _goalPorts.Length == 0)
+            {
+                AppLogger.Error("[GameFlowController] No GoalPort to validate.");
+
+                return;
+            }
+
+            foreach (GoalPort port in _goalPorts)
+            {
+                if (_eggSpawner.CanSpawnColor(port.TargetColor) == false)
+                {
+                    AppLogger.Error($"[GameFlowController] {port.name} requires {port.TargetColor}, which is not in the spawn cycle.");
+                }
             }
         }
 

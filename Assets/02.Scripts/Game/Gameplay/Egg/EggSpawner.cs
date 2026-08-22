@@ -116,6 +116,24 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         }
 
         /// <summary>
+        /// 지정된 EggColor를 가진 Egg가 스폰 순서에 포함되어 있는지 여부를 반환합니다.
+        /// </summary>
+        public bool CanSpawnColor(EggColor color)
+        {
+            foreach (EggType type in _config.SpawnCycle)
+            {
+                EggData data = _registry.GetData(type);
+
+                if (data != null && data.Color == color)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// IDisposable.Dispose Implementation
         /// </summary>
         public void Dispose()
