@@ -34,6 +34,14 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         #endregion
 
 
+        #region Properties
+        /// <summary>
+        /// 프리팹 로드에 성공한 TrampolineType 목록.
+        /// </summary>
+        public IReadOnlyCollection<TrampolineType> LoadedTypes => _prefabs.Keys;
+        #endregion
+
+
         #region Private Variables
         private Dictionary<TrampolineType, GameObject> _prefabs;
         #endregion
@@ -41,7 +49,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
         #region Public Methods
         /// <summary>
-        /// Factory를 초기화하고 Registry에 등록된 프리팹들을 로딩합니다.
+        /// Factory를 초기화하고 Registry에 등록된 프리팹들을 로드합니다.
         /// </summary>
         public async UniTask InitializeAsync(CancellationToken ct)
         {
@@ -72,7 +80,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         }
 
         /// <summary>
-        /// 지정된 타입의 Trampoline을 생성합니다.
+        /// 지정된 TrampolineType의 Trampoline을 생성합니다.
         /// </summary>
         public ITrampoline Create(TrampolineType type)
         {
@@ -89,7 +97,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         }
 
         /// <summary>
-        /// 로딩된 리소스들을 모두 해제합니다.
+        /// 로드된 리소스들을 모두 해제합니다.
         /// </summary>
         public void ReleaseAll()
         {

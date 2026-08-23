@@ -50,6 +50,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             CalculateLineProperties();
             SetupLineRenderer();
             SetupCollider();
+            SetupPlatformEffector();
 
             Spawn();
 

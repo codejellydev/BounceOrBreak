@@ -1,7 +1,7 @@
 namespace CodeJelly.BounceOrBreak.Game.Trampoline
 {
     /// <summary>
-    /// Trampoline의 타입을 정의합니다.
+    /// Trampoline의 형태를 정의합니다.
     /// </summary>
     public enum TrampolineType
     {
@@ -14,10 +14,5 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         /// 자유형 (그리는대로 생성)
         /// </summary>
         Freeform = 1,
-
-        /// <summary>
-        /// 정적 배치형 (TrampolineDrawer 불필요)
-        /// </summary>
-        Static = 2,
     }
 }

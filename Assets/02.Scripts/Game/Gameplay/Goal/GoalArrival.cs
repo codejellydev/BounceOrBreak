@@ -19,7 +19,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Goal
         public EggController Egg { get; set; }
 
         /// <summary>
-        /// TargetType과의 일치 여부.
+        /// TargetColor와의 일치 여부.
         /// </summary>
         public bool IsMatched { get; set; }
         #endregion

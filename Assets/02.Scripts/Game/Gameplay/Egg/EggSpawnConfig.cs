@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
@@ -12,6 +13,8 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         public float SpawnInterval => _spawnInterval;
 
         public Vector2 SpawnPosition => _spawnPosition;
+
+        public IReadOnlyList<EggType> SpawnCycle => _spawnCycle;
         #endregion
 
 
@@ -21,6 +24,9 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
 
         [Tooltip("Egg 스폰 위치 (월드 좌표)")]
         [SerializeField] private Vector2 _spawnPosition;
+
+        [Tooltip("스폰할 EggType 순서")]
+        [SerializeField] private List<EggType> _spawnCycle = new List<EggType>();
         #endregion
     }
 }

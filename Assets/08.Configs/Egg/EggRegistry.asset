@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: EggRegistry
   m_EditorClassIdentifier: CodeJelly.BounceOrBreak.Game::CodeJelly.BounceOrBreak.Game.Gameplay.Egg.EggRegistry
   _entries:
-  - {fileID: 11400000, guid: f72fe375c213bde45b048d857f1756f7, type: 2}
+  - {fileID: 11400000, guid: 8cbcf952b79012b4898c263159672fcf, type: 2}
+  - {fileID: 11400000, guid: e48a851f09588f24b9e1d9b3d4bc5d92, type: 2}

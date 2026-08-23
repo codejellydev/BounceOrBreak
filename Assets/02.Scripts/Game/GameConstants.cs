@@ -31,6 +31,17 @@ namespace CodeJelly.BounceOrBreak.Game
 
         }
 
+        public static class Stage
+        {
+            /// <summary>
+            /// Addressables 키
+            /// </summary>
+            public static class Keys
+            {
+                public const string DEFAULT_CONFIG = "DefaultStageConfig";
+            }
+        }
+
         public static class Egg
         {
             /// <summary>
@@ -84,7 +95,6 @@ namespace CodeJelly.BounceOrBreak.Game
             {
                 public const string REGISTRY = "TrampolineRegistry";
                 public const string DEFAULT_CONFIG = "DefaultTrampolineConfig";
-                public const string STATIC_CONFIG = "StaticTrampolineConfig";
             }
 
             /// <summary>
@@ -177,7 +187,7 @@ namespace CodeJelly.BounceOrBreak.Game
             }
 
             /// <summary>
-            /// 타입이 일치하는 Egg가 도달했을 때 얻는 점수
+            /// EggColor가 일치하는 Egg가 도달했을 때 얻는 점수
             /// </summary>
             public const int MATCHED = 1;
         }
