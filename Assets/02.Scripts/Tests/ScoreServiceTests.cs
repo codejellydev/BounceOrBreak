@@ -47,6 +47,22 @@ namespace CodeJelly.BounceOrBreak.Tests
         }
 
         /// <summary>
+        /// 점수를 초기화하면 현재 점수만 0이 되고 최고 점수는 유지됩니다.
+        /// </summary>
+        [Test]
+        public void ResetScore_ClearsCurrentAndKeepsBest()
+        {
+            _service.AddScore();
+            _service.TryUpdateBestScore();
+            int bestBeforeReset = _service.BestScore.CurrentValue;
+
+            _service.ResetScore();
+
+            Assert.AreEqual(0, _service.CurrentScore.CurrentValue);
+            Assert.AreEqual(bestBeforeReset, _service.BestScore.CurrentValue);
+        }
+
+        /// <summary>
         /// 현재 점수가 최고 점수보다 크면 최고 점수가 갱신됩니다.
         /// </summary>
         [Test]

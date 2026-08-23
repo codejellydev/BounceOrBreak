@@ -107,6 +107,31 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         }
 
         /// <summary>
+        /// GameOver 상태에서 새 게임을 시작합니다.
+        /// </summary>
+        public void Restart()
+        {
+            if (_phase.Value != GamePhase.GameOver)
+            {
+                AppLogger.Warning($"[GameFlowController] Restart requested in {_phase.Value} phase. Ignored.");
+
+                return;
+            }
+
+            AppLogger.Info("[GameFlowController] Restarting.");
+
+            // Playing으로 전환되기 전에 리셋해야 리셋 중 발생하는 Arrival 이벤트가 득점으로 처리되지 않음
+            _trampolineDrawer.DespawnAll();
+            _scoreService.ResetScore();
+
+            _phase.Value = GamePhase.Playing;
+            _inputManager.SwitchContext(InputContext.Gameplay);
+
+            // StartSpawning이 활성 Egg 회수와 스폰 순서 초기화를 수행함
+            _eggSpawner.StartSpawning();
+        }
+
+        /// <summary>
         /// IDisposable.Dispose Implementation
         /// </summary>
         public void Dispose()
@@ -189,6 +214,9 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
             }
 
             _phase.Value = GamePhase.GameOver;
+            AppLogger.Info($"[GameFlowController] Game over. Score: {_scoreService.CurrentScore.CurrentValue}");
+
+            _inputManager.SwitchContext(InputContext.GameOver);
             _eggSpawner.StopSpawning();
 
             // 저장 완료를 기다릴 이유가 없으므로 게임오버 처리를 막지 않음

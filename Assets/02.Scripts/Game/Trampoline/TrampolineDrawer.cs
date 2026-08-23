@@ -51,6 +51,11 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         private IObjectPool<ITrampoline> _pool;
 
         /// <summary>
+        /// Pool에서 꺼내져 활성 상태인 Trampoline 집합.
+        /// </summary>
+        private readonly HashSet<ITrampoline> _activeTrampolines = new HashSet<ITrampoline>();
+
+        /// <summary>
         /// 생성된 Trampoline들이 배치될 루트.
         /// </summary>
         private Transform _root;
@@ -62,8 +67,11 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         #region Unity Lifecycle
         private void OnDestroy()
         {
-            _factory?.ReleaseAll();
+            // Clear는 Pool에 있는 Trampoline만 파괴하므로, 먼저 회수해야 모두 Destroy를 거침
+            DespawnAll();
+
             _pool?.Clear();
+            _factory?.ReleaseAll();
             _disposables?.Dispose();
 
             if (_registry != null)
@@ -141,7 +149,22 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         /// <param name="trampoline">반환할 Trampoline</param>
         public void ReturnToPool(ITrampoline trampoline)
         {
+            _activeTrampolines.Remove(trampoline);
             _pool.Release(trampoline);
+        }
+
+        /// <summary>
+        /// 활성 상태인 모든 Trampoline을 Pool에 반환합니다.
+        /// </summary>
+        public void DespawnAll()
+        {
+            // ReturnToPool은 순회 중 컬렉션을 수정하므로 Pool에 직접 반납함
+            foreach (ITrampoline trampoline in _activeTrampolines)
+            {
+                _pool.Release(trampoline);
+            }
+
+            _activeTrampolines.Clear();
         }
 
         /// <summary>
@@ -350,6 +373,8 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
                     return;
                 }
+
+                _activeTrampolines.Add(trampoline);
 
                 AppLogger.Debug("[TrampolineDrawer] Trampoline spawned.");
             }
