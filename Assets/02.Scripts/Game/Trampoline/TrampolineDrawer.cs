@@ -48,7 +48,10 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         private TrampolineFactory _factory;
         private TrampolineType _activeType = TrampolineType.Straight;
 
-        private IObjectPool<ITrampoline> _pool;
+        /// <summary>
+        /// TrampolineType별 ObjectPool.
+        /// </summary>
+        private readonly Dictionary<TrampolineType, IObjectPool<ITrampoline>> _pools = new Dictionary<TrampolineType, IObjectPool<ITrampoline>>();
 
         /// <summary>
         /// Pool에서 꺼내져 활성 상태인 Trampoline 집합.
@@ -70,13 +73,22 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             // Clear는 Pool에 있는 Trampoline만 파괴하므로, 먼저 회수해야 모두 Destroy를 거침
             DespawnAll();
 
-            _pool?.Clear();
+            foreach (IObjectPool<ITrampoline> pool in _pools.Values)
+            {
+                pool.Clear();
+            }
+
             _factory?.ReleaseAll();
             _disposables?.Dispose();
 
             if (_registry != null)
             {
                 _resourceManager.Release(GameConstants.Trampoline.Keys.REGISTRY, ResourceReleaseContext.Cleanup);
+            }
+
+            if (_config != null)
+            {
+                _resourceManager.Release(GameConstants.Trampoline.Keys.DEFAULT_CONFIG, ResourceReleaseContext.Cleanup);
             }
         }
         #endregion
@@ -91,7 +103,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             _isDrawing = false;
             _currentDrawPoints = new List<Vector2>();
 
-            // Config 로딩
+            // Config 로드
             _config = await _resourceManager.LoadAsync<TrampolineConfig>(GameConstants.Trampoline.Keys.DEFAULT_CONFIG, ct);
             progress?.Report(0.2f);
 
@@ -102,7 +114,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
                 return;
             }
 
-            // Registry 로딩
+            // Registry 로드
             _registry = await _resourceManager.LoadAsync<TrampolineRegistry>(GameConstants.Trampoline.Keys.REGISTRY, ct);
             progress?.Report(0.35f);
 
@@ -125,7 +137,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             // Pool 초기화
             _disposables = new CompositeDisposable();
 
-            InitializePool();
+            InitializePools();
             progress?.Report(0.8f);
 
             // LineRenderer 초기화
@@ -150,7 +162,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         public void ReturnToPool(ITrampoline trampoline)
         {
             _activeTrampolines.Remove(trampoline);
-            _pool.Release(trampoline);
+            GetPool(trampoline.Type).Release(trampoline);
         }
 
         /// <summary>
@@ -161,14 +173,54 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             // ReturnToPool은 순회 중 컬렉션을 수정하므로 Pool에 직접 반납함
             foreach (ITrampoline trampoline in _activeTrampolines)
             {
-                _pool.Release(trampoline);
+                GetPool(trampoline.Type).Release(trampoline);
             }
 
             _activeTrampolines.Clear();
         }
 
         /// <summary>
-        /// 사용할 Trampoline 타입을 변경합니다.
+        /// 지정된 형태와 설정의 Trampoline을 Pool에서 꺼내 스폰합니다.
+        /// </summary>
+        /// <param name="type">스폰할 Trampoline의 형태</param>
+        /// <param name="config">적용할 Trampoline 설정</param>
+        /// <param name="points">LineRenderer의 point 배열</param>
+        public void Spawn(TrampolineType type, TrampolineConfig config, Vector2[] points)
+        {
+            if (config == null)
+            {
+                AppLogger.Error($"[TrampolineDrawer] TrampolineConfig is null for {type}.");
+
+                return;
+            }
+
+            IObjectPool<ITrampoline> pool = GetPool(type);
+            ITrampoline trampoline = pool.Get();
+
+            if (trampoline.Initialize(this, config, points) == false)
+            {
+                AppLogger.Error("[TrampolineDrawer] Failed to initialize Trampoline. Returning to pool.");
+                pool.Release(trampoline);
+
+                return;
+            }
+
+            _activeTrampolines.Add(trampoline);
+
+            AppLogger.Debug($"[TrampolineDrawer] Trampoline spawned: {type}");
+        }
+
+        /// <summary>
+        /// TrampolineSpawnData에 정의된 Trampoline을 Pool에서 꺼내 스폰합니다.
+        /// </summary>
+        /// <param name="spawnData">스폰할 Trampoline의 정의</param>
+        public void Spawn(TrampolineSpawnData spawnData)
+        {
+            Spawn(spawnData.Type, spawnData.Config, spawnData.Points);
+        }
+
+        /// <summary>
+        /// 사용할 TrampolineType을 변경합니다.
         /// </summary>
         public void SetTrampolineType(TrampolineType type)
         {
@@ -181,18 +233,22 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
         #region Private Methods
         /// <summary>
-        /// ObjectPool을 초기화합니다.
+        /// Factory가 로드한 TrampolineType마다 ObjectPool을 초기화합니다.
         /// </summary>
-        private void InitializePool()
+        private void InitializePools()
         {
-            _pool = PoolExtensions.CreatePoolablePool
-            (
-                createFunc: CreateTrampolineInstance,
-                defaultCapacity: GameConstants.Trampoline.POOL_DEFAULT_CAPACITY,
-                maxSize: GameConstants.Trampoline.POOL_MAX_SIZE
-            );
+            foreach (TrampolineType type in _factory.LoadedTypes)
+            {
+                // Pool마다 자기 TrampolineType을 고정해야 반환되는 인스턴스의 TrampolineType이 보장됨
+                _pools[type] = PoolExtensions.CreatePoolablePool
+                (
+                    createFunc: () => _factory.Create(type),
+                    defaultCapacity: GameConstants.Trampoline.POOL_DEFAULT_CAPACITY,
+                    maxSize: GameConstants.Trampoline.POOL_MAX_SIZE
+                );
+            }
 
-            AppLogger.Info("[TrampolineDrawer] ObjectPool initialized.");
+            AppLogger.Info($"[TrampolineDrawer] ObjectPools initialized. ({_pools.Count} types)");
         }
 
         /// <summary>
@@ -236,11 +292,16 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         }
 
         /// <summary>
-        /// Trampoline 인스턴스를 생성합니다.
+        /// 지정된 TrampolineType의 ObjectPool을 반환합니다.
         /// </summary>
-        private ITrampoline CreateTrampolineInstance()
+        private IObjectPool<ITrampoline> GetPool(TrampolineType type)
         {
-            return _factory.Create(_activeType);
+            if (_pools.TryGetValue(type, out IObjectPool<ITrampoline> pool) == false)
+            {
+                throw new InvalidOperationException($"[TrampolineDrawer] No pool initialized for TrampolineType: {type}");
+            }
+
+            return pool;
         }
 
         /// <summary>
@@ -317,14 +378,14 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
             // Trampoline 생성
             Vector2[] finalPoints = ProcessDrawPoints();
-            SpawnTrampoline(finalPoints);
+            Spawn(_activeType, _config, finalPoints);
             ClearDrawing();
 
             AppLogger.Debug("[TrampolineDrawer] Drawing ended.");
         }
 
         /// <summary>
-        /// DrawPoints를 Trampoline 타입에 맞게 가공합니다.
+        /// DrawPoints를 TrampolineType에 맞게 가공합니다.
         /// </summary>
         private Vector2[] ProcessDrawPoints()
         {
@@ -350,39 +411,6 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             _currentDrawPoints.Clear();
         }
 
-        /// <summary>
-        /// Trampoline 오브젝트를 Pool에서 가져와 생성합니다.
-        /// </summary>
-        private void SpawnTrampoline(Vector2[] points)
-        {
-            try
-            {
-                ITrampoline trampoline = _pool.Get();
-
-                if (trampoline == null)
-                {
-                    AppLogger.Error("[TrampolineDrawer] Failed to get Trampoline from pool.");
-
-                    return;
-                }
-
-                if (trampoline.Initialize(this, _config, points) == false)
-                {
-                    AppLogger.Error("[TrampolineDrawer] Failed to initialize Trampoline. Returning to pool.");
-                    _pool.Release(trampoline);
-
-                    return;
-                }
-
-                _activeTrampolines.Add(trampoline);
-
-                AppLogger.Debug("[TrampolineDrawer] Trampoline spawned.");
-            }
-            catch (Exception ex)
-            {
-                AppLogger.Exception(ex);
-            }
-        }
 
         /// <summary>
         /// 스크린 좌표를 월드 좌표로 변환합니다.

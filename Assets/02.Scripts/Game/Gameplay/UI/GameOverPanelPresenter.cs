@@ -78,7 +78,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.UI
         private void OnRestartButtonClicked()
         {
             AppLogger.Info("[GameOverPanelPresenter] Restart button clicked.");
-            _flowController.Restart();
+            _flowController.RestartRound();
         }
         #endregion
     }

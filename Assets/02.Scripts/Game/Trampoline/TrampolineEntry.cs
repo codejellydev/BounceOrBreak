@@ -24,10 +24,10 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
 
         #region Private Variables
-        [Tooltip("Trampoline 타입")]
+        [Tooltip("TrampolineType")]
         [SerializeField] private TrampolineType _type;
 
-        [Tooltip("해당 타입의 Prefab AssetReference")]
+        [Tooltip("해당 TrampolineType의 Prefab AssetReference")]
         [SerializeField] private AssetReferenceGameObject _prefab;
         #endregion
     }

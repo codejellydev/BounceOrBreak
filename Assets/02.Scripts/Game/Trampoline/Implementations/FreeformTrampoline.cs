@@ -38,6 +38,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             InitializeComponents();
             SetupLineRenderer();
             SetupCollider();
+            SetupPlatformEffector();
             CalculateLineLength();
 
             Spawn();
