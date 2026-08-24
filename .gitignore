@@ -108,7 +108,6 @@ InitTestScene*.unity*
 /[Aa]ssets/GUIPackCartoon
 
 # Unity Built-in
-/[Aa]ssets/TextMesh Pro/
 /[Aa]ssets/LevelPlay/
 /[Aa]ssets/MobileDependencyResolver/
 
