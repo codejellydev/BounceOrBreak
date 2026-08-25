@@ -26,11 +26,19 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         }
 
         /// <summary>
-        /// Character 상태를 초기화한다.
+        /// Character 상태를 초기화합니다.
         /// </summary>
         public void ResetState()
         {
             _physics.ResetState();
+        }
+
+        /// <summary>
+        /// 물리적 움직임의 고정 여부를 설정합니다.
+        /// </summary>
+        public void SetMotionLocked(bool isLocked)
+        {
+            _physics.SetMotionLocked(isLocked);
         }
 
         /// <summary>

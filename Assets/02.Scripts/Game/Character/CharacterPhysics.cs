@@ -27,13 +27,33 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         }
 
         /// <summary>
-        /// 물리 상태를 초기화한다.
+        /// 물리 상태를 초기화합니다.
         /// </summary>
         public void ResetState()
         {
-            // Rigidbody 잔여 속도 해제 
+            // Rigidbody 잔여 속도 해제
             _rigidbody.linearVelocity = Vector2.zero;
             _rigidbody.angularVelocity = 0f;
+
+            // SetMotionLocked(true)로 고정된 채 회수되어도 초기 상태로 복원
+            _rigidbody.constraints = RigidbodyConstraints2D.None;
+        }
+
+        /// <summary>
+        /// 물리적 움직임의 고정 여부를 설정합니다.
+        /// </summary>
+        public void SetMotionLocked(bool isLocked)
+        {
+            if (isLocked == true)
+            {
+                _rigidbody.linearVelocity = Vector2.zero;
+                _rigidbody.angularVelocity = 0f;
+                _rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+
+                return;
+            }
+
+            _rigidbody.constraints = RigidbodyConstraints2D.None;
         }
 
         /// <summary>

@@ -176,6 +176,24 @@ namespace CodeJelly.BounceOrBreak.Game
             public const float MIN_VELOCITY_FOR_REFLECT = 0.01f;
         }
 
+        public static class Goal
+        {
+            /// <summary>
+            /// 거부된 Egg를 내보내기 전까지 머금는 시간 (초)
+            /// </summary>
+            public const float REJECT_HOLD_DURATION = 0.4f;
+
+            /// <summary>
+            /// 거부된 Egg를 내보내는 힘
+            /// </summary>
+            public const float REJECT_FORCE = 8f;
+
+            /// <summary>
+            /// 내보내는 방향이 수직에서 벗어날 수 있는 최대 각도 (도)
+            /// </summary>
+            public const float REJECT_CONE_HALF_ANGLE = 40f;
+        }
+
         public static class Score
         {
             public static class Keys

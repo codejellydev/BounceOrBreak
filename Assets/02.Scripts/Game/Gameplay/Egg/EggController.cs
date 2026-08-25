@@ -1,5 +1,6 @@
 using CodeJelly.BounceOrBreak.Core.Logging;
 using CodeJelly.BounceOrBreak.Core.Pooling;
+using CodeJelly.BounceOrBreak.Game.Bounce;
 using CodeJelly.BounceOrBreak.Game.Character;
 using UnityEngine;
 
@@ -55,6 +56,29 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
             gameObject.SetActive(true);
 
             return true;
+        }
+
+        /// <summary>
+        /// 움직임을 고정하고 지정된 위치에 머무릅니다.
+        /// </summary>
+        public void Hold(Vector2 position)
+        {
+            _character.SetMotionLocked(true);
+            transform.position = position;
+        }
+
+        /// <summary>
+        /// 고정을 해제하고 지정된 방향으로 내보냅니다.
+        /// </summary>
+        public void Eject(Vector2 direction, float force)
+        {
+            _character.SetMotionLocked(false);
+            _character.Bounce(new BounceParams
+            {
+                Normal = direction,
+                Force = force,
+                VelocityBeforeCollision = Vector2.zero
+            });
         }
 
         /// <summary>

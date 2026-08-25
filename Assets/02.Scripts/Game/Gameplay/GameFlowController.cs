@@ -66,6 +66,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
         private StageConfig _stageConfig;
+        private CancellationTokenSource _roundCts;
         #endregion
 
 
@@ -144,6 +145,8 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         /// </summary>
         public void Dispose()
         {
+            CancelRound();
+
             _disposables.Dispose();
             _phase.Dispose();
 
@@ -202,6 +205,8 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         /// </summary>
         private void StartRound()
         {
+            _roundCts = new CancellationTokenSource();
+
             if (_stageConfig == null)
             {
                 AppLogger.Error("[GameFlowController] StageConfig is not loaded. Skipping stage trampolines.");
@@ -231,10 +236,46 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
             if (arrival.IsMatched == true)
             {
                 _scoreService.AddScore();
+                _eggSpawner.Despawn(arrival.Egg);
+
+                return;
             }
 
-            // TODO: 불일치 시 재처리
-            _eggSpawner.Despawn(arrival.Egg);
+            HandleMismatch(arrival);
+        }
+
+        /// <summary>
+        /// TargetColor와 불일치한 Egg를 스테이지의 MismatchPolicy에 따라 처리합니다.
+        /// </summary>
+        private void HandleMismatch(GoalArrival arrival)
+        {
+            // MismatchPolicy을 알 수 없으므로 처리하지 않음 (로드 실패는 StartRound에서 보고)
+            if (_stageConfig == null)
+            {
+                return;
+            }
+
+            switch (_stageConfig.MismatchPolicy)
+            {
+                case MismatchPolicy.Eject:
+                    arrival.Port.RejectAsync(arrival.Egg, _roundCts.Token).Forget();
+                    break;
+
+                case MismatchPolicy.Absorb:
+                    // TODO: 감점 정책 도입 시 여기서 반영
+                    _eggSpawner.Despawn(arrival.Egg);
+                    break;
+            }
+        }
+
+        /// <summary>
+        /// 진행 중인 판의 비동기 작업을 모두 취소합니다.
+        /// </summary>
+        private void CancelRound()
+        {
+            _roundCts?.Cancel();
+            _roundCts?.Dispose();
+            _roundCts = null;
         }
 
         /// <summary>
@@ -251,6 +292,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
             AppLogger.Info($"[GameFlowController] Game over. Score: {_scoreService.CurrentScore.CurrentValue}");
 
             _inputManager.SwitchContext(InputContext.GameOver);
+            CancelRound();
             _eggSpawner.StopSpawning();
 
             // 저장 완료를 기다릴 이유가 없으므로 게임오버 처리를 막지 않음
