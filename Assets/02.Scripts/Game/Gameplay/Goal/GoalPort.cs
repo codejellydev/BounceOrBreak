@@ -10,7 +10,6 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Goal
     /// <summary>
     /// Egg의 도달을 감지하는 목표 지점 클래스.
     /// 도달 사실과 EggColor 일치 여부를 발행하며, 득점 여부 판단은 구독 클래스가 처리합니다.
-    /// TODO: IEgg 인터페이스로 추후 변경 예정 (ICharacter는 타입 정보가 없어 대체 불가)
     /// </summary>
     [RequireComponent(typeof(Collider2D))]
     public class GoalPort : MonoBehaviour
@@ -43,7 +42,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Goal
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.TryGetComponent<EggController>(out var egg) == false)
+            if (other.TryGetComponent<IEgg>(out var egg) == false)
             {
                 return;
             }
@@ -77,7 +76,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Goal
         /// <summary>
         /// 거부된 Egg를 일정 시간 머금은 뒤 내보냅니다.
         /// </summary>
-        public async UniTask RejectAsync(EggController egg, CancellationToken ct)
+        public async UniTask RejectAsync(IEgg egg, CancellationToken ct)
         {
             egg.Hold(transform.position);
 

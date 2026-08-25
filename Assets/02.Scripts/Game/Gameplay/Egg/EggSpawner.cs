@@ -28,13 +28,13 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         /// <summary>
         /// Pool에서 꺼내져 활성 상태인 Egg 집합.
         /// </summary>
-        private readonly HashSet<EggController> _activeEggs = new HashSet<EggController>();
+        private readonly HashSet<IEgg> _activeEggs = new HashSet<IEgg>();
 
         private EggFactory _factory;
         private EggRegistry _registry;
         private EggSpawnConfig _config;
 
-        private IObjectPool<EggController> _pool;
+        private IObjectPool<IEgg> _pool;
         private CancellationTokenSource _spawnCts;
         private int _nextCycleIndex;
         #endregion
@@ -88,7 +88,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         /// Egg를 Pool에 반납합니다.
         /// </summary>
         /// <param name="egg">반납할 Egg</param>
-        public void Despawn(EggController egg)
+        public void Despawn(IEgg egg)
         {
             if (egg == null)
             {
@@ -107,7 +107,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         public void DespawnAll()
         {
             // Despawn은 순회 중 컬렉션을 수정하므로 Pool에 직접 반납함
-            foreach (EggController egg in _activeEggs)
+            foreach (IEgg egg in _activeEggs)
             {
                 _pool.Release(egg);
             }
@@ -185,12 +185,10 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         /// </summary>
         private void SpawnNext()
         {
-            EggController egg = _pool.Get();
+            IEgg egg = _pool.Get();
             EggData data = SelectNextData();
 
-            egg.transform.position = _config.SpawnPosition;
-
-            if (egg.Initialize(data) == false)
+            if (egg.Initialize(data, _config.SpawnPosition) == false)
             {
                 AppLogger.Error("[EggSpawner] Failed to initialize egg.");
                 _pool.Release(egg);
