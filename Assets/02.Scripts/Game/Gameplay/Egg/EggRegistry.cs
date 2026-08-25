@@ -57,9 +57,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         #region Private Methods
         /// <summary>
         /// Entry 목록의 유효성을 검증합니다.
-        /// TODO: CI 테스트 적용 후 ContextMenu 수동 검증은 제거 예정
         /// </summary>
-        [ContextMenu("Validate Entries")]
         private void ValidateEntries()
         {
             HashSet<EggType> registeredTypes = new HashSet<EggType>();

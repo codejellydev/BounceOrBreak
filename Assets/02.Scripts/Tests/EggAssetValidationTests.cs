@@ -7,7 +7,7 @@ namespace CodeJelly.BounceOrBreak.Tests
     /// <summary>
     /// Egg 관련 에셋 데이터의 유효성을 검증하는 테스트 클래스.
     /// </summary>
-    public class EggConfigValidationTests
+    public class EggAssetValidationTests
     {
         #region Public Methods
         /// <summary>
