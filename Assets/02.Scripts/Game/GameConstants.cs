@@ -138,6 +138,11 @@ namespace CodeJelly.BounceOrBreak.Game
             public const float DEFAULT_CENTER_THRESHOLD = 0.2f;
 
             /// <summary>
+            /// 동시에 존재할 수 있는 최대 드로잉 Trampoline 개수 (스테이지 Trampoline 제외)
+            /// </summary>
+            public const int MAX_DRAWN_COUNT = 3;
+
+            /// <summary>
             /// ITrampoline 오브젝트 Pool의 초기 용량
             /// </summary>
             public const int POOL_DEFAULT_CAPACITY = 20;
