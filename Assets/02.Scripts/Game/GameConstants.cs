@@ -51,8 +51,27 @@ namespace CodeJelly.BounceOrBreak.Game
             {
                 public const string PREFAB = "EggPrefab";
                 public const string REGISTRY = "EggRegistry";
-                public const string SPAWN_CONFIG = "EggSpawnConfig";
             }
+
+            /// <summary>
+            /// Wave 하나가 담당하는 기본 스폰 횟수
+            /// </summary>
+            public const int DEFAULT_WAVE_SPAWN_COUNT = 10;
+
+            /// <summary>
+            /// Wave의 기본 스폰 간격 (초)
+            /// </summary>
+            public const float DEFAULT_WAVE_SPAWN_INTERVAL = 3f;
+
+            /// <summary>
+            /// 마지막 Wave 이후 스폰마다 줄어드는 기본 간격 (초)
+            /// </summary>
+            public const float DEFAULT_INTERVAL_DECAY_PER_SPAWN = 0.03f;
+
+            /// <summary>
+            /// 기본 스폰 간격 하한 (초)
+            /// </summary>
+            public const float DEFAULT_MIN_SPAWN_INTERVAL = 1.3f;
 
             /// <summary>
             /// Egg 오브젝트 Pool의 초기 용량

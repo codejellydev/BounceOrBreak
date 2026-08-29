@@ -98,7 +98,9 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
 
             _stageConfig = await _resourceManager.LoadAsync<StageConfig>(GameConstants.Stage.Keys.DEFAULT_CONFIG, ct);
 
-            await _eggSpawner.InitializeAsync(ct);
+            EggSpawnConfig spawnConfig = (_stageConfig != null) ? _stageConfig.SpawnConfig : null;
+
+            await _eggSpawner.InitializeAsync(spawnConfig, ct);
             ValidateGoalPortColors();
 
             await _scoreService.InitializeAsync();
@@ -195,7 +197,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
             {
                 if (_eggSpawner.CanSpawnColor(port.TargetColor) == false)
                 {
-                    AppLogger.Error($"[GameFlowController] {port.name} requires {port.TargetColor}, which is not in the spawn cycle.");
+                    AppLogger.Error($"[GameFlowController] {port.name} requires {port.TargetColor}, which no wave spawns.");
                 }
             }
         }
@@ -219,7 +221,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
                 }
             }
 
-            // StartSpawning이 활성 Egg 회수와 스폰 순서 초기화를 수행함
+            // StartSpawning이 활성 Egg 회수와 진행 초기화를 수행함
             _eggSpawner.StartSpawning();
         }
 
