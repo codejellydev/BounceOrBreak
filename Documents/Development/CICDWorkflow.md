@@ -11,7 +11,7 @@
 | 파일 | 트리거 브랜치 | 역할 |
 |---|---|---|
 | `ci-test.yml` | develop, main | Unity Test Runner 실행 |
-| `ci-build.yml` | main | Android 빌드 및 Artifact 업로드 |
+| `ci-build.yml` | develop, main | Android 빌드(서명 APK) 및 Artifact 업로드 |
 
 두 워크플로우 모두 아래 경로 변경 시에만 실행됨:
 - `Assets/**`
@@ -30,3 +30,7 @@ GitHub 저장소 Settings → Secrets and variables → Actions에 등록.
 | `UNITY_LICENSE` | Unity 라이선스 인증 |
 | `UNITY_EMAIL` | Unity 계정 이메일 |
 | `UNITY_PASSWORD` | Unity 계정 비밀번호 |
+| `ANDROID_KEYSTORE_BASE64` | 서명용 키스토어 파일의 Base64 |
+| `ANDROID_KEYSTORE_PASS` | 키스토어 비밀번호 |
+| `ANDROID_KEYALIAS_NAME` | 키 alias |
+| `ANDROID_KEYALIAS_PASS` | 키 비밀번호 |

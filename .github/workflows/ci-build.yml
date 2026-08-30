@@ -55,6 +55,12 @@ jobs:
         with:
           unityVersion: 6000.3.9f1
           targetPlatform: Android
+          androidTargetSdkVersion: AndroidApiLevel35
+          androidKeystoreName: bounceorbreak.keystore
+          androidKeystoreBase64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          androidKeystorePass: ${{ secrets.ANDROID_KEYSTORE_PASS }}
+          androidKeyaliasName: ${{ secrets.ANDROID_KEYALIAS_NAME }}
+          androidKeyaliasPass: ${{ secrets.ANDROID_KEYALIAS_PASS }}
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v7
