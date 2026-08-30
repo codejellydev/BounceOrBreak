@@ -231,7 +231,6 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         private void StartRound()
         {
             _roundCts = new CancellationTokenSource();
-            _roundProgress.Reset();
 
             if (_stageConfig == null)
             {
@@ -245,8 +244,8 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
                 }
             }
 
-            // StartSpawning이 활성 Egg 회수와 진행 초기화를 수행함
-            _eggSpawner.StartSpawning();
+            // StartNewRound가 활성 Egg 회수와 진행 초기화를 수행함
+            _eggSpawner.StartNewRound();
         }
 
         /// <summary>

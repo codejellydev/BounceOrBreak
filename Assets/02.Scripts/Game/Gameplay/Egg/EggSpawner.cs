@@ -78,17 +78,17 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         }
 
         /// <summary>
-        /// 스폰 루프를 시작합니다.
+        /// 진행을 초기화하고 새 Round의 스폰을 시작합니다.
         /// </summary>
-        public void StartSpawning()
+        public void StartNewRound()
         {
             StopSpawning();
             DespawnAll();
 
-            // 실행마다 같은 진행을 따르도록 초기화
+            _roundProgress.Reset();
             _selectorWave = null;
 
-            if (CanStartSpawning() == false)
+            if (HasValidWaves() == false)
             {
                 return;
             }
@@ -145,7 +145,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         /// </summary>
         public bool CanSpawnColor(EggColor color)
         {
-            if (HasWave() == false)
+            if (HasAnyWave() == false)
             {
                 return false;
             }
@@ -202,12 +202,12 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         }
 
         /// <summary>
-        /// 스폰을 시작할 수 있는 Wave 구성인지 확인합니다.
+        /// 모든 Wave가 스폰 가능한 구성인지 확인합니다.
+        /// <para>Wave가 하나도 없거나 EggType이 비어 있으면 유효하지 않습니다.</para>
         /// </summary>
-        /// <returns>모든 Wave가 유효하면 true</returns>
-        private bool CanStartSpawning()
+        private bool HasValidWaves()
         {
-            if (HasWave() == false)
+            if (HasAnyWave() == false)
             {
                 AppLogger.Error("[EggSpawner] No wave is defined. Spawning is skipped.");
 
@@ -228,9 +228,9 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         }
 
         /// <summary>
-        /// 진행에 사용할 Wave가 정의되어 있는지 여부를 반환합니다.
+        /// 진행에 사용할 Wave가 하나라도 정의되어 있는지 여부를 반환합니다.
         /// </summary>
-        private bool HasWave()
+        private bool HasAnyWave()
         {
             return _config != null && 0 < _progression.WaveCount;
         }
