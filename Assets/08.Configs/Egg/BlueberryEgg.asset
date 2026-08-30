@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: CodeJelly.BounceOrBreak.Game::CodeJelly.BounceOrBreak.Game.Gameplay.Egg.EggData
   _type: 1
   _color: 1
-  _baseSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  _baseSprite: {fileID: 21300000, guid: bec91d4489a9f7d8cf38b5a3b0109652, type: 3}
