@@ -16,10 +16,12 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
     {
         #region Injection
         private readonly ResourceManager _resourceManager;
+        private readonly RoundProgress _roundProgress;
 
-        public EggSpawner(ResourceManager resourceManager)
+        public EggSpawner(ResourceManager resourceManager, RoundProgress roundProgress)
         {
             _resourceManager = resourceManager;
+            _roundProgress = roundProgress;
         }
         #endregion
 
@@ -28,15 +30,22 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         /// <summary>
         /// Pool에서 꺼내져 활성 상태인 Egg 집합.
         /// </summary>
-        private readonly HashSet<EggController> _activeEggs = new HashSet<EggController>();
+        private readonly HashSet<IEgg> _activeEggs = new HashSet<IEgg>();
 
         private EggFactory _factory;
         private EggRegistry _registry;
-        private EggSpawnConfig _config;
+        private IObjectPool<IEgg> _pool;
 
-        private IObjectPool<EggController> _pool;
+        private EggSpawnConfig _config;
+        private WaveProgression _progression;
+
         private CancellationTokenSource _spawnCts;
-        private int _nextCycleIndex;
+        private IEggTypeSelector _selector;
+
+        /// <summary>
+        /// Selector를 마지막으로 만든 Wave.
+        /// </summary>
+        private WaveData _selectorWave;
         #endregion
 
 
@@ -44,10 +53,21 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         /// <summary>
         /// 스폰 시스템을 초기화합니다.
         /// </summary>
-        public async UniTask InitializeAsync(CancellationToken ct)
+        /// <param name="config">진행에 사용할 스폰 설정</param>
+        public async UniTask InitializeAsync(EggSpawnConfig config, CancellationToken ct)
         {
+            _config = config;
+
+            if (_config == null)
+            {
+                AppLogger.Error("[EggSpawner] EggSpawnConfig is null. Eggs will not spawn.");
+            }
+            else
+            {
+                _progression = _config.Progression;
+            }
+
             _registry = await _resourceManager.LoadAsync<EggRegistry>(GameConstants.Egg.Keys.REGISTRY, ct);
-            _config = await _resourceManager.LoadAsync<EggSpawnConfig>(GameConstants.Egg.Keys.SPAWN_CONFIG, ct);
 
             _factory = new EggFactory(_resourceManager);
             await _factory.InitializeAsync(ct);
@@ -58,15 +78,20 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         }
 
         /// <summary>
-        /// 스폰 루프를 시작합니다.
+        /// 진행을 초기화하고 새 Round의 스폰을 시작합니다.
         /// </summary>
-        public void StartSpawning()
+        public void StartNewRound()
         {
             StopSpawning();
             DespawnAll();
 
-            // 실행마다 같은 순서로 스폰되도록 초기화
-            _nextCycleIndex = 0;
+            _roundProgress.Reset();
+            _selectorWave = null;
+
+            if (HasValidWaves() == false)
+            {
+                return;
+            }
 
             _factory.PrepareRoot();
 
@@ -88,7 +113,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         /// Egg를 Pool에 반납합니다.
         /// </summary>
         /// <param name="egg">반납할 Egg</param>
-        public void Despawn(EggController egg)
+        public void Despawn(IEgg egg)
         {
             if (egg == null)
             {
@@ -107,7 +132,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         public void DespawnAll()
         {
             // Despawn은 순회 중 컬렉션을 수정하므로 Pool에 직접 반납함
-            foreach (EggController egg in _activeEggs)
+            foreach (IEgg egg in _activeEggs)
             {
                 _pool.Release(egg);
             }
@@ -116,17 +141,26 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         }
 
         /// <summary>
-        /// 지정된 EggColor를 가진 Egg가 스폰 순서에 포함되어 있는지 여부를 반환합니다.
+        /// 지정된 EggColor를 가진 Egg가 어느 Wave에서든 등장하는지 여부를 반환합니다.
         /// </summary>
         public bool CanSpawnColor(EggColor color)
         {
-            foreach (EggType type in _config.SpawnCycle)
+            if (HasAnyWave() == false)
             {
-                EggData data = _registry.GetData(type);
+                return false;
+            }
 
-                if (data != null && data.Color == color)
+            // 어느 Wave에서든 등장하면 스폰 가능으로 판단
+            foreach (WaveData wave in _progression.Waves)
+            {
+                foreach (EggType type in wave.Types)
                 {
-                    return true;
+                    EggData data = _registry.GetData(type);
+
+                    if (data != null && data.Color == color)
+                    {
+                        return true;
+                    }
                 }
             }
 
@@ -147,7 +181,6 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
             _factory?.ReleaseAll();
 
             _resourceManager.Release(GameConstants.Egg.Keys.REGISTRY, ResourceReleaseContext.Cleanup);
-            _resourceManager.Release(GameConstants.Egg.Keys.SPAWN_CONFIG, ResourceReleaseContext.Cleanup);
 
             AppLogger.Info("[EggSpawner] Disposed cleanly.");
         }
@@ -169,13 +202,47 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         }
 
         /// <summary>
+        /// 모든 Wave가 스폰 가능한 구성인지 확인합니다.
+        /// <para>Wave가 하나도 없거나 EggType이 비어 있으면 유효하지 않습니다.</para>
+        /// </summary>
+        private bool HasValidWaves()
+        {
+            if (HasAnyWave() == false)
+            {
+                AppLogger.Error("[EggSpawner] No wave is defined. Spawning is skipped.");
+
+                return false;
+            }
+
+            for (int i = 0; i < _progression.WaveCount; i++)
+            {
+                if (_progression.Waves[i].Types.Count == 0)
+                {
+                    AppLogger.Error($"[EggSpawner] Wave {i} has no EggType. Spawning is skipped.");
+
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// 진행에 사용할 Wave가 하나라도 정의되어 있는지 여부를 반환합니다.
+        /// </summary>
+        private bool HasAnyWave()
+        {
+            return _config != null && 0 < _progression.WaveCount;
+        }
+
+        /// <summary>
         /// 스폰 간격마다 Egg를 스폰합니다.
         /// </summary>
         private async UniTaskVoid RunSpawnLoop(CancellationToken ct)
         {
             while (ct.IsCancellationRequested == false)
             {
-                await UniTask.WaitForSeconds(_config.SpawnInterval, cancellationToken: ct);
+                await UniTask.WaitForSeconds(_progression.GetSpawnInterval(_roundProgress.SpawnedCount.CurrentValue), cancellationToken: ct);
                 SpawnNext();
             }
         }
@@ -185,12 +252,22 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         /// </summary>
         private void SpawnNext()
         {
-            EggController egg = _pool.Get();
-            EggData data = SelectNextData();
+            WaveData wave = _progression.GetWave(_roundProgress.SpawnedCount.CurrentValue);
+            IEggTypeSelector selector = EnsureSelector(wave);
 
-            egg.transform.position = _config.SpawnPosition;
+            EggType type = selector.Select(wave);
+            EggData data = _registry.GetData(type);
 
-            if (egg.Initialize(data) == false)
+            if (data == null)
+            {
+                AppLogger.Error($"[EggSpawner] {type} is not registered in EggRegistry.");
+
+                return;
+            }
+
+            IEgg egg = _pool.Get();
+
+            if (egg.Initialize(data, _config.SpawnPosition) == false)
             {
                 AppLogger.Error("[EggSpawner] Failed to initialize egg.");
                 _pool.Release(egg);
@@ -199,27 +276,22 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
             }
 
             _activeEggs.Add(egg);
+            _roundProgress.CountSpawn();
         }
 
         /// <summary>
-        /// 다음에 스폰할 EggData를 결정합니다.
-        /// TODO: 웨이브 기반 선택 로직
+        /// 지정된 Wave의 Selector를 반환합니다.
+        /// Wave가 바뀌면 이전 Wave의 선택 상태가 이어지지 않도록 새로 만듭니다.
         /// </summary>
-        private EggData SelectNextData()
+        private IEggTypeSelector EnsureSelector(WaveData wave)
         {
-            IReadOnlyList<EggType> cycle = _config.SpawnCycle;
-
-            if (cycle.Count == 0)
+            if (_selectorWave != wave)
             {
-                AppLogger.Error("[EggSpawner] Spawn cycle is empty.");
-
-                return null;
+                _selector = EggTypeSelectorFactory.Create(wave.SelectionPolicy);
+                _selectorWave = wave;
             }
 
-            EggType type = cycle[_nextCycleIndex % cycle.Count];
-            _nextCycleIndex++;
-
-            return _registry.GetData(type);
+            return _selector;
         }
         #endregion
     }

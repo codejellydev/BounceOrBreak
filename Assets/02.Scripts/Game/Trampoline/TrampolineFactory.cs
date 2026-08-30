@@ -82,18 +82,25 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         /// <summary>
         /// 지정된 TrampolineType의 Trampoline을 생성합니다.
         /// </summary>
+        /// <returns>생성된 Trampoline. 실패 시 null</returns>
         public ITrampoline Create(TrampolineType type)
         {
-            if (_prefabs.TryGetValue(type, out GameObject prefab) == true)
-            {
-                GameObject instance = UnityEngine.Object.Instantiate(prefab, _root);
-
-                return instance.GetComponent<ITrampoline>();
-            }
-            else
+            if (_prefabs.TryGetValue(type, out GameObject prefab) == false)
             {
                 throw new ArgumentException($"[TrampolineFactory] No prefab loaded for TrampolineType: {type}");
             }
+
+            GameObject instance = UnityEngine.Object.Instantiate(prefab, _root);
+
+            if (instance.TryGetComponent<ITrampoline>(out var trampoline) == false)
+            {
+                AppLogger.Error($"[TrampolineFactory] {type} prefab has no ITrampoline component.");
+                UnityEngine.Object.Destroy(instance);
+
+                return null;
+            }
+
+            return trampoline;
         }
 
         /// <summary>

@@ -7,7 +7,7 @@ namespace CodeJelly.BounceOrBreak.Tests
     /// <summary>
     /// Egg 관련 에셋 데이터의 유효성을 검증하는 테스트 클래스.
     /// </summary>
-    public class EggConfigValidationTests
+    public class EggAssetValidationTests
     {
         #region Public Methods
         /// <summary>
@@ -36,10 +36,10 @@ namespace CodeJelly.BounceOrBreak.Tests
         }
 
         /// <summary>
-        /// SpawnCycle의 모든 EggType이 EggRegistry에 등록되어 있습니다.
+        /// 모든 Wave의 EggType이 EggRegistry에 등록되어 있습니다.
         /// </summary>
         [Test]
-        public void EggSpawnConfig_CycleTypesExistInRegistry()
+        public void EggSpawnConfig_WaveTypesExistInRegistry()
         {
             HashSet<EggType> registeredTypes = new HashSet<EggType>();
 
@@ -62,11 +62,31 @@ namespace CodeJelly.BounceOrBreak.Tests
 
             foreach (EggSpawnConfig config in configs)
             {
-                Assert.IsNotEmpty(config.SpawnCycle, $"SpawnCycle is empty in {config.name}.");
+                Assert.IsNotEmpty(config.Waves, $"No wave is defined in {config.name}.");
 
-                foreach (EggType type in config.SpawnCycle)
+                for (int i = 0; i < config.Waves.Count; i++)
                 {
-                    Assert.IsTrue(registeredTypes.Contains(type), $"Unregistered EggType in {config.name}: {type}.");
+                    WaveData wave = config.Waves[i];
+
+                    Assert.IsTrue(0 < wave.SpawnCount, $"Wave {i} has a non-positive SpawnCount in {config.name}.");
+                    Assert.IsNotEmpty(wave.Types, $"Wave {i} has no EggType in {config.name}.");
+
+                    HashSet<EggType> distinctTypes = new HashSet<EggType>(wave.Types);
+                    bool repeatsSingleType = 1 < wave.Types.Count && distinctTypes.Count == 1;
+
+                    Assert.IsFalse(repeatsSingleType, $"Wave {i} repeats a single EggType in {config.name}.");
+
+                    // WaveProgression.GetSpawnInterval이 하한으로 보정하므로, 하한보다 낮은 간격은 실제 스폰에 반영되지 않음
+                    Assert.IsTrue
+                    (
+                        config.MinSpawnInterval <= wave.SpawnInterval,
+                        $"Wave {i} SpawnInterval is below MinSpawnInterval in {config.name}."
+                    );
+
+                    foreach (EggType type in wave.Types)
+                    {
+                        Assert.IsTrue(registeredTypes.Contains(type), $"Unregistered EggType in {config.name} wave {i}: {type}.");
+                    }
                 }
             }
         }

@@ -1,5 +1,5 @@
 using CodeJelly.BounceOrBreak.Core.Logging;
-using CodeJelly.BounceOrBreak.Core.Pooling;
+using CodeJelly.BounceOrBreak.Game.Bounce;
 using CodeJelly.BounceOrBreak.Game.Character;
 using UnityEngine;
 
@@ -8,11 +8,11 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
     /// <summary>
     /// Egg의 도메인 로직을 담당하는 클래스.
     /// </summary>
-    public class EggController : MonoBehaviour, IPoolable
+    public class EggController : MonoBehaviour, IEgg
     {
         #region Properties
         /// <summary>
-        /// Egg의 타입 데이터.
+        /// IEgg.Data Implementation
         /// </summary>
         public EggData Data { get; private set; }
         #endregion
@@ -35,11 +35,13 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
 
         #region Public Methods
         /// <summary>
-        /// Egg를 지정된 타입 데이터로 초기화하고 활성화합니다.
+        /// IEgg.Initialize Implementation
         /// TODO: data 기반 IEggBehavior 장착
         /// </summary>
+        /// <param name="data">적용할 타입 데이터</param>
+        /// <param name="position">배치할 위치</param>
         /// <returns>초기화 성공 시 true</returns>
-        public bool Initialize(EggData data)
+        public bool Initialize(EggData data, Vector2 position)
         {
             if (data == null)
             {
@@ -51,10 +53,34 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
             Data = data;
 
             _renderer.ApplyData(data);
+            transform.position = position;
 
             gameObject.SetActive(true);
 
             return true;
+        }
+
+        /// <summary>
+        /// IEgg.Hold Implementation
+        /// </summary>
+        public void Hold(Vector2 position)
+        {
+            _character.SetMotionLocked(true);
+            transform.position = position;
+        }
+
+        /// <summary>
+        /// IEgg.Eject Implementation
+        /// </summary>
+        public void Eject(Vector2 direction, float force)
+        {
+            _character.SetMotionLocked(false);
+            _character.Bounce(new BounceParams
+            {
+                Normal = direction,
+                Force = force,
+                VelocityBeforeCollision = Vector2.zero
+            });
         }
 
         /// <summary>

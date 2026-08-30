@@ -51,8 +51,27 @@ namespace CodeJelly.BounceOrBreak.Game
             {
                 public const string PREFAB = "EggPrefab";
                 public const string REGISTRY = "EggRegistry";
-                public const string SPAWN_CONFIG = "EggSpawnConfig";
             }
+
+            /// <summary>
+            /// Wave 하나가 담당하는 기본 스폰 횟수
+            /// </summary>
+            public const int DEFAULT_WAVE_SPAWN_COUNT = 10;
+
+            /// <summary>
+            /// Wave의 기본 스폰 간격 (초)
+            /// </summary>
+            public const float DEFAULT_WAVE_SPAWN_INTERVAL = 3f;
+
+            /// <summary>
+            /// 마지막 Wave 이후 스폰마다 줄어드는 기본 간격 (초)
+            /// </summary>
+            public const float DEFAULT_INTERVAL_DECAY_PER_SPAWN = 0.03f;
+
+            /// <summary>
+            /// 기본 스폰 간격 하한 (초)
+            /// </summary>
+            public const float DEFAULT_MIN_SPAWN_INTERVAL = 1.3f;
 
             /// <summary>
             /// Egg 오브젝트 Pool의 초기 용량
@@ -138,6 +157,11 @@ namespace CodeJelly.BounceOrBreak.Game
             public const float DEFAULT_CENTER_THRESHOLD = 0.2f;
 
             /// <summary>
+            /// 동시에 존재할 수 있는 최대 드로잉 Trampoline 개수 (스테이지 Trampoline 제외)
+            /// </summary>
+            public const int MAX_DRAWN_COUNT = 3;
+
+            /// <summary>
             /// ITrampoline 오브젝트 Pool의 초기 용량
             /// </summary>
             public const int POOL_DEFAULT_CAPACITY = 20;
@@ -174,6 +198,24 @@ namespace CodeJelly.BounceOrBreak.Game
             /// 반사 방향 계산 시 속도 임계값 (이하일 경우 노말 방향으로 Fallback)
             /// </summary>
             public const float MIN_VELOCITY_FOR_REFLECT = 0.01f;
+        }
+
+        public static class Goal
+        {
+            /// <summary>
+            /// 거부된 Egg를 내보내기 전까지 머금는 시간 (초)
+            /// </summary>
+            public const float REJECT_HOLD_DURATION = 0.4f;
+
+            /// <summary>
+            /// 거부된 Egg를 내보내는 힘
+            /// </summary>
+            public const float REJECT_FORCE = 8f;
+
+            /// <summary>
+            /// 내보내는 방향이 수직에서 벗어날 수 있는 최대 각도 (도)
+            /// </summary>
+            public const float REJECT_CONE_HALF_ANGLE = 40f;
         }
 
         public static class Score

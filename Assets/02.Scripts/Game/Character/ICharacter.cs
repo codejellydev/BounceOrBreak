@@ -15,8 +15,13 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         Transform Transform { get; }
 
         /// <summary>
-        /// Character의 상태를 초기 상태로 되돌린다.
+        /// Character의 상태를 초기 상태로 되돌립니다.
         /// </summary>
         void ResetState();
+
+        /// <summary>
+        /// 물리적 움직임의 고정 여부를 설정합니다.
+        /// </summary>
+        void SetMotionLocked(bool isLocked);
     }
 }

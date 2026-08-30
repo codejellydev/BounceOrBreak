@@ -18,3 +18,5 @@ MonoBehaviour:
     _points:
     - {x: -3.5, y: -4}
     - {x: 3.5, y: -4}
+  _mismatchPolicy: 0
+  _spawnConfig: {fileID: 11400000, guid: 1ab1f211223e9ec448c68503325d349e, type: 2}

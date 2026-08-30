@@ -21,12 +21,6 @@ MonoBehaviour:
     m_SerializedLabels:
     - Trampoline
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 1ab1f211223e9ec448c68503325d349e
-    m_Address: EggSpawnConfig
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Config
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3481274a660ce9445ba56f0adf80614a
     m_Address: LobbySceneConfig
     m_ReadOnly: 0
