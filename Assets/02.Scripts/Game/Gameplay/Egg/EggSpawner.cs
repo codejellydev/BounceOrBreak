@@ -16,10 +16,12 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
     {
         #region Injection
         private readonly ResourceManager _resourceManager;
+        private readonly RoundProgress _roundProgress;
 
-        public EggSpawner(ResourceManager resourceManager)
+        public EggSpawner(ResourceManager resourceManager, RoundProgress roundProgress)
         {
             _resourceManager = resourceManager;
+            _roundProgress = roundProgress;
         }
         #endregion
 
@@ -38,7 +40,6 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         private WaveProgression _progression;
 
         private CancellationTokenSource _spawnCts;
-        private int _spawnedCount;
         private IEggTypeSelector _selector;
 
         /// <summary>
@@ -85,7 +86,6 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
             DespawnAll();
 
             // 실행마다 같은 진행을 따르도록 초기화
-            _spawnedCount = 0;
             _selectorWave = null;
 
             if (CanStartSpawning() == false)
@@ -242,7 +242,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         {
             while (ct.IsCancellationRequested == false)
             {
-                await UniTask.WaitForSeconds(_progression.GetSpawnInterval(_spawnedCount), cancellationToken: ct);
+                await UniTask.WaitForSeconds(_progression.GetSpawnInterval(_roundProgress.SpawnedCount.CurrentValue), cancellationToken: ct);
                 SpawnNext();
             }
         }
@@ -252,7 +252,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         /// </summary>
         private void SpawnNext()
         {
-            WaveData wave = _progression.GetWave(_spawnedCount);
+            WaveData wave = _progression.GetWave(_roundProgress.SpawnedCount.CurrentValue);
             IEggTypeSelector selector = EnsureSelector(wave);
 
             EggType type = selector.Select(wave);
@@ -276,7 +276,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
             }
 
             _activeEggs.Add(egg);
-            _spawnedCount++;
+            _roundProgress.CountSpawn();
         }
 
         /// <summary>

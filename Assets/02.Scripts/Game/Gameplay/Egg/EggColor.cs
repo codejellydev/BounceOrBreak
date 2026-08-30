@@ -7,5 +7,6 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
     {
         Yellow = 0,
         Blue = 1,
+        Green = 2,
     }
 }

@@ -24,6 +24,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         private readonly GoalPort[] _goalPorts;
         private readonly EggSpawner _eggSpawner;
         private readonly ScoreService _scoreService;
+        private readonly RoundProgress _roundProgress;
         private readonly TrampolineDrawer _trampolineDrawer;
         private readonly InputManager _inputManager;
         private readonly ResourceManager _resourceManager;
@@ -33,6 +34,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
             GoalPort[] goalPorts,
             EggSpawner eggSpawner,
             ScoreService scoreService,
+            RoundProgress roundProgress,
             TrampolineDrawer trampolineDrawer,
             InputManager inputManager,
             ResourceManager resourceManager)
@@ -41,6 +43,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
             _goalPorts = goalPorts;
             _eggSpawner = eggSpawner;
             _scoreService = scoreService;
+            _roundProgress = roundProgress;
             _trampolineDrawer = trampolineDrawer;
             _inputManager = inputManager;
             _resourceManager = resourceManager;
@@ -90,6 +93,10 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
                          .AddTo(_disposables);
 
             SubscribeGoalPorts();
+
+            _roundProgress.SpawnedCount
+                          .Subscribe(UpdateGoalPortStates)
+                          .AddTo(_disposables);
 
             _inputManager.SwitchContext(InputContext.Gameplay);
 
@@ -203,11 +210,28 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         }
 
         /// <summary>
+        /// 누적 스폰 횟수에 따라 각 GoalPort의 개방 여부를 갱신합니다.
+        /// </summary>
+        private void UpdateGoalPortStates(int spawnedCount)
+        {
+            if (_goalPorts == null)
+            {
+                return;
+            }
+
+            foreach (GoalPort port in _goalPorts)
+            {
+                port.SetOpen(port.RequiredSpawnCount <= spawnedCount);
+            }
+        }
+
+        /// <summary>
         /// 새 게임을 시작합니다.
         /// </summary>
         private void StartRound()
         {
             _roundCts = new CancellationTokenSource();
+            _roundProgress.Reset();
 
             if (_stageConfig == null)
             {
@@ -271,7 +295,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         }
 
         /// <summary>
-        /// 진행 중인 판의 비동기 작업을 모두 취소합니다.
+        /// 진행 중인 Round의 비동기 작업을 모두 취소합니다.
         /// </summary>
         private void CancelRound()
         {

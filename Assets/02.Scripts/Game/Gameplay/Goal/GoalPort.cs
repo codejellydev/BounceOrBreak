@@ -18,6 +18,11 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Goal
         public EggColor TargetColor => _targetColor;
 
         /// <summary>
+        /// 이 포트가 열리기 위해 필요한 누적 스폰 횟수. 0이면 Round 시작부터 열려 있습니다.
+        /// </summary>
+        public int RequiredSpawnCount => _requiredSpawnCount;
+
+        /// <summary>
         /// Egg가 도달했을 때 발행
         /// </summary>
         public Observable<GoalArrival> OnEggArrived => _onEggArrived;
@@ -28,9 +33,13 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Goal
         [Tooltip("요구하는 EggColor")]
         [SerializeField] private EggColor _targetColor;
 
+        [Tooltip("이 포트가 열리기 위해 필요한 누적 스폰 횟수 (0이면 Round 시작부터 열림)")]
+        [SerializeField] private int _requiredSpawnCount;
+
         private readonly Subject<GoalArrival> _onEggArrived = new Subject<GoalArrival>();
 
         private Collider2D _collider;
+        private SpriteRenderer[] _renderers;
         #endregion
 
 
@@ -74,6 +83,19 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Goal
 
         #region Public Methods
         /// <summary>
+        /// 포트의 개방 여부를 설정합니다.
+        /// </summary>
+        public void SetOpen(bool isOpen)
+        {
+            _collider.enabled = isOpen;
+
+            foreach (SpriteRenderer renderer in _renderers)
+            {
+                renderer.enabled = isOpen;
+            }
+        }
+
+        /// <summary>
         /// 거부된 Egg를 일정 시간 머금은 뒤 내보냅니다.
         /// </summary>
         public async UniTask RejectAsync(IEgg egg, CancellationToken ct)
@@ -94,6 +116,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Goal
         private void InitializeComponents()
         {
             _collider ??= GetComponent<Collider2D>();
+            _renderers ??= GetComponentsInChildren<SpriteRenderer>(includeInactive: true);
 
             // non-trigger면 충돌체를 물리적으로 막아 통과 감지가 불가능하므로 강제 trigger 설정
             _collider.isTrigger = true;
