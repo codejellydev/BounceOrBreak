@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- UDR0001: Domain Reload 분석기(com.unity.project-auditor). 서드파티 데모 스크립트의 static 초기화에서만 발생하며 직접 수정할 수 없다. -->
+<RuleSet Name="Third-party analyzer suppressions" ToolsVersion="16.0">
+  <Rules AnalyzerId="Domain_Reload_Analyzer" RuleNamespace="Domain_Reload_Analyzer">
+    <Rule Id="UDR0001" Action="None" />
+  </Rules>
+</RuleSet>
