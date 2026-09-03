@@ -1,3 +1,4 @@
+using CodeJelly.BounceOrBreak.Game;
 using CodeJelly.BounceOrBreak.Game.Gameplay.Stage;
 using CodeJelly.BounceOrBreak.Game.Trampoline;
 using CodeJelly.BounceOrBreak.Game.Wall;
@@ -10,7 +11,7 @@ using UnityEngine.SceneManagement;
 namespace CodeJelly.BounceOrBreak.Tests
 {
     /// <summary>
-    /// StageConfig에 배치된 Trampoline의 배치 규칙을 검증하는 테스트 클래스.
+    /// Trampoline의 배치 규칙과 드로잉 경계를 검증하는 테스트 클래스.
     /// </summary>
     public class TrampolinePlacementValidationTests
     {
@@ -72,6 +73,16 @@ namespace CodeJelly.BounceOrBreak.Tests
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// 드로잉 경계 상수가 Wall의 안쪽 면과 일치합니다.
+        /// </summary>
+        [Test]
+        public void DrawBoundary_MatchesWallInnerFaces()
+        {
+            Assert.AreEqual(-GameConstants.Trampoline.DRAW_BOUNDARY_X, _leftBoundary, TOLERANCE, "Left draw boundary does not match the wall.");
+            Assert.AreEqual(GameConstants.Trampoline.DRAW_BOUNDARY_X, _rightBoundary, TOLERANCE, "Right draw boundary does not match the wall.");
         }
         #endregion
 

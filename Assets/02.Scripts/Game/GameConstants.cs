@@ -122,6 +122,11 @@ namespace CodeJelly.BounceOrBreak.Game
             public const float MIN_POINT_DISTANCE = 0.1f;
 
             /// <summary>
+            /// 드로잉이 허용되는 좌우 경계의 x좌표 (Wall의 안쪽 면 = 보장 영역 가로 절반 2.5 - Wall 폭 절반 0.1875)
+            /// </summary>
+            public const float DRAW_BOUNDARY_X = 2.125f;
+
+            /// <summary>
             /// 라인에 저장할 수 있는 최대 포인트 개수
             /// </summary>
             public const int MAX_LINE_POINTS = 100;
