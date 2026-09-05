@@ -9,7 +9,11 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
     public class StraightTrampolineRenderer : TrampolineRenderer
     {
         #region Properties
-        public override bool CanApply => _mat != null && _marker != null && _mat != _marker;
+        public override bool CanApply => _mat != null
+                                      && _marker != null
+                                      && _mat != _marker
+                                      /// 표식이 매트에 가려지지 않아야 하므로 sortingOrder 확인
+                                      && _mat.sortingOrder < _marker.sortingOrder;
         #endregion
 
 

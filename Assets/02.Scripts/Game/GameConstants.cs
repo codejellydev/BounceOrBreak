@@ -324,5 +324,26 @@ namespace CodeJelly.BounceOrBreak.Game
                 public const string ENGLISH = "en";
             }
         }
+
+        /// <summary>
+        /// Sorting Layer 이름.
+        /// </summary>
+        public static class SortingLayers
+        {
+            public const string BACKGROUND = "Background";
+            public const string TRAMPOLINE = "Trampoline";
+            public const string EGG = "Egg";
+            public const string GOAL_PORT = "GoalPort";
+            public const string FOREGROUND = "Foreground";
+
+            /// <summary>
+            /// 뒤에서 앞으로의 그리기 순서. TagManager의 리스트 순서와 같아야 함
+            /// <para>TagManager와의 정합성은 SortingLayerValidationTests가 검증</para>
+            /// </summary>
+            public static readonly string[] ORDER =
+            {
+                BACKGROUND, TRAMPOLINE, EGG, GOAL_PORT, FOREGROUND
+            };
+        }
     }
 }
