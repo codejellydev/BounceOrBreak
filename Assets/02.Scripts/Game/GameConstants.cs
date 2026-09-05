@@ -137,9 +137,9 @@ namespace CodeJelly.BounceOrBreak.Game
             public const int MIN_DRAW_POINTS = 2;
 
             /// <summary>
-            /// 기본 라인 너비
+            /// 기본 두께 (4px / PPU 32)
             /// </summary>
-            public const float DEFAULT_LINE_WIDTH = 0.1f;
+            public const float DEFAULT_THICKNESS = 0.125f;
 
             /// <summary>
             /// 기본 튕김 세기

@@ -36,7 +36,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             _linePoints = points;
 
             InitializeComponents();
-            SetupLineRenderer();
+            ApplyVisual(points);
             SetupCollider();
             SetupPlatformEffector();
             CalculateLineLength();
@@ -71,24 +71,6 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
 
         #region Protected Methods
-        /// <summary>
-        /// LineRenderer를 설정합니다.
-        /// </summary>
-        protected override void SetupLineRenderer()
-        {
-            _lineRenderer.positionCount = _linePoints.Length;
-            _lineRenderer.startWidth = _config.LineWidth;
-            _lineRenderer.endWidth = _config.LineWidth;
-            _lineRenderer.material = _config.LineMaterial;
-            _lineRenderer.startColor = _config.LineColor;
-            _lineRenderer.endColor = _config.LineColor;
-
-            for (int i = 0; i < _linePoints.Length; i++)
-            {
-                _lineRenderer.SetPosition(i, _linePoints[i]);
-            }
-        }
-
         /// <summary>
         /// EdgeCollider2D를 설정합니다.
         /// </summary>

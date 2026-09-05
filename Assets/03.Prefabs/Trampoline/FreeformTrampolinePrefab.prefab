@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8395588966853606891}
   - component: {fileID: 2038303183284348962}
+  - component: {fileID: 4952048163763396181}
   - component: {fileID: 3285667234039101728}
   - component: {fileID: 223065661200586916}
   - component: {fileID: 1486914694424839910}
@@ -47,6 +48,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be8c27280d5fc024da741691479415aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CodeJelly.BounceOrBreak.Game.Trampoline.FreeformTrampoline
+  _renderer: {fileID: 4952048163763396181}
+--- !u!114 &4952048163763396181
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015052467934008646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9eb56c0f83b749159368c11e22714be0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: CodeJelly.BounceOrBreak.Game::CodeJelly.BounceOrBreak.Game.Trampoline.FreeformTrampolineRenderer
+  _lineRenderer: {fileID: 3285667234039101728}
 --- !u!120 &3285667234039101728
 LineRenderer:
   serializedVersion: 3

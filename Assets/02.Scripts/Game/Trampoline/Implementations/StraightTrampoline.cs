@@ -48,7 +48,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
             InitializeComponents();
             CalculateLineProperties();
-            SetupLineRenderer();
+            ApplyVisual(points);
             SetupCollider();
             SetupPlatformEffector();
 
@@ -63,22 +63,6 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
         #region Protected Methods
         /// <summary>
-        /// LineRenderer를 설정합니다.
-        /// </summary>
-        protected override void SetupLineRenderer()
-        {
-            _lineRenderer.positionCount = 2;
-            _lineRenderer.startWidth = _config.LineWidth;
-            _lineRenderer.endWidth = _config.LineWidth;
-            _lineRenderer.material = _config.LineMaterial;
-            _lineRenderer.startColor = _config.LineColor;
-            _lineRenderer.endColor = _config.LineColor;
-
-            _lineRenderer.SetPosition(0, _startPoint);
-            _lineRenderer.SetPosition(1, _endPoint);
-        }
-
-        /// <summary>
         /// EdgeCollider2D를 설정합니다.
         /// </summary>
         protected override void SetupCollider()
@@ -89,6 +73,9 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             localPoints[1] = transform.InverseTransformPoint(_endPoint);
 
             _edgeCollider.points = localPoints;
+
+            // 판정면을 보이는 윗면에 맞춤. 0이면 두께 없는 중심선에서 튕겨 계란이 몸통에 박힌 것처럼 보임
+            _edgeCollider.edgeRadius = _config.Thickness * 0.5f;
         }
 
         /// <summary>

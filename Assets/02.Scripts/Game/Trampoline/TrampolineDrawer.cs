@@ -238,11 +238,9 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             }
 
             _drawingLineRenderer.positionCount = 0;
-            _drawingLineRenderer.startWidth = _config.LineWidth;
-            _drawingLineRenderer.endWidth = _config.LineWidth;
-            _drawingLineRenderer.material = _config.LineMaterial;
-            _drawingLineRenderer.startColor = _config.LineColor;
-            _drawingLineRenderer.endColor = _config.LineColor;
+            // 미리보기는 확정 전 임시 선이라 LineRenderer를 유지하며, 재질과 색은 Drawer 프리팹의 LineRenderer에 설정된 값을 사용
+            _drawingLineRenderer.startWidth = _config.Thickness;
+            _drawingLineRenderer.endWidth = _config.Thickness;
         }
 
         /// <summary>
