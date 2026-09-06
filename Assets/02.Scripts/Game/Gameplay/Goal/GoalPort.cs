@@ -26,6 +26,11 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Goal
         /// Egg가 도달했을 때 발행
         /// </summary>
         public Observable<GoalArrival> OnEggArrived => _onEggArrived;
+
+        /// <summary>
+        /// GoalPort가 유효한지 확인합니다.
+        /// </summary>
+        public bool IsValid => _renderer != null && _config != null && _renderer.CanApply;
         #endregion
 
 
@@ -36,10 +41,12 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Goal
         [Tooltip("이 포트가 열리기 위해 필요한 누적 스폰 횟수 (0이면 Round 시작부터 열림)")]
         [SerializeField] private int _requiredSpawnCount;
 
+        [SerializeField] private GoalPortRenderer _renderer;
+        [SerializeField] private GoalPortConfig _config;
+
         private readonly Subject<GoalArrival> _onEggArrived = new Subject<GoalArrival>();
 
         private Collider2D _collider;
-        private SpriteRenderer[] _renderers;
         #endregion
 
 
@@ -47,6 +54,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Goal
         private void Awake()
         {
             InitializeComponents();
+            ApplyVisual();
         }
 
         private void OnTriggerEnter2D(Collider2D other)
@@ -88,11 +96,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Goal
         public void SetOpen(bool isOpen)
         {
             _collider.enabled = isOpen;
-
-            foreach (SpriteRenderer renderer in _renderers)
-            {
-                renderer.enabled = isOpen;
-            }
+            _renderer.SetVisible(isOpen);
         }
 
         /// <summary>
@@ -116,10 +120,17 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Goal
         private void InitializeComponents()
         {
             _collider ??= GetComponent<Collider2D>();
-            _renderers ??= GetComponentsInChildren<SpriteRenderer>(includeInactive: true);
 
             // non-trigger면 충돌체를 물리적으로 막아 통과 감지가 불가능하므로 강제 trigger 설정
             _collider.isTrigger = true;
+        }
+
+        /// <summary>
+        /// 시각 표현을 적용합니다.
+        /// </summary>
+        private void ApplyVisual()
+        {
+            _renderer.Apply(_config.GetSprite(_targetColor));
         }
 
         /// <summary>
