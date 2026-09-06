@@ -24,6 +24,16 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         #endregion
 
 
+        #region Unity Lifecycle
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            ValidateEntries();
+        }
+#endif
+        #endregion
+
+
         #region Public Methods
         /// <summary>
         /// 지정된 EggType에 해당하는 EggData를 반환합니다.
@@ -41,16 +51,6 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
             AppLogger.Warning($"[EggRegistry] Data not found for type: {type}");
             return null;
         }
-        #endregion
-
-
-        #region Unity Lifecycle
-#if UNITY_EDITOR
-        private void OnValidate()
-        {
-            ValidateEntries();
-        }
-#endif
         #endregion
 
 

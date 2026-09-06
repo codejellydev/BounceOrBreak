@@ -24,6 +24,16 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         #endregion
 
 
+        #region Unity Lifecycle
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            ValidateEntries();
+        }
+#endif
+        #endregion
+
+
         #region Public Methods
         /// <summary>
         /// 지정된 TrampolineType에 해당하는 TrampolineEntry를 반환합니다.
@@ -41,16 +51,6 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             AppLogger.Warning($"[TrampolineRegistry] Entry not found for type: {type}");
             return null;
         }
-        #endregion
-
-
-        #region Unity Lifecycle
-#if UNITY_EDITOR
-        private void OnValidate()
-        {
-            ValidateEntries();
-        }
-#endif
         #endregion
 
 

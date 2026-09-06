@@ -16,7 +16,7 @@ MonoBehaviour:
   - _type: 0
     _config: {fileID: 11400000, guid: 4f92fa6a15dd0444db485eb217f5a94b, type: 2}
     _points:
-    - {x: -3.5, y: -4}
-    - {x: 3.5, y: -4}
+    - {x: -2.125, y: -4}
+    - {x: 2.125, y: -4}
   _mismatchPolicy: 0
   _spawnConfig: {fileID: 11400000, guid: 1ab1f211223e9ec448c68503325d349e, type: 2}

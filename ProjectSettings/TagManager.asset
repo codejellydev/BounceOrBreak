@@ -41,6 +41,21 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Background
+    uniqueID: 1570759233
+    locked: 0
+  - name: Trampoline
+    uniqueID: 625975675
+    locked: 0
+  - name: Egg
+    uniqueID: 559062909
+    locked: 0
+  - name: GoalPort
+    uniqueID: 1439846679
+    locked: 0
+  - name: Foreground
+    uniqueID: 3059115839
+    locked: 0
   m_RenderingLayers:
   - Default
   - Light Layer 1
