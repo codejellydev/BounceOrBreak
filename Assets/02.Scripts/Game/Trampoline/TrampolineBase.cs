@@ -9,7 +9,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
     /// <summary>
     /// Trampoline의 추상 클래스.
     /// </summary>
-    [RequireComponent(typeof(LineRenderer), typeof(EdgeCollider2D), typeof(PlatformEffector2D))]
+    [RequireComponent(typeof(EdgeCollider2D), typeof(PlatformEffector2D))]
     public abstract class TrampolineBase : MonoBehaviour, ITrampoline
     {
         #region Nested Classes
@@ -58,6 +58,11 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         public float Lifetime => (_isInitialized == true)
                               ? Time.time - _lifetimeStartTime
                               : 0f;
+
+        /// <summary>
+        /// Trampoline이 유효한지 확인합니다.
+        /// </summary>
+        public bool IsValid => _renderer != null && _renderer.CanApply;
         #endregion
 
 
@@ -65,7 +70,6 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         protected TrampolineDrawer _drawer;
         protected TrampolineConfig _config;
 
-        protected LineRenderer _lineRenderer;
         protected EdgeCollider2D _edgeCollider;
         protected PlatformEffector2D _platformEffector;
 
@@ -76,6 +80,8 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
 
         #region Private Variables
+        [SerializeField] private TrampolineRenderer _renderer;
+
         private CancellationTokenSource _lifetimeCts;
         private float _lifetimeStartTime;
         #endregion
@@ -178,9 +184,16 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
         #region Protected Methods
         /// <summary>
-        /// LineRenderer를 설정합니다.
+        /// 필요한 컴포넌트들을 초기화합니다.
         /// </summary>
-        protected abstract void SetupLineRenderer();
+        protected virtual void InitializeComponents()
+        {
+            // EdgeCollider2D Initialization
+            _edgeCollider ??= GetComponent<EdgeCollider2D>();
+
+            // PlatformEffector2D Initialization
+            _platformEffector ??= GetComponent<PlatformEffector2D>();
+        }
 
         /// <summary>
         /// EdgeCollider2D를 설정합니다.
@@ -206,23 +219,11 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         }
 
         /// <summary>
-        /// 라인의 특정 지점에서의 접촉 정보를 계산합니다.
+        /// 시각 표현을 적용합니다.
         /// </summary>
-        protected abstract ContactInfo AnalyzeContactInfo(Vector2 contactPoint);
-
-        /// <summary>
-        /// 필요한 컴포넌트들을 초기화합니다.
-        /// </summary>
-        protected virtual void InitializeComponents()
+        protected void ApplyVisual(Vector2[] points)
         {
-            // LineRenderer Initialization
-            _lineRenderer ??= GetComponent<LineRenderer>();
-
-            // EdgeCollider2D Initialization
-            _edgeCollider ??= GetComponent<EdgeCollider2D>();
-
-            // PlatformEffector2D Initialization
-            _platformEffector ??= GetComponent<PlatformEffector2D>();
+            _renderer.Apply(points, _config);
         }
 
         /// <summary>
@@ -261,6 +262,29 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
             _lifetimeCts = null;
         }
+
+        /// <summary>
+        /// Trampoline을 비활성화하고 Pool에 반환합니다.
+        /// </summary>
+        protected virtual void Despawn()
+        {
+            if (_isInitialized == false)
+            {
+                return;
+            }
+
+            AppLogger.Info($"[{Type}Trampoline] Despawned. UsageCount: {UsageCount}, Lifetime: {Lifetime:F2}s");
+
+            _isInitialized = false;
+            CancelLifetimeTimer();
+
+            _drawer?.ReturnToPool(this);
+        }
+
+        /// <summary>
+        /// 라인의 특정 지점에서의 접촉 정보를 계산합니다.
+        /// </summary>
+        protected abstract ContactInfo AnalyzeContactInfo(Vector2 contactPoint);
 
         /// <summary>
         /// 튕김 처리를 수행합니다.
@@ -304,28 +328,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             float centerRatio = contactInfo.DistanceFromStart / _lineLength;
 
             // 중앙 판정
-            float lowerBound = 0.5f - _config.CenterThreshold;
-            float upperBound = 0.5f + _config.CenterThreshold;
-
-            return (lowerBound <= centerRatio) && (centerRatio <= upperBound);
-        }
-
-        /// <summary>
-        /// Trampoline을 비활성화하고 Pool에 반환합니다.
-        /// </summary>
-        protected virtual void Despawn()
-        {
-            if (_isInitialized == false)
-            {
-                return;
-            }
-
-            AppLogger.Info($"[{Type}Trampoline] Despawned. UsageCount: {UsageCount}, Lifetime: {Lifetime:F2}s");
-
-            _isInitialized = false;
-            CancelLifetimeTimer();
-
-            _drawer?.ReturnToPool(this);
+            return (_config.CenterZoneStart <= centerRatio) && (centerRatio <= _config.CenterZoneEnd);
         }
         #endregion
 

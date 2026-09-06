@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9464b3755c42e714dbdfda51525c35fa, type: 3}
   m_Name: DefaultTrampolineConfig
   m_EditorClassIdentifier: Assembly-CSharp::CodeJelly.BounceOrBreak.Game.Trampoline.TrampolineConfig
-  _lineWidth: 0.1
-  _lineMaterial: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
-  _lineColor: {r: 1, g: 1, b: 1, a: 1}
+  _matSprite: {fileID: 21300000, guid: c99e867fa9a947eaa6b881ef3db13e69, type: 3}
+  _markerSprite: {fileID: 21300000, guid: d2af8b0b55584c02a22d6400f7663344, type: 3}
+  _thickness: 0.125
   _bounceForce: 8
   _centerBounceMultiplier: 1.2
   _centerThreshold: 0.2

@@ -122,6 +122,11 @@ namespace CodeJelly.BounceOrBreak.Game
             public const float MIN_POINT_DISTANCE = 0.1f;
 
             /// <summary>
+            /// 드로잉이 허용되는 좌우 경계의 x좌표 (Wall의 안쪽 면 = 보장 영역 가로 절반 2.5 - Wall 폭 절반 0.1875)
+            /// </summary>
+            public const float DRAW_BOUNDARY_X = 2.125f;
+
+            /// <summary>
             /// 라인에 저장할 수 있는 최대 포인트 개수
             /// </summary>
             public const int MAX_LINE_POINTS = 100;
@@ -132,9 +137,9 @@ namespace CodeJelly.BounceOrBreak.Game
             public const int MIN_DRAW_POINTS = 2;
 
             /// <summary>
-            /// 기본 라인 너비
+            /// 기본 두께 (4px / PPU 32)
             /// </summary>
-            public const float DEFAULT_LINE_WIDTH = 0.1f;
+            public const float DEFAULT_THICKNESS = 0.125f;
 
             /// <summary>
             /// 기본 튕김 세기
@@ -318,6 +323,27 @@ namespace CodeJelly.BounceOrBreak.Game
 
                 public const string ENGLISH = "en";
             }
+        }
+
+        /// <summary>
+        /// Sorting Layer 이름.
+        /// </summary>
+        public static class SortingLayers
+        {
+            public const string BACKGROUND = "Background";
+            public const string TRAMPOLINE = "Trampoline";
+            public const string EGG = "Egg";
+            public const string GOAL_PORT = "GoalPort";
+            public const string FOREGROUND = "Foreground";
+
+            /// <summary>
+            /// 뒤에서 앞으로의 그리기 순서. TagManager의 리스트 순서와 같아야 함
+            /// <para>TagManager와의 정합성은 SortingLayerValidationTests가 검증</para>
+            /// </summary>
+            public static readonly string[] ORDER =
+            {
+                BACKGROUND, TRAMPOLINE, EGG, GOAL_PORT, FOREGROUND
+            };
         }
     }
 }
