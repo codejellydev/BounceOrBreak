@@ -1,6 +1,7 @@
 using CodeJelly.BounceOrBreak.Core.Logging;
 using CodeJelly.BounceOrBreak.Core.Resource;
 using CodeJelly.BounceOrBreak.Core.Scene;
+using CodeJelly.BounceOrBreak.Game.Character;
 using CodeJelly.BounceOrBreak.Game.Gameplay.Egg;
 using CodeJelly.BounceOrBreak.Game.Gameplay.Goal;
 using CodeJelly.BounceOrBreak.Game.Gameplay.Score;
@@ -61,11 +62,17 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         /// 현재 게임 진행 단계.
         /// </summary>
         public ReadOnlyReactiveProperty<GamePhase> Phase => _phase.ToReadOnlyReactiveProperty();
+
+        /// <summary>
+        /// Round가 끝났을 때 발행
+        /// </summary>
+        public Observable<RoundResult> OnRoundEnded => _onRoundEnded;
         #endregion
 
 
         #region Private Variables
         private readonly ReactiveProperty<GamePhase> _phase = new ReactiveProperty<GamePhase>(GamePhase.Loading);
+        private readonly Subject<RoundResult> _onRoundEnded = new Subject<RoundResult>();
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
 
         private StageConfig _stageConfig;
@@ -89,7 +96,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
             InitializationState = SceneInitializationState.Initializing;
 
             _fallDetector.OnCharacterFell
-                         .Subscribe(_ => TriggerGameOver())
+                         .Subscribe(TriggerGameOver)
                          .AddTo(_disposables);
 
             SubscribeGoalPorts();
@@ -158,6 +165,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
 
             _disposables.Dispose();
             _phase.Dispose();
+            _onRoundEnded.Dispose();
 
             if (_stageConfig != null)
             {
@@ -168,6 +176,16 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
 
 
         #region Private Methods
+        /// <summary>
+        /// 낙하한 ICharacter의 Egg 데이터를 반환합니다.
+        /// </summary>
+        /// <returns>Egg 데이터. Egg가 아니면 null</returns>
+        private static EggData GetBrokenEgg(ICharacter fallen)
+        {
+            // FallDetector는 캐릭터 층이라 Egg를 모르므로 같은 오브젝트의 IEgg를 직접 찾음
+            return fallen.Transform.TryGetComponent(out IEgg egg) ? egg.Data : null;
+        }
+
         /// <summary>
         /// 모든 GoalPort의 도달 이벤트를 구독합니다.
         /// </summary>
@@ -249,6 +267,51 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         }
 
         /// <summary>
+        /// 진행 중인 Round의 비동기 작업을 모두 취소합니다.
+        /// </summary>
+        private void CancelRound()
+        {
+            _roundCts?.Cancel();
+            _roundCts?.Dispose();
+            _roundCts = null;
+        }
+
+        /// <summary>
+        /// 게임을 게임오버 상태로 전환합니다.
+        /// </summary>
+        private void TriggerGameOver(ICharacter fallen)
+        {
+            if (_phase.Value != GamePhase.Playing)
+            {
+                return;
+            }
+
+            _phase.Value = GamePhase.GameOver;
+            AppLogger.Info($"[GameFlowController] Game over. Score: {_scoreService.CurrentScore.CurrentValue}");
+
+            _inputManager.SwitchContext(InputContext.GameOver);
+            CancelRound();
+            _eggSpawner.StopSpawning();
+
+            bool isNewBest = _scoreService.TryUpdateBestScore();
+
+            // 저장 완료를 기다릴 이유가 없으므로 게임오버 처리를 막지 않음
+            if (isNewBest == true)
+            {
+                _scoreService.SaveBestScoreAsync().Forget();
+            }
+
+            // 값을 스냅샷으로 넘겨 구독자가 RestartRound의 ResetScore에 영향받지 않게 함
+            _onRoundEnded.OnNext(new RoundResult
+            {
+                Score = _scoreService.CurrentScore.CurrentValue,
+                BestScore = _scoreService.BestScore.CurrentValue,
+                IsNewBest = isNewBest,
+                BrokenEgg = GetBrokenEgg(fallen)
+            });
+        }
+
+        /// <summary>
         /// Egg의 GoalPort 도달을 처리합니다.
         /// </summary>
         private void HandleGoalArrival(GoalArrival arrival)
@@ -290,40 +353,6 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
                     // TODO: 감점 정책 도입 시 여기서 반영
                     _eggSpawner.Despawn(arrival.Egg);
                     break;
-            }
-        }
-
-        /// <summary>
-        /// 진행 중인 Round의 비동기 작업을 모두 취소합니다.
-        /// </summary>
-        private void CancelRound()
-        {
-            _roundCts?.Cancel();
-            _roundCts?.Dispose();
-            _roundCts = null;
-        }
-
-        /// <summary>
-        /// 게임을 게임오버 상태로 전환합니다.
-        /// </summary>
-        private void TriggerGameOver()
-        {
-            if (_phase.Value != GamePhase.Playing)
-            {
-                return;
-            }
-
-            _phase.Value = GamePhase.GameOver;
-            AppLogger.Info($"[GameFlowController] Game over. Score: {_scoreService.CurrentScore.CurrentValue}");
-
-            _inputManager.SwitchContext(InputContext.GameOver);
-            CancelRound();
-            _eggSpawner.StopSpawning();
-
-            // 저장 완료를 기다릴 이유가 없으므로 게임오버 처리를 막지 않음
-            if (_scoreService.TryUpdateBestScore() == true)
-            {
-                _scoreService.SaveBestScoreAsync().Forget();
             }
         }
         #endregion

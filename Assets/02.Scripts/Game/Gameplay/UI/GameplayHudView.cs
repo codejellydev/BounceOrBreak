@@ -23,6 +23,14 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.UI
         {
             _currentScoreText.text = score.ToString();
         }
+
+        /// <summary>
+        /// HUD의 표시 여부를 설정합니다.
+        /// </summary>
+        public void SetVisible(bool isVisible)
+        {
+            gameObject.SetActive(isVisible);
+        }
         #endregion
     }
 }

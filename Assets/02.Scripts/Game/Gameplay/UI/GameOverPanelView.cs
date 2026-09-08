@@ -1,3 +1,4 @@
+using CodeJelly.BounceOrBreak.Game.UI.Widgets;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,26 +12,39 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.UI
     public class GameOverPanelView : MonoBehaviour
     {
         #region Properties
-        public Button RestartButton => _restartButton;
+        public PushButton RestartButton => _restartButton;
         #endregion
 
 
         #region Private Variables
         [Header("Score")]
+        [SerializeField] private Image _brokenEggIcon;
+        [SerializeField] private TMP_Text _currentScoreText;
         [SerializeField] private TMP_Text _bestScoreText;
+        [SerializeField] private GameObject _newBestBadge;
 
         [Header("Buttons")]
-        [SerializeField] private Button _restartButton;
+        [SerializeField] private PushButton _restartButton;
         #endregion
 
 
         #region Public Methods
         /// <summary>
-        /// 최고 점수를 표시에 반영합니다.
+        /// Round 결과를 표시에 반영합니다.
         /// </summary>
-        public void UpdateBestScore(int score)
+        public void ShowResult(RoundResult result)
         {
-            _bestScoreText.text = score.ToString();
+            _currentScoreText.text = result.Score.ToString();
+            _bestScoreText.text = result.BestScore.ToString();
+            _newBestBadge.SetActive(result.IsNewBest);
+
+            // 낙하한 것이 Egg가 아니면 BrokenEgg가 없으므로 아이콘을 숨김
+            _brokenEggIcon.enabled = result.BrokenEgg != null;
+
+            if (result.BrokenEgg != null)
+            {
+                _brokenEggIcon.sprite = result.BrokenEgg.BaseSprite;
+            }
         }
 
         /// <summary>
