@@ -207,6 +207,63 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
         #region Private Methods
         /// <summary>
+        /// 선분을 드로잉 경계 안으로 잘라냅니다.
+        /// 끝점을 경계와의 교점으로 옮기므로 기울기가 유지됩니다.
+        /// </summary>
+        private static Vector2[] ClipToBoundary(Vector2 start, Vector2 end)
+        {
+            float boundary = GameConstants.Trampoline.DRAW_BOUNDARY_X;
+
+            // 양 끝이 같은 쪽 경계 밖이면 선분 전체가 플레이 영역 밖이라 남는 구간이 없음
+            bool isOutside = (start.x < -boundary && end.x < -boundary)
+                          || (boundary < start.x && boundary < end.x);
+
+            if (isOutside == true)
+            {
+                return Array.Empty<Vector2>();
+            }
+
+            return new Vector2[] { ClipEndpoint(start, end, boundary), ClipEndpoint(end, start, boundary) };
+        }
+
+        /// <summary>
+        /// 끝점이 경계 밖이면 선분과 경계의 교점으로 옮깁니다.
+        /// ClipToBoundary에서만 호출됩니다.
+        /// </summary>
+        private static Vector2 ClipEndpoint(Vector2 point, Vector2 other, float boundary)
+        {
+            if (-boundary <= point.x && point.x <= boundary)
+            {
+                return point;
+            }
+
+            float clampedX = Mathf.Clamp(point.x, -boundary, boundary);
+            float ratio = (clampedX - other.x) / (point.x - other.x);
+
+            return Vector2.Lerp(other, point, ratio);
+        }
+
+        /// <summary>
+        /// 가공된 DrawPoints가 Trampoline을 이룰 수 있는지 확인합니다.
+        /// </summary>
+        private static bool CanFormTrampoline(Vector2[] points)
+        {
+            if (points.Length < GameConstants.Trampoline.MIN_DRAW_POINTS)
+            {
+                return false;
+            }
+
+            float length = 0f;
+
+            for (int i = 1; i < points.Length; i++)
+            {
+                length += Vector2.Distance(points[i - 1], points[i]);
+            }
+
+            return GameConstants.Trampoline.MIN_POINT_DISTANCE <= length;
+        }
+
+        /// <summary>
         /// Factory가 로드한 TrampolineType마다 ObjectPool을 초기화합니다.
         /// </summary>
         private void InitializePools()
@@ -452,63 +509,6 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
                 // TODO: Freeform 경계 처리
                 return _currentDrawPoints.ToArray();
             }
-        }
-
-        /// <summary>
-        /// 선분을 드로잉 경계 안으로 잘라냅니다.
-        /// 끝점을 경계와의 교점으로 옮기므로 기울기가 유지됩니다.
-        /// </summary>
-        private static Vector2[] ClipToBoundary(Vector2 start, Vector2 end)
-        {
-            float boundary = GameConstants.Trampoline.DRAW_BOUNDARY_X;
-
-            // 양 끝이 같은 쪽 경계 밖이면 선분 전체가 플레이 영역 밖이라 남는 구간이 없음
-            bool isOutside = (start.x < -boundary && end.x < -boundary)
-                          || (boundary < start.x && boundary < end.x);
-
-            if (isOutside == true)
-            {
-                return Array.Empty<Vector2>();
-            }
-
-            return new Vector2[] { ClipEndpoint(start, end, boundary), ClipEndpoint(end, start, boundary) };
-        }
-
-        /// <summary>
-        /// 끝점이 경계 밖이면 선분과 경계의 교점으로 옮깁니다.
-        /// ClipToBoundary에서만 호출됩니다.
-        /// </summary>
-        private static Vector2 ClipEndpoint(Vector2 point, Vector2 other, float boundary)
-        {
-            if (-boundary <= point.x && point.x <= boundary)
-            {
-                return point;
-            }
-
-            float clampedX = Mathf.Clamp(point.x, -boundary, boundary);
-            float ratio = (clampedX - other.x) / (point.x - other.x);
-
-            return Vector2.Lerp(other, point, ratio);
-        }
-
-        /// <summary>
-        /// 가공된 DrawPoints가 Trampoline을 이룰 수 있는지 확인합니다.
-        /// </summary>
-        private static bool CanFormTrampoline(Vector2[] points)
-        {
-            if (points.Length < GameConstants.Trampoline.MIN_DRAW_POINTS)
-            {
-                return false;
-            }
-
-            float length = 0f;
-
-            for (int i = 1; i < points.Length; i++)
-            {
-                length += Vector2.Distance(points[i - 1], points[i]);
-            }
-
-            return GameConstants.Trampoline.MIN_POINT_DISTANCE <= length;
         }
         #endregion
     }

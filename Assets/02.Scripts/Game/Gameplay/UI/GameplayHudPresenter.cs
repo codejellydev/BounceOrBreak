@@ -12,13 +12,16 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.UI
     {
         #region Injection
         private readonly GameplayHudView _view;
+        private readonly GameFlowController _flowController;
         private readonly ScoreService _scoreService;
 
         public GameplayHudPresenter(
             GameplayHudView view,
+            GameFlowController flowController,
             ScoreService scoreService)
         {
             _view = view;
+            _flowController = flowController;
             _scoreService = scoreService;
         }
         #endregion
@@ -54,6 +57,11 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.UI
         /// </summary>
         private void BindView()
         {
+            // GameOverPanel이 같은 점수를 보여주므로 HUD는 플레이 중에만 표시
+            _flowController.Phase
+                           .Subscribe(phase => _view.SetVisible(phase == GamePhase.Playing))
+                           .AddTo(_disposables);
+
             _scoreService.CurrentScore
                          .Subscribe(_view.UpdateCurrentScore)
                          .AddTo(_disposables);

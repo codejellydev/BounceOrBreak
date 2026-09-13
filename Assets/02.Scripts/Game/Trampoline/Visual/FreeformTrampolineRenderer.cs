@@ -20,7 +20,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
 
         #region Public Methods
-        public override void Apply(Vector2[] points, TrampolineConfig config)
+        public override void Apply(Vector2[] points, TrampolineConfig config, Sprite matSprite)
         {
             _lineRenderer.positionCount = points.Length;
             _lineRenderer.startWidth = config.Thickness;
@@ -31,6 +31,10 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
                 _lineRenderer.SetPosition(i, points[i]);
             }
         }
+
+        // TODO: Freeform 전용 시각 표현으로 교체할 때 구현
+        public override void SetMatSprite(Sprite sprite)
+        { }
         #endregion
     }
 }
