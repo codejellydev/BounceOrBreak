@@ -49,8 +49,8 @@ For CI/CD workflow, refer to [`/Documents/Development/CICDWorkflow.md`](/Documen
 Paid assets are tracked in [`asset-dependencies.json`](/asset-dependencies.json).
 When modifying paid assets, update this file manually:
 
-- **Adding an asset**: Add an entry to `asset-dependencies.json` and add the `installPath` to `.gitignore`. If the asset emits analyzer or compiler warnings, add its path to the third-party section in `.editorconfig`
+- **Adding an asset**: Add an entry to `asset-dependencies.json` and add the `installPath` to `.gitignore`. If the asset emits an analyzer warning that cannot be fixed, add a rule for it to `Assets/Default.ruleset`
 - **Updating an asset**: Update the `version` field in `asset-dependencies.json`
-- **Removing an asset**: Remove the entry from `asset-dependencies.json`, remove the `installPath` from `.gitignore`, and remove its path from the third-party section in `.editorconfig`
+- **Removing an asset**: Remove the entry from `asset-dependencies.json` and remove the `installPath` from `.gitignore`
 
 The private repository must mirror the `installPath` structure so assets can be placed at the correct location.

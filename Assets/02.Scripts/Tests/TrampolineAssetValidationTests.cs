@@ -79,6 +79,12 @@ namespace CodeJelly.BounceOrBreak.Tests
                 // 프리팹 배선 검사는 Config 내용을 보지 않으므로, 스프라이트 누락은 여기서 잡음
                 Assert.IsTrue(config.MatSprite != null, $"MatSprite is not assigned on {config.name}.");
                 Assert.IsTrue(config.MarkerSprite != null, $"MarkerSprite is not assigned on {config.name}.");
+
+                // 등록된 매트가 비어 있으면 GetMatSprite가 null을 돌려주므로 남은 횟수마다 확인
+                for (int remaining = 1; remaining <= config.MaxUsageCount; remaining++)
+                {
+                    Assert.IsTrue(config.GetMatSprite(remaining) != null, $"Mat sprite for {remaining} remaining usage is not assigned on {config.name}.");
+                }
             }
         }
         #endregion

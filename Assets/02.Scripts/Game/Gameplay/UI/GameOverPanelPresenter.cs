@@ -1,5 +1,4 @@
 using CodeJelly.BounceOrBreak.Core.Logging;
-using CodeJelly.BounceOrBreak.Game.Gameplay.Score;
 using R3;
 using System;
 using VContainer.Unity;
@@ -14,16 +13,13 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.UI
         #region Injection
         private readonly GameOverPanelView _view;
         private readonly GameFlowController _flowController;
-        private readonly ScoreService _scoreService;
 
         public GameOverPanelPresenter(
             GameOverPanelView view,
-            GameFlowController flowController,
-            ScoreService scoreService)
+            GameFlowController flowController)
         {
             _view = view;
             _flowController = flowController;
-            _scoreService = scoreService;
         }
         #endregion
 
@@ -62,12 +58,12 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.UI
                            .Subscribe(phase => _view.SetPanelActive(phase == GamePhase.GameOver))
                            .AddTo(_disposables);
 
-            _scoreService.BestScore
-                         .Subscribe(_view.UpdateBestScore)
-                         .AddTo(_disposables);
+            _flowController.OnRoundEnded
+                           .Subscribe(_view.ShowResult)
+                           .AddTo(_disposables);
 
             _view.RestartButton
-                 .OnClickAsObservable()
+                 .OnClick
                  .Subscribe(_ => OnRestartButtonClicked())
                  .AddTo(_disposables);
         }

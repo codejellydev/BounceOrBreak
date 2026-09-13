@@ -31,7 +31,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
 
         #region Public Methods
-        public override void Apply(Vector2[] points, TrampolineConfig config)
+        public override void Apply(Vector2[] points, TrampolineConfig config, Sprite matSprite)
         {
             // 점의 개수가 2개임은 StraightTrampoline.Initialize가 보장하므로 별도의 검증은 생략
             Vector2 start = points[0];
@@ -43,13 +43,19 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             Quaternion rotation = Quaternion.Euler(0f, 0f, angle);
 
-            _mat.sprite = config.MatSprite;
+            // Sliced 크기는 스프라이트가 있어야 반영되므로 스프라이트를 먼저 지정
+            _mat.sprite = matSprite;
             _mat.size = new Vector2(length, config.Thickness);
             _mat.transform.SetPositionAndRotation(center, rotation);
 
             _marker.sprite = config.MarkerSprite;
             _marker.size = new Vector2(length * (config.CenterZoneEnd - config.CenterZoneStart), config.Thickness * 0.5f);
             _marker.transform.SetPositionAndRotation(center, rotation);
+        }
+
+        public override void SetMatSprite(Sprite sprite)
+        {
+            _mat.sprite = sprite;
         }
         #endregion
     }
