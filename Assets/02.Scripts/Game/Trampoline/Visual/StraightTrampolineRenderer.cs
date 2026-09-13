@@ -43,13 +43,17 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             Quaternion rotation = Quaternion.Euler(0f, 0f, angle);
 
-            _mat.sprite = config.MatSprite;
             _mat.size = new Vector2(length, config.Thickness);
             _mat.transform.SetPositionAndRotation(center, rotation);
 
             _marker.sprite = config.MarkerSprite;
             _marker.size = new Vector2(length * (config.CenterZoneEnd - config.CenterZoneStart), config.Thickness * 0.5f);
             _marker.transform.SetPositionAndRotation(center, rotation);
+        }
+
+        public override void SetMatSprite(Sprite sprite)
+        {
+            _mat.sprite = sprite;
         }
         #endregion
     }

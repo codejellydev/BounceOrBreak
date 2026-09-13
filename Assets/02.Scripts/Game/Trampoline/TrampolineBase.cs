@@ -115,7 +115,11 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             if (0 < _config.MaxUsageCount && _config.MaxUsageCount <= UsageCount)
             {
                 Despawn();
+
+                return;
             }
+
+            SyncMatToUsage();
         }
 
         protected virtual void OnDestroy()
@@ -223,6 +227,10 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         /// </summary>
         protected void ApplyVisual(Vector2[] points)
         {
+            // 매트는 형태가 아니라 남은 사용 횟수를 따르므로 따로 적용
+            // Sliced 크기는 스프라이트가 있어야 반영되므로 매트를 먼저 정함
+            SyncMatToUsage();
+
             _renderer.Apply(points, _config);
         }
 
@@ -334,6 +342,14 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
 
         #region Private Methods
+        /// <summary>
+        /// 남은 사용 횟수에 해당하는 매트를 적용합니다.
+        /// </summary>
+        private void SyncMatToUsage()
+        {
+            _renderer.SetMatSprite(_config.GetMatSprite(_config.MaxUsageCount - UsageCount));
+        }
+
         /// <summary>
         /// MaxLifetime 경과 시 Trampoline을 Despawn합니다.
         /// </summary>

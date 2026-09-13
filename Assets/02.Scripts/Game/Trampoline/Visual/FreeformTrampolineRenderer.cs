@@ -31,6 +31,10 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
                 _lineRenderer.SetPosition(i, points[i]);
             }
         }
+
+        // TODO: Freeform 전용 시각 표현으로 교체할 때 구현
+        public override void SetMatSprite(Sprite sprite)
+        { }
         #endregion
     }
 }

@@ -20,6 +20,11 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         /// Trampoline의 시각 표현을 적용합니다.
         /// </summary>
         public abstract void Apply(Vector2[] points, TrampolineConfig config);
+
+        /// <summary>
+        /// 매트 스프라이트를 교체합니다.
+        /// </summary>
+        public abstract void SetMatSprite(Sprite sprite);
         #endregion
     }
 }
