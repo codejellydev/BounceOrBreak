@@ -20,7 +20,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
 
         #region Public Methods
-        public override void Apply(Vector2[] points, TrampolineConfig config)
+        public override void Apply(Vector2[] points, TrampolineConfig config, Sprite matSprite)
         {
             _lineRenderer.positionCount = points.Length;
             _lineRenderer.startWidth = config.Thickness;
