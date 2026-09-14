@@ -55,7 +55,7 @@ jobs:
         with:
           unityVersion: 6000.3.9f1
           targetPlatform: Android
-          androidTargetSdkVersion: AndroidApiLevel35
+          androidTargetSdkVersion: AndroidApiLevel36
           androidExportType: androidAppBundle
           androidVersionCode: ${{ github.run_number }}
           androidKeystoreName: bounceorbreak.keystore
