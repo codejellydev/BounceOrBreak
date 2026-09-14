@@ -72,7 +72,10 @@ jobs:
           KEYSTORE_PASS: ${{ secrets.ANDROID_KEYSTORE_PASS }}
           KEYALIAS_NAME: ${{ secrets.ANDROID_KEYALIAS_NAME }}
           KEYALIAS_PASS: ${{ secrets.ANDROID_KEYALIAS_PASS }}
-        run: bash Tools/export-universal-apk.sh build/Android/Android.aab build/Android/Android.apk
+        # unity-builder가 컨테이너 안에서 root로 만든 폴더라 소유권을 가져와야 쓸 수 있음
+        run: |
+          sudo chown -R "$(id -u):$(id -g)" build
+          bash Tools/export-universal-apk.sh build/Android/Android.aab build/Android/Android.apk
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v7
