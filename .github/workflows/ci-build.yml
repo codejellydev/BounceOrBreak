@@ -47,7 +47,7 @@ jobs:
             Library-Android-
 
       - name: Build Unity project
-        uses: game-ci/unity-builder@v5
+        uses: game-ci/unity-builder@v5.0.1
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}

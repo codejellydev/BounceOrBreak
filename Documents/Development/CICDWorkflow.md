@@ -34,3 +34,13 @@ GitHub 저장소 Settings → Secrets and variables → Actions에 등록.
 | `ANDROID_KEYSTORE_PASS` | 키스토어 비밀번호 |
 | `ANDROID_KEYALIAS_NAME` | 키 alias |
 | `ANDROID_KEYALIAS_PASS` | 키 비밀번호 |
+
+---
+
+## Troubleshooting
+
+### 테스트·빌드가 시작되지 않음
+
+- 증상: Unity 로그에 `TimeStamp validation failed`
+- 원인: game-ci가 v4.4.0에서 라이선스 활성화 방식을 바꿨고, `@v4`로 지정돼 있으면 자동으로 그 버전을 쓴다
+- 조치: `unity-test-runner@v4.3.2`, `unity-builder@v5.0.1`로 고정한다 (2026-09-13)
