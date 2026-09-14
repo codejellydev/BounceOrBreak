@@ -64,6 +64,15 @@ jobs:
           androidKeyaliasName: ${{ secrets.ANDROID_KEYALIAS_NAME }}
           androidKeyaliasPass: ${{ secrets.ANDROID_KEYALIAS_PASS }}
           versioning: None
+          androidSymbolType: public
+
+      - name: Export universal APK from AAB
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+          KEYSTORE_PASS: ${{ secrets.ANDROID_KEYSTORE_PASS }}
+          KEYALIAS_NAME: ${{ secrets.ANDROID_KEYALIAS_NAME }}
+          KEYALIAS_PASS: ${{ secrets.ANDROID_KEYALIAS_PASS }}
+        run: bash Tools/export-universal-apk.sh build/Android/Android.aab build/Android/Android.apk
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v7

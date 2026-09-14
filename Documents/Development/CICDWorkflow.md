@@ -11,7 +11,7 @@
 | 파일 | 트리거 브랜치 | 역할 |
 |---|---|---|
 | `ci-test.yml` | develop, main | Unity Test Runner 실행 |
-| `ci-build.yml` | develop, main | Android 빌드(서명 AAB, versionCode = 실행 번호) 및 Artifact 업로드 |
+| `ci-build.yml` | develop, main | Android 빌드(서명 AAB + universal APK + 네이티브 심볼, versionCode = 실행 번호) 및 Artifact 업로드 |
 
 두 워크플로우 모두 아래 경로 변경 시에만 실행됨:
 - `Assets/**`
