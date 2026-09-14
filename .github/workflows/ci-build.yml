@@ -81,5 +81,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: Build-Android
-          path: build/Android
+          path: |
+            build/Android
+            !build/Android/Android_BackUpThisFolder_ButDontShipItWithYourGame
           retention-days: 7
