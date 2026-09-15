@@ -1,18 +1,35 @@
 # Unity C# 네이밍 컨벤션
 
+## 🔤 약어(Acronym) 표기 규칙
+
+약어가 포함된 이름을 지을 때는 글자 수에 따라 대소문자를 구분하여 작성한다.
+
+* **2글자 약어:** 모두 대문자로 표기한다.
+  * **예시:** `UI`, `IO`, `DB`, `ID`, `OS`
+  * **적용:** `UIPanel`, `DBConnection`, `PlayerID`
+* **3글자 이상 약어:** 첫 글자만 대문자, 나머지는 소문자로 표기한다 
+  * **예시:** `Api`, `Xml`, `Bgm`, `Sfx`, `Html`
+  * **적용:** `BgmVolume` (O) / `BGMVolume` (X)
+  * **적용:** `AppManager` (O) / `APPManager` (X)
+
 ## 📋 Region 구조
 
 ### Region 순서 (필수)
 
 ```csharp
 #region Nested Classes          // 필요시
+#region Injection               // VContainer 의존성 주입 시
+#region Constructors
 #region Events
 #region Properties
 #region Public Variables
+#region Internal Variables
 #region Protected Variables
 #region Private Variables
+#region VContainer Lifecycle    // VContainer 생명주기 인터페이스 구현 시
 #region Unity Lifecycle
 #region Public Methods
+#region Internal Methods
 #region Protected Methods
 #region Private Methods
 #region Input Action Callbacks  // 필요시
@@ -21,41 +38,47 @@
 
 ### Region 내부 정렬 규칙
 
-### 1. Region 간격
+#### 1. Region 간격
 
 Region과 Region 사이에는 **두 줄 띄어쓰기**
 
-### 2. 접근 제한자 순서
+#### 2. 접근 제한자 순서
 
-각 region 내에서는 **public → protected → private** 순으로 정렬
+각 region 내에서는 **public → internal → protected → private** 순으로 정렬
 
 ```csharp
 #region Events
 // public event들
-public event Action OnSomething;
-public event Action<int> OnValueChanged;
+public event Action OnStarted;
+public event Action<int> OnCountChanged;
+
+// internal event들 (있다면)
+internal event Action OnLoaded;
 
 // protected event들 (있다면)
-protected event Action OnProtectedEvent;
+protected event Action OnRefreshed;
 
 // private event들 (있다면)
-private event Action OnPrivateEvent;
+private event Action OnDisposed;
 #endregion
 
 #region Properties
 // public 프로퍼티들
-public int Health { get; set; }
-public Transform Target => _target;
+public int Count { get; set; }
+public bool IsActive => _isActive;
+
+// internal 프로퍼티들 (있다면)
+internal bool IsReady { get; set; }
 
 // protected 프로퍼티들 (있다면)
 protected bool IsInitialized { get; set; }
 
 // private 프로퍼티들 (있다면)
-private float PrivateValue { get; set; }
+private float Ratio { get; set; }
 #endregion
 ```
 
-### 2. Variables에서 어트리뷰트 우선순위
+#### 3. Variables에서 어트리뷰트 우선순위
 
 동일한 접근 제한자 내에서는 **어트리뷰트가 붙은 변수가 상단**에 위치
 
@@ -72,7 +95,7 @@ private float _timer;
 #endregion
 ```
 
-### 3. 어트리뷰트 표기법
+#### 4. 어트리뷰트 표기법
 
 - `[SerializeField]`, `[HideInInspector]` 등 짧고 자주 사용되는 어트리뷰트는 **1줄로 표기**
 - 가능한 한 **변수 상단에 표기**
@@ -97,10 +120,10 @@ private float _moveSpeed;
 ```csharp
 // ✅ 권장
 private void Awake()
-{}
+{ }
 
 public void Initialize()
-{}
+{ }
 
 // ❌ 지양
 private void Awake()
@@ -115,29 +138,102 @@ private void Awake()
 ```csharp
 #region Unity Lifecycle
 private void Awake()
-{}
-
-private void Start()
-{}
+{ }
 
 private void OnEnable()
-{}
+{ }
 
-private void Update()
-{}
+private void Start()
+{ }
 
 private void FixedUpdate()
-{}
+{ }
+
+private void Update()
+{ }
 
 private void LateUpdate()
-{}
+{ }
 
 private void OnDisable()
-{}
+{ }
 
 private void OnDestroy()
-{}
+{ }
 #endregion
+```
+
+### Injection Region
+
+VContainer 의존성 주입 시 사용. 주입 필드와 생성자 또는 Construct 메서드를 함께 배치.
+
+- **non-MonoBehaviour**: 생성자 주입 사용 (`readonly` 보장, `[Inject]` 어트리뷰트 불필요)
+- **MonoBehaviour**: 생성자를 Unity가 관리하므로 `[Inject]` Construct 메서드 주입 사용. 필드 주입(`[Inject]` 필드)은 지양.
+
+```csharp
+// non-MB
+#region Injection
+private readonly SomeService _someService;
+
+public SomeClass(SomeService someService)
+{
+    _someService = someService;
+}
+#endregion
+
+// MB
+#region Injection
+private SomeService _someService;
+
+[Inject]
+public void Construct(SomeService someService)
+{
+    _someService = someService;
+}
+#endregion
+```
+
+### Injection 파라미터 줄바꿈
+
+Injection region의 생성자/Construct 메서드 파라미터가 **2개 이상**일 경우,
+각 파라미터를 **한 줄씩** 배치한다.
+
+의존성 목록이 세로로 정렬되어 각 의존성을 한눈에 파악하기 쉽고,
+Git diff에서도 의존성 추가/제거가 명확히 드러난다.
+
+```csharp
+// ✅ 권장
+public SomeClass(
+    SomeService someService,
+    AnotherService anotherService)
+{
+    _someService = someService;
+    _anotherService = anotherService;
+}
+
+// ❌ 지양
+public SomeClass(SomeService someService, AnotherService anotherService)
+{
+    ...
+}
+```
+
+### bool 비교
+
+`bool` 조건은 `== true` / `== false`로 명시 비교한다.
+
+```csharp
+// ✅ 권장
+if (IsGrounded == true)
+{
+    Jump();
+}
+
+// ❌ 지양
+if (IsGrounded)
+{
+    Jump();
+}
 ```
 
 ### 제어 구문
@@ -146,13 +242,38 @@ private void OnDestroy()
 
 ```csharp
 // ✅ 권장
-if (condition)
+if (condition == true)
 {
     return;
 }
 
 // ❌ 지양
-if (condition) return;
+if (condition == true) return;
+```
+
+### 비동기 메서드 명명 규칙
+
+**Awaitable 메서드 (`UniTask`, `Task`)**
+- 반드시 이름 뒤에 **Async**를 붙인다.
+- 호출하는 쪽에서 `await`가 가능함을 명시한다.
+
+**Fire-and-Forget 메서드 (`UniTaskVoid`, `void`)**
+- 이름 뒤에 **Async를 붙이지 않는다.**
+- 이벤트 핸들러나 시작점(Root) 역할을 하므로, 일반 메서드처럼 명명한다.
+
+```csharp
+// ✅ 권장
+// Await 가능
+public async UniTask LoadDataAsync()
+{
+    await ...
+}
+
+// Await 불가능 (Fire-and-Forget)
+public async UniTaskVoid StartGameSequence()
+{
+    await ...
+}
 ```
 
 ## 📝 주석 및 문서화
@@ -169,12 +290,11 @@ if (condition) return;
 public class PlayerController : MonoBehaviour
 {
 }
-
 ```
 
-### Interface Summary (선택)
+### Interface Summary
 
-복잡하거나 중요한 인터페이스에만 작성
+**인터페이스 정의:** 복잡하거나 중요한 인터페이스에만 작성 (선택)
 
 ```csharp
 /// <summary>
@@ -186,25 +306,30 @@ public interface IInteractable
     bool IsInteractable { get; }
     void OnPlayerContact(IPlayer player);
 }
-
 ```
+
+**인터페이스 구현:** 모든 인터페이스 메서드 구현체에 작성 (필수)
+
+```csharp
+/// <summary>
+/// IInteractable.OnPlayerContact Implementation
+/// </summary>
+public void OnPlayerContact(IPlayer player)
+{
+    // 구현 로직
+}
+```
+
+**예외: Lifecycle 성격의 인터페이스는 Summary 생략 가능**
+
+Unity Lifecycle(`Awake`, `Start` 등)과 VContainer Lifecycle(`IStartable.Start`, `IAsyncStartable.StartAsync` 등)은 프레임워크가 정의한 잘 알려진 계약이므로 Summary를 생략 가능하다.
 
 ### Properties Summary (선택)
 
-복잡한 로직이나 중요한 프로퍼티에만 작성
+복잡한 로직이나 중요한 프로퍼티에만 작성.
+이름만으로 의도가 자명하거나, 간단한 프로퍼티는 생략이 가능하다.
 
 ```csharp
-#region Nested Classes
-[System.Serializable]
-public class InputProfile
-{
-    public InputContext Context;
-    public bool Player;
-    public bool UI;
-    public bool System;
-}
-#endregion
-
 #region Properties
 /// <summary>
 /// 현재 플레이어가 땅에 닿아있는지 여부.
@@ -215,7 +340,31 @@ public bool IsGrounded => _isGrounded;
 // 간단한 프로퍼티는 summary 생략 가능
 public float Speed { get; set; }
 #endregion
+```
 
+Backing field에 `[Tooltip]`이 있고 프로퍼티가 단순 getter라면 summary를 **생략 가능**하다.
+IDE에서 `[Tooltip]` 내용이 프로퍼티 호버 시에도 표시되므로 중복이 된다.
+
+```csharp
+// ✅ 권장 — [Tooltip]이 있으므로 summary 생략
+#region Properties
+public float Speed => _speed;
+public int MaxCount => _maxCount;
+#endregion
+
+#region Private Variables
+[Tooltip("이동 속도 (m/s)")]
+[SerializeField] private float _speed = 5f;
+
+[Tooltip("최대 오브젝트 개수")]
+[SerializeField] private int _maxCount = 10;
+#endregion
+
+// ❌ 지양 — [Tooltip]과 동일한 내용의 summary 중복 작성
+/// <summary>
+/// 이동 속도 (m/s).
+/// </summary>
+public float Speed => _speed;
 ```
 
 ### 주석 위치
@@ -225,17 +374,40 @@ public float Speed { get; set; }
 ```csharp
 // ✅ 권장
 // 땅에 닿았을 때만 점프 허용
-if (IsGrounded)
+if (IsGrounded == true)
 {
     Jump();
 }
 
 // ❌ 지양
-if (IsGrounded) // 땅에 닿았을 때만 점프 허용
+if (IsGrounded == true) // 땅에 닿았을 때만 점프 허용
 {
     Jump();
 }
 ```
+
+### 주석 용어 표기
+
+주석은 한국어로 작성한다.
+
+- 타입, 멤버 등 코드를 가리킬 때는 그 이름을 그대로 쓴다 ("생성된 적들"이 아니라 "생성된 Enemy들")
+- 그 외 용어는 프로젝트에서 이미 쓰던 표기를 따른다
+
+## 🧪 테스트
+
+### 명명
+
+- 테스트 클래스는 `대상클래스Tests`로 명명한다
+- 테스트 메서드는 `대상_조건_기대결과`로 명명한다. 조건이 없으면 `대상_기대결과`
+- 실제 의존 객체를 대신하는 클래스(테스트 더블)는 역할에 맞는 접두사를 붙인다
+  - `Fake` — 실제로 동작하는 간이 구현
+  - `Stub` — 미리 정한 값을 반환
+  - `Spy` — 호출을 기록
+  - `Mock` — 상호작용을 검증
+
+### 작성
+
+- 테스트 메서드의 summary는 검증하는 규칙을 간결히 서술한다
 
 ## 📋 체크리스트
 
@@ -243,14 +415,18 @@ if (IsGrounded) // 땅에 닿았을 때만 점프 허용
 
 - [ ]  Class summary 작성
 - [ ]  Region 순서 준수
-- [ ]  접근 제한자별 정렬 (public → protected → private)
+- [ ]  접근 제한자별 정렬 (public → internal → protected → private)
 - [ ]  어트리뷰트 변수 상단 배치
 - [ ]  빈 함수 한 줄 표기
 - [ ]  Unity Lifecycle 순서 준수
+- [ ]  인터페이스 구현 메서드에 Summary 작성 (I인터페이스명.메서드명 Implementation / Lifecycle 인터페이스 제외 가능)
+- [ ]  비동기 메서드 명명 규칙 준수 (Async 접미사 여부)
 
 ### 코드 리뷰시
 
 - [ ]  Region convention 준수 여부
 - [ ]  변수 정렬 순서 확인
 - [ ]  Class summary 존재 여부
+- [ ]  인터페이스 구현 Summary 형식 확인 (I인터페이스명.메서드명 Implementation)
+- [ ]  주석 용어 표기 일관성 (한 용어 = 한 표기)
 - [ ]  코드 스타일 일관성

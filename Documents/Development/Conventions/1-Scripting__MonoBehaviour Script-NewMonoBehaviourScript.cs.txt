@@ -6,55 +6,95 @@ using UnityEngine;
 /// </summary>
 public class #SCRIPTNAME# : MonoBehaviour
 {
+    #region Nested Classes // 필요시
+
+    #endregion
+
+
+    #region Injection // VContainer 의존성 주입 시
+
+    #endregion
+
+
+    #region Constructors
+
+    #endregion
+
+
     #region Events
-    
+
     #endregion
 
 
     #region Properties
-    
+
     #endregion
 
 
     #region Public Variables
-    
+
+    #endregion
+
+
+    #region Internal Variables
+
     #endregion
 
 
     #region Protected Variables
-    
+
     #endregion
 
 
     #region Private Variables
-    
+
+    #endregion
+
+
+    #region VContainer Lifecycle // VContainer 생명주기 인터페이스 구현 시
+
     #endregion
 
 
     #region Unity Lifecycle
     private void Awake()
-    {}
+    { }
 
     private void Start()
-    {}
+    { }
 
     private void Update()
-    {}
+    { }
     #endregion
 
 
     #region Public Methods
-    
+
+    #endregion
+
+
+    #region Internal Methods
+
     #endregion
 
 
     #region Protected Methods
-    
+
     #endregion
 
 
     #region Private Methods
-    
+
+    #endregion
+
+
+    #region Input Action Callbacks // 필요시
+
+    #endregion
+
+
+    #region Debug // 필요시
+
     #endregion
 }
 #ROOTNAMESPACEEND#

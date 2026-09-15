@@ -101,18 +101,16 @@ InitTestScene*.unity*
 
 ## Custom ignore
 
-# Assets
-/[Aa]ssets/AssetLibrary/
+# Paid Assets (Asset Store)
+/[Aa]ssets/Synty/
+/[Aa]ssets/Plugins/
+/[Aa]ssets/Feel
+/[Aa]ssets/GUIPackCartoon
 
-# Unity TMP
-/[Aa]ssets/TextMesh Pro/
-
-# Unity Ads Mediation
+# Unity Built-in
 /[Aa]ssets/LevelPlay/
 /[Aa]ssets/MobileDependencyResolver/
 
-# External Plugins
-/[Aa]ssets/Plugins/
-
-# NuGet packages (auto-downloaded)
-/[Aa]ssets/Packages/
+# Android signing keys
+*.keystore
+*.jks
