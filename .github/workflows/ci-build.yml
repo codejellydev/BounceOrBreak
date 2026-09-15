@@ -16,6 +16,9 @@ jobs:
   build:
     name: Build (Android)
     runs-on: ubuntu-latest
+    # 태그 푸시용
+    permissions:
+      contents: write
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
@@ -37,6 +40,26 @@ jobs:
         run: |
           git clone https://x-access-token:${{ secrets.PAT_ASSET }}@github.com/${{ github.repository_owner }}/BounceOrBreak-Assets.git $HOME/paid-assets
           node Tools/install-paid-assets.js
+
+      - name: Resolve version
+        id: version
+        run: |
+          base="$(sed -n 's/^  bundleVersion: //p' ProjectSettings/ProjectSettings.asset | tr -d '\r')"
+          if [ "$GITHUB_REF" = "refs/heads/main" ]; then
+            version="$base"
+            # 같은 버전이 다른 커밋에 있으면 bundleVersion을 안 올린 것이므로 실패
+            tagged="$(git ls-remote --tags origin "refs/tags/v$version" | cut -f1)"
+            if [ -n "$tagged" ] && [ "$tagged" != "$GITHUB_SHA" ]; then
+              echo "::error::v$version is already tagged at $tagged. Bump bundleVersion before merging to main."
+              exit 1
+            fi
+            echo "create_tag=$([ -z "$tagged" ] && echo true || echo false)" >> "$GITHUB_OUTPUT"
+          else
+            version="$base-dev.$GITHUB_RUN_NUMBER+${GITHUB_SHA::7}"
+            echo "create_tag=false" >> "$GITHUB_OUTPUT"
+          fi
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "Version: $version"
 
       - name: Cache Unity Library
         uses: actions/cache@v6
@@ -63,7 +86,8 @@ jobs:
           androidKeystorePass: ${{ secrets.ANDROID_KEYSTORE_PASS }}
           androidKeyaliasName: ${{ secrets.ANDROID_KEYALIAS_NAME }}
           androidKeyaliasPass: ${{ secrets.ANDROID_KEYALIAS_PASS }}
-          versioning: None
+          versioning: Custom
+          version: ${{ steps.version.outputs.version }}
           androidSymbolType: public
 
       - name: Export universal APK from AAB
@@ -85,3 +109,10 @@ jobs:
             build/Android
             !build/Android/Android_BackUpThisFolder_ButDontShipItWithYourGame
           retention-days: 7
+
+      # 실패한 빌드에 태그가 남지 않도록 마지막에 실행
+      - name: Tag the release
+        if: steps.version.outputs.create_tag == 'true'
+        run: |
+          git tag "v${{ steps.version.outputs.version }}"
+          git push origin "v${{ steps.version.outputs.version }}"
