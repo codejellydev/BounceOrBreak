@@ -7,7 +7,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Widgets
 {
     /// <summary>
     /// 공용 버튼 위젯 클래스.
-    /// 클릭을 발행하고, 누르는 동안 눌린 모습을 표현한다.
+    /// 클릭을 발행하고, 누르는 동안 눌린 모습을 표현합니다.
     /// </summary>
     public class PushButton : Selectable, IPointerClickHandler
     {
