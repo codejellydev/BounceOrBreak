@@ -42,12 +42,12 @@ jobs:
         uses: actions/cache@v6
         with:
           path: Library
-          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          key: Library-Test-${{ hashFiles('Packages/manifest.json', 'ProjectSettings/**') }}
           restore-keys: |
-            Library-
+            Library-Test-
 
       - name: Test Unity project
-        uses: game-ci/unity-test-runner@v4
+        uses: game-ci/unity-test-runner@v4.3.2
         id: testRunner
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}

@@ -27,13 +27,33 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         }
 
         /// <summary>
-        /// 물리 상태를 초기화한다.
+        /// 물리 상태를 초기화합니다.
         /// </summary>
         public void ResetState()
         {
-            // Rigidbody 잔여 속도 해제 
+            // Rigidbody 잔여 속도 해제
             _rigidbody.linearVelocity = Vector2.zero;
             _rigidbody.angularVelocity = 0f;
+
+            // SetMotionLocked(true)로 고정된 채 회수되어도 초기 상태로 복원
+            _rigidbody.constraints = RigidbodyConstraints2D.None;
+        }
+
+        /// <summary>
+        /// 물리적 움직임의 고정 여부를 설정합니다.
+        /// </summary>
+        public void SetMotionLocked(bool isLocked)
+        {
+            if (isLocked == true)
+            {
+                _rigidbody.linearVelocity = Vector2.zero;
+                _rigidbody.angularVelocity = 0f;
+                _rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+
+                return;
+            }
+
+            _rigidbody.constraints = RigidbodyConstraints2D.None;
         }
 
         /// <summary>
@@ -41,8 +61,8 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         /// </summary>
         public void ApplyBounce(BounceParams parameters)
         {
-            Vector2 velocityBeforCollision = parameters.VelocityBeforeCollision; // 전달받은 충돌 전 속도
-            float currentSpeed = velocityBeforCollision.magnitude; // 전달받은 충돌 전 속력
+            Vector2 velocityBeforeCollision = parameters.VelocityBeforeCollision; // 전달받은 충돌 전 속도
+            float currentSpeed = velocityBeforeCollision.magnitude; // 전달받은 충돌 전 속력
             float speedMultiplier = GetSpeedMultiplier(currentSpeed); // 현재 속력 기반 보정
             float adjustedForce = parameters.Force * speedMultiplier; // 계산된 힘
 
@@ -56,7 +76,7 @@ namespace CodeJelly.BounceOrBreak.Game.Character
             Vector2 direction;
             if (currentSpeed > GameConstants.Character.MIN_VELOCITY_FOR_REFLECT)
             {
-                Vector2 reflected = Vector2.Reflect(velocityBeforCollision.normalized, parameters.Normal).normalized;
+                Vector2 reflected = Vector2.Reflect(velocityBeforeCollision.normalized, parameters.Normal).normalized;
                 direction = Vector2.Lerp(reflected, parameters.Normal, parameters.NormalBias).normalized; // 노말 방향 가중치 고려하여 디렉션 블렌딩
             }
             else
@@ -93,10 +113,16 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         private void InitializeComponents()
         {
             // Collider Initialization
-            _collider ??= GetComponent<CircleCollider2D>();
+            if (_collider == null)
+            {
+                _collider = GetComponent<CircleCollider2D>();
+            }
 
             // Rigidbody Initialization
-            _rigidbody ??= GetComponent<Rigidbody2D>();
+            if (_rigidbody == null)
+            {
+                _rigidbody = GetComponent<Rigidbody2D>();
+            }
         }
 
         /// <summary>

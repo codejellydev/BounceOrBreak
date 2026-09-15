@@ -4,6 +4,7 @@ using CodeJelly.BounceOrBreak.Game.Gameplay;
 using CodeJelly.BounceOrBreak.Game.Gameplay.Egg;
 using CodeJelly.BounceOrBreak.Game.Gameplay.Goal;
 using CodeJelly.BounceOrBreak.Game.Gameplay.Score;
+using CodeJelly.BounceOrBreak.Game.Gameplay.UI;
 using CodeJelly.BounceOrBreak.Game.Trampoline;
 using UnityEngine;
 using VContainer;
@@ -22,23 +23,38 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
         [SerializeField] private FallDetector _fallDetector;
         [SerializeField] private GoalPort[] _goalPorts;
         [SerializeField] private TrampolineDrawer _trampolineDrawer;
+
+        [Header("UI")]
+        [SerializeField] private GameplayHudView _gameplayHudView;
+        [SerializeField] private GameOverPanelView _gameOverPanelView;
         #endregion
 
 
         #region Protected Methods
         protected override void Configure(IContainerBuilder builder)
         {
+            // Gameplay
             builder.RegisterComponent(_mainCamera);
             builder.RegisterComponent(_fallDetector);
             builder.RegisterInstance(_goalPorts);
             builder.RegisterComponent(_trampolineDrawer);
-
             builder.Register<EggSpawner>(Lifetime.Scoped);
             builder.Register<ScoreService>(Lifetime.Scoped);
+            builder.Register<RoundProgress>(Lifetime.Scoped);
+
+            // 초기화 순서를 SceneLoader가 구동하므로 EntryPoint가 아닌 Core.Scene 인터페이스로 등록
             builder.Register<GameFlowController>(Lifetime.Scoped)
                    .As<ISceneInitializer>()
-                   .As<ISceneActivatable>() // VContainer EntryPoint가 아닌, Core.Scene의 ISceneActivatable로 등록 (씬 활성화 시점에 자동으로 OnActivated 호출)
+                   .As<ISceneActivatable>()
                    .AsSelf();
+
+            // HUD
+            builder.RegisterComponent(_gameplayHudView);
+            builder.RegisterEntryPoint<GameplayHudPresenter>();
+
+            // Game Over Panel
+            builder.RegisterComponent(_gameOverPanelView);
+            builder.RegisterEntryPoint<GameOverPanelPresenter>();
 
 #if UNITY_EDITOR
             // 씬 단독 실행 시의 초기화 대행

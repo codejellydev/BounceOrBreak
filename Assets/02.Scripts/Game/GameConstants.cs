@@ -31,6 +31,17 @@ namespace CodeJelly.BounceOrBreak.Game
 
         }
 
+        public static class Stage
+        {
+            /// <summary>
+            /// Addressables 키
+            /// </summary>
+            public static class Keys
+            {
+                public const string DEFAULT_CONFIG = "DefaultStageConfig";
+            }
+        }
+
         public static class Egg
         {
             /// <summary>
@@ -40,8 +51,27 @@ namespace CodeJelly.BounceOrBreak.Game
             {
                 public const string PREFAB = "EggPrefab";
                 public const string REGISTRY = "EggRegistry";
-                public const string SPAWN_CONFIG = "EggSpawnConfig";
             }
+
+            /// <summary>
+            /// Wave 하나가 담당하는 기본 스폰 횟수
+            /// </summary>
+            public const int DEFAULT_WAVE_SPAWN_COUNT = 10;
+
+            /// <summary>
+            /// Wave의 기본 스폰 간격 (초)
+            /// </summary>
+            public const float DEFAULT_WAVE_SPAWN_INTERVAL = 3f;
+
+            /// <summary>
+            /// 마지막 Wave 이후 스폰마다 줄어드는 기본 간격 (초)
+            /// </summary>
+            public const float DEFAULT_INTERVAL_DECAY_PER_SPAWN = 0.03f;
+
+            /// <summary>
+            /// 기본 스폰 간격 하한 (초)
+            /// </summary>
+            public const float DEFAULT_MIN_SPAWN_INTERVAL = 1.3f;
 
             /// <summary>
             /// Egg 오브젝트 Pool의 초기 용량
@@ -84,13 +114,17 @@ namespace CodeJelly.BounceOrBreak.Game
             {
                 public const string REGISTRY = "TrampolineRegistry";
                 public const string DEFAULT_CONFIG = "DefaultTrampolineConfig";
-                public const string STATIC_CONFIG = "StaticTrampolineConfig";
             }
 
             /// <summary>
             /// 드로잉 중 포인트 간 최소 거리 (너무 밀집된 포인트 방지)
             /// </summary>
             public const float MIN_POINT_DISTANCE = 0.1f;
+
+            /// <summary>
+            /// 드로잉이 허용되는 좌우 경계의 x좌표 (Wall의 안쪽 면 = 보장 영역 가로 절반 2.5 - Wall 폭 절반 0.1875)
+            /// </summary>
+            public const float DRAW_BOUNDARY_X = 2.125f;
 
             /// <summary>
             /// 라인에 저장할 수 있는 최대 포인트 개수
@@ -103,9 +137,9 @@ namespace CodeJelly.BounceOrBreak.Game
             public const int MIN_DRAW_POINTS = 2;
 
             /// <summary>
-            /// 기본 라인 너비
+            /// 기본 두께 (4px / PPU 32)
             /// </summary>
-            public const float DEFAULT_LINE_WIDTH = 0.1f;
+            public const float DEFAULT_THICKNESS = 0.125f;
 
             /// <summary>
             /// 기본 튕김 세기
@@ -126,6 +160,11 @@ namespace CodeJelly.BounceOrBreak.Game
             /// 기본 중앙 판정 범위
             /// </summary>
             public const float DEFAULT_CENTER_THRESHOLD = 0.2f;
+
+            /// <summary>
+            /// 동시에 존재할 수 있는 최대 드로잉 Trampoline 개수 (스테이지 Trampoline 제외)
+            /// </summary>
+            public const int MAX_DRAWN_COUNT = 3;
 
             /// <summary>
             /// ITrampoline 오브젝트 Pool의 초기 용량
@@ -166,6 +205,24 @@ namespace CodeJelly.BounceOrBreak.Game
             public const float MIN_VELOCITY_FOR_REFLECT = 0.01f;
         }
 
+        public static class Goal
+        {
+            /// <summary>
+            /// 거부된 Egg를 내보내기 전까지 머금는 시간 (초)
+            /// </summary>
+            public const float REJECT_HOLD_DURATION = 0.4f;
+
+            /// <summary>
+            /// 거부된 Egg를 내보내는 힘
+            /// </summary>
+            public const float REJECT_FORCE = 8f;
+
+            /// <summary>
+            /// 내보내는 방향이 수직에서 벗어날 수 있는 최대 각도 (도)
+            /// </summary>
+            public const float REJECT_CONE_HALF_ANGLE = 40f;
+        }
+
         public static class Score
         {
             public static class Keys
@@ -177,7 +234,7 @@ namespace CodeJelly.BounceOrBreak.Game
             }
 
             /// <summary>
-            /// 타입이 일치하는 Egg가 도달했을 때 얻는 점수
+            /// EggColor가 일치하는 Egg가 도달했을 때 얻는 점수
             /// </summary>
             public const int MATCHED = 1;
         }
@@ -266,6 +323,27 @@ namespace CodeJelly.BounceOrBreak.Game
 
                 public const string ENGLISH = "en";
             }
+        }
+
+        /// <summary>
+        /// Sorting Layer 이름.
+        /// </summary>
+        public static class SortingLayers
+        {
+            public const string BACKGROUND = "Background";
+            public const string TRAMPOLINE = "Trampoline";
+            public const string EGG = "Egg";
+            public const string GOAL_PORT = "GoalPort";
+            public const string FOREGROUND = "Foreground";
+
+            /// <summary>
+            /// 뒤에서 앞으로의 그리기 순서. TagManager의 리스트 순서와 같아야 함
+            /// <para>TagManager와의 정합성은 SortingLayerValidationTests가 검증</para>
+            /// </summary>
+            public static readonly string[] ORDER =
+            {
+                BACKGROUND, TRAMPOLINE, EGG, GOAL_PORT, FOREGROUND
+            };
         }
     }
 }

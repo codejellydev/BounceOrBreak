@@ -61,7 +61,8 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         /// <summary>
         /// Egg 인스턴스를 생성합니다.
         /// </summary>
-        public EggController Create()
+        /// <returns>생성된 Egg. 실패 시 null</returns>
+        public IEgg Create()
         {
             if (_root == null)
             {
@@ -71,7 +72,16 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
             }
 
             GameObject instance = UnityEngine.Object.Instantiate(_eggPrefab, _root);
-            return instance.GetComponent<EggController>();
+
+            if (instance.TryGetComponent<IEgg>(out var egg) == false)
+            {
+                AppLogger.Error("[EggFactory] Egg prefab has no IEgg component.");
+                UnityEngine.Object.Destroy(instance);
+
+                return null;
+            }
+
+            return egg;
         }
 
         /// <summary>

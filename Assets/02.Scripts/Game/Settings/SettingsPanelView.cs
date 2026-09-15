@@ -22,9 +22,6 @@ namespace CodeJelly.BounceOrBreak.Game.Settings
 
 
         #region Private Variables
-        [Header("Panel Root")]
-        [SerializeField] private GameObject _panel;
-
         [Header("Buttons")]
         [SerializeField] private Button _closeButton;
         [SerializeField] private Button _dimBackgroundButton;
@@ -37,7 +34,7 @@ namespace CodeJelly.BounceOrBreak.Game.Settings
         /// </summary>
         public void SetPanelActive(bool isActive)
         {
-            _panel.SetActive(isActive);
+            gameObject.SetActive(isActive);
         }
         #endregion
     }

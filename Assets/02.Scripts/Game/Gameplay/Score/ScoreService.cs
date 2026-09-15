@@ -67,6 +67,15 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Score
         }
 
         /// <summary>
+        /// 현재 점수를 초기화합니다. 최고 점수는 유지됩니다.
+        /// </summary>
+        public void ResetScore()
+        {
+            _currentScore.Value = 0;
+            AppLogger.Debug("[ScoreService] Score reset.");
+        }
+
+        /// <summary>
         /// 현재 점수가 최고 점수를 넘으면 갱신합니다.
         /// </summary>
         /// <returns>최고 점수가 갱신되었으면 true</returns>

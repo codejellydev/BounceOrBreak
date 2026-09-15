@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44c54aef8a48e4f44852b7e9a5ee5d1a, type: 3}
+  m_Name: AvocadoEgg
+  m_EditorClassIdentifier: CodeJelly.BounceOrBreak.Game::CodeJelly.BounceOrBreak.Game.Gameplay.Egg.EggData
+  _type: 2
+  _color: 2
+  _baseSprite: {fileID: 21300000, guid: 7fce4bb2c26f0b9d1b049b2fcbb84b28, type: 3}

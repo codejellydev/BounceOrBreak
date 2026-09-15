@@ -16,10 +16,10 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Goal
         /// <summary>
         /// 도달한 Egg.
         /// </summary>
-        public EggController Egg { get; set; }
+        public IEgg Egg { get; set; }
 
         /// <summary>
-        /// TargetType과의 일치 여부.
+        /// TargetColor와의 일치 여부.
         /// </summary>
         public bool IsMatched { get; set; }
         #endregion

@@ -43,6 +43,14 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         }
 
         /// <summary>
+        /// ICharacter.SetMotionLocked Implementation
+        /// </summary>
+        public void SetMotionLocked(bool isLocked)
+        {
+            _coordinator.SetMotionLocked(isLocked);
+        }
+
+        /// <summary>
         /// IBounceable.Bounce Implementation 
         /// </summary>
         public void Bounce(BounceParams parameters)
@@ -75,7 +83,10 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         private void InitializeComponents()
         {
             // Coordinator Initialization
-            _coordinator ??= GetComponent<CharacterCoordinator>();
+            if (_coordinator == null)
+            {
+                _coordinator = GetComponent<CharacterCoordinator>();
+            }
             _coordinator.Initialize();
         }
         #endregion
