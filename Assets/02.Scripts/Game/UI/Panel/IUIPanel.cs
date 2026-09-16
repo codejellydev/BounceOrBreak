@@ -5,8 +5,8 @@ using UnityEngine;
 namespace CodeJelly.BounceOrBreak.Game.UI.Panel
 {
     /// <summary>
-    /// UINavigationService가 여는 패널의 Presenter 인터페이스.
-    /// 인스턴스 수명은 서비스가 관리하고, 구현체는 열려 있는 동안의 상호작용만 담당합니다.
+    /// 키로 열리는 패널의 Presenter 인터페이스.
+    /// 인스턴스 수명은 UIPanelHost가 관리하고, 구현체는 열려 있는 동안의 상호작용만 담당합니다.
     /// </summary>
     public interface IUIPanel
     {
@@ -34,7 +34,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Panel
         /// <summary>
         /// 인스턴스에 바인딩해 닫힐 때까지 상호작용을 진행하고 결과를 반환합니다.
         /// </summary>
-        /// <param name="instance">서비스가 만든 패널 인스턴스</param>
+        /// <param name="instance">패널 인스턴스</param>
         /// <param name="ct">패널이 사라지면(씬 종료) 취소됨</param>
         UniTask<TResult> RunAsync(GameObject instance, CancellationToken ct);
     }
