@@ -7,19 +7,19 @@ using VContainer.Unity;
 namespace CodeJelly.BounceOrBreak.Game.UI.Navigation
 {
     /// <summary>
-    /// 씬 스코프의 UIRoot 등록을 담당하는 클래스.
+    /// 씬 스코프의 UIPanelRoot 등록을 담당하는 클래스.
     /// </summary>
-    public class UIRootRegistrar : IStartable, IDisposable
+    public class UIPanelRootRegistrar : IStartable, IDisposable
     {
         #region Injection
         private readonly UINavigationService _navigation;
-        private readonly UIRoot _root;
+        private readonly UIPanelRoot _root;
         private readonly IReadOnlyList<IUIPanel> _panels;
         private readonly IObjectResolver _resolver;
 
-        public UIRootRegistrar(
+        public UIPanelRootRegistrar(
             UINavigationService navigation,
-            UIRoot root,
+            UIPanelRoot root,
             IReadOnlyList<IUIPanel> panels,
             IObjectResolver resolver)
         {

@@ -100,10 +100,10 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Navigation
 
         #region Public Methods
         /// <summary>
-        /// 씬의 UIRoot를 등록하고 Persistent 패널을 미리 로드합니다.
+        /// 씬의 UIPanelRoot를 등록하고 Persistent 패널을 미리 로드합니다.
         /// </summary>
         /// <returns>등록 해제용 IDisposable</returns>
-        public IDisposable RegisterRoot(UIRoot root, IReadOnlyList<IUIPanel> panels, IObjectResolver resolver)
+        public IDisposable RegisterRoot(UIPanelRoot root, IReadOnlyList<IUIPanel> panels, IObjectResolver resolver)
         {
             UIPanelHost host = new UIPanelHost(root.transform, resolver, panels, _resourceManager);
             RootRegistration registration = new RootRegistration(_roots, host);
@@ -195,7 +195,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Navigation
         {
             if (_roots.Count == 0)
             {
-                throw new InvalidOperationException("[UINavigationService] No UIRoot is registered.");
+                throw new InvalidOperationException("[UINavigationService] No UIPanelRoot is registered.");
             }
 
             return _roots[^1].Host;

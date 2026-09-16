@@ -33,7 +33,7 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
         [SerializeField] private LanguageSettingsView _languageSettingsView;
 
         [Header("Navigation")]
-        [SerializeField] private UIRoot _uiRoot;
+        [SerializeField] private UIPanelRoot _panelRoot;
         #endregion
 
 
@@ -47,8 +47,8 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
                    .As<ISceneActivatable>();
 
             // Navigation
-            builder.RegisterComponent(_uiRoot);
-            builder.RegisterEntryPoint<UIRootRegistrar>();
+            builder.RegisterComponent(_panelRoot);
+            builder.RegisterEntryPoint<UIPanelRootRegistrar>();
             builder.Register<QuitConfirmPresenter>(Lifetime.Scoped)
                    .As<IUIPanel>();
 

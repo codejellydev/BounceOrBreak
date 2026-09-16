@@ -1,6 +1,5 @@
 using CodeJelly.BounceOrBreak.Core.Logging;
 using CodeJelly.BounceOrBreak.Core.Resource;
-using CodeJelly.BounceOrBreak.Game.UI.Panel;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
@@ -9,10 +8,10 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-namespace CodeJelly.BounceOrBreak.Game.UI.Navigation
+namespace CodeJelly.BounceOrBreak.Game.UI.Panel
 {
     /// <summary>
-    /// UIRoot 단위의 패널 인스턴스 관리자.
+    /// UIPanelRoot 단위의 패널 인스턴스 관리자.
     /// 수명 정책에 따라 인스턴스를 내어주고 회수하며, 루트와 함께 정리됩니다.
     /// </summary>
     public class UIPanelHost : IDisposable
