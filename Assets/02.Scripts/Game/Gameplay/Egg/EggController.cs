@@ -84,6 +84,22 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         }
 
         /// <summary>
+        /// IPauseable.Pause Implementation
+        /// </summary>
+        public void Pause()
+        {
+            _character.Pause();
+        }
+
+        /// <summary>
+        /// IPauseable.Resume Implementation
+        /// </summary>
+        public void Resume()
+        {
+            _character.Resume();
+        }
+
+        /// <summary>
         /// IPoolable.Get Implementation
         /// </summary>
         public void Get()

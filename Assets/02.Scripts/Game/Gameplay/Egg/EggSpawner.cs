@@ -1,4 +1,5 @@
 using CodeJelly.BounceOrBreak.Core.Logging;
+using CodeJelly.BounceOrBreak.Core.Pause;
 using CodeJelly.BounceOrBreak.Core.Pooling;
 using CodeJelly.BounceOrBreak.Core.Resource;
 using Cysharp.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
     /// <summary>
     /// 스폰 로직에 따라 Egg를 생성하는 클래스.
     /// </summary>
-    public class EggSpawner : IDisposable
+    public class EggSpawner : IDisposable, IPauseable
     {
         #region Injection
         private readonly ResourceManager _resourceManager;
@@ -31,6 +32,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         /// Pool에서 꺼내져 활성 상태인 Egg 집합.
         /// </summary>
         private readonly HashSet<IEgg> _activeEggs = new HashSet<IEgg>();
+        private readonly PausableStopwatch _stopwatch = new PausableStopwatch();
 
         private EggFactory _factory;
         private EggRegistry _registry;
@@ -100,7 +102,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         }
 
         /// <summary>
-        /// 스폰 루프를 정지합니다.
+        /// 스폰 루프를 중단합니다.
         /// </summary>
         public void StopSpawning()
         {
@@ -165,6 +167,32 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// IPauseable.Pause Implementation
+        /// </summary>
+        public void Pause()
+        {
+            _stopwatch.Pause();
+
+            foreach (IEgg egg in _activeEggs)
+            {
+                egg.Pause();
+            }
+        }
+
+        /// <summary>
+        /// IPauseable.Resume Implementation
+        /// </summary>
+        public void Resume()
+        {
+            _stopwatch.Resume();
+
+            foreach (IEgg egg in _activeEggs)
+            {
+                egg.Resume();
+            }
         }
 
         /// <summary>
@@ -242,7 +270,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         {
             while (ct.IsCancellationRequested == false)
             {
-                await UniTask.WaitForSeconds(_progression.GetSpawnInterval(_roundProgress.SpawnedCount.CurrentValue), cancellationToken: ct);
+                await _stopwatch.WaitForSecondsAsync(_progression.GetSpawnInterval(_roundProgress.SpawnedCount.CurrentValue), ct);
                 SpawnNext();
             }
         }

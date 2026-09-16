@@ -51,6 +51,22 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         }
 
         /// <summary>
+        /// IPauseable.Pause Implementation
+        /// </summary>
+        public void Pause()
+        {
+            _coordinator.Pause();
+        }
+
+        /// <summary>
+        /// IPauseable.Resume Implementation
+        /// </summary>
+        public void Resume()
+        {
+            _coordinator.Resume();
+        }
+
+        /// <summary>
         /// IBounceable.Bounce Implementation 
         /// </summary>
         public void Bounce(BounceParams parameters)

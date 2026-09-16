@@ -1,4 +1,5 @@
 using CodeJelly.BounceOrBreak.Core.Logging;
+using CodeJelly.BounceOrBreak.Core.Pause;
 using CodeJelly.BounceOrBreak.Game.Bounce;
 using Cysharp.Threading.Tasks;
 using System.Threading;
@@ -56,7 +57,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         /// ITrampoline.Lifetime Implementation
         /// </summary>
         public float Lifetime => (_isInitialized == true)
-                              ? Time.time - _lifetimeStartTime
+                              ? _lifetimeStopwatch.GetElapsed()
                               : 0f;
 
         /// <summary>
@@ -82,8 +83,9 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         #region Private Variables
         [SerializeField] private TrampolineRenderer _renderer;
 
+        private readonly PausableStopwatch _lifetimeStopwatch = new PausableStopwatch();
+
         private CancellationTokenSource _lifetimeCts;
-        private float _lifetimeStartTime;
         #endregion
 
 
@@ -153,9 +155,11 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             CancelLifetimeTimer();
 
             UsageCount = 0;
-            _lifetimeStartTime = 0f;
             _lineLength = 0f;
             _isInitialized = false;
+
+            // 정지된 채 회수되어도 다음 수명 타이머가 흐르도록 복원
+            _lifetimeStopwatch.Resume();
 
             // 씬 해체 중에는 이미 파괴되었을 수 있음
             if (this == null)
@@ -182,6 +186,22 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             }
 
             GameObject.Destroy(gameObject);
+        }
+
+        /// <summary>
+        /// IPauseable.Pause Implementation
+        /// </summary>
+        public void Pause()
+        {
+            _lifetimeStopwatch.Pause();
+        }
+
+        /// <summary>
+        /// IPauseable.Resume Implementation
+        /// </summary>
+        public void Resume()
+        {
+            _lifetimeStopwatch.Resume();
         }
         #endregion
 
@@ -251,7 +271,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         {
             CancelLifetimeTimer();
 
-            _lifetimeStartTime = Time.time;
+            _lifetimeStopwatch.Start();
             _lifetimeCts = new CancellationTokenSource();
             RunLifetimeTimer(_lifetimeCts.Token).Forget();
         }
@@ -356,7 +376,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
                 return;
             }
 
-            await UniTask.WaitForSeconds(_config.MaxLifetime, cancellationToken: ct);
+            await _lifetimeStopwatch.WaitForSecondsAsync(_config.MaxLifetime, ct);
             Despawn();
         }
         #endregion
