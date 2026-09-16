@@ -29,10 +29,7 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
         /// </summary>
         private readonly struct SceneComponents
         {
-            public ISceneInitializer Initializer { get; }
-            public ISceneContext Context { get; }
-            public ISceneActivatable Activatable { get; }
-
+            #region Constructors
             public SceneComponents(
                 ISceneInitializer initializer,
                 ISceneContext context,
@@ -42,6 +39,14 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
                 Context = context;
                 Activatable = activatable;
             }
+            #endregion
+
+
+            #region Properties
+            public ISceneInitializer Initializer { get; }
+            public ISceneContext Context { get; }
+            public ISceneActivatable Activatable { get; }
+            #endregion
         }
         #endregion
 
