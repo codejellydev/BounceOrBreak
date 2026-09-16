@@ -7,6 +7,8 @@ using CodeJelly.BounceOrBreak.Game.Input;
 using CodeJelly.BounceOrBreak.Game.Settings.Audio;
 using CodeJelly.BounceOrBreak.Game.Settings.Graphics;
 using CodeJelly.BounceOrBreak.Game.Settings.Language;
+using CodeJelly.BounceOrBreak.Game.UI.Navigation;
+using CodeJelly.BounceOrBreak.Game.UI.Panel;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -22,6 +24,9 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
         #region Private Variables
         [Header("Audio Settings")]
         [SerializeField] private AudioMixerConfig _audioSettingsConfig;
+
+        [Header("UI")]
+        [SerializeField] private UIPanelConfig _uiPanelConfig;
         #endregion
 
 
@@ -39,6 +44,10 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
             builder.Register<IAudioSettingsApplier, AudioMixerApplier>(Lifetime.Singleton);
             builder.Register<IGraphicsSettingsApplier, UnityGraphicsApplier>(Lifetime.Singleton);
             builder.Register<ILanguageSettingsApplier, LocalizationApplier>(Lifetime.Singleton);
+
+            builder.RegisterInstance(_uiPanelConfig);
+            builder.RegisterEntryPoint<UINavigationService>()
+                   .AsSelf();
         }
         #endregion
     }

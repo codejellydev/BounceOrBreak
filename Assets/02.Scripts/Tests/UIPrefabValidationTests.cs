@@ -1,4 +1,5 @@
 using CodeJelly.BounceOrBreak.Core.Viewport;
+using CodeJelly.BounceOrBreak.Game.Lobby;
 using NUnit.Framework;
 using UnityEditor;
 using UnityEngine;
@@ -42,6 +43,33 @@ namespace CodeJelly.BounceOrBreak.Tests
 
             // 컴포넌트를 하나도 못 찾으면 무조건 통과하므로 검사 횟수를 검증
             Assert.Greater(checkedCount, 0, "No SafeAreaFitter found in UI prefabs.");
+        }
+
+        /// <summary>
+        /// UI 프리팹의 모든 QuitConfirmView가 유효합니다.
+        /// </summary>
+        [Test]
+        public void QuitConfirmView_IsValid()
+        {
+            string[] guids = AssetDatabase.FindAssets("t:Prefab", new[] { UI_PATH });
+
+            Assert.IsNotEmpty(guids, $"No prefab found in {UI_PATH}.");
+
+            int checkedCount = 0;
+
+            foreach (string guid in guids)
+            {
+                GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(guid));
+
+                foreach (QuitConfirmView view in prefab.GetComponentsInChildren<QuitConfirmView>(true))
+                {
+                    Assert.IsTrue(view.IsValid, $"QuitConfirmView on {prefab.name} is not valid. Check its button wiring.");
+                    checkedCount++;
+                }
+            }
+
+            // 프리팹이 없으면 무조건 통과하므로 검사 횟수를 검증
+            Assert.Greater(checkedCount, 0, "No QuitConfirmView found in UI prefabs.");
         }
         #endregion
     }
