@@ -16,6 +16,18 @@ namespace CodeJelly.BounceOrBreak.Game
             }
         }
 
+        public static class UI
+        {
+            /// <summary>
+            /// UIPanelConfig에 선언된 패널 키
+            /// </summary>
+            public static class Keys
+            {
+                public const string QUIT_CONFIRM = "QuitConfirm";
+                public const string PAUSE = "Pause";
+            }
+        }
+
         public static class Scene
         {
             /// <summary>

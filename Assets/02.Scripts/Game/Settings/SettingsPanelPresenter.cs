@@ -1,4 +1,5 @@
 using CodeJelly.BounceOrBreak.Core.Logging;
+using CodeJelly.BounceOrBreak.Game.UI.Navigation;
 using R3;
 using System;
 using System.Collections.Generic;
@@ -14,19 +15,24 @@ namespace CodeJelly.BounceOrBreak.Game.Settings
         #region Injection
         private readonly SettingsPanelView _view;
         private readonly IReadOnlyList<ISettingsCategoryPresenter> _categoryPresenters;
+        private readonly UINavigationService _navigation;
 
         public SettingsPanelPresenter(
             SettingsPanelView view,
-            IReadOnlyList<ISettingsCategoryPresenter> categoryPresenters)
+            IReadOnlyList<ISettingsCategoryPresenter> categoryPresenters,
+            UINavigationService navigation)
         {
             _view = view;
             _categoryPresenters = categoryPresenters;
+            _navigation = navigation;
         }
         #endregion
 
 
         #region Private Variables
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
+
+        private IDisposable _backHandler;
         #endregion
 
 
@@ -47,6 +53,9 @@ namespace CodeJelly.BounceOrBreak.Game.Settings
         {
             _view.SetPanelActive(true);
 
+            // 패널이 열려 있는 동안 뒤로가기는 이 패널만 닫음
+            _backHandler ??= _navigation.PushBackHandler(OnCloseRequested);
+
             foreach (var presenter in _categoryPresenters)
             {
                 presenter.OnPanelOpened();
@@ -58,6 +67,9 @@ namespace CodeJelly.BounceOrBreak.Game.Settings
         /// </summary>
         public void Close()
         {
+            _backHandler?.Dispose();
+            _backHandler = null;
+
             foreach (var presenter in _categoryPresenters)
             {
                 presenter.OnPanelClosed();
@@ -71,6 +83,7 @@ namespace CodeJelly.BounceOrBreak.Game.Settings
         /// </summary>
         public void Dispose()
         {
+            _backHandler?.Dispose();
             _disposables.Dispose();
         }
         #endregion

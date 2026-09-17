@@ -72,6 +72,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Prefab
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 75f32aef8b871ff4ba524d87dd54be2d
+    m_Address: QuitConfirmView
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 75fef6d9261f1ba43a00751ab1258ec3
     m_Address: DefaultInputConfig
     m_ReadOnly: 0
@@ -104,6 +109,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Config
     - Trampoline
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d55a8bff700408c42a7e1e794dd461d1
+    m_Address: Assets/03.Prefabs/UI/Gameplay/Panels/PausePanelView.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d6d4e787ed25bde48b90bff4f28dcd9c
     m_Address: LobbyScene

@@ -1,5 +1,9 @@
 using CodeJelly.BounceOrBreak.Core.Viewport;
+using CodeJelly.BounceOrBreak.Game.Gameplay.Pause;
+using CodeJelly.BounceOrBreak.Game.Gameplay.UI;
+using CodeJelly.BounceOrBreak.Game.Lobby;
 using NUnit.Framework;
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -22,6 +26,46 @@ namespace CodeJelly.BounceOrBreak.Tests
         [Test]
         public void SafeAreaFitter_IsValid()
         {
+            AssertAllValid<SafeAreaFitter>(fitter => fitter.IsValid, "Offsets must be zero and parents must fill the screen.");
+        }
+
+        /// <summary>
+        /// UI 프리팹의 모든 QuitConfirmView가 유효합니다.
+        /// </summary>
+        [Test]
+        public void QuitConfirmView_IsValid()
+        {
+            AssertAllValid<QuitConfirmView>(view => view.IsValid, "Check its button wiring.");
+        }
+
+        /// <summary>
+        /// UI 프리팹의 모든 PausePanelView가 유효합니다.
+        /// </summary>
+        [Test]
+        public void PausePanelView_IsValid()
+        {
+            AssertAllValid<PausePanelView>(view => view.IsValid, "Check its button and score text wiring.");
+        }
+
+        /// <summary>
+        /// UI 프리팹의 모든 GameOverPanelView가 유효합니다.
+        /// </summary>
+        [Test]
+        public void GameOverPanelView_IsValid()
+        {
+            AssertAllValid<GameOverPanelView>(view => view.IsValid, "Check its button and score wiring.");
+        }
+        #endregion
+
+
+        #region Private Methods
+        /// <summary>
+        /// UI 프리팹의 모든 TComponent가 조건을 만족하는지 검증합니다.
+        /// </summary>
+        /// <param name="isValid">컴포넌트별 유효 조건</param>
+        /// <param name="hint">실패 원인에 대한 안내</param>
+        private static void AssertAllValid<TComponent>(Func<TComponent, bool> isValid, string hint) where TComponent : Component
+        {
             string[] guids = AssetDatabase.FindAssets("t:Prefab", new[] { UI_PATH });
 
             // 폴더가 비어 있으면 무조건 통과하므로 탐색 자체를 검증
@@ -33,15 +77,15 @@ namespace CodeJelly.BounceOrBreak.Tests
             {
                 GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(AssetDatabase.GUIDToAssetPath(guid));
 
-                foreach (SafeAreaFitter fitter in prefab.GetComponentsInChildren<SafeAreaFitter>(true))
+                foreach (TComponent component in prefab.GetComponentsInChildren<TComponent>(true))
                 {
-                    Assert.IsTrue(fitter.IsValid, $"SafeAreaFitter on {fitter.name} in {prefab.name} is not valid. Offsets must be zero and parents must fill the screen.");
+                    Assert.IsTrue(isValid(component), $"{typeof(TComponent).Name} on {component.name} in {prefab.name} is not valid. {hint}");
                     checkedCount++;
                 }
             }
 
             // 컴포넌트를 하나도 못 찾으면 무조건 통과하므로 검사 횟수를 검증
-            Assert.Greater(checkedCount, 0, "No SafeAreaFitter found in UI prefabs.");
+            Assert.Greater(checkedCount, 0, $"No {typeof(TComponent).Name} found in UI prefabs.");
         }
         #endregion
     }
