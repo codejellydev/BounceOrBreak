@@ -21,3 +21,11 @@ MonoBehaviour:
       m_SubObjectGUID: 
       m_EditorAssetChanged: 0
     _lifetime: 1
+  - _key: Pause
+    _prefab:
+      m_AssetGUID: d55a8bff700408c42a7e1e794dd461d1
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 0
+    _lifetime: 0

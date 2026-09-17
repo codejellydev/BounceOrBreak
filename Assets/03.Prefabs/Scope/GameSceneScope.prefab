@@ -48,4 +48,11 @@ MonoBehaviour:
     TypeName: CodeJelly.BounceOrBreak.Game.Scope.ApplicationScope
   autoRun: 1
   autoInjectGameObjects: []
+  _gameSceneConfig: {fileID: 11400000, guid: 63bac672faee7c046867243c336b8c72, type: 2}
+  _mainCamera: {fileID: 0}
   _fallDetector: {fileID: 0}
+  _goalPorts: []
+  _trampolineDrawer: {fileID: 0}
+  _gameplayHudView: {fileID: 0}
+  _gameOverPanelView: {fileID: 0}
+  _panelRoot: {fileID: 0}

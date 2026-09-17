@@ -110,6 +110,11 @@ MonoBehaviour:
     - Config
     - Trampoline
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d55a8bff700408c42a7e1e794dd461d1
+    m_Address: Assets/03.Prefabs/UI/Gameplay/Panels/PausePanelView.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d6d4e787ed25bde48b90bff4f28dcd9c
     m_Address: LobbyScene
     m_ReadOnly: 0
