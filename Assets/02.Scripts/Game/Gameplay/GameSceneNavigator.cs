@@ -6,12 +6,13 @@ using Cysharp.Threading.Tasks;
 using R3;
 using System;
 using System.Threading;
+using UnityEngine;
 using VContainer.Unity;
 
 namespace CodeJelly.BounceOrBreak.Game.Gameplay
 {
     /// <summary>
-    /// GameScene의 뒤로가기와 로비 복귀를 담당하는 클래스.
+    /// GameScene의 정지 진입과 로비 복귀를 담당하는 클래스.
     /// </summary>
     public class GameSceneNavigator : IStartable, IDisposable
     {
@@ -46,6 +47,8 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         {
             _navigation.PushBackHandler(OnBackPressedAtRoot)
                        .AddTo(_disposables);
+
+            Application.focusChanged += OnFocusChanged;
         }
         #endregion
 
@@ -65,6 +68,8 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         /// </summary>
         public void Dispose()
         {
+            Application.focusChanged -= OnFocusChanged;
+
             _cts.Cancel();
             _cts.Dispose();
             _disposables.Dispose();
@@ -85,6 +90,27 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
                 return;
             }
 
+            PauseAsync(_cts.Token).Forget();
+        }
+
+        /// <summary>
+        /// 앱이 포커스를 잃었을 때의 동작입니다.
+        /// </summary>
+        private void OnFocusChanged(bool hasFocus)
+        {
+            if (hasFocus == true)
+            {
+                return;
+            }
+
+            // 정지 패널이 이미 열려 있으면 다시 열 수 없으므로 무시
+            if (_flowController.Phase.CurrentValue != GamePhase.Playing
+                || _flowController.IsPaused.CurrentValue == true)
+            {
+                return;
+            }
+
+            AppLogger.Info("[GameSceneNavigator] Focus lost. Pausing.");
             PauseAsync(_cts.Token).Forget();
         }
 
