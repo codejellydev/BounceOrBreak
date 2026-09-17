@@ -24,6 +24,7 @@ namespace CodeJelly.BounceOrBreak.Game
             public static class Keys
             {
                 public const string QUIT_CONFIRM = "QuitConfirm";
+                public const string PAUSE = "Pause";
             }
         }
 
