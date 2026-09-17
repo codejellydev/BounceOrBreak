@@ -1,4 +1,5 @@
 using CodeJelly.BounceOrBreak.Core.Logging;
+using CodeJelly.BounceOrBreak.Core.Pause;
 using CodeJelly.BounceOrBreak.Core.Resource;
 using CodeJelly.BounceOrBreak.Core.Scene;
 using CodeJelly.BounceOrBreak.Game.Character;
@@ -11,6 +12,7 @@ using CodeJelly.BounceOrBreak.Game.Trampoline;
 using Cysharp.Threading.Tasks;
 using R3;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 
 namespace CodeJelly.BounceOrBreak.Game.Gameplay
@@ -48,6 +50,15 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
             _trampolineDrawer = trampolineDrawer;
             _inputManager = inputManager;
             _resourceManager = resourceManager;
+
+            // 정지 대상은 여기 한 곳에만 나열. 시간이 흐르는 시스템이 생기면 여기에 추가
+            _pauseables.Add(eggSpawner);
+            _pauseables.Add(trampolineDrawer);
+
+            if (goalPorts != null)
+            {
+                _pauseables.AddRange(goalPorts);
+            }
         }
         #endregion
 
@@ -64,6 +75,11 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         public ReadOnlyReactiveProperty<GamePhase> Phase => _phase.ToReadOnlyReactiveProperty();
 
         /// <summary>
+        /// 게임이 멈춰 있는지 여부. Phase와 직교합니다.
+        /// </summary>
+        public ReadOnlyReactiveProperty<bool> IsPaused => _isPaused.ToReadOnlyReactiveProperty();
+
+        /// <summary>
         /// Round가 끝났을 때 발행
         /// </summary>
         public Observable<RoundResult> OnRoundEnded => _onRoundEnded;
@@ -72,8 +88,10 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
 
         #region Private Variables
         private readonly ReactiveProperty<GamePhase> _phase = new ReactiveProperty<GamePhase>(GamePhase.Loading);
+        private readonly ReactiveProperty<bool> _isPaused = new ReactiveProperty<bool>(false);
         private readonly Subject<RoundResult> _onRoundEnded = new Subject<RoundResult>();
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
+        private readonly List<IPauseable> _pauseables = new List<IPauseable>();
 
         private StageConfig _stageConfig;
         private CancellationTokenSource _roundCts;
@@ -144,6 +162,13 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
                 return;
             }
 
+            if (_isPaused.Value == true)
+            {
+                AppLogger.Warning("[GameFlowController] Restart requested while paused. Ignored.");
+
+                return;
+            }
+
             AppLogger.Info("[GameFlowController] Restarting.");
 
             // Playing으로 전환되기 전에 리셋해야 리셋 중 발생하는 Arrival 이벤트가 득점으로 처리되지 않음
@@ -157,6 +182,56 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         }
 
         /// <summary>
+        /// 게임을 멈춥니다. 로딩 중이거나 이미 멈춰 있으면 무시합니다.
+        /// </summary>
+        public void Pause()
+        {
+            if (_phase.Value == GamePhase.Loading)
+            {
+                AppLogger.Warning("[GameFlowController] Pause requested in Loading phase. Ignored.");
+
+                return;
+            }
+
+            if (_isPaused.Value == true)
+            {
+                return;
+            }
+
+            AppLogger.Info("[GameFlowController] Paused.");
+
+            // 컨텍스트 전환 시 입력 취소 콜백이 Trampoline을 만들므로 드로잉 취소를 먼저 수행
+            foreach (IPauseable pauseable in _pauseables)
+            {
+                pauseable.Pause();
+            }
+
+            _inputManager.SwitchContext(InputContext.Pause);
+            _isPaused.Value = true;
+        }
+
+        /// <summary>
+        /// 멈춘 게임을 이어갑니다. 멈춰 있지 않으면 무시합니다.
+        /// </summary>
+        public void Resume()
+        {
+            if (_isPaused.Value == false)
+            {
+                return;
+            }
+
+            AppLogger.Info("[GameFlowController] Resumed.");
+
+            foreach (IPauseable pauseable in _pauseables)
+            {
+                pauseable.Resume();
+            }
+
+            _inputManager.SwitchContext(GetInputContext(_phase.Value));
+            _isPaused.Value = false;
+        }
+
+        /// <summary>
         /// IDisposable.Dispose Implementation
         /// </summary>
         public void Dispose()
@@ -165,6 +240,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
 
             _disposables.Dispose();
             _phase.Dispose();
+            _isPaused.Dispose();
             _onRoundEnded.Dispose();
 
             if (_stageConfig != null)
@@ -176,6 +252,14 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
 
 
         #region Private Methods
+        /// <summary>
+        /// Phase에 맞는 InputContext를 반환합니다.
+        /// </summary>
+        private static InputContext GetInputContext(GamePhase phase)
+        {
+            return (phase == GamePhase.GameOver) ? InputContext.GameOver : InputContext.Gameplay;
+        }
+
         /// <summary>
         /// 낙하한 ICharacter의 Egg 데이터를 반환합니다.
         /// </summary>

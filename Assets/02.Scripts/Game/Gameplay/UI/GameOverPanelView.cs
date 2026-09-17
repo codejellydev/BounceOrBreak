@@ -13,6 +13,17 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.UI
     {
         #region Properties
         public PushButton RestartButton => _restartButton;
+        public PushButton HomeButton => _homeButton;
+
+        /// <summary>
+        /// View가 유효한지 확인합니다.
+        /// </summary>
+        public bool IsValid => _restartButton != null
+                            && _homeButton != null
+                            && _currentScoreText != null
+                            && _bestScoreText != null
+                            && _newBestBadge != null
+                            && _brokenEggIcon != null;
         #endregion
 
 
@@ -25,6 +36,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.UI
 
         [Header("Buttons")]
         [SerializeField] private PushButton _restartButton;
+        [SerializeField] private PushButton _homeButton;
         #endregion
 
 

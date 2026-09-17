@@ -1,3 +1,4 @@
+using CodeJelly.BounceOrBreak.Core.Pause;
 using CodeJelly.BounceOrBreak.Core.Pooling;
 using UnityEngine;
 
@@ -7,7 +8,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
     /// Egg에 대한 인터페이스.
     /// Egg의 정체성과 도메인 동작을 정의합니다. (물리적 상호작용 등 범용 캐릭터 로직 관련은 ICharacter)
     /// </summary>
-    public interface IEgg : IPoolable
+    public interface IEgg : IPoolable, IPauseable
     {
         /// <summary>
         /// Egg의 타입 데이터

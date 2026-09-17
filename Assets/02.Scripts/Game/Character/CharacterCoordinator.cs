@@ -42,6 +42,22 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         }
 
         /// <summary>
+        /// Physics를 멈춥니다.
+        /// </summary>
+        public void Pause()
+        {
+            _physics.Pause();
+        }
+
+        /// <summary>
+        /// 멈춘 Physics를 이어갑니다.
+        /// </summary>
+        public void Resume()
+        {
+            _physics.Resume();
+        }
+
+        /// <summary>
         /// Bounce 이벤트를 처리합니다.
         /// </summary>
         public void HandleBounce(BounceParams parameters)
