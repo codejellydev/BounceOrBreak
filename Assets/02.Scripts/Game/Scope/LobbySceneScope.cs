@@ -20,9 +20,6 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
     {
         #region Private Variables
         [Header("Lobby")]
-        /// <summary>
-        /// LobbyScene에서 사용하는 Transition 설정.
-        /// </summary>
         [SerializeField] private SceneTransitionConfig _lobbySceneConfig;
         [SerializeField] private LobbyView _lobbyView;
 
