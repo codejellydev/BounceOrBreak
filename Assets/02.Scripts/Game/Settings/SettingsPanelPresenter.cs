@@ -1,118 +1,62 @@
-using CodeJelly.BounceOrBreak.Core.Logging;
-using CodeJelly.BounceOrBreak.Game.UI.Navigation;
+using CodeJelly.BounceOrBreak.Game.Settings.Audio;
+using CodeJelly.BounceOrBreak.Game.Settings.Graphics;
+using CodeJelly.BounceOrBreak.Game.Settings.Language;
+using CodeJelly.BounceOrBreak.Game.UI.Panel;
 using R3;
-using System;
-using System.Collections.Generic;
-using VContainer.Unity;
 
 namespace CodeJelly.BounceOrBreak.Game.Settings
 {
     /// <summary>
     /// Settings 패널의 Presenter 클래스.
     /// </summary>
-    public class SettingsPanelPresenter : IStartable, IDisposable
+    public class SettingsPanelPresenter : UIPanelPresenter<SettingsPanelView, Unit>
     {
         #region Injection
-        private readonly SettingsPanelView _view;
-        private readonly IReadOnlyList<ISettingsCategoryPresenter> _categoryPresenters;
-        private readonly UINavigationService _navigation;
+        private readonly AudioSettingsPresenter _audioPresenter;
+        private readonly GraphicsSettingsPresenter _graphicsPresenter;
+        private readonly LanguageSettingsPresenter _languagePresenter;
 
         public SettingsPanelPresenter(
-            SettingsPanelView view,
-            IReadOnlyList<ISettingsCategoryPresenter> categoryPresenters,
-            UINavigationService navigation)
+            AudioSettingsPresenter audioPresenter,
+            GraphicsSettingsPresenter graphicsPresenter,
+            LanguageSettingsPresenter languagePresenter)
         {
-            _view = view;
-            _categoryPresenters = categoryPresenters;
-            _navigation = navigation;
+            _audioPresenter = audioPresenter;
+            _graphicsPresenter = graphicsPresenter;
+            _languagePresenter = languagePresenter;
         }
         #endregion
 
 
-        #region Private Variables
-        private readonly CompositeDisposable _disposables = new CompositeDisposable();
-
-        private IDisposable _backHandler;
+        #region Properties
+        public override string Key => GameConstants.UI.Keys.SETTINGS;
+        public override Unit CancelResult => Unit.Default;
         #endregion
 
 
-        #region VContainer Lifecycle
-        public void Start()
+        #region Protected Methods
+        protected override void Bind(SettingsPanelView view, CompositeDisposable disposables)
         {
-            _view.SetPanelActive(false);
-            BindView();
-        }
-        #endregion
+            view.CloseButton
+                .OnClickAsObservable()
+                .Subscribe(_ => Cancel())
+                .AddTo(disposables);
 
+            view.DimBackgroundButton
+                .OnClickAsObservable()
+                .Subscribe(_ => Cancel())
+                .AddTo(disposables);
 
-        #region Public Methods
-        /// <summary>
-        /// Settings 패널을 열고, 등록된 모든 카테고리 Presenter에 통지합니다.
-        /// </summary>
-        public void Open()
-        {
-            _view.SetPanelActive(true);
-
-            // 패널이 열려 있는 동안 뒤로가기는 이 패널만 닫음
-            _backHandler ??= _navigation.PushBackHandler(OnCloseRequested);
-
-            foreach (var presenter in _categoryPresenters)
-            {
-                presenter.OnPanelOpened();
-            }
+            _audioPresenter.Bind(view.AudioView, disposables);
+            _graphicsPresenter.Bind(view.GraphicsView, disposables);
+            _languagePresenter.Bind(view.LanguageView, disposables);
         }
 
-        /// <summary>
-        /// Settings 패널을 닫고, 등록된 모든 카테고리 Presenter에 통지합니다.
-        /// </summary>
-        public void Close()
+        protected override void OnClosed()
         {
-            _backHandler?.Dispose();
-            _backHandler = null;
-
-            foreach (var presenter in _categoryPresenters)
-            {
-                presenter.OnPanelClosed();
-            }
-
-            _view.SetPanelActive(false);
-        }
-
-        /// <summary>
-        /// IDisposable.Dispose Implementation
-        /// </summary>
-        public void Dispose()
-        {
-            _backHandler?.Dispose();
-            _disposables.Dispose();
-        }
-        #endregion
-
-
-        #region Private Methods
-        /// <summary>
-        /// View와 Presenter 간의 이벤트 바인딩을 설정합니다.
-        /// </summary>
-        private void BindView()
-        {
-            _view.CloseButton
-                 .OnClickAsObservable()
-                 .Subscribe(_ => OnCloseRequested())
-                 .AddTo(_disposables);
-
-            _view.DimBackgroundButton
-                 .OnClickAsObservable()
-                 .Subscribe(_ => OnCloseRequested())
-                 .AddTo(_disposables);
-        }
-
-        /// <summary>
-        /// 닫기 요청 이벤트를 처리합니다.
-        /// </summary>
-        private void OnCloseRequested()
-        {
-            AppLogger.Info("[SettingsPanelPresenter] Settings panel close requested.");
-            Close();
+            _audioPresenter.Save();
+            _graphicsPresenter.Save();
+            _languagePresenter.Save();
         }
         #endregion
     }

@@ -44,6 +44,9 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
             builder.Register<IAudioSettingsApplier, AudioMixerApplier>(Lifetime.Singleton);
             builder.Register<IGraphicsSettingsApplier, UnityGraphicsApplier>(Lifetime.Singleton);
             builder.Register<ILanguageSettingsApplier, LocalizationApplier>(Lifetime.Singleton);
+            builder.Register<AudioSettingsService>(Lifetime.Singleton);
+            builder.Register<GraphicsSettingsService>(Lifetime.Singleton);
+            builder.Register<LanguageSettingsService>(Lifetime.Singleton);
 
             builder.RegisterInstance(_uiPanelConfig);
             builder.RegisterEntryPoint<UINavigationService>()

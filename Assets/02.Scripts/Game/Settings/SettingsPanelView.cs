@@ -1,3 +1,6 @@
+using CodeJelly.BounceOrBreak.Game.Settings.Audio;
+using CodeJelly.BounceOrBreak.Game.Settings.Graphics;
+using CodeJelly.BounceOrBreak.Game.Settings.Language;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,6 +8,7 @@ namespace CodeJelly.BounceOrBreak.Game.Settings
 {
     /// <summary>
     /// Settings 패널의 View 클래스.
+    /// SettingsPanelPresenter로부터 제어됩니다.
     /// </summary>
     public class SettingsPanelView : MonoBehaviour
     {
@@ -18,6 +22,19 @@ namespace CodeJelly.BounceOrBreak.Game.Settings
         /// 패널 외부(Dim 영역) 클릭으로 패널을 닫는 버튼.
         /// </summary>
         public Button DimBackgroundButton => _dimBackgroundButton;
+
+        public AudioSettingsView AudioView => _audioView;
+        public GraphicsSettingsView GraphicsView => _graphicsView;
+        public LanguageSettingsView LanguageView => _languageView;
+
+        /// <summary>
+        /// View가 유효한지 확인합니다.
+        /// </summary>
+        public bool IsValid => _closeButton != null
+                            && _dimBackgroundButton != null
+                            && _audioView != null
+                            && _graphicsView != null
+                            && _languageView != null;
         #endregion
 
 
@@ -25,17 +42,11 @@ namespace CodeJelly.BounceOrBreak.Game.Settings
         [Header("Buttons")]
         [SerializeField] private Button _closeButton;
         [SerializeField] private Button _dimBackgroundButton;
-        #endregion
 
-
-        #region Public Methods
-        /// <summary>
-        /// 패널의 표시 여부를 설정합니다.
-        /// </summary>
-        public void SetPanelActive(bool isActive)
-        {
-            gameObject.SetActive(isActive);
-        }
+        [Header("Categories")]
+        [SerializeField] private AudioSettingsView _audioView;
+        [SerializeField] private GraphicsSettingsView _graphicsView;
+        [SerializeField] private LanguageSettingsView _languageView;
         #endregion
     }
 }

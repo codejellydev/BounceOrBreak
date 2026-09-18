@@ -57,6 +57,8 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Panel
                 {
                     _bindings.Clear();
                     _completion = null;
+
+                    OnClosed();
                 }
             }
         }
@@ -76,6 +78,12 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Panel
         /// View 이벤트를 결과에 연결합니다. disposables에 담은 구독은 닫힐 때 해제됩니다.
         /// </summary>
         protected abstract void Bind(TView view, CompositeDisposable disposables);
+
+        /// <summary>
+        /// 패널이 닫힌 뒤 호출됩니다.
+        /// </summary>
+        protected virtual void OnClosed()
+        { }
 
         /// <summary>
         /// 결과를 확정하고 패널을 닫습니다. 이미 닫혔으면 무시합니다.

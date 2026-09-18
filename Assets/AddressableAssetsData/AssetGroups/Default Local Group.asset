@@ -34,6 +34,11 @@ MonoBehaviour:
     m_SerializedLabels:
     - Config
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 35e48deb76ab26b439e361fca624c690
+    m_Address: SettingsPanelView
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3cdbe6249060c4641ab6b6da958d3818
     m_Address: EggRegistry
     m_ReadOnly: 0

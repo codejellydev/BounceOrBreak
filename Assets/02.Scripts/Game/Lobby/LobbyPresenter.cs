@@ -1,7 +1,6 @@
 using CodeJelly.BounceOrBreak.Core.Logging;
 using CodeJelly.BounceOrBreak.Core.Scene;
 using CodeJelly.BounceOrBreak.Game.Input;
-using CodeJelly.BounceOrBreak.Game.Settings;
 using CodeJelly.BounceOrBreak.Game.UI.Navigation;
 using Cysharp.Threading.Tasks;
 using R3;
@@ -21,7 +20,6 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
         private readonly LobbyView _view;
         private readonly SceneLoader _sceneLoader;
         private readonly SceneTransitionConfig _lobbySceneConfig;
-        private readonly SettingsPanelPresenter _settingsPanelPresenter;
         private readonly InputManager _inputManager;
         private readonly UINavigationService _navigation;
 
@@ -29,14 +27,12 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
             LobbyView view,
             SceneLoader sceneLoader,
             SceneTransitionConfig lobbySceneConfig,
-            SettingsPanelPresenter settingsPanelPresenter,
             InputManager inputManager,
             UINavigationService navigation)
         {
             _view = view;
             _sceneLoader = sceneLoader;
             _lobbySceneConfig = lobbySceneConfig;
-            _settingsPanelPresenter = settingsPanelPresenter;
             _inputManager = inputManager;
             _navigation = navigation;
         }
@@ -125,7 +121,7 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
         private void OnSettingsButtonClicked()
         {
             AppLogger.Info("[LobbyPresenter] Settings button clicked.");
-            _settingsPanelPresenter.Open();
+            OpenSettings(_cts.Token).Forget();
         }
 
         /// <summary>
@@ -134,6 +130,21 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
         private void OnBackPressedAtRoot()
         {
             ConfirmQuit(_cts.Token).Forget();
+        }
+
+        /// <summary>
+        /// Settings 패널을 엽니다.
+        /// </summary>
+        private async UniTaskVoid OpenSettings(CancellationToken ct)
+        {
+            try
+            {
+                await _navigation.ShowAsync(GameConstants.UI.Keys.SETTINGS, ct);
+            }
+            catch (OperationCanceledException)
+            {
+                // 씬이 먼저 내려간 것이므로 처리할 결과가 없음
+            }
         }
 
         /// <summary>
