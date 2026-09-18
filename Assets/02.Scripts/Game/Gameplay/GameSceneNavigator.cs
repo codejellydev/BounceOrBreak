@@ -55,6 +55,26 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
 
         #region Public Methods
         /// <summary>
+        /// 게임을 멈추고 정지 패널을 엽니다.
+        /// </summary>
+        public void RequestPause()
+        {
+            // 전환 중에는 곧 사라질 씬이므로 무시
+            if (_sceneLoader.IsTransitioning == true)
+            {
+                return;
+            }
+
+            if (_flowController.Phase.CurrentValue != GamePhase.Playing
+                || _flowController.IsPaused.CurrentValue == true)
+            {
+                return;
+            }
+
+            PauseAsync(_cts.Token).Forget();
+        }
+
+        /// <summary>
         /// 로비로 전환합니다.
         /// </summary>
         public void ReturnToLobby()
@@ -90,7 +110,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
                 return;
             }
 
-            PauseAsync(_cts.Token).Forget();
+            RequestPause();
         }
 
         /// <summary>
@@ -103,19 +123,12 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
                 return;
             }
 
-            // 정지 패널이 이미 열려 있으면 다시 열 수 없으므로 무시
-            if (_flowController.Phase.CurrentValue != GamePhase.Playing
-                || _flowController.IsPaused.CurrentValue == true)
-            {
-                return;
-            }
-
             AppLogger.Info("[GameSceneNavigator] Focus lost. Pausing.");
-            PauseAsync(_cts.Token).Forget();
+            RequestPause();
         }
 
         /// <summary>
-        /// 게임을 멈추고 정지 패널을 엽니다.
+        /// 정지 패널의 결과를 처리합니다.
         /// </summary>
         private async UniTaskVoid PauseAsync(CancellationToken ct)
         {

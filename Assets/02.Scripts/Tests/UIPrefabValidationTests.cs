@@ -48,6 +48,15 @@ namespace CodeJelly.BounceOrBreak.Tests
         }
 
         /// <summary>
+        /// UI 프리팹의 모든 GameplayHudView가 유효합니다.
+        /// </summary>
+        [Test]
+        public void GameplayHudView_IsValid()
+        {
+            AssertAllValid<GameplayHudView>(view => view.IsValid, "Check its button and score wiring.");
+        }
+
+        /// <summary>
         /// UI 프리팹의 모든 GameOverPanelView가 유효합니다.
         /// </summary>
         [Test]
