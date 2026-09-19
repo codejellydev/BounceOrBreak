@@ -250,6 +250,24 @@ namespace CodeJelly.BounceOrBreak.Game
             /// EggColor가 일치하는 Egg가 도달했을 때 얻는 점수
             /// </summary>
             public const int MATCHED = 1;
+
+            public static class Abbreviation
+            {
+                /// <summary>
+                /// 이 점수부터 단위를 붙여 축약 표시
+                /// </summary>
+                public const int THRESHOLD = 10000;
+
+                /// <summary>
+                /// 축약에 쓰는 단위. 큰 단위부터 나열
+                /// </summary>
+                public static readonly (int Divisor, string Suffix)[] UNITS =
+                {
+                    (1_000_000_000, "B"),
+                    (1_000_000, "M"),
+                    (1_000, "K")
+                };
+            }
         }
 
         public static class Audio

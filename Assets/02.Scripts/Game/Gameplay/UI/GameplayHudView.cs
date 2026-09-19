@@ -1,3 +1,4 @@
+using CodeJelly.BounceOrBreak.Game.Gameplay.Score;
 using CodeJelly.BounceOrBreak.Game.UI.Widgets;
 using TMPro;
 using UnityEngine;
@@ -35,7 +36,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.UI
         /// </summary>
         public void UpdateCurrentScore(int score)
         {
-            _currentScoreText.text = score.ToString();
+            _currentScoreText.text = ScoreFormatter.Format(score);
         }
 
         /// <summary>
