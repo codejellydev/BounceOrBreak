@@ -2,12 +2,14 @@ using CodeJelly.BounceOrBreak.Core.Localization;
 using CodeJelly.BounceOrBreak.Core.Resource;
 using CodeJelly.BounceOrBreak.Core.Scene;
 using CodeJelly.BounceOrBreak.Core.Settings;
+using CodeJelly.BounceOrBreak.Core.UI;
 using CodeJelly.BounceOrBreak.Game.Bootstrap;
 using CodeJelly.BounceOrBreak.Game.Input;
 using CodeJelly.BounceOrBreak.Game.Settings.Audio;
 using CodeJelly.BounceOrBreak.Game.Settings.Graphics;
 using CodeJelly.BounceOrBreak.Game.Settings.Language;
 using CodeJelly.BounceOrBreak.Game.UI.Navigation;
+using CodeJelly.BounceOrBreak.Game.UI.Overlay;
 using CodeJelly.BounceOrBreak.Game.UI.Panel;
 using UnityEngine;
 using VContainer;
@@ -27,6 +29,12 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
 
         [Header("UI")]
         [SerializeField] private UIPanelConfig _uiPanelConfig;
+
+        [Tooltip("씬 전환과 무관하게 유지되는(앱 수준) 오버레이가 생성될 자리")]
+        [SerializeField] private Transform _overlayRoot;
+
+        [Tooltip("전환 연출 프리팹. ITransitionEffect로 등록됨")]
+        [SerializeField] private ScreenFader _screenFaderPrefab;
         #endregion
 
 
@@ -47,6 +55,10 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
             builder.Register<AudioSettingsService>(Lifetime.Singleton);
             builder.Register<GraphicsSettingsService>(Lifetime.Singleton);
             builder.Register<LanguageSettingsService>(Lifetime.Singleton);
+
+            builder.RegisterComponentInNewPrefab(_screenFaderPrefab, Lifetime.Singleton)
+                   .UnderTransform(_overlayRoot)
+                   .As<ITransitionEffect>();
 
             builder.RegisterInstance(_uiPanelConfig);
             builder.RegisterEntryPoint<UINavigationService>()
