@@ -135,6 +135,8 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
             await _eggSpawner.InitializeAsync(spawnConfig, ct);
             ValidateGoalPortColors();
 
+            SpawnStageTrampolines();
+
             await _scoreService.InitializeAsync();
             progress?.Report(1f);
 
@@ -174,6 +176,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
             // Playing으로 전환되기 전에 리셋해야 리셋 중 발생하는 Arrival 이벤트가 득점으로 처리되지 않음
             _trampolineDrawer.DespawnAll();
             _scoreService.ResetScore();
+            SpawnStageTrampolines();
 
             _phase.Value = GamePhase.Playing;
             _inputManager.SwitchContext(InputContext.Gameplay);
@@ -334,20 +337,26 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         {
             _roundCts = new CancellationTokenSource();
 
+            // StartNewRound가 활성 Egg 회수와 진행 초기화를 수행함
+            _eggSpawner.StartNewRound();
+        }
+
+        /// <summary>
+        /// StageConfig에 정의된 Trampoline을 스폰합니다.
+        /// </summary>
+        private void SpawnStageTrampolines()
+        {
             if (_stageConfig == null)
             {
                 AppLogger.Error("[GameFlowController] StageConfig is not loaded. Skipping stage trampolines.");
-            }
-            else
-            {
-                foreach (TrampolineSpawnData spawnData in _stageConfig.Trampolines)
-                {
-                    _trampolineDrawer.Spawn(spawnData);
-                }
+
+                return;
             }
 
-            // StartNewRound가 활성 Egg 회수와 진행 초기화를 수행함
-            _eggSpawner.StartNewRound();
+            foreach (TrampolineSpawnData spawnData in _stageConfig.Trampolines)
+            {
+                _trampolineDrawer.Spawn(spawnData);
+            }
         }
 
         /// <summary>

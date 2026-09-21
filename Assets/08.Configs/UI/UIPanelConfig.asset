@@ -29,3 +29,11 @@ MonoBehaviour:
       m_SubObjectGUID: 
       m_EditorAssetChanged: 0
     _lifetime: 0
+  - _key: Settings
+    _prefab:
+      m_AssetGUID: 35e48deb76ab26b439e361fca624c690
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 0
+    _lifetime: 0

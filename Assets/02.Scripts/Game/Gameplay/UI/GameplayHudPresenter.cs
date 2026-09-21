@@ -1,3 +1,4 @@
+using CodeJelly.BounceOrBreak.Core.Logging;
 using CodeJelly.BounceOrBreak.Game.Gameplay.Score;
 using R3;
 using System;
@@ -14,15 +15,18 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.UI
         private readonly GameplayHudView _view;
         private readonly GameFlowController _flowController;
         private readonly ScoreService _scoreService;
+        private readonly GameSceneNavigator _navigator;
 
         public GameplayHudPresenter(
             GameplayHudView view,
             GameFlowController flowController,
-            ScoreService scoreService)
+            ScoreService scoreService,
+            GameSceneNavigator navigator)
         {
             _view = view;
             _flowController = flowController;
             _scoreService = scoreService;
+            _navigator = navigator;
         }
         #endregion
 
@@ -65,6 +69,20 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.UI
             _scoreService.CurrentScore
                          .Subscribe(_view.UpdateCurrentScore)
                          .AddTo(_disposables);
+
+            _view.PauseButton
+                 .OnClick
+                 .Subscribe(_ => OnPauseButtonClicked())
+                 .AddTo(_disposables);
+        }
+
+        /// <summary>
+        /// Pause 버튼 클릭 이벤트를 처리합니다.
+        /// </summary>
+        private void OnPauseButtonClicked()
+        {
+            AppLogger.Info("[GameplayHudPresenter] Pause button clicked.");
+            _navigator.RequestPause();
         }
         #endregion
     }

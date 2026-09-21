@@ -101,10 +101,6 @@ MonoBehaviour:
   m_LabelTable:
     m_LabelNames:
     - default
-    - Trampoline
-    - Config
-    - Prefab
-    - Scene
     - Locale
   m_SchemaTemplates: []
   m_GroupTemplateObjects:

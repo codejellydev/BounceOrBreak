@@ -541,50 +541,6 @@ Transform:
   - {fileID: 708319770}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1879410461 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1448069889638043908, guid: 87b062867d154b24f95ca3ea527d07c5, type: 3}
-  m_PrefabInstance: {fileID: 2240064440105953562}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d61f749f40e42244adc25fa6c58a48a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CodeJelly.BounceOrBreak.Game.Settings.Audio.AudioSettingsView
---- !u!114 &1879410462 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8192905783820867319, guid: 87b062867d154b24f95ca3ea527d07c5, type: 3}
-  m_PrefabInstance: {fileID: 2240064440105953562}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc12a1ff6f9ef7143b97e479aabf02df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CodeJelly.BounceOrBreak.Game.Settings.SettingsPanelView
---- !u!114 &1879410463 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7361607616319252871, guid: 87b062867d154b24f95ca3ea527d07c5, type: 3}
-  m_PrefabInstance: {fileID: 2240064440105953562}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d829dc714b70a07468694e1c449431b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CodeJelly.BounceOrBreak.Game.Settings.Language.LanguageSettingsView
---- !u!114 &1879410464 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6430137658868025672, guid: 87b062867d154b24f95ca3ea527d07c5, type: 3}
-  m_PrefabInstance: {fileID: 2240064440105953562}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ccfe67cb728dc2346b2664c95a1a168e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CodeJelly.BounceOrBreak.Game.Settings.Graphics.GraphicsSettingsView
 --- !u!1001 &1350201034028436820
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -832,10 +788,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8645126962555703811, guid: 0fff033b6b92db1499aeb3c02c744ab0, type: 3}
-      propertyPath: _uiRoot
-      value: 
-      objectReference: {fileID: 260946272}
-    - target: {fileID: 8645126962555703811, guid: 0fff033b6b92db1499aeb3c02c744ab0, type: 3}
       propertyPath: _lobbyView
       value: 
       objectReference: {fileID: 574174215}
@@ -843,26 +795,6 @@ PrefabInstance:
       propertyPath: _panelRoot
       value: 
       objectReference: {fileID: 260946272}
-    - target: {fileID: 8645126962555703811, guid: 0fff033b6b92db1499aeb3c02c744ab0, type: 3}
-      propertyPath: _lobbySceneConfig
-      value: 
-      objectReference: {fileID: 11400000, guid: 3481274a660ce9445ba56f0adf80614a, type: 2}
-    - target: {fileID: 8645126962555703811, guid: 0fff033b6b92db1499aeb3c02c744ab0, type: 3}
-      propertyPath: _audioSettingsView
-      value: 
-      objectReference: {fileID: 1879410461}
-    - target: {fileID: 8645126962555703811, guid: 0fff033b6b92db1499aeb3c02c744ab0, type: 3}
-      propertyPath: _settingsPanelView
-      value: 
-      objectReference: {fileID: 1879410462}
-    - target: {fileID: 8645126962555703811, guid: 0fff033b6b92db1499aeb3c02c744ab0, type: 3}
-      propertyPath: _graphicsSettingsView
-      value: 
-      objectReference: {fileID: 1879410464}
-    - target: {fileID: 8645126962555703811, guid: 0fff033b6b92db1499aeb3c02c744ab0, type: 3}
-      propertyPath: _languageSettingsView
-      value: 
-      objectReference: {fileID: 1879410463}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
