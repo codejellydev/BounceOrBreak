@@ -82,7 +82,9 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Navigation
         #region Private Variables
         private readonly BackHandlerStack _backHandlers = new BackHandlerStack();
 
-        // Additive 전환 중엔 새 씬과 이전 씬의 루트가 잠시 공존하므로 목록으로 두고 마지막을 현재로 봄
+        /// <summary>
+        /// Additive 전환 중엔 새 씬과 이전 씬의 루트가 잠시 공존하므로 목록으로 두고 마지막을 현재로 봄
+        /// </summary>
         private readonly List<RootRegistration> _roots = new List<RootRegistration>();
         private readonly HashSet<string> _showingKeys = new HashSet<string>();
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
