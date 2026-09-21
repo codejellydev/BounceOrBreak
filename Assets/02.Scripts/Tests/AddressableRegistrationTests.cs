@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using UnityEditor;
+using UnityEngine;
 using UnityEditor.AddressableAssets;
 using UnityEditor.AddressableAssets.Settings;
 
@@ -19,12 +20,13 @@ namespace CodeJelly.BounceOrBreak.Tests
         private static readonly HashSet<string> PACKAGE_MANAGED_GROUPS = new HashSet<string> { "Localization-Locales" };
 
         /// <summary>
-        /// 검사 대상 최상위 폴더의 이름 규칙. 번호 접두사가 없는 외부 패키지 폴더를 제외한다
+        /// 검사 대상 최상위 폴더의 이름 규칙. 번호 접두사가 없는 외부 패키지 폴더는 제외
         /// </summary>
         private static readonly Regex PROJECT_FOLDER_PATTERN = new Regex(@"^Assets/[0-9]{2}\.");
 
         private const string ASSETS_ROOT = "Assets";
         private const string DEFAULT_ADDRESS_PREFIX = "Assets/";
+        private const string ASSET_GUID_PROPERTY = "m_AssetGUID";
         #endregion
 
 
@@ -52,6 +54,55 @@ namespace CodeJelly.BounceOrBreak.Tests
                         "Reference it with an AssetReference, or remove the entry from Addressables.");
                 }
             }
+        }
+
+        /// <summary>
+        /// AssetReference가 가리키는 대상이 모두 등록돼 있습니다.
+        /// </summary>
+        [Test]
+        public void AssetReferences_PointToRegisteredAssets()
+        {
+            HashSet<string> registeredGuids = new HashSet<string>();
+
+            foreach (string assetPath in CollectEntryAddressByPath().Keys)
+            {
+                registeredGuids.Add(AssetDatabase.AssetPathToGUID(assetPath));
+            }
+
+            int checkedCount = 0;
+
+            foreach (string assetPath in CollectProjectAssetPaths())
+            {
+                foreach (SerializedObject serializedObject in CollectSerializedObjects(assetPath))
+                {
+                    SerializedProperty property = serializedObject.GetIterator();
+
+                    while (property.NextVisible(true) == true)
+                    {
+                        if (property.propertyType != SerializedPropertyType.Generic)
+                        {
+                            continue;
+                        }
+
+                        SerializedProperty guidProperty = property.FindPropertyRelative(ASSET_GUID_PROPERTY);
+
+                        // 비워 두는 것이 정상인 AssetReference가 있는 경우 건너뜀
+                        if (guidProperty == null || string.IsNullOrEmpty(guidProperty.stringValue) == true)
+                        {
+                            continue;
+                        }
+
+                        Assert.IsTrue(registeredGuids.Contains(guidProperty.stringValue),
+                            $"'{assetPath}' references an unregistered asset " +
+                            $"'{AssetDatabase.GUIDToAssetPath(guidProperty.stringValue)}' through an AssetReference. " +
+                            "An AssetReference can only load Addressable assets.");
+                        checkedCount++;
+                    }
+                }
+            }
+
+            // AssetReference를 하나도 못 찾으면 무조건 통과하므로 검사 횟수를 검증
+            Assert.Greater(checkedCount, 0, "No AssetReference found in project assets.");
         }
 
         /// <summary>
@@ -98,6 +149,29 @@ namespace CodeJelly.BounceOrBreak.Tests
             Assert.IsNotEmpty(addressByPath, "No Addressable entry found.");
 
             return addressByPath;
+        }
+
+        /// <summary>
+        /// 에셋 하나에서 직렬화 필드를 들고 있는 대상을 모두 모읍니다.
+        /// </summary>
+        private static IEnumerable<SerializedObject> CollectSerializedObjects(string assetPath)
+        {
+            Object asset = AssetDatabase.LoadAssetAtPath<Object>(assetPath);
+
+            if (asset is GameObject prefab)
+            {
+                foreach (MonoBehaviour behaviour in prefab.GetComponentsInChildren<MonoBehaviour>(true))
+                {
+                    if (behaviour != null)
+                    {
+                        yield return new SerializedObject(behaviour);
+                    }
+                }
+            }
+            else if (asset is ScriptableObject)
+            {
+                yield return new SerializedObject(asset);
+            }
         }
 
         /// <summary>
