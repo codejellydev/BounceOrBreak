@@ -1,3 +1,4 @@
+using CodeJelly.BounceOrBreak.Core.Logging;
 using R3;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -37,6 +38,13 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Widgets
         protected override void Awake()
         {
             base.Awake();
+
+            if (IsValid == false)
+            {
+                AppLogger.Error($"[PushButton] Face is not assigned on {name}.");
+
+                return;
+            }
 
             _restPosition = _face.anchoredPosition;
 
