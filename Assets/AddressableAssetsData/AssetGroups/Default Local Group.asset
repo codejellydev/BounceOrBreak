@@ -15,62 +15,30 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: ff0b6b3515b0c0d49b9d79b23bc248d5
   m_SerializeEntries:
-  - m_GUID: 0d851d314e47b6a4cb01102e10483495
-    m_Address: TrampolineDrawer
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Trampoline
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 3481274a660ce9445ba56f0adf80614a
-    m_Address: LobbySceneConfig
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Config
-    - Scene
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 34922915a13337d45be2b5454d7aece1
     m_Address: DefaultStageConfig
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - Config
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 35e48deb76ab26b439e361fca624c690
+    m_Address: SettingsPanelView
+    m_ReadOnly: 0
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 3cdbe6249060c4641ab6b6da958d3818
     m_Address: EggRegistry
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - Config
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 46789d0d10d1f30429dcb4f3651c695f
     m_Address: FreeformTrampolinePrefab
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - Prefab
-    - Trampoline
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 488e4b14077dcbd46ba3b739cee7e6d9
-    m_Address: EntryScene
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Scene
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 4f92fa6a15dd0444db485eb217f5a94b
-    m_Address: StaticTrampolineConfig
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Config
-    - Trampoline
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 5eb32e70255bc8342837b7ca739d0b1e
-    m_Address: WallConfig
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Config
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 65eaadb4c1ce5784abd5557dc93140f5
     m_Address: EggPrefab
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - Prefab
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 75f32aef8b871ff4ba524d87dd54be2d
     m_Address: QuitConfirmView
@@ -80,53 +48,42 @@ MonoBehaviour:
   - m_GUID: 75fef6d9261f1ba43a00751ab1258ec3
     m_Address: DefaultInputConfig
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - Config
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 76615ae3e006eb04cb4bd55d35098ed1
     m_Address: StraightTrampolinePrefab
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - Prefab
-    - Trampoline
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 77e2c89fd4edf984f9b61520e8a6f895
     m_Address: GameScene
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - Scene
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 81364c656483f14429727f6df7cfaac9
-    m_Address: EntrySceneConfig
+  - m_GUID: 7e4df56fb242bf6428a551764bc67753
+    m_Address: LoadingScene
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - Config
-    - Scene
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a831584289b0eb744a9e89b58014f323
     m_Address: DefaultTrampolineConfig
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - Config
-    - Trampoline
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d55a8bff700408c42a7e1e794dd461d1
-    m_Address: Assets/03.Prefabs/UI/Gameplay/Panels/PausePanelView.prefab
+    m_Address: PausePanelView
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d6d4e787ed25bde48b90bff4f28dcd9c
     m_Address: LobbyScene
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - Scene
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e894c8b4dfe5bfa43a7febe516ccca06
     m_Address: TrampolineRegistry
     m_ReadOnly: 0
-    m_SerializedLabels:
-    - Config
-    - Trampoline
+    m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 138794e5103dd254e84c25120f4458e0, type: 2}

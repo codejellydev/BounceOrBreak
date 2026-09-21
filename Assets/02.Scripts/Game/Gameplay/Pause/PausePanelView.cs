@@ -1,3 +1,4 @@
+using CodeJelly.BounceOrBreak.Game.Gameplay.Score;
 using CodeJelly.BounceOrBreak.Game.UI.Widgets;
 using TMPro;
 using UnityEngine;
@@ -49,7 +50,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Pause
         /// </summary>
         public void SetCurrentScore(int score)
         {
-            _currentScoreText.text = score.ToString();
+            _currentScoreText.text = ScoreFormatter.Format(score);
         }
 
         /// <summary>
@@ -57,7 +58,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Pause
         /// </summary>
         public void SetBestScore(int score)
         {
-            _bestScoreText.text = score.ToString();
+            _bestScoreText.text = ScoreFormatter.Format(score);
         }
         #endregion
     }

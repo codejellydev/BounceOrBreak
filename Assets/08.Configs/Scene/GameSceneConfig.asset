@@ -19,10 +19,10 @@ MonoBehaviour:
       m_SubObjectType: 
       m_SubObjectGUID: 
       m_EditorAssetChanged: 0
-  _useLoadingScene: 0
+  _useLoadingScene: 1
   _loadingScene:
     _sceneAsset:
-      m_AssetGUID: 
+      m_AssetGUID: 7e4df56fb242bf6428a551764bc67753
       m_SubObjectName: 
       m_SubObjectType: 
       m_SubObjectGUID: 

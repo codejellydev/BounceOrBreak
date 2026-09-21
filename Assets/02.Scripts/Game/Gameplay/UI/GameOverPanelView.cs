@@ -1,3 +1,4 @@
+using CodeJelly.BounceOrBreak.Game.Gameplay.Score;
 using CodeJelly.BounceOrBreak.Game.UI.Widgets;
 using TMPro;
 using UnityEngine;
@@ -46,8 +47,8 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.UI
         /// </summary>
         public void ShowResult(RoundResult result)
         {
-            _currentScoreText.text = result.Score.ToString();
-            _bestScoreText.text = result.BestScore.ToString();
+            _currentScoreText.text = ScoreFormatter.Format(result.Score);
+            _bestScoreText.text = ScoreFormatter.Format(result.BestScore);
             _newBestBadge.SetActive(result.IsNewBest);
 
             // 낙하한 것이 Egg가 아니면 BrokenEgg가 없으므로 아이콘을 숨김

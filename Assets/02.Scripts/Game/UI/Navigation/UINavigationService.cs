@@ -82,8 +82,11 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Navigation
         #region Private Variables
         private readonly BackHandlerStack _backHandlers = new BackHandlerStack();
 
-        // Additive 전환 중엔 새 씬과 이전 씬의 루트가 잠시 공존하므로 목록으로 두고 마지막을 현재로 봄
+        /// <summary>
+        /// Additive 전환 중엔 새 씬과 이전 씬의 루트가 잠시 공존하므로 목록으로 두고 마지막을 현재로 봄
+        /// </summary>
         private readonly List<RootRegistration> _roots = new List<RootRegistration>();
+        private readonly HashSet<string> _showingKeys = new HashSet<string>();
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
         #endregion
 
@@ -142,38 +145,21 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Navigation
             UIPanelConfig.Entry entry = GetEntry(key);
             IUIPanel<TResult> panel = host.GetPanel<TResult>(key);
 
-            using (CancellationTokenSource showCts = CancellationTokenSource.CreateLinkedTokenSource(ct, host.LifetimeToken))
+            // 중복 열기는 정상 닫힘과 같으므로 CancelResult로 응답
+            if (_showingKeys.Add(key) == false)
             {
-                GameObject instance;
+                AppLogger.Debug($"[UINavigationService] '{key}' is already showing.");
 
-                // 로드 중의 뒤로가기는 열기를 취소
-                using (_backHandlers.Push(showCts.Cancel))
-                {
-                    try
-                    {
-                        instance = await host.AcquireAsync(entry, showCts.Token);
-                    }
-                    catch (OperationCanceledException) when (ct.IsCancellationRequested == false && host.LifetimeToken.IsCancellationRequested == false)
-                    {
-                        // 뒤로가기 취소는 정상 닫힘이므로 CancelResult로 응답
-                        return panel.CancelResult;
-                    }
-                }
+                return panel.CancelResult;
+            }
 
-                instance.SetActive(true);
-
-                // 열린 뒤의 뒤로가기는 패널의 취소
-                using (_backHandlers.Push(panel.Cancel))
-                {
-                    try
-                    {
-                        return await panel.RunAsync(instance, showCts.Token);
-                    }
-                    finally
-                    {
-                        host.Release(entry, instance);
-                    }
-                }
+            try
+            {
+                return await OpenAsync(host, entry, panel, ct);
+            }
+            finally
+            {
+                _showingKeys.Remove(key);
             }
         }
 
@@ -212,6 +198,46 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Navigation
             }
 
             return entry;
+        }
+
+        /// <summary>
+        /// 패널을 열고 결과를 기다립니다.
+        /// </summary>
+        private async UniTask<TResult> OpenAsync<TResult>(UIPanelHost host, UIPanelConfig.Entry entry, IUIPanel<TResult> panel, CancellationToken ct)
+        {
+            using (CancellationTokenSource showCts = CancellationTokenSource.CreateLinkedTokenSource(ct, host.LifetimeToken))
+            {
+                GameObject instance;
+
+                // 로드 중의 뒤로가기는 열기를 취소
+                using (_backHandlers.Push(showCts.Cancel))
+                {
+                    try
+                    {
+                        instance = await host.AcquireAsync(entry, showCts.Token);
+                    }
+                    catch (OperationCanceledException) when (ct.IsCancellationRequested == false && host.LifetimeToken.IsCancellationRequested == false)
+                    {
+                        // 뒤로가기 취소는 정상 닫힘이므로 CancelResult로 응답
+                        return panel.CancelResult;
+                    }
+                }
+
+                instance.SetActive(true);
+
+                // 열린 뒤의 뒤로가기는 패널의 취소
+                using (_backHandlers.Push(panel.Cancel))
+                {
+                    try
+                    {
+                        return await panel.RunAsync(instance, showCts.Token);
+                    }
+                    finally
+                    {
+                        host.Release(entry, instance);
+                    }
+                }
+            }
         }
 
         /// <summary>
