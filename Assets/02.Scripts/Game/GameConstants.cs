@@ -348,6 +348,7 @@ namespace CodeJelly.BounceOrBreak.Game
         {
             public const string BACKGROUND = "Background";
             public const string TRAMPOLINE = "Trampoline";
+            public const string DRAWING = "Drawing";
             public const string EGG = "Egg";
             public const string GOAL_PORT = "GoalPort";
             public const string FOREGROUND = "Foreground";
@@ -358,7 +359,7 @@ namespace CodeJelly.BounceOrBreak.Game
             /// </summary>
             public static readonly string[] ORDER =
             {
-                BACKGROUND, TRAMPOLINE, EGG, GOAL_PORT, FOREGROUND
+                BACKGROUND, TRAMPOLINE, DRAWING, EGG, GOAL_PORT, FOREGROUND
             };
         }
     }

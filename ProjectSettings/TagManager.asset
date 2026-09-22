@@ -47,6 +47,9 @@ TagManager:
   - name: Trampoline
     uniqueID: 625975675
     locked: 0
+  - name: Drawing
+    uniqueID: 4225804449
+    locked: 0
   - name: Egg
     uniqueID: 559062909
     locked: 0
