@@ -55,6 +55,24 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           unityVersion: 6000.3.9f1
+          testMode: EditMode
+
+      - name: Guard against an empty test run
+        run: |
+          results="${{ steps.testRunner.outputs.artifactsPath }}/editmode-results.xml"
+
+          if [ ! -f "$results" ]; then
+            echo "::error::Test results not found at $results"
+            exit 1
+          fi
+
+          count=$(python3 -c "import sys, xml.etree.ElementTree as ET; print(ET.parse(sys.argv[1]).getroot().get('testcasecount', '0'))" "$results")
+          echo "EditMode test cases: $count" >> "$GITHUB_STEP_SUMMARY"
+
+          if [ "$count" -eq 0 ]; then
+            echo "::error::No EditMode tests were executed."
+            exit 1
+          fi
 
       - name: Upload test results
         uses: actions/upload-artifact@v7
@@ -63,3 +81,12 @@ jobs:
           name: Test-Results
           path: ${{ steps.testRunner.outputs.artifactsPath }}
           retention-days: 7
+
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: Coverage-Report
+          path: ${{ steps.testRunner.outputs.coveragePath }}
+          retention-days: 7
+          if-no-files-found: warn
