@@ -56,6 +56,7 @@ jobs:
         with:
           unityVersion: 6000.3.9f1
           testMode: EditMode
+          coverageOptions: 'generateAdditionalMetrics;generateHtmlReport;assemblyFilters:+CodeJelly.BounceOrBreak.Core,+CodeJelly.BounceOrBreak.Game,+CodeJelly.BounceOrBreak.Input'
 
       - name: Guard against an empty test run
         run: |
