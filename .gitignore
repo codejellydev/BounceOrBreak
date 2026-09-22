@@ -114,3 +114,6 @@ InitTestScene*.unity*
 # Android signing keys
 *.keystore
 *.jks
+
+# Code Coverage (Results/Report History Location)
+/[Cc]ode[Cc]overage/
