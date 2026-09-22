@@ -1,4 +1,5 @@
 using CodeJelly.BounceOrBreak.Core.Logging;
+using CodeJelly.BounceOrBreak.Core.UI;
 using Cysharp.Threading.Tasks;
 using R3;
 using System;
@@ -29,10 +30,7 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
         /// </summary>
         private readonly struct SceneComponents
         {
-            public ISceneInitializer Initializer { get; }
-            public ISceneContext Context { get; }
-            public ISceneActivatable Activatable { get; }
-
+            #region Constructors
             public SceneComponents(
                 ISceneInitializer initializer,
                 ISceneContext context,
@@ -42,16 +40,26 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
                 Context = context;
                 Activatable = activatable;
             }
+            #endregion
+
+
+            #region Properties
+            public ISceneInitializer Initializer { get; }
+            public ISceneContext Context { get; }
+            public ISceneActivatable Activatable { get; }
+            #endregion
         }
         #endregion
 
 
         #region Injection
         private readonly LifetimeScope _parentScope;
+        private readonly ITransitionEffect _transitionEffect;
 
-        public SceneLoader(LifetimeScope parentScope)
+        public SceneLoader(LifetimeScope parentScope, ITransitionEffect transitionEffect)
         {
             _parentScope = parentScope;
+            _transitionEffect = transitionEffect;
             _transitionProgress = new ReactiveProperty<float>(0f);
 
             IsTransitioning = false;
@@ -75,6 +83,11 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
 
 
         #region Private Variables
+        /// <summary>
+        /// 로딩 화면의 최소 표시 시간 (초)
+        /// </summary>
+        private const float MIN_LOADING_SCENE_SECONDS = 0.3f;
+
         private readonly ReactiveProperty<float> _transitionProgress;
 
         private SceneInstance _previousSceneInstance;
@@ -175,13 +188,14 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
         {
             SceneInstance targetSceneInstance = default;
             bool transitionSucceeded = false;
+            float loadingSceneShownTime = 0f;
 
             try
             {
-                // 1. LoadingScene 로드 (필요 시)
+                // 1. LoadingScene 표시 (필요 시)
                 if (config.UseLoadingScene == true)
                 {
-                    _loadingSceneInstance = await LoadLoadingSceneAsync(config.LoadingSceneKey, ct);
+                    loadingSceneShownTime = await ShowLoadingSceneAsync(config.LoadingSceneKey, ct);
                 }
 
                 // 2. 타겟 씬 로드 (진행률: 0~50%)
@@ -209,15 +223,19 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
                 _previousSceneInstance = targetSceneInstance;
                 SceneManager.SetActiveScene(targetSceneInstance.Scene);
 
-                // 7. LoadingScene 언로드
-                await UnloadLoadingSceneAsync(config.UseLoadingScene, ct);
+                // 이전 씬을 지운 뒤로는 되돌릴 수 없으므로 이후 단계가 실패해도 타겟 씬은 유지
+                transitionSucceeded = true;
+
+                // 7. 전환 마무리. LoadingScene 언로드 및 화면 복원
+                if (config.UseLoadingScene == true)
+                {
+                    await HideLoadingSceneAsync(loadingSceneShownTime, ct);
+                }
 
                 AppLogger.Info($"[SceneLoader] Transition to {config.TargetSceneKey} completed successfully.");
 
                 // 8. 활성화 통지
                 NotifyActivated(components.Activatable, config.TargetSceneKey);
-
-                transitionSucceeded = true;
             }
             finally
             {
@@ -390,16 +408,51 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
 
         /// <summary>
         /// LoadingScene을 언로드합니다.
-        /// 언로드 직전 한 프레임 양보하여 타겟 씬이 foreground에 안정적으로 올라오도록 합니다.
+        /// 한 프레임 양보해 타겟 씬이 먼저 그려지게 합니다.
         /// </summary>
-        private async UniTask UnloadLoadingSceneAsync(bool useLoadingScene, CancellationToken ct)
+        private async UniTask UnloadLoadingSceneAsync(CancellationToken ct)
         {
             await UniTask.Yield(PlayerLoopTiming.Update, cancellationToken: ct);
 
-            if (useLoadingScene == true && _loadingSceneInstance.Scene.IsValid() == true)
+            if (_loadingSceneInstance.Scene.IsValid() == true)
             {
                 await Addressables.UnloadSceneAsync(_loadingSceneInstance).ToUniTask();
             }
+        }
+
+        /// <summary>
+        /// 화면을 덮고 LoadingScene을 띄운 뒤 화면을 걷어냅니다.
+        /// </summary>
+        /// <returns>LoadingScene이 보이기 시작한 시각</returns>
+        private async UniTask<float> ShowLoadingSceneAsync(string loadingSceneKey, CancellationToken ct)
+        {
+            await _transitionEffect.CoverAsync(ct);
+
+            _loadingSceneInstance = await LoadLoadingSceneAsync(loadingSceneKey, ct);
+
+            await _transitionEffect.RevealAsync(ct);
+
+            return Time.realtimeSinceStartup;
+        }
+
+        /// <summary>
+        /// 최소 표시 시간을 채우고 LoadingScene을 걷어냅니다.
+        /// </summary>
+        private async UniTask HideLoadingSceneAsync(float shownTime, CancellationToken ct)
+        {
+            float elapsed = Time.realtimeSinceStartup - shownTime;
+
+            if (elapsed < MIN_LOADING_SCENE_SECONDS)
+            {
+                await UniTask.Delay(
+                    TimeSpan.FromSeconds(MIN_LOADING_SCENE_SECONDS - elapsed),
+                    DelayType.UnscaledDeltaTime,
+                    cancellationToken: ct);
+            }
+
+            await _transitionEffect.CoverAsync(ct);
+            await UnloadLoadingSceneAsync(ct);
+            await _transitionEffect.RevealAsync(ct);
         }
 
         /// <summary>
@@ -441,6 +494,9 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
                 {
                     await Addressables.UnloadSceneAsync(targetSceneInstance).ToUniTask();
                 }
+
+                // 전환이 실패해도 화면이 덮인 채로 남지 않아야 함
+                await _transitionEffect.RevealAsync();
             }
             catch (Exception ex)
             {

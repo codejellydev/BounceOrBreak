@@ -13,13 +13,16 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.UI
         #region Injection
         private readonly GameOverPanelView _view;
         private readonly GameFlowController _flowController;
+        private readonly GameSceneNavigator _navigator;
 
         public GameOverPanelPresenter(
             GameOverPanelView view,
-            GameFlowController flowController)
+            GameFlowController flowController,
+            GameSceneNavigator navigator)
         {
             _view = view;
             _flowController = flowController;
+            _navigator = navigator;
         }
         #endregion
 
@@ -66,6 +69,11 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.UI
                  .OnClick
                  .Subscribe(_ => OnRestartButtonClicked())
                  .AddTo(_disposables);
+
+            _view.HomeButton
+                 .OnClick
+                 .Subscribe(_ => OnHomeButtonClicked())
+                 .AddTo(_disposables);
         }
 
         /// <summary>
@@ -75,6 +83,15 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.UI
         {
             AppLogger.Info("[GameOverPanelPresenter] Restart button clicked.");
             _flowController.RestartRound();
+        }
+
+        /// <summary>
+        /// Home 버튼 클릭 이벤트를 처리합니다.
+        /// </summary>
+        private void OnHomeButtonClicked()
+        {
+            AppLogger.Info("[GameOverPanelPresenter] Home button clicked.");
+            _navigator.ReturnToLobby();
         }
         #endregion
     }

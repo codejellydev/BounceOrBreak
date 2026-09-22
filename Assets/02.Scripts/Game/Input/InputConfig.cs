@@ -18,12 +18,14 @@ namespace CodeJelly.BounceOrBreak.Game.Input
         [System.Serializable]
         public class InputProfile
         {
+            #region Public Variables
             [Header("Input Context")]
             public InputContext Context;
 
             [Header("Input Maps")]
             [Tooltip("활성화할 Input Action Map들의 조합")]
             public InputMapType ActiveMapFlags;
+            #endregion
         }
         #endregion
 

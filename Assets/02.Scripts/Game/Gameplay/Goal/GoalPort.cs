@@ -1,4 +1,5 @@
 using CodeJelly.BounceOrBreak.Core.Logging;
+using CodeJelly.BounceOrBreak.Core.Pause;
 using CodeJelly.BounceOrBreak.Game.Gameplay.Egg;
 using Cysharp.Threading.Tasks;
 using R3;
@@ -12,7 +13,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Goal
     /// 도달 사실과 EggColor 일치 여부를 발행하며, 득점 여부 판단은 구독 클래스가 처리합니다.
     /// </summary>
     [RequireComponent(typeof(Collider2D))]
-    public class GoalPort : MonoBehaviour
+    public class GoalPort : MonoBehaviour, IPauseable
     {
         #region Properties
         public EggColor TargetColor => _targetColor;
@@ -45,6 +46,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Goal
         [SerializeField] private GoalPortConfig _config;
 
         private readonly Subject<GoalArrival> _onEggArrived = new Subject<GoalArrival>();
+        private readonly PausableStopwatch _stopwatch = new PausableStopwatch();
 
         private Collider2D _collider;
         #endregion
@@ -106,9 +108,25 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Goal
         {
             egg.Hold(transform.position);
 
-            await UniTask.WaitForSeconds(GameConstants.Goal.REJECT_HOLD_DURATION, cancellationToken: ct);
+            await _stopwatch.WaitForSecondsAsync(GameConstants.Goal.REJECT_HOLD_DURATION, ct);
 
             egg.Eject(GetRejectDirection(), GameConstants.Goal.REJECT_FORCE);
+        }
+
+        /// <summary>
+        /// IPauseable.Pause Implementation
+        /// </summary>
+        public void Pause()
+        {
+            _stopwatch.Pause();
+        }
+
+        /// <summary>
+        /// IPauseable.Resume Implementation
+        /// </summary>
+        public void Resume()
+        {
+            _stopwatch.Resume();
         }
         #endregion
 

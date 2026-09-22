@@ -48,7 +48,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Score
             {
                 _bestScore.Value = result.Value.BestScore;
             }
-            // 저장된 기록이 없는 최초 실행은 정상 흐름이므로 로그를 남기지 않음
+            // NotFound는 최초 실행의 정상 흐름이므로 그 외 실패만 로그
             else if (result.Error != SettingsResultError.NotFound)
             {
                 AppLogger.Warning($"[ScoreService] Failed to load score record: {result.Error}. Using defaults.");

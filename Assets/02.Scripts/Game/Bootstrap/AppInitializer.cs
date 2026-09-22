@@ -2,7 +2,9 @@ using CodeJelly.BounceOrBreak.Core.Localization;
 using CodeJelly.BounceOrBreak.Core.Logging;
 using CodeJelly.BounceOrBreak.Core.Resource;
 using CodeJelly.BounceOrBreak.Game.Input;
+using CodeJelly.BounceOrBreak.Game.Settings.Audio;
 using CodeJelly.BounceOrBreak.Game.Settings.Graphics;
+using CodeJelly.BounceOrBreak.Game.Settings.Language;
 using Cysharp.Threading.Tasks;
 using System.Threading;
 
@@ -19,17 +21,26 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
         private readonly InputManager _inputManager;
         private readonly LocalizationManager _localizationManager;
         private readonly IGraphicsSettingsApplier _graphicsApplier;
+        private readonly AudioSettingsService _audioSettingsService;
+        private readonly GraphicsSettingsService _graphicsSettingsService;
+        private readonly LanguageSettingsService _languageSettingsService;
 
         public AppInitializer(
             ResourceManager resourceManager,
             InputManager inputManager,
             LocalizationManager localizationManager,
-            IGraphicsSettingsApplier graphicsApplier)
+            IGraphicsSettingsApplier graphicsApplier,
+            AudioSettingsService audioSettingsService,
+            GraphicsSettingsService graphicsSettingsService,
+            LanguageSettingsService languageSettingsService)
         {
             _resourceManager = resourceManager;
             _inputManager = inputManager;
             _localizationManager = localizationManager;
             _graphicsApplier = graphicsApplier;
+            _audioSettingsService = audioSettingsService;
+            _graphicsSettingsService = graphicsSettingsService;
+            _languageSettingsService = languageSettingsService;
         }
         #endregion
 
@@ -78,6 +89,11 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
 
                 return false;
             }
+
+            // 저장된 설정 적용. 언어 적용이 Localization을 쓰므로 그 다음에 수행
+            await _audioSettingsService.LoadAsync();
+            await _graphicsSettingsService.LoadAsync();
+            await _languageSettingsService.LoadAsync();
 
             // 실패 시에는 플래그를 세우지 않으므로 다음 호출에서 재시도됨
             _isInitialized = true;
