@@ -99,21 +99,24 @@ InitTestScene*.unity*
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
 
 
-## Custom ignore
+# ---- Custom ignore ----
 
-# Paid Assets (Asset Store)
+## Paid Assets (Asset Store)
 /[Aa]ssets/Synty/
 /[Aa]ssets/Plugins/
 /[Aa]ssets/Feel
 /[Aa]ssets/GUIPackCartoon
 
-# Unity Built-in
+## Unity Built-in
 /[Aa]ssets/LevelPlay/
 /[Aa]ssets/MobileDependencyResolver/
 
-# Android signing keys
+## Android signing keys
 *.keystore
 *.jks
 
-# Code Coverage (Results/Report History Location)
+## Code Coverage
+### Local results and report history
 /[Cc]ode[Cc]overage/
+### Editor settings. CI reads Tools/CoverageFilters.json
+/ProjectSettings/Packages/com.unity.testtools.codecoverage/Settings.json
