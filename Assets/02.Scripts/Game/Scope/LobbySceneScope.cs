@@ -5,6 +5,8 @@ using CodeJelly.BounceOrBreak.Game.Settings;
 using CodeJelly.BounceOrBreak.Game.Settings.Audio;
 using CodeJelly.BounceOrBreak.Game.Settings.Graphics;
 using CodeJelly.BounceOrBreak.Game.Settings.Language;
+using CodeJelly.BounceOrBreak.Game.UI.Navigation;
+using CodeJelly.BounceOrBreak.Game.UI.Panel;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -18,17 +20,11 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
     {
         #region Private Variables
         [Header("Lobby")]
-        /// <summary>
-        /// LobbyScene에서 사용하는 Transition 설정.
-        /// </summary>
         [SerializeField] private SceneTransitionConfig _lobbySceneConfig;
         [SerializeField] private LobbyView _lobbyView;
 
-        [Header("Settings")]
-        [SerializeField] private SettingsPanelView _settingsPanelView;
-        [SerializeField] private AudioSettingsView _audioSettingsView;
-        [SerializeField] private GraphicsSettingsView _graphicsSettingsView;
-        [SerializeField] private LanguageSettingsView _languageSettingsView;
+        [Header("Navigation")]
+        [SerializeField] private UIPanelRoot _panelRoot;
         #endregion
 
 
@@ -38,27 +34,21 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
             // Lobby
             builder.RegisterInstance(_lobbySceneConfig);
             builder.RegisterComponent(_lobbyView);
-            builder.RegisterEntryPoint<LobbyPresenter>();
+            builder.RegisterEntryPoint<LobbyPresenter>()
+                   .As<ISceneActivatable>();
+
+            // Navigation
+            builder.RegisterComponent(_panelRoot);
+            builder.RegisterEntryPoint<UIPanelRootRegistrar>();
+            builder.Register<QuitConfirmPresenter>(Lifetime.Scoped)
+                   .As<IUIPanel>();
+            builder.Register<SettingsPanelPresenter>(Lifetime.Scoped)
+                   .As<IUIPanel>();
 
             // Settings Panel
-            builder.RegisterComponent(_settingsPanelView);
-            builder.RegisterEntryPoint<SettingsPanelPresenter>()
-                   .AsSelf(); // TODO: ISettingsPanelPresenter 인터페이스로 추후 변경 예정 (구체 타입 노출 최소화)
-
-            // Audio Settings
-            builder.RegisterComponent(_audioSettingsView);
-            builder.RegisterEntryPoint<AudioSettingsPresenter>()
-                   .As<ISettingsCategoryPresenter>();
-
-            // Graphics Settings
-            builder.RegisterComponent(_graphicsSettingsView);
-            builder.RegisterEntryPoint<GraphicsSettingsPresenter>()
-                   .As<ISettingsCategoryPresenter>();
-
-            // Language Settings
-            builder.RegisterComponent(_languageSettingsView);
-            builder.RegisterEntryPoint<LanguageSettingsPresenter>()
-                   .As<ISettingsCategoryPresenter>();
+            builder.Register<AudioSettingsPresenter>(Lifetime.Scoped);
+            builder.Register<GraphicsSettingsPresenter>(Lifetime.Scoped);
+            builder.Register<LanguageSettingsPresenter>(Lifetime.Scoped);
 
 #if UNITY_EDITOR
             // 씬 단독 실행 시의 초기화 대행

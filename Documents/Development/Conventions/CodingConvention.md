@@ -285,7 +285,7 @@ public async UniTaskVoid StartGameSequence()
 ```csharp
 /// <summary>
 /// 플레이어의 이동을 담당하는 컨트롤러 클래스.
-/// 입력에 따른 이동, 점프, 회전 등의 기능을 제공한다.
+/// 입력에 따른 이동, 점프, 회전 등의 기능을 제공합니다.
 /// </summary>
 public class PlayerController : MonoBehaviour
 {
@@ -299,7 +299,7 @@ public class PlayerController : MonoBehaviour
 ```csharp
 /// <summary>
 /// 상호작용 가능한 객체들에 대한 인터페이스.
-/// 플레이어와의 접촉 및 상호작용 로직을 정의한다.
+/// 플레이어와의 접촉 및 상호작용 로직을 정의합니다.
 /// </summary>
 public interface IInteractable
 {

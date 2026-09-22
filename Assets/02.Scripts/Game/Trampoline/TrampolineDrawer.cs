@@ -1,4 +1,5 @@
 using CodeJelly.BounceOrBreak.Core.Logging;
+using CodeJelly.BounceOrBreak.Core.Pause;
 using CodeJelly.BounceOrBreak.Core.Pooling;
 using CodeJelly.BounceOrBreak.Core.Resource;
 using CodeJelly.BounceOrBreak.Game.Input;
@@ -16,7 +17,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
     /// <summary>
     /// Player Input을 받아 Trampoline을 그리고 생성하는 클래스.
     /// </summary>
-    public class TrampolineDrawer : MonoBehaviour
+    public class TrampolineDrawer : MonoBehaviour, IPauseable
     {
         #region Injection
         private ResourceManager _resourceManager;
@@ -201,6 +202,39 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             AppLogger.Info($"[TrampolineDrawer] Trampoline type changed: {_activeType} -> {type}.");
 
             _activeType = type;
+        }
+
+        /// <summary>
+        /// 진행 중인 드로잉을 취소합니다.
+        /// </summary>
+        public void CancelDrawing()
+        {
+            _isDrawing = false;
+            ClearDrawing();
+        }
+
+        /// <summary>
+        /// IPauseable.Pause Implementation
+        /// </summary>
+        public void Pause()
+        {
+            CancelDrawing();
+
+            foreach (ITrampoline trampoline in _activeTrampolines)
+            {
+                trampoline.Pause();
+            }
+        }
+
+        /// <summary>
+        /// IPauseable.Resume Implementation
+        /// </summary>
+        public void Resume()
+        {
+            foreach (ITrampoline trampoline in _activeTrampolines)
+            {
+                trampoline.Resume();
+            }
         }
         #endregion
 

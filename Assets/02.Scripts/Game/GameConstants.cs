@@ -16,19 +16,17 @@ namespace CodeJelly.BounceOrBreak.Game
             }
         }
 
-        public static class Scene
+        public static class UI
         {
             /// <summary>
-            /// 씬 관련 Addressables 키
+            /// UIPanelConfig에 선언된 패널 키
             /// </summary>
             public static class Keys
             {
-                public const string ENTRY_SCENE = "EntryScene";
-                public const string LOADING_SCENE = "LoadingScene";
-                public const string LOBBY_SCENE = "LobbyScene";
-                public const string GAME_SCENE = "GameScene";
+                public const string QUIT_CONFIRM = "QuitConfirm";
+                public const string PAUSE = "Pause";
+                public const string SETTINGS = "Settings";
             }
-
         }
 
         public static class Stage
@@ -237,6 +235,24 @@ namespace CodeJelly.BounceOrBreak.Game
             /// EggColor가 일치하는 Egg가 도달했을 때 얻는 점수
             /// </summary>
             public const int MATCHED = 1;
+
+            public static class Abbreviation
+            {
+                /// <summary>
+                /// 이 점수부터 단위를 붙여 축약 표시
+                /// </summary>
+                public const int THRESHOLD = 10000;
+
+                /// <summary>
+                /// 축약에 쓰는 단위. 큰 단위부터 나열
+                /// </summary>
+                public static readonly (int Divisor, string Suffix)[] UNITS =
+                {
+                    (1_000_000_000, "B"),
+                    (1_000_000, "M"),
+                    (1_000, "K")
+                };
+            }
         }
 
         public static class Audio
@@ -332,6 +348,7 @@ namespace CodeJelly.BounceOrBreak.Game
         {
             public const string BACKGROUND = "Background";
             public const string TRAMPOLINE = "Trampoline";
+            public const string DRAWING = "Drawing";
             public const string EGG = "Egg";
             public const string GOAL_PORT = "GoalPort";
             public const string FOREGROUND = "Foreground";
@@ -342,7 +359,7 @@ namespace CodeJelly.BounceOrBreak.Game
             /// </summary>
             public static readonly string[] ORDER =
             {
-                BACKGROUND, TRAMPOLINE, EGG, GOAL_PORT, FOREGROUND
+                BACKGROUND, TRAMPOLINE, DRAWING, EGG, GOAL_PORT, FOREGROUND
             };
         }
     }

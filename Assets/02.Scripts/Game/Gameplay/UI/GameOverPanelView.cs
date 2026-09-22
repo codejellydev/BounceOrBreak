@@ -1,3 +1,4 @@
+using CodeJelly.BounceOrBreak.Game.Gameplay.Score;
 using CodeJelly.BounceOrBreak.Game.UI.Widgets;
 using TMPro;
 using UnityEngine;
@@ -13,6 +14,17 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.UI
     {
         #region Properties
         public PushButton RestartButton => _restartButton;
+        public PushButton HomeButton => _homeButton;
+
+        /// <summary>
+        /// View가 유효한지 확인합니다.
+        /// </summary>
+        public bool IsValid => _restartButton != null
+                            && _homeButton != null
+                            && _currentScoreText != null
+                            && _bestScoreText != null
+                            && _newBestBadge != null
+                            && _brokenEggIcon != null;
         #endregion
 
 
@@ -25,6 +37,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.UI
 
         [Header("Buttons")]
         [SerializeField] private PushButton _restartButton;
+        [SerializeField] private PushButton _homeButton;
         #endregion
 
 
@@ -34,8 +47,8 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.UI
         /// </summary>
         public void ShowResult(RoundResult result)
         {
-            _currentScoreText.text = result.Score.ToString();
-            _bestScoreText.text = result.BestScore.ToString();
+            _currentScoreText.text = ScoreFormatter.Format(result.Score);
+            _bestScoreText.text = ScoreFormatter.Format(result.BestScore);
             _newBestBadge.SetActive(result.IsNewBest);
 
             // 낙하한 것이 Egg가 아니면 BrokenEgg가 없으므로 아이콘을 숨김

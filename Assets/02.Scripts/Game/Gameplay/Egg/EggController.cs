@@ -15,6 +15,11 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         /// IEgg.Data Implementation
         /// </summary>
         public EggData Data { get; private set; }
+
+        /// <summary>
+        /// EggController가 유효한지 확인합니다.
+        /// </summary>
+        public bool IsValid => _renderer != null;
         #endregion
 
 
@@ -84,6 +89,22 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         }
 
         /// <summary>
+        /// IPauseable.Pause Implementation
+        /// </summary>
+        public void Pause()
+        {
+            _character.Pause();
+        }
+
+        /// <summary>
+        /// IPauseable.Resume Implementation
+        /// </summary>
+        public void Resume()
+        {
+            _character.Resume();
+        }
+
+        /// <summary>
         /// IPoolable.Get Implementation
         /// </summary>
         public void Get()
@@ -130,20 +151,6 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         private void InitializeComponents()
         {
             _character ??= GetComponent<ICharacter>();
-            if (_character == null)
-            {
-                AppLogger.Error("[EggController] ICharacter component is missing.");
-            }
-
-            if (_renderer == null)
-            {
-                _renderer = GetComponentInChildren<EggRenderer>();
-
-                if (_renderer == null)
-                {
-                    AppLogger.Error("[EggController] EggRenderer component is missing.");
-                }
-            }
         }
         #endregion
     }

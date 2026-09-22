@@ -3,6 +3,7 @@ using CodeJelly.BounceOrBreak.Core.Scene;
 using Cysharp.Threading.Tasks;
 using System;
 using System.Threading;
+using UnityEngine;
 using VContainer.Unity;
 
 namespace CodeJelly.BounceOrBreak.Game.Bootstrap
@@ -45,7 +46,7 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
         /// </summary>
         private async UniTaskVoid InitializeAndTransition()
         {
-            AppLogger.Info("[Bootstrapper] Starting initialization...");
+            AppLogger.Info($"[Bootstrapper] Starting initialization... version: {Application.version}");
 
             // 애플리케이션 필수 시스템 초기화
             if (await _appInitializer.EnsureInitializedAsync() == false)

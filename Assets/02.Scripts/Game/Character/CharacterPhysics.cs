@@ -14,6 +14,10 @@ namespace CodeJelly.BounceOrBreak.Game.Character
         #region Private Variables
         [SerializeField] private CircleCollider2D _collider;
         [SerializeField] private Rigidbody2D _rigidbody;
+
+        private bool _isPaused;
+        private Vector2 _pausedVelocity;
+        private float _pausedAngularVelocity;
         #endregion
 
 
@@ -37,6 +41,10 @@ namespace CodeJelly.BounceOrBreak.Game.Character
 
             // SetMotionLocked(true)로 고정된 채 회수되어도 초기 상태로 복원
             _rigidbody.constraints = RigidbodyConstraints2D.None;
+
+            // 정지된 채 회수되어도 초기 상태로 복원
+            _isPaused = false;
+            _rigidbody.simulated = true;
         }
 
         /// <summary>
@@ -54,6 +62,38 @@ namespace CodeJelly.BounceOrBreak.Game.Character
             }
 
             _rigidbody.constraints = RigidbodyConstraints2D.None;
+        }
+
+        /// <summary>
+        /// 물리 시뮬레이션을 멈춥니다. 이미 멈춰 있으면 무시합니다.
+        /// </summary>
+        public void Pause()
+        {
+            if (_isPaused == true)
+            {
+                return;
+            }
+
+            _isPaused = true;
+            _pausedVelocity = _rigidbody.linearVelocity;
+            _pausedAngularVelocity = _rigidbody.angularVelocity;
+            _rigidbody.simulated = false;
+        }
+
+        /// <summary>
+        /// 멈춘 물리 시뮬레이션을 이어갑니다. 멈춰 있지 않으면 무시합니다.
+        /// </summary>
+        public void Resume()
+        {
+            if (_isPaused == false)
+            {
+                return;
+            }
+
+            _isPaused = false;
+            _rigidbody.simulated = true;
+            _rigidbody.linearVelocity = _pausedVelocity;
+            _rigidbody.angularVelocity = _pausedAngularVelocity;
         }
 
         /// <summary>

@@ -3,9 +3,12 @@ using CodeJelly.BounceOrBreak.Game.Bootstrap;
 using CodeJelly.BounceOrBreak.Game.Gameplay;
 using CodeJelly.BounceOrBreak.Game.Gameplay.Egg;
 using CodeJelly.BounceOrBreak.Game.Gameplay.Goal;
+using CodeJelly.BounceOrBreak.Game.Gameplay.Pause;
 using CodeJelly.BounceOrBreak.Game.Gameplay.Score;
 using CodeJelly.BounceOrBreak.Game.Gameplay.UI;
 using CodeJelly.BounceOrBreak.Game.Trampoline;
+using CodeJelly.BounceOrBreak.Game.UI.Navigation;
+using CodeJelly.BounceOrBreak.Game.UI.Panel;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -19,6 +22,7 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
     {
         #region Private Variables
         [Header("Gameplay")]
+        [SerializeField] private SceneTransitionConfig _gameSceneConfig;
         [SerializeField] private Camera _mainCamera;
         [SerializeField] private FallDetector _fallDetector;
         [SerializeField] private GoalPort[] _goalPorts;
@@ -27,6 +31,9 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
         [Header("UI")]
         [SerializeField] private GameplayHudView _gameplayHudView;
         [SerializeField] private GameOverPanelView _gameOverPanelView;
+
+        [Header("Navigation")]
+        [SerializeField] private UIPanelRoot _panelRoot;
         #endregion
 
 
@@ -34,6 +41,7 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
         protected override void Configure(IContainerBuilder builder)
         {
             // Gameplay
+            builder.RegisterInstance(_gameSceneConfig);
             builder.RegisterComponent(_mainCamera);
             builder.RegisterComponent(_fallDetector);
             builder.RegisterInstance(_goalPorts);
@@ -48,6 +56,9 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
                    .As<ISceneActivatable>()
                    .AsSelf();
 
+            builder.RegisterEntryPoint<GameSceneNavigator>()
+                   .AsSelf();
+
             // HUD
             builder.RegisterComponent(_gameplayHudView);
             builder.RegisterEntryPoint<GameplayHudPresenter>();
@@ -55,6 +66,12 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
             // Game Over Panel
             builder.RegisterComponent(_gameOverPanelView);
             builder.RegisterEntryPoint<GameOverPanelPresenter>();
+
+            // Navigation
+            builder.RegisterComponent(_panelRoot);
+            builder.RegisterEntryPoint<UIPanelRootRegistrar>();
+            builder.Register<PausePanelPresenter>(Lifetime.Scoped)
+                   .As<IUIPanel>();
 
 #if UNITY_EDITOR
             // 씬 단독 실행 시의 초기화 대행

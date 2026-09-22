@@ -247,6 +247,22 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!224 &260946271 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1710099916638538398, guid: 958d0a83930c80a499a44983028b1388, type: 3}
+  m_PrefabInstance: {fileID: 1350201034028436820}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &260946272 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4156841258909886221, guid: 958d0a83930c80a499a44983028b1388, type: 3}
+  m_PrefabInstance: {fileID: 1350201034028436820}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e6c43e2e0dbae74ba8074e60ba70647, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: CodeJelly.BounceOrBreak.Game::CodeJelly.BounceOrBreak.Game.UI.Navigation.UIRoot
 --- !u!1 &324421035
 GameObject:
   m_ObjectHideFlags: 0
@@ -422,6 +438,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 574174214}
+  - {fileID: 260946271}
   m_Father: {fileID: 1349966463}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -524,50 +541,103 @@ Transform:
   - {fileID: 708319770}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1879410461 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1448069889638043908, guid: 87b062867d154b24f95ca3ea527d07c5, type: 3}
-  m_PrefabInstance: {fileID: 2240064440105953562}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d61f749f40e42244adc25fa6c58a48a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CodeJelly.BounceOrBreak.Game.Settings.Audio.AudioSettingsView
---- !u!114 &1879410462 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8192905783820867319, guid: 87b062867d154b24f95ca3ea527d07c5, type: 3}
-  m_PrefabInstance: {fileID: 2240064440105953562}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc12a1ff6f9ef7143b97e479aabf02df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CodeJelly.BounceOrBreak.Game.Settings.SettingsPanelView
---- !u!114 &1879410463 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7361607616319252871, guid: 87b062867d154b24f95ca3ea527d07c5, type: 3}
-  m_PrefabInstance: {fileID: 2240064440105953562}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d829dc714b70a07468694e1c449431b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CodeJelly.BounceOrBreak.Game.Settings.Language.LanguageSettingsView
---- !u!114 &1879410464 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6430137658868025672, guid: 87b062867d154b24f95ca3ea527d07c5, type: 3}
-  m_PrefabInstance: {fileID: 2240064440105953562}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ccfe67cb728dc2346b2664c95a1a168e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CodeJelly.BounceOrBreak.Game.Settings.Graphics.GraphicsSettingsView
+--- !u!1001 &1350201034028436820
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 708319770}
+    m_Modifications:
+    - target: {fileID: 436369838575145913, guid: 958d0a83930c80a499a44983028b1388, type: 3}
+      propertyPath: m_Name
+      value: UIPanelRoot
+      objectReference: {fileID: 0}
+    - target: {fileID: 1710099916638538398, guid: 958d0a83930c80a499a44983028b1388, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1710099916638538398, guid: 958d0a83930c80a499a44983028b1388, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1710099916638538398, guid: 958d0a83930c80a499a44983028b1388, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1710099916638538398, guid: 958d0a83930c80a499a44983028b1388, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1710099916638538398, guid: 958d0a83930c80a499a44983028b1388, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1710099916638538398, guid: 958d0a83930c80a499a44983028b1388, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1710099916638538398, guid: 958d0a83930c80a499a44983028b1388, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1710099916638538398, guid: 958d0a83930c80a499a44983028b1388, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1710099916638538398, guid: 958d0a83930c80a499a44983028b1388, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1710099916638538398, guid: 958d0a83930c80a499a44983028b1388, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1710099916638538398, guid: 958d0a83930c80a499a44983028b1388, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1710099916638538398, guid: 958d0a83930c80a499a44983028b1388, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1710099916638538398, guid: 958d0a83930c80a499a44983028b1388, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1710099916638538398, guid: 958d0a83930c80a499a44983028b1388, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1710099916638538398, guid: 958d0a83930c80a499a44983028b1388, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1710099916638538398, guid: 958d0a83930c80a499a44983028b1388, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1710099916638538398, guid: 958d0a83930c80a499a44983028b1388, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1710099916638538398, guid: 958d0a83930c80a499a44983028b1388, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1710099916638538398, guid: 958d0a83930c80a499a44983028b1388, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1710099916638538398, guid: 958d0a83930c80a499a44983028b1388, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 958d0a83930c80a499a44983028b1388, type: 3}
 --- !u!1001 &2240064440105953562
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -722,25 +792,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 574174215}
     - target: {fileID: 8645126962555703811, guid: 0fff033b6b92db1499aeb3c02c744ab0, type: 3}
-      propertyPath: _lobbySceneConfig
+      propertyPath: _panelRoot
       value: 
-      objectReference: {fileID: 11400000, guid: 3481274a660ce9445ba56f0adf80614a, type: 2}
-    - target: {fileID: 8645126962555703811, guid: 0fff033b6b92db1499aeb3c02c744ab0, type: 3}
-      propertyPath: _audioSettingsView
-      value: 
-      objectReference: {fileID: 1879410461}
-    - target: {fileID: 8645126962555703811, guid: 0fff033b6b92db1499aeb3c02c744ab0, type: 3}
-      propertyPath: _settingsPanelView
-      value: 
-      objectReference: {fileID: 1879410462}
-    - target: {fileID: 8645126962555703811, guid: 0fff033b6b92db1499aeb3c02c744ab0, type: 3}
-      propertyPath: _graphicsSettingsView
-      value: 
-      objectReference: {fileID: 1879410464}
-    - target: {fileID: 8645126962555703811, guid: 0fff033b6b92db1499aeb3c02c744ab0, type: 3}
-      propertyPath: _languageSettingsView
-      value: 
-      objectReference: {fileID: 1879410463}
+      objectReference: {fileID: 260946272}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
