@@ -27,6 +27,16 @@ namespace CodeJelly.BounceOrBreak.Game
                 public const string PAUSE = "Pause";
                 public const string SETTINGS = "Settings";
             }
+
+            /// <summary>
+            /// UI 스프라이트의 PPU. Canvas의 Reference PPU를 이 값에 맞춰 도트 1개 = 1유닛으로 둠
+            /// </summary>
+            public const int PIXELS_PER_UNIT = 16;
+
+            /// <summary>
+            /// 설계 기준 화면 폭 (도트). 실제 화면 폭 ÷ DESIGN_WIDTH = Canvas 배율
+            /// </summary>
+            public const int DESIGN_WIDTH = 180;
         }
 
         public static class Stage

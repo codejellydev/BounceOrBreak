@@ -60,16 +60,6 @@ namespace CodeJelly.BounceOrBreak.Core
         public static class UI
         {
             /// <summary>
-            /// UI 스프라이트의 PPU. Canvas의 Reference PPU를 이 값에 맞춰 도트 1개 = 1유닛으로 둠
-            /// </summary>
-            public const int PIXELS_PER_UNIT = 16;
-
-            /// <summary>
-            /// 설계 기준 화면 폭 (도트). 실제 화면 폭 ÷ DESIGN_WIDTH = Canvas 배율
-            /// </summary>
-            public const int DESIGN_WIDTH = 180;
-
-            /// <summary>
             /// Canvas 배율의 하한. 화면 폭이 설계 폭 미만이면 몫이 0이 되므로 이 값으로 고정
             /// </summary>
             public const int MIN_SCALE_FACTOR = 1;
