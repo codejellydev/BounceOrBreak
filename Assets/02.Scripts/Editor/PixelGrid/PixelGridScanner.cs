@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -31,12 +32,17 @@ namespace CodeJelly.BounceOrBreak.Editor.PixelGrid
 
         #region Private Variables
         private const string SPRITE_PROPERTY = "m_Sprite";
+        private const string POSITION_X_PROPERTY = "m_AnchoredPosition.x";
+        private const string POSITION_Y_PROPERTY = "m_AnchoredPosition.y";
         private const string SIZE_X_PROPERTY = "m_SizeDelta.x";
         private const string SIZE_Y_PROPERTY = "m_SizeDelta.y";
+        private const string DRIVEN_PROPERTIES_NAME = "drivenProperties";
+
+        private static readonly PropertyInfo DRIVEN_PROPERTIES = typeof(RectTransform).GetProperty(DRIVEN_PROPERTIES_NAME, BindingFlags.Instance | BindingFlags.NonPublic);
 
         private static readonly PixelGridRule[] LAYOUT_RULES =
         {
-            new PixelGridRule(typeof(RectTransform), false, "m_AnchoredPosition.x", "m_AnchoredPosition.y", SIZE_X_PROPERTY, SIZE_Y_PROPERTY),
+            new PixelGridRule(typeof(RectTransform), false, POSITION_X_PROPERTY, POSITION_Y_PROPERTY, SIZE_X_PROPERTY, SIZE_Y_PROPERTY),
             new PixelGridRule(typeof(HorizontalOrVerticalLayoutGroup), false, "m_Padding.m_Left", "m_Padding.m_Right", "m_Padding.m_Top", "m_Padding.m_Bottom", "m_Spacing"),
             new PixelGridRule(typeof(LayoutElement), true, "m_MinWidth", "m_MinHeight", "m_PreferredWidth", "m_PreferredHeight"),
         };
@@ -153,9 +159,48 @@ namespace CodeJelly.BounceOrBreak.Editor.PixelGrid
             return IsWholeMultiple(ratioX) == true && Mathf.Approximately(ratioX, ratioY) == true;
         }
 
-        private static bool IsDriven(Component component)
+        private static bool IsDriven(Component component, string propertyPath)
         {
-            return component is RectTransform rectTransform && rectTransform.drivenByObject != null;
+            RectTransform rectTransform = component as RectTransform;
+
+            if (rectTransform == null || rectTransform.drivenByObject == null)
+            {
+                return false;
+            }
+
+            return (GetDrivenProperties(rectTransform) & ToDrivenProperty(propertyPath)) != DrivenTransformProperties.None;
+        }
+
+        private static DrivenTransformProperties GetDrivenProperties(RectTransform rectTransform)
+        {
+            // Unity 내부 멤버이므로 없는 경우 전체를 제어 대상으로 처리
+            if (DRIVEN_PROPERTIES == null)
+            {
+                return DrivenTransformProperties.All;
+            }
+
+            return (DrivenTransformProperties)DRIVEN_PROPERTIES.GetValue(rectTransform);
+        }
+
+        private static DrivenTransformProperties ToDrivenProperty(string propertyPath)
+        {
+            switch (propertyPath)
+            {
+                case POSITION_X_PROPERTY:
+                    return DrivenTransformProperties.AnchoredPositionX;
+
+                case POSITION_Y_PROPERTY:
+                    return DrivenTransformProperties.AnchoredPositionY;
+
+                case SIZE_X_PROPERTY:
+                    return DrivenTransformProperties.SizeDeltaX;
+
+                case SIZE_Y_PROPERTY:
+                    return DrivenTransformProperties.SizeDeltaY;
+
+                default:
+                    return DrivenTransformProperties.None;
+            }
         }
 
         /// <summary>
@@ -186,7 +231,12 @@ namespace CodeJelly.BounceOrBreak.Editor.PixelGrid
 
             RectTransform rectTransform = image.rectTransform;
 
-            if (IsDriven(rectTransform) == true || rectTransform.anchorMin != rectTransform.anchorMax)
+            if (IsDriven(rectTransform, SIZE_X_PROPERTY) == true || IsDriven(rectTransform, SIZE_Y_PROPERTY) == true)
+            {
+                return false;
+            }
+
+            if (rectTransform.anchorMin != rectTransform.anchorMax)
             {
                 return false;
             }
@@ -292,12 +342,6 @@ namespace CodeJelly.BounceOrBreak.Editor.PixelGrid
             {
                 foreach (Component component in root.GetComponentsInChildren(rule.ComponentType, true))
                 {
-                    // 레이아웃이 제어하는 값은 수정해도 다시 계산되므로 제외
-                    if (IsDriven(component) == true)
-                    {
-                        continue;
-                    }
-
                     count += Visit(component, rule, useUndo, visitor);
                 }
             }
@@ -320,6 +364,12 @@ namespace CodeJelly.BounceOrBreak.Editor.PixelGrid
 
                 foreach (string path in rule.PropertyPaths)
                 {
+                    // 레이아웃이 제어하는 값은 수정해도 다시 계산되므로 제외
+                    if (IsDriven(component, path) == true)
+                    {
+                        continue;
+                    }
+
                     // 수정 시 불필요한 override가 생성되는 것을 방지
                     if (isPrefabInherited == true && overriddenPaths.Contains(path) == false)
                     {
