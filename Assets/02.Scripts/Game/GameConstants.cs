@@ -1,3 +1,4 @@
+using CodeJelly.BounceOrBreak.Game.UI;
 using UnityEngine;
 
 namespace CodeJelly.BounceOrBreak.Game
@@ -37,6 +38,20 @@ namespace CodeJelly.BounceOrBreak.Game
             /// 설계 기준 화면 폭 (도트). 실제 화면 폭 ÷ DESIGN_WIDTH = Canvas 배율
             /// </summary>
             public const int DESIGN_WIDTH = 180;
+
+            /// <summary>
+            /// CanvasLayer 관련 상수
+            /// </summary>
+            public static class CanvasLayers
+            {
+                /// <summary>
+                /// 뒤에서 앞으로의 그리기 순서. 배열에서의 위치가 Canvas의 Sort Order가 됨
+                /// </summary>
+                public static readonly CanvasLayer[] ORDER =
+                {
+                    CanvasLayer.Scene, CanvasLayer.Transition, CanvasLayer.Overlay
+                };
+            }
         }
 
         public static class Stage
