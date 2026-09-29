@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - develop
     paths:
       - 'Assets/**'
       - 'Packages/**'
@@ -108,7 +107,7 @@ jobs:
           path: |
             build/Android
             !build/Android/Android_BackUpThisFolder_ButDontShipItWithYourGame
-          retention-days: 7
+          retention-days: 5
 
       # 실패한 빌드에 태그가 남지 않도록 마지막에 실행
       - name: Tag the release
