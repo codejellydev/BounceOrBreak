@@ -192,6 +192,7 @@ GameObject:
   - component: {fileID: 844595301}
   - component: {fileID: 844595299}
   - component: {fileID: 844595303}
+  - component: {fileID: 844595304}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -237,7 +238,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 50
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &844595302
 RectTransform:
@@ -271,6 +272,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a13f81ddafdaeea49af3277a5276f283, type: 3}
   m_Name: 
   m_EditorClassIdentifier: CodeJelly.BounceOrBreak.Game::CodeJelly.BounceOrBreak.Game.UI.PixelCanvasScaler
+--- !u!114 &844595304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 844595298}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 654c9d74f06e444c8b24bad903d59b43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: CodeJelly.BounceOrBreak.Game::CodeJelly.BounceOrBreak.Game.UI.CanvasLayerSorter
+  _layer: 1
 --- !u!224 &1219227003 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3920971882017359565, guid: 225ba89e3fbfcfd48aceaaa0b4c03cb9, type: 3}
