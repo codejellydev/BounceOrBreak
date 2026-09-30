@@ -217,6 +217,8 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
                     MapProgress(0.5f, 1f),
                     ct);
 
+                _transitionProgress.Value = 1f;
+
                 // 6. 이전 씬 정리
                 await UnloadPreviousSceneAsync(targetSceneInstance);
 
@@ -378,7 +380,6 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
             {
                 // 전환 자체는 정상 동작하나, 릴리스 로그 파일에서 "초기화 단계 없이 전환됨"을 추적할 수 있도록 Warning.
                 AppLogger.Warning($"[SceneLoader] No ISceneInitializer found in scene: {sceneKey}. Skipping initialization.");
-                progress?.Report(1f); // 초기화 없으면 바로 100%
                 return;
             }
 
@@ -511,7 +512,7 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
         private IProgress<float> MapProgress(float start, float end)
         {
             float range = end - start;
-            return new Progress<float>(p =>
+            return Progress.Create<float>(p =>
             {
                 float clamped = Mathf.Clamp01(p);
                 _transitionProgress.Value = start + (clamped * range);
