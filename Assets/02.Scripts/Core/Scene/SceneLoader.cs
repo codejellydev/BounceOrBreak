@@ -92,6 +92,7 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
 
         private SceneInstance _previousSceneInstance;
         private SceneInstance _loadingSceneInstance;
+        private ILoadingDisplay _loadingDisplay;
 
         private CancellationTokenSource _transitionCts;
         #endregion
@@ -347,6 +348,25 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
             return new SceneComponents(initializer, context, activatable);
         }
 
+        private ILoadingDisplay ResolveLoadingDisplay(SceneInstance loadingSceneInstance)
+        {
+            var loadingScope = LifetimeScope.Find<LifetimeScope>(loadingSceneInstance.Scene);
+
+            ILoadingDisplay loadingDisplay = null;
+
+            if (loadingScope != null)
+            {
+                loadingScope.Container.TryResolve(out loadingDisplay);
+            }
+
+            if (loadingDisplay == null)
+            {
+                AppLogger.Debug("[SceneLoader] No ILoadingDisplay in loading scene. Skipping completion wait.");
+            }
+
+            return loadingDisplay;
+        }
+
         /// <summary>
         /// Payload가 존재할 경우 ISceneContext에 전달합니다.
         /// Payload가 있는데 수신할 Context가 없으면 예외를 던집니다.
@@ -419,6 +439,8 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
             {
                 await Addressables.UnloadSceneAsync(_loadingSceneInstance).ToUniTask();
             }
+
+            _loadingDisplay = null;
         }
 
         /// <summary>
@@ -430,6 +452,7 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
             await _transitionEffect.CoverAsync(ct);
 
             _loadingSceneInstance = await LoadLoadingSceneAsync(loadingSceneKey, ct);
+            _loadingDisplay = ResolveLoadingDisplay(_loadingSceneInstance);
 
             await _transitionEffect.RevealAsync(ct);
 
@@ -437,10 +460,15 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
         }
 
         /// <summary>
-        /// 최소 표시 시간을 채우고 LoadingScene을 걷어냅니다.
+        /// 로딩 화면의 마무리와 최소 표시 시간을 기다린 뒤 LoadingScene을 걷어냅니다.
         /// </summary>
         private async UniTask HideLoadingSceneAsync(float shownTime, CancellationToken ct)
         {
+            if (_loadingDisplay != null)
+            {
+                await _loadingDisplay.CompleteAsync(ct);
+            }
+
             float elapsed = Time.realtimeSinceStartup - shownTime;
 
             if (elapsed < MIN_LOADING_SCENE_SECONDS)
@@ -490,6 +518,7 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
                 if (useLoadingScene == true && _loadingSceneInstance.Scene.IsValid() == true)
                 {
                     await Addressables.UnloadSceneAsync(_loadingSceneInstance).ToUniTask();
+                    _loadingDisplay = null;
                 }
                 if (targetSceneInstance.Scene.IsValid() == true)
                 {
