@@ -183,7 +183,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: CodeJelly.BounceOrBreak.Game::CodeJelly.BounceOrBreak.Game.UI.Overlay.ScreenFader
   _canvas: {fileID: 7622505762105926911}
   _canvasGroup: {fileID: 2957541848889077146}
-  _duration: 0.1
 --- !u!114 &7975890621041791896
 MonoBehaviour:
   m_ObjectHideFlags: 0

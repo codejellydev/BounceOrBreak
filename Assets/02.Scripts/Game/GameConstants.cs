@@ -40,6 +40,11 @@ namespace CodeJelly.BounceOrBreak.Game
             public const int DESIGN_WIDTH = 180;
 
             /// <summary>
+            /// 페이드 한 번의 지속 시간 (초)
+            /// </summary>
+            public const float FADE_DURATION = 0.1f;
+
+            /// <summary>
             /// 연출이 한 프레임에 진행할 수 있는 최대 시간 (초). 긴 프레임 뒤에 연출이 건너뛰는 것을 방지
             /// </summary>
             public const float MAX_EFFECT_DELTA_TIME = 1f / 30f;

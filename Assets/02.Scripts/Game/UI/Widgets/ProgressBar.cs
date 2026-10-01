@@ -19,6 +19,8 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Widgets
         #region Private Variables
         [Tooltip("가로로 늘어나는 Fill. anchorMin.x는 0이어야 함")]
         [SerializeField] private RectTransform _fill;
+
+        private RectTransform _fillArea;
         #endregion
 
 
@@ -32,6 +34,8 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Widgets
 
                 return;
             }
+
+            _fillArea = (RectTransform)_fill.parent;
 
             _fill.offsetMin = new Vector2(0f, _fill.offsetMin.y);
             _fill.offsetMax = new Vector2(0f, _fill.offsetMax.y);
@@ -52,8 +56,17 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Widgets
                 return;
             }
 
+            float width = _fillArea.rect.width;
+            float progress = Mathf.Clamp01(normalizedValue);
+
+            // 1유닛 = 1도트이므로 Fill의 끝이 도트 경계에 오도록 폭을 정수 유닛으로 내림
+            if (width > 0f)
+            {
+                progress = Mathf.Floor(progress * width) / width;
+            }
+
             Vector2 anchorMax = _fill.anchorMax;
-            anchorMax.x = Mathf.Clamp01(normalizedValue);
+            anchorMax.x = progress;
 
             _fill.anchorMax = anchorMax;
         }
