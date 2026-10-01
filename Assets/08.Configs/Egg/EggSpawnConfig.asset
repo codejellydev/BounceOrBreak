@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: EggSpawnConfig
   m_EditorClassIdentifier: CodeJelly.BounceOrBreak.Game::CodeJelly.BounceOrBreak.Game.Gameplay.Egg.EggSpawnConfig
   _spawnPosition: {x: 0, y: 9}
+  _initialSpawnDelay: 0.5
   _waves:
   - _spawnCount: 4
     _spawnInterval: 3.5

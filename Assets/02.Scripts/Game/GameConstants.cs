@@ -95,6 +95,11 @@ namespace CodeJelly.BounceOrBreak.Game
             }
 
             /// <summary>
+            /// 첫 Egg를 스폰하기까지의 기본 지연 (초)
+            /// </summary>
+            public const float DEFAULT_INITIAL_SPAWN_DELAY = 0.5f;
+
+            /// <summary>
             /// Wave 하나가 담당하는 기본 스폰 횟수
             /// </summary>
             public const int DEFAULT_WAVE_SPAWN_COUNT = 10;
