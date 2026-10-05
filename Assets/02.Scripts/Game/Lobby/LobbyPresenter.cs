@@ -107,7 +107,7 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
                  .AddTo(_disposables);
 
             _view.SettingsButton
-                 .OnClickAsObservable()
+                 .OnClick
                  .Subscribe(_ => OnSettingsButtonClicked())
                  .AddTo(_disposables);
         }

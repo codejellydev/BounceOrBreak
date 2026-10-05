@@ -1,3 +1,4 @@
+using CodeJelly.BounceOrBreak.Game.UI.Widgets;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,14 +12,14 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
     {
         #region Properties
         public Button StartButton => _startButton;
-        public Button SettingsButton => _settingsButton;
+        public PushButton SettingsButton => _settingsButton;
         #endregion
 
 
         #region Private Variables
         [Header("Buttons")]
         [SerializeField] private Button _startButton;
-        [SerializeField] private Button _settingsButton;
+        [SerializeField] private PushButton _settingsButton;
         #endregion
     }
 }
