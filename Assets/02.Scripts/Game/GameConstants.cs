@@ -64,6 +64,14 @@ namespace CodeJelly.BounceOrBreak.Game
             }
         }
 
+        public static class Entry
+        {
+            /// <summary>
+            /// 버전 표기 형식. {0}은 Application.version
+            /// </summary>
+            public const string VERSION_FORMAT = "v{0}";
+        }
+
         public static class Loading
         {
             /// <summary>
