@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: LobbyDioramaConfig
   m_EditorClassIdentifier: CodeJelly.BounceOrBreak.Game::CodeJelly.BounceOrBreak.Game.Lobby.LobbyDioramaConfig
   _egg: {fileID: 11400000, guid: 8cbcf952b79012b4898c263159672fcf, type: 2}
-  _eggPosition: {x: 0, y: 2.2}
+  _eggPosition: {x: 0, y: -0.2}
   _trampoline:
     _type: 0
     _config: {fileID: 11400000, guid: 68b0f511db784e8b91e4fe529723b1eb, type: 2}
     _points:
-    - {x: -1.4, y: -1}
-    - {x: 1.4, y: -1}
+    - {x: -1.4, y: -2.2}
+    - {x: 1.4, y: -2.2}

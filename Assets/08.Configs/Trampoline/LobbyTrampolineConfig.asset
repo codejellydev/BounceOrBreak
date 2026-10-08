@@ -16,7 +16,7 @@ MonoBehaviour:
   _markerSprite: {fileID: 21300000, guid: d2af8b0b55584c02a22d6400f7663344, type: 3}
   _durabilityStages: []
   _thickness: 0.125
-  _bounceForce: 6.8
+  _bounceForce: 5.6
   _centerBounceMultiplier: 1
   _centerThreshold: 0.1
   _normalBias: 0.3
