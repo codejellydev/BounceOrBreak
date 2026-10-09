@@ -1,6 +1,9 @@
+using CodeJelly.BounceOrBreak.Game;
+using CodeJelly.BounceOrBreak.Game.Character;
 using CodeJelly.BounceOrBreak.Game.Gameplay.Egg;
 using NUnit.Framework;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace CodeJelly.BounceOrBreak.Tests
 {
@@ -89,6 +92,23 @@ namespace CodeJelly.BounceOrBreak.Tests
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// 등록된 Egg 프리팹의 구성이 유효합니다.
+        /// </summary>
+        [Test]
+        public void EggPrefab_IsValid()
+        {
+            GameObject prefab = EditorAssetLoader.LoadByAddress<GameObject>(GameConstants.Egg.Keys.PREFAB);
+
+            // UnityEngine.Object의 null은 Unity 연산자로만 판별되므로 Assert.IsNotNull 대신 사용
+            Assert.IsTrue(prefab != null, $"No prefab is registered at address '{GameConstants.Egg.Keys.PREFAB}'.");
+            Assert.IsTrue(prefab.TryGetComponent(out EggController egg), $"{prefab.name} has no EggController.");
+            Assert.IsTrue(egg.IsValid, $"{prefab.name} is not valid. Check its renderer wiring.");
+
+            // 직렬화 배선은 IsValid가, 오브젝트 구성은 이 테스트가 확인
+            Assert.IsTrue(prefab.GetComponent<ICharacter>() != null, $"{prefab.name} has no ICharacter component.");
         }
         #endregion
     }

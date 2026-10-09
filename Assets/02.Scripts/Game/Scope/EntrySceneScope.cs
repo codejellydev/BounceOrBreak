@@ -1,5 +1,6 @@
 using CodeJelly.BounceOrBreak.Core.Scene;
 using CodeJelly.BounceOrBreak.Game.Bootstrap;
+using CodeJelly.BounceOrBreak.Game.Entry;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -18,6 +19,9 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
         /// ResourceManager를 통한 로드가 불가능하여 직접 참조. (EntryScene 특수성)
         /// </summary>
         [SerializeField] private SceneTransitionConfig _entrySceneConfig;
+
+        [Header("Entry")]
+        [SerializeField] private EntryView _entryView;
         #endregion
 
 
@@ -25,8 +29,10 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterInstance(_entrySceneConfig);
+            builder.RegisterComponent(_entryView);
 
             builder.RegisterEntryPoint<Bootstrapper>();
+            builder.RegisterEntryPoint<EntryPresenter>();
         }
         #endregion
     }

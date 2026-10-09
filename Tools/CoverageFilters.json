@@ -1,0 +1,7 @@
+{
+    "assembliesInclude": [
+        "CodeJelly.BounceOrBreak.Core",
+        "CodeJelly.BounceOrBreak.Game",
+        "CodeJelly.BounceOrBreak.Input"
+    ]
+}

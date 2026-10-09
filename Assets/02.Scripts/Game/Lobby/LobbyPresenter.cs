@@ -18,6 +18,7 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
     {
         #region Injection
         private readonly LobbyView _view;
+        private readonly LobbyDiorama _diorama;
         private readonly SceneLoader _sceneLoader;
         private readonly SceneTransitionConfig _lobbySceneConfig;
         private readonly InputManager _inputManager;
@@ -25,12 +26,14 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
 
         public LobbyPresenter(
             LobbyView view,
+            LobbyDiorama diorama,
             SceneLoader sceneLoader,
             SceneTransitionConfig lobbySceneConfig,
             InputManager inputManager,
             UINavigationService navigation)
         {
             _view = view;
+            _diorama = diorama;
             _sceneLoader = sceneLoader;
             _lobbySceneConfig = lobbySceneConfig;
             _inputManager = inputManager;
@@ -42,12 +45,15 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
         #region Private Variables
         private readonly CompositeDisposable _disposables = new CompositeDisposable();
         private readonly CancellationTokenSource _cts = new CancellationTokenSource();
+
+        private bool _isStarting;
         #endregion
 
 
         #region VContainer Lifecycle
         public void Start()
         {
+            InitializeDiorama(_cts.Token).Forget();
             BindView();
 
             _navigation.PushBackHandler(OnBackPressedAtRoot)
@@ -101,7 +107,7 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
                  .AddTo(_disposables);
 
             _view.SettingsButton
-                 .OnClickAsObservable()
+                 .OnClick
                  .Subscribe(_ => OnSettingsButtonClicked())
                  .AddTo(_disposables);
         }
@@ -111,8 +117,13 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
         /// </summary>
         private void OnStartButtonClicked()
         {
+            if (_isStarting == true)
+            {
+                return;
+            }
+
             AppLogger.Info("[LobbyPresenter] Start button clicked. Transitioning to GameScene...");
-            _sceneLoader.LoadSceneAsync(_lobbySceneConfig).Forget();
+            StartGame(_cts.Token).Forget();
         }
 
         /// <summary>
@@ -132,11 +143,43 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
             ConfirmQuit(_cts.Token).Forget();
         }
 
+        private async UniTaskVoid InitializeDiorama(CancellationToken ct)
+        {
+            try
+            {
+                await _diorama.InitializeAsync(ct);
+            }
+            catch (OperationCanceledException)
+            {
+                // 씬이 먼저 내려간 것이므로 처리할 결과가 없음
+            }
+        }
+
+        private async UniTaskVoid StartGame(CancellationToken ct)
+        {
+            _isStarting = true;
+
+            try
+            {
+                await _diorama.DropAsync(ct);
+            }
+            catch (OperationCanceledException)
+            {
+                // 씬이 먼저 내려간 것이므로 전환하지 않음
+                return;
+            }
+
+            _sceneLoader.LoadSceneAsync(_lobbySceneConfig).Forget();
+        }
+
         /// <summary>
         /// Settings 패널을 엽니다.
         /// </summary>
         private async UniTaskVoid OpenSettings(CancellationToken ct)
         {
+            // 패널이 열린 동안 디오라마를 멈춤
+            _diorama.Pause();
+
             try
             {
                 await _navigation.ShowAsync(GameConstants.UI.Keys.SETTINGS, ct);
@@ -144,7 +187,10 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
             catch (OperationCanceledException)
             {
                 // 씬이 먼저 내려간 것이므로 처리할 결과가 없음
+                return;
             }
+
+            _diorama.Resume();
         }
 
         /// <summary>

@@ -56,5 +56,13 @@ namespace CodeJelly.BounceOrBreak.Core
             /// </summary>
             public const float MIN_SETTING_VALUE = 0.01f;
         }
+
+        public static class UI
+        {
+            /// <summary>
+            /// Canvas 배율의 하한. 화면 폭이 설계 폭 미만이면 몫이 0이 되므로 이 값으로 고정
+            /// </summary>
+            public const int MIN_SCALE_FACTOR = 1;
+        }
     }
 }

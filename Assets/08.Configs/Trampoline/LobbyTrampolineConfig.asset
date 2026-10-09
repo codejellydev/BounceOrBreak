@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9464b3755c42e714dbdfda51525c35fa, type: 3}
+  m_Name: LobbyTrampolineConfig
+  m_EditorClassIdentifier: Assembly-CSharp::CodeJelly.BounceOrBreak.Game.Trampoline.TrampolineConfig
+  _matSprite: {fileID: 21300000, guid: c99e867fa9a947eaa6b881ef3db13e69, type: 3}
+  _markerSprite: {fileID: 21300000, guid: d2af8b0b55584c02a22d6400f7663344, type: 3}
+  _durabilityStages: []
+  _thickness: 0.125
+  _bounceForce: 5.6
+  _centerBounceMultiplier: 1
+  _centerThreshold: 0.1
+  _normalBias: 0.3
+  _maxUsageCount: 0
+  _maxLifetime: 0

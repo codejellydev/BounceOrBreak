@@ -20,6 +20,8 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
 
         public Vector2 SpawnPosition => _spawnPosition;
 
+        public float InitialSpawnDelay => _initialSpawnDelay;
+
         public IReadOnlyList<WaveData> Waves => _waves;
 
         public float IntervalDecayPerSpawn => _intervalDecayPerSpawn;
@@ -31,6 +33,9 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         #region Private Variables
         [Tooltip("Egg 스폰 위치 (월드 좌표)")]
         [SerializeField] private Vector2 _spawnPosition;
+
+        [Tooltip("첫 Egg를 스폰하기까지의 지연 (초). Wave의 스폰 간격과 무관")]
+        [SerializeField] private float _initialSpawnDelay = GameConstants.Egg.DEFAULT_INITIAL_SPAWN_DELAY;
 
         [Tooltip("순서대로 진행할 Wave 목록")]
         [SerializeField] private List<WaveData> _waves = new List<WaveData>();
