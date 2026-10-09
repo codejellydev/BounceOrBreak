@@ -73,30 +73,33 @@ namespace CodeJelly.BounceOrBreak.Tests
 
             foreach (string assetPath in CollectProjectAssetPaths())
             {
-                foreach (SerializedObject serializedObject in CollectSerializedObjects(assetPath))
+                foreach (Object target in CollectSerializedTargets(assetPath))
                 {
-                    SerializedProperty property = serializedObject.GetIterator();
-
-                    while (property.NextVisible(true) == true)
+                    using (SerializedObject serializedObject = new SerializedObject(target))
                     {
-                        if (property.propertyType != SerializedPropertyType.Generic)
+                        SerializedProperty property = serializedObject.GetIterator();
+
+                        while (property.NextVisible(true) == true)
                         {
-                            continue;
+                            if (property.propertyType != SerializedPropertyType.Generic)
+                            {
+                                continue;
+                            }
+
+                            SerializedProperty guidProperty = property.FindPropertyRelative(ASSET_GUID_PROPERTY);
+
+                            // 비워 두는 것이 정상인 AssetReference가 있는 경우 건너뜀
+                            if (guidProperty == null || string.IsNullOrEmpty(guidProperty.stringValue) == true)
+                            {
+                                continue;
+                            }
+
+                            Assert.IsTrue(registeredGuids.Contains(guidProperty.stringValue),
+                                $"'{assetPath}' references an unregistered asset " +
+                                $"'{AssetDatabase.GUIDToAssetPath(guidProperty.stringValue)}' through an AssetReference. " +
+                                "An AssetReference can only load Addressable assets.");
+                            checkedCount++;
                         }
-
-                        SerializedProperty guidProperty = property.FindPropertyRelative(ASSET_GUID_PROPERTY);
-
-                        // 비워 두는 것이 정상인 AssetReference가 있는 경우 건너뜀
-                        if (guidProperty == null || string.IsNullOrEmpty(guidProperty.stringValue) == true)
-                        {
-                            continue;
-                        }
-
-                        Assert.IsTrue(registeredGuids.Contains(guidProperty.stringValue),
-                            $"'{assetPath}' references an unregistered asset " +
-                            $"'{AssetDatabase.GUIDToAssetPath(guidProperty.stringValue)}' through an AssetReference. " +
-                            "An AssetReference can only load Addressable assets.");
-                        checkedCount++;
                     }
                 }
             }
@@ -154,7 +157,7 @@ namespace CodeJelly.BounceOrBreak.Tests
         /// <summary>
         /// 에셋 하나에서 직렬화 필드를 들고 있는 대상을 모두 모읍니다.
         /// </summary>
-        private static IEnumerable<SerializedObject> CollectSerializedObjects(string assetPath)
+        private static IEnumerable<Object> CollectSerializedTargets(string assetPath)
         {
             Object asset = AssetDatabase.LoadAssetAtPath<Object>(assetPath);
 
@@ -164,13 +167,13 @@ namespace CodeJelly.BounceOrBreak.Tests
                 {
                     if (behaviour != null)
                     {
-                        yield return new SerializedObject(behaviour);
+                        yield return behaviour;
                     }
                 }
             }
             else if (asset is ScriptableObject)
             {
-                yield return new SerializedObject(asset);
+                yield return asset;
             }
         }
 

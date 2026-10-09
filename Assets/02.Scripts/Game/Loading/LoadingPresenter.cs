@@ -1,6 +1,7 @@
 using CodeJelly.BounceOrBreak.Core.Scene;
-using R3;
-using System;
+using Cysharp.Threading.Tasks;
+using System.Threading;
+using UnityEngine;
 using VContainer.Unity;
 
 namespace CodeJelly.BounceOrBreak.Game.Loading
@@ -8,7 +9,7 @@ namespace CodeJelly.BounceOrBreak.Game.Loading
     /// <summary>
     /// LoadingScene의 Presenter 클래스.
     /// </summary>
-    public class LoadingPresenter : IStartable, IDisposable
+    public class LoadingPresenter : ITickable, ILoadingDisplay
     {
         #region Injection
         private readonly LoadingView _view;
@@ -23,27 +24,39 @@ namespace CodeJelly.BounceOrBreak.Game.Loading
 
 
         #region Private Variables
-        private readonly CompositeDisposable _disposables = new CompositeDisposable();
+        private float _displayedProgress;
+        private bool _isCompleting;
         #endregion
 
 
         #region VContainer Lifecycle
-        public void Start()
+        public void Tick()
         {
-            _sceneLoader.TransitionProgress
-                        .Subscribe(_view.UpdateProgress)
-                        .AddTo(_disposables);
+            float target = (_isCompleting == true) ? 1f : _sceneLoader.TransitionProgress.CurrentValue;
+            float deltaTime = Mathf.Min(Time.unscaledDeltaTime, GameConstants.UI.MAX_EFFECT_DELTA_TIME);
+            float next = Mathf.MoveTowards(_displayedProgress, target, GameConstants.Loading.PROGRESS_SPEED * deltaTime);
+
+            // 실제 진행률이 낮아져도 표시는 되돌리지 않음
+            if (next <= _displayedProgress)
+            {
+                return;
+            }
+
+            _displayedProgress = next;
+            _view.UpdateProgress(_displayedProgress);
         }
         #endregion
 
 
         #region Public Methods
         /// <summary>
-        /// IDisposable.Dispose Implementation
+        /// ILoadingDisplay.CompleteAsync Implementation
         /// </summary>
-        public void Dispose()
+        public UniTask CompleteAsync(CancellationToken ct)
         {
-            _disposables.Dispose();
+            _isCompleting = true;
+
+            return UniTask.WaitUntil(() => _displayedProgress >= 1f, cancellationToken: ct);
         }
         #endregion
     }

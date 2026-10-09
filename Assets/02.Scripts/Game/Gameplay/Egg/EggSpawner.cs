@@ -270,7 +270,12 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         {
             while (ct.IsCancellationRequested == false)
             {
-                await _stopwatch.WaitForSecondsAsync(_progression.GetSpawnInterval(_roundProgress.SpawnedCount.CurrentValue), ct);
+                int spawnedCount = _roundProgress.SpawnedCount.CurrentValue;
+                float delay = (spawnedCount == 0)
+                    ? _config.InitialSpawnDelay
+                    : _progression.GetSpawnInterval(spawnedCount);
+
+                await _stopwatch.WaitForSecondsAsync(delay, ct);
                 SpawnNext();
             }
         }
