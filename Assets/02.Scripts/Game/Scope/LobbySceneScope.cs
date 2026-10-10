@@ -22,6 +22,7 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
         [Header("Lobby")]
         [SerializeField] private SceneTransitionConfig _lobbySceneConfig;
         [SerializeField] private LobbyView _lobbyView;
+        [SerializeField] private LobbyDiorama _diorama;
 
         [Header("Navigation")]
         [SerializeField] private UIPanelRoot _panelRoot;
@@ -34,6 +35,7 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
             // Lobby
             builder.RegisterInstance(_lobbySceneConfig);
             builder.RegisterComponent(_lobbyView);
+            builder.RegisterComponent(_diorama);
             builder.RegisterEntryPoint<LobbyPresenter>()
                    .As<ISceneActivatable>();
 

@@ -1,3 +1,4 @@
+using CodeJelly.BounceOrBreak.Core.Scene;
 using CodeJelly.BounceOrBreak.Game.Loading;
 using UnityEngine;
 using VContainer;
@@ -20,7 +21,8 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
         protected override void Configure(IContainerBuilder builder)
         {
             builder.RegisterComponent(_loadingView);
-            builder.RegisterEntryPoint<LoadingPresenter>();
+            builder.RegisterEntryPoint<LoadingPresenter>()
+                   .As<ILoadingDisplay>();
         }
         #endregion
     }

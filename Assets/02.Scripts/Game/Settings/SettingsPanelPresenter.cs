@@ -38,7 +38,7 @@ namespace CodeJelly.BounceOrBreak.Game.Settings
         protected override void Bind(SettingsPanelView view, CompositeDisposable disposables)
         {
             view.CloseButton
-                .OnClickAsObservable()
+                .OnClick
                 .Subscribe(_ => Cancel())
                 .AddTo(disposables);
 

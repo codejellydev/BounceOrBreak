@@ -1,4 +1,5 @@
 using CodeJelly.BounceOrBreak.Core.Viewport;
+using CodeJelly.BounceOrBreak.Game.Entry;
 using CodeJelly.BounceOrBreak.Game.Gameplay.Pause;
 using CodeJelly.BounceOrBreak.Game.Gameplay.UI;
 using CodeJelly.BounceOrBreak.Game.Lobby;
@@ -107,6 +108,15 @@ namespace CodeJelly.BounceOrBreak.Tests
         public void SettingsPanelView_IsValid()
         {
             AssertAllValid<SettingsPanelView>(view => view.IsValid, "Check its button and category view wiring.");
+        }
+
+        /// <summary>
+        /// UI 프리팹의 모든 EntryView가 유효합니다.
+        /// </summary>
+        [Test]
+        public void EntryView_IsValid()
+        {
+            AssertAllValid<EntryView>(view => view.IsValid, "Check its version label wiring.");
         }
         #endregion
 

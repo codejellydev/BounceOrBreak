@@ -27,9 +27,6 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Overlay
         [Tooltip("화면을 덮는 CanvasGroup")]
         [SerializeField] private CanvasGroup _canvasGroup;
 
-        [Tooltip("페이드 한 번의 지속 시간 (초)")]
-        [SerializeField] private float _duration = 0.1f;
-
         private CancellationToken _destroyToken;
         #endregion
 
@@ -93,11 +90,11 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Overlay
 
                 try
                 {
-                    while (elapsed < _duration)
+                    while (elapsed < GameConstants.UI.FADE_DURATION)
                     {
                         // 전환 연출은 게임 시간과 무관
-                        elapsed += Time.unscaledDeltaTime;
-                        _canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsed / _duration);
+                        elapsed += Mathf.Min(Time.unscaledDeltaTime, GameConstants.UI.MAX_EFFECT_DELTA_TIME);
+                        _canvasGroup.alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsed / GameConstants.UI.FADE_DURATION);
 
                         await UniTask.Yield(PlayerLoopTiming.Update, linkedCts.Token);
                     }

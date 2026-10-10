@@ -34,18 +34,20 @@ namespace CodeJelly.BounceOrBreak.Tests
 
             Assert.IsNotNull(scope, $"No ApplicationScope on {prefab.name}.");
 
-            SerializedObject serializedScope = new SerializedObject(scope);
-            SerializedProperty property = serializedScope.GetIterator();
-
-            while (property.NextVisible(true) == true)
+            using (SerializedObject serializedScope = new SerializedObject(scope))
             {
-                if (property.propertyType != SerializedPropertyType.ObjectReference)
-                {
-                    continue;
-                }
+                SerializedProperty property = serializedScope.GetIterator();
 
-                Assert.IsNotNull(property.objectReferenceValue,
-                    $"'{property.displayName}' is not assigned on {prefab.name}.");
+                while (property.NextVisible(true) == true)
+                {
+                    if (property.propertyType != SerializedPropertyType.ObjectReference)
+                    {
+                        continue;
+                    }
+
+                    Assert.IsNotNull(property.objectReferenceValue,
+                        $"'{property.displayName}' is not assigned on {prefab.name}.");
+                }
             }
         }
 
