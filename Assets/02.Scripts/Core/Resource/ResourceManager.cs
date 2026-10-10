@@ -142,7 +142,11 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
             }
             finally
             {
-                _loadingCount.Value--;
+                // 에디터가 플레이 모드를 나갈 때 UniTask가 남은 continuation을 flush하므로 Dispose 뒤에도 도달함
+                if (_loadingCount.IsDisposed == false)
+                {
+                    _loadingCount.Value--;
+                }
             }
         }
 

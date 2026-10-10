@@ -156,7 +156,12 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
             finally
             {
                 IsTransitioning = false;
-                _transitionProgress.Value = 0f;
+
+                // 에디터가 플레이 모드를 나갈 때 UniTask가 남은 continuation을 flush하므로 Dispose 뒤에도 도달함
+                if (_transitionProgress.IsDisposed == false)
+                {
+                    _transitionProgress.Value = 0f;
+                }
 
                 _transitionCts?.Dispose();
                 _transitionCts = null;
