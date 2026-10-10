@@ -1,8 +1,6 @@
 using CodeJelly.BounceOrBreak.Game.Lobby;
 using NUnit.Framework;
-using UnityEditor.SceneManagement;
-using UnityEngine;
-using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
 namespace CodeJelly.BounceOrBreak.Tests.Validation
 {
@@ -14,8 +12,7 @@ namespace CodeJelly.BounceOrBreak.Tests.Validation
         #region Private Variables
         private const string LOBBY_SCENE_PATH = "Assets/01.Scenes/LobbyScene.unity";
 
-        private Scene _scene;
-        private bool _hasOpenedScene;
+        private TestScene _scene;
         #endregion
 
 
@@ -23,23 +20,13 @@ namespace CodeJelly.BounceOrBreak.Tests.Validation
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            _scene = SceneManager.GetSceneByPath(LOBBY_SCENE_PATH);
-            _hasOpenedScene = _scene.isLoaded == false;
-
-            if (_hasOpenedScene == true)
-            {
-                _scene = EditorSceneManager.OpenScene(LOBBY_SCENE_PATH, OpenSceneMode.Additive);
-            }
+            _scene = TestScene.Open(LOBBY_SCENE_PATH);
         }
 
         [OneTimeTearDown]
         public void OneTimeTearDown()
         {
-            // 이미 열려 있던 씬을 닫으면 편집 중인 변경이 사라지므로, 이 테스트가 연 경우에만 닫음
-            if (_hasOpenedScene == true)
-            {
-                EditorSceneManager.CloseScene(_scene, true);
-            }
+            _scene?.Dispose();
         }
 
         /// <summary>
@@ -48,22 +35,12 @@ namespace CodeJelly.BounceOrBreak.Tests.Validation
         [Test]
         public void LobbyScene_HasValidDiorama()
         {
-            LobbyDiorama diorama = null;
+            List<LobbyDiorama> dioramas = _scene.GetComponentsInScene<LobbyDiorama>();
 
-            foreach (GameObject root in _scene.GetRootGameObjects())
-            {
-                LobbyDiorama found = root.GetComponentInChildren<LobbyDiorama>(true);
+            Assert.AreEqual(1, dioramas.Count, $"Expected exactly one LobbyDiorama in {LOBBY_SCENE_PATH}, found {dioramas.Count}.");
 
-                if (found == null)
-                {
-                    continue;
-                }
+            LobbyDiorama diorama = dioramas[0];
 
-                Assert.IsNull(diorama, $"More than one LobbyDiorama found in {LOBBY_SCENE_PATH}.");
-                diorama = found;
-            }
-
-            Assert.IsNotNull(diorama, $"No LobbyDiorama found in {LOBBY_SCENE_PATH}.");
             Assert.IsTrue(diorama.IsValid, $"LobbyDiorama on {diorama.name} is not valid. Assign a valid LobbyDioramaConfig.");
         }
         #endregion

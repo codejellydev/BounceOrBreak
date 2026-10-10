@@ -4,9 +4,7 @@ using CodeJelly.BounceOrBreak.Game.Trampoline;
 using CodeJelly.BounceOrBreak.Game.Wall;
 using NUnit.Framework;
 using System.Collections.Generic;
-using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace CodeJelly.BounceOrBreak.Tests.Validation
 {
@@ -20,8 +18,7 @@ namespace CodeJelly.BounceOrBreak.Tests.Validation
 
         private const string GAME_SCENE_PATH = "Assets/01.Scenes/GameScene.unity";
 
-        private Scene _scene;
-        private bool _hasOpenedScene;
+        private TestScene _scene;
 
         private float _leftBoundary;
         private float _rightBoundary;
@@ -32,13 +29,7 @@ namespace CodeJelly.BounceOrBreak.Tests.Validation
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            _scene = SceneManager.GetSceneByPath(GAME_SCENE_PATH);
-            _hasOpenedScene = _scene.isLoaded == false;
-
-            if (_hasOpenedScene == true)
-            {
-                _scene = EditorSceneManager.OpenScene(GAME_SCENE_PATH, OpenSceneMode.Additive);
-            }
+            _scene = TestScene.Open(GAME_SCENE_PATH);
 
             ResolveBoundaries();
         }
@@ -46,11 +37,7 @@ namespace CodeJelly.BounceOrBreak.Tests.Validation
         [OneTimeTearDown]
         public void OneTimeTearDown()
         {
-            // 이미 열려 있던 씬을 닫으면 편집 중인 변경이 사라지므로, 이 테스트가 연 경우에만 닫음
-            if (_hasOpenedScene == true)
-            {
-                EditorSceneManager.CloseScene(_scene, true);
-            }
+            _scene?.Dispose();
         }
 
         /// <summary>
@@ -93,12 +80,7 @@ namespace CodeJelly.BounceOrBreak.Tests.Validation
         /// </summary>
         private void ResolveBoundaries()
         {
-            List<Wall> walls = new List<Wall>();
-
-            foreach (GameObject root in _scene.GetRootGameObjects())
-            {
-                walls.AddRange(root.GetComponentsInChildren<Wall>(true));
-            }
+            List<Wall> walls = _scene.GetComponentsInScene<Wall>();
 
             // 하나도 못 찾으면 간격이 무한대가 되어 무조건 통과하므로 탐색 자체를 검증
             Assert.IsNotEmpty(walls, $"No Wall found in {GAME_SCENE_PATH}.");

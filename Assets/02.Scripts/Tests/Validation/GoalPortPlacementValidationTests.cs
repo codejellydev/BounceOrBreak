@@ -2,9 +2,7 @@ using CodeJelly.BounceOrBreak.Core.Viewport;
 using CodeJelly.BounceOrBreak.Game.Gameplay.Goal;
 using NUnit.Framework;
 using System.Collections.Generic;
-using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace CodeJelly.BounceOrBreak.Tests.Validation
 {
@@ -18,8 +16,7 @@ namespace CodeJelly.BounceOrBreak.Tests.Validation
 
         private const string GAME_SCENE_PATH = "Assets/01.Scenes/GameScene.unity";
 
-        private Scene _scene;
-        private bool _hasOpenedScene;
+        private TestScene _scene;
         #endregion
 
 
@@ -27,23 +24,13 @@ namespace CodeJelly.BounceOrBreak.Tests.Validation
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            _scene = SceneManager.GetSceneByPath(GAME_SCENE_PATH);
-            _hasOpenedScene = _scene.isLoaded == false;
-
-            if (_hasOpenedScene == true)
-            {
-                _scene = EditorSceneManager.OpenScene(GAME_SCENE_PATH, OpenSceneMode.Additive);
-            }
+            _scene = TestScene.Open(GAME_SCENE_PATH);
         }
 
         [OneTimeTearDown]
         public void OneTimeTearDown()
         {
-            // 이미 열려 있던 씬을 닫으면 편집 중인 변경이 사라지므로, 이 테스트가 연 경우에만 닫음
-            if (_hasOpenedScene == true)
-            {
-                EditorSceneManager.CloseScene(_scene, true);
-            }
+            _scene?.Dispose();
         }
 
         /// <summary>
@@ -57,7 +44,7 @@ namespace CodeJelly.BounceOrBreak.Tests.Validation
             // 에셋을 못 찾으면 무조건 통과하므로 로드 자체를 검증. 여럿이면 어느 것을 기준으로 삼을지 정할 수 없어 하나로 제한
             Assert.AreEqual(1, configs.Count, "Expected exactly one ViewportConfig asset.");
 
-            List<GoalPort> ports = FindGoalPorts();
+            List<GoalPort> ports = _scene.GetComponentsInScene<GoalPort>();
 
             // 하나도 못 찾으면 무조건 통과하므로 탐색 자체를 검증
             Assert.IsNotEmpty(ports, $"No GoalPort found in {GAME_SCENE_PATH}.");
@@ -76,24 +63,6 @@ namespace CodeJelly.BounceOrBreak.Tests.Validation
                     $"{port.name} leaves the guaranteed area. bounds: {bounds.min} ~ {bounds.max}, area: x ±{contract.HalfWidth}, y ±{contract.HalfHeight}."
                 );
             }
-        }
-        #endregion
-
-
-        #region Private Methods
-        /// <summary>
-        /// 열어둔 씬에 배치된 모든 GoalPort를 찾습니다.
-        /// </summary>
-        private List<GoalPort> FindGoalPorts()
-        {
-            List<GoalPort> ports = new List<GoalPort>();
-
-            foreach (GameObject root in _scene.GetRootGameObjects())
-            {
-                ports.AddRange(root.GetComponentsInChildren<GoalPort>(true));
-            }
-
-            return ports;
         }
         #endregion
     }

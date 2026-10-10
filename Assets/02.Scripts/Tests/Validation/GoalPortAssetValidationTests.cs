@@ -3,9 +3,7 @@ using CodeJelly.BounceOrBreak.Game.Gameplay.Goal;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace CodeJelly.BounceOrBreak.Tests.Validation
 {
@@ -17,8 +15,7 @@ namespace CodeJelly.BounceOrBreak.Tests.Validation
         #region Private Variables
         private const string GAME_SCENE_PATH = "Assets/01.Scenes/GameScene.unity";
 
-        private Scene _scene;
-        private bool _hasOpenedScene;
+        private TestScene _scene;
         #endregion
 
 
@@ -26,23 +23,13 @@ namespace CodeJelly.BounceOrBreak.Tests.Validation
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            _scene = SceneManager.GetSceneByPath(GAME_SCENE_PATH);
-            _hasOpenedScene = _scene.isLoaded == false;
-
-            if (_hasOpenedScene == true)
-            {
-                _scene = EditorSceneManager.OpenScene(GAME_SCENE_PATH, OpenSceneMode.Additive);
-            }
+            _scene = TestScene.Open(GAME_SCENE_PATH);
         }
 
         [OneTimeTearDown]
         public void OneTimeTearDown()
         {
-            // 이미 열려 있던 씬을 닫으면 편집 중인 변경이 사라지므로, 이 테스트가 연 경우에만 닫음
-            if (_hasOpenedScene == true)
-            {
-                EditorSceneManager.CloseScene(_scene, true);
-            }
+            _scene?.Dispose();
         }
 
         /// <summary>
@@ -70,7 +57,7 @@ namespace CodeJelly.BounceOrBreak.Tests.Validation
         [Test]
         public void GoalPort_IsValid()
         {
-            List<GoalPort> ports = FindGoalPorts();
+            List<GoalPort> ports = _scene.GetComponentsInScene<GoalPort>();
 
             // 하나도 못 찾으면 무조건 통과하므로 탐색 자체를 검증
             Assert.IsNotEmpty(ports, $"No GoalPort found in {GAME_SCENE_PATH}.");
@@ -79,24 +66,6 @@ namespace CodeJelly.BounceOrBreak.Tests.Validation
             {
                 Assert.IsTrue(port.IsValid, $"{port.name} is not valid. Check its renderer and config wiring.");
             }
-        }
-        #endregion
-
-
-        #region Private Methods
-        /// <summary>
-        /// 열어둔 씬에 배치된 모든 GoalPort를 찾습니다.
-        /// </summary>
-        private List<GoalPort> FindGoalPorts()
-        {
-            List<GoalPort> ports = new List<GoalPort>();
-
-            foreach (GameObject root in _scene.GetRootGameObjects())
-            {
-                ports.AddRange(root.GetComponentsInChildren<GoalPort>(true));
-            }
-
-            return ports;
         }
         #endregion
     }

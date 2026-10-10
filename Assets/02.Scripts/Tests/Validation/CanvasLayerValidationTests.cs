@@ -4,9 +4,7 @@ using CodeJelly.BounceOrBreak.Game.UI;
 using NUnit.Framework;
 using System;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 namespace CodeJelly.BounceOrBreak.Tests.Validation
 {
@@ -103,27 +101,11 @@ namespace CodeJelly.BounceOrBreak.Tests.Validation
 
             foreach (string path in targets.ScenePaths)
             {
-                Scene scene = SceneManager.GetSceneByPath(path);
-                bool hasOpenedScene = scene.isLoaded == false;
-
-                if (hasOpenedScene == true)
-                {
-                    scene = EditorSceneManager.OpenScene(path, OpenSceneMode.Additive);
-                }
-
-                try
+                using (TestScene scene = TestScene.Open(path))
                 {
                     foreach (GameObject root in scene.GetRootGameObjects())
                     {
                         visitor(root, path);
-                    }
-                }
-                finally
-                {
-                    // 이미 열려 있던 씬을 닫으면 편집 중인 변경이 사라지므로, 이 테스트가 연 경우에만 닫음
-                    if (hasOpenedScene == true)
-                    {
-                        EditorSceneManager.CloseScene(scene, true);
                     }
                 }
             }
