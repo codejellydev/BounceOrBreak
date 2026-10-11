@@ -19,8 +19,6 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
     /// SceneManager와 혼용을 권장하지 않습니다.
     /// (권장 구조: Unity Build Settings에는 EntryScene만 포함하고, 나머지는 모두 Addressables로 관리)
     /// 타겟 씬은 경량으로 유지하고, 무거운 Asset은 ISceneInitializer에서 비동기 로드합니다.
-    ///
-    /// TODO: 씬 키 enum 자동 생성 및 빌드 프로세스에서의 키 검증 도입
     /// </summary>
     public class SceneLoader : IDisposable
     {
@@ -156,7 +154,12 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
             finally
             {
                 IsTransitioning = false;
-                _transitionProgress.Value = 0f;
+
+                // 에디터가 플레이 모드를 나갈 때 UniTask가 남은 continuation을 flush하므로 Dispose 뒤에도 도달함
+                if (_transitionProgress.IsDisposed == false)
+                {
+                    _transitionProgress.Value = 0f;
+                }
 
                 _transitionCts?.Dispose();
                 _transitionCts = null;
