@@ -130,6 +130,7 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   _audioSettingsConfig: {fileID: 11400000, guid: 6c89583c563a01b4183c9ba86f7b6b0a, type: 2}
+  _graphicsPresetConfig: {fileID: 11400000, guid: e1a1c97d79227f04b831dd43366a0285, type: 2}
   _uiPanelConfig: {fileID: 11400000, guid: 25a0fbbfbb1374c49b6b752443281920, type: 2}
   _overlayRoot: {fileID: 2013797877113055123}
   _screenFaderPrefab: {fileID: 2885895190095235199, guid: b84e5574bad8a824083b36e23f641933, type: 3}

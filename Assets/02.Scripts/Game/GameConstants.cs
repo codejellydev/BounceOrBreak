@@ -359,12 +359,17 @@ namespace CodeJelly.BounceOrBreak.Game
             }
 
             /// <summary>
-            /// 목표 프레임레이트 (미설정 시 모바일은 30fps로 고정)
+            /// 목표 프레임레이트 대신 기기의 화면 주사율을 쓸 때의 표시 값
             /// </summary>
-            public const int TARGET_FRAME_RATE = 60;
+            public const int DEVICE_MAX_FRAME_RATE = 0;
 
             /// <summary>
-            /// 그래픽 품질 수준. Unity Quality Settings 인덱스에 매핑.
+            /// 기기의 화면 주사율을 읽지 못했을 때의 목표 프레임레이트
+            /// </summary>
+            public const int FALLBACK_FRAME_RATE = 60;
+
+            /// <summary>
+            /// 그래픽 품질 수준. Unity Quality Settings 인덱스이자 GraphicsPresetConfig의 프리셋 인덱스.
             /// </summary>
             public static class Quality
             {

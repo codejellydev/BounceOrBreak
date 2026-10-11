@@ -20,7 +20,6 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
         private readonly ResourceManager _resourceManager;
         private readonly InputManager _inputManager;
         private readonly LocalizationManager _localizationManager;
-        private readonly IGraphicsSettingsApplier _graphicsApplier;
         private readonly AudioSettingsService _audioSettingsService;
         private readonly GraphicsSettingsService _graphicsSettingsService;
         private readonly LanguageSettingsService _languageSettingsService;
@@ -29,7 +28,6 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
             ResourceManager resourceManager,
             InputManager inputManager,
             LocalizationManager localizationManager,
-            IGraphicsSettingsApplier graphicsApplier,
             AudioSettingsService audioSettingsService,
             GraphicsSettingsService graphicsSettingsService,
             LanguageSettingsService languageSettingsService)
@@ -37,7 +35,6 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
             _resourceManager = resourceManager;
             _inputManager = inputManager;
             _localizationManager = localizationManager;
-            _graphicsApplier = graphicsApplier;
             _audioSettingsService = audioSettingsService;
             _graphicsSettingsService = graphicsSettingsService;
             _languageSettingsService = languageSettingsService;
@@ -63,9 +60,6 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
                 return true;
             }
 
-            // 목표 프레임레이트 적용
-            _graphicsApplier.ApplyTargetFrameRate(GameConstants.Graphics.TARGET_FRAME_RATE);
-
             // 리소스 시스템 초기화
             if (await _resourceManager.InitializeAsync() == false)
             {
@@ -90,7 +84,7 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
                 return false;
             }
 
-            // 저장된 설정 적용. 언어 적용이 Localization을 쓰므로 그 다음에 수행
+            // 저장된 설정 적용. 언어 적용이 Localization을 쓰므로 그 다음에 수행.
             await _audioSettingsService.LoadAsync();
             await _graphicsSettingsService.LoadAsync();
             await _languageSettingsService.LoadAsync();
