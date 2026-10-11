@@ -14,5 +14,10 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Pause
         /// 나가기
         /// </summary>
         Exit = 1,
+
+        /// <summary>
+        /// 다시 시작
+        /// </summary>
+        Restart = 2,
     }
 }

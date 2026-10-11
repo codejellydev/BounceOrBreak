@@ -153,35 +153,22 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         }
 
         /// <summary>
-        /// GameOver 상태의 게임을 정리하고 재시작합니다.
+        /// 라운드를 처음부터 다시 시작합니다. 로딩 중이면 무시합니다.
         /// </summary>
         public void RestartRound()
         {
-            if (_phase.Value != GamePhase.GameOver)
+            if (_phase.Value == GamePhase.Loading)
             {
-                AppLogger.Warning($"[GameFlowController] Restart requested in {_phase.Value} phase. Ignored.");
-
-                return;
-            }
-
-            if (_isPaused.Value == true)
-            {
-                AppLogger.Warning("[GameFlowController] Restart requested while paused. Ignored.");
+                AppLogger.Warning("[GameFlowController] Restart requested in Loading phase. Ignored.");
 
                 return;
             }
 
             AppLogger.Info("[GameFlowController] Restarting.");
 
-            // Playing으로 전환되기 전에 리셋해야 리셋 중 발생하는 Arrival 이벤트가 득점으로 처리되지 않음
-            _trampolineDrawer.DespawnAll();
-            _scoreService.ResetScore();
-            SpawnStageTrampolines();
-
-            _phase.Value = GamePhase.Playing;
-            _inputManager.SwitchContext(InputContext.Gameplay);
-
-            StartRound();
+            EndRound();
+            Resume();
+            BeginRound();
         }
 
         /// <summary>
@@ -359,6 +346,25 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
             }
         }
 
+        private void BeginRound()
+        {
+            // Playing으로 전환되기 전에 리셋해야 리셋 중 발생하는 Arrival 이벤트가 득점으로 처리되지 않음
+            _trampolineDrawer.DespawnAll();
+            _scoreService.ResetScore();
+            SpawnStageTrampolines();
+
+            _phase.Value = GamePhase.Playing;
+            _inputManager.SwitchContext(InputContext.Gameplay);
+
+            StartRound();
+        }
+
+        private void EndRound()
+        {
+            CancelRound();
+            _eggSpawner.StopSpawning();
+        }
+
         /// <summary>
         /// 진행 중인 Round의 비동기 작업을 모두 취소합니다.
         /// </summary>
@@ -383,8 +389,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
             AppLogger.Info($"[GameFlowController] Game over. Score: {_scoreService.CurrentScore.CurrentValue}");
 
             _inputManager.SwitchContext(InputContext.GameOver);
-            CancelRound();
-            _eggSpawner.StopSpawning();
+            EndRound();
 
             bool isNewBest = _scoreService.TryUpdateBestScore();
 

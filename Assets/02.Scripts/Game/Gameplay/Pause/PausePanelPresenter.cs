@@ -42,6 +42,11 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Pause
                 .Subscribe(_ => Complete(PausePanelResult.Resume))
                 .AddTo(disposables);
 
+            view.RestartButton
+                .OnClick
+                .Subscribe(_ => Complete(PausePanelResult.Restart))
+                .AddTo(disposables);
+
             view.ExitButton
                 .OnClick
                 .Subscribe(_ => Complete(PausePanelResult.Exit))
