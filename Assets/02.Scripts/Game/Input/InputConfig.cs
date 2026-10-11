@@ -6,7 +6,6 @@ namespace CodeJelly.BounceOrBreak.Game.Input
 {
     /// <summary>
     /// Context별 Input Action Map 설정을 관리하는 ScriptableObject.
-    /// TODO: 빌드 프로세스에서 모든 InputContext에 대응하는 Profile 존재 여부 검증
     /// </summary>
     [CreateAssetMenu(fileName = "InputConfig", menuName = "Configs/Game/Input Config")]
     public class InputConfig : ScriptableObject

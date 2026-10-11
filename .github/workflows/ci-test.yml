@@ -9,6 +9,7 @@ on:
       - 'Assets/**'
       - 'Packages/**'
       - 'ProjectSettings/**'
+      - 'Tools/CoverageFilters.json'
   
   workflow_dispatch:
 
@@ -56,7 +57,7 @@ jobs:
         with:
           unityVersion: 6000.3.9f1
           testMode: EditMode
-          coverageOptions: 'useProjectSettings'
+          coverageOptions: 'generateHtmlReport;generateAdditionalMetrics;filtersFromFile:Tools/CoverageFilters.json'
 
       - name: Guard against an empty test run
         run: |
@@ -75,13 +76,32 @@ jobs:
             exit 1
           fi
 
+      - name: Guard against an unfiltered coverage run
+        run: |
+          summary="${{ steps.testRunner.outputs.coveragePath }}/Report/Summary.json"
+          filters="Tools/CoverageFilters.json"
+
+          if [ ! -f "$summary" ]; then
+            echo "::error::Coverage summary not found at $summary"
+            exit 1
+          fi
+
+          expected=$(python3 -c "import json, sys; print(len(json.load(open(sys.argv[1]))['assembliesInclude']))" "$filters")
+          actual=$(python3 -c "import json, sys; print(json.load(open(sys.argv[1]))['summary']['assemblies'])" "$summary")
+          echo "Covered assemblies: $actual (expected $expected)" >> "$GITHUB_STEP_SUMMARY"
+
+          if [ "$actual" -ne "$expected" ]; then
+            echo "::error::Coverage measured $actual assemblies but $filters lists $expected. The filter file was likely not applied."
+            exit 1
+          fi
+
       - name: Upload test results
         uses: actions/upload-artifact@v7
         if: always()
         with:
           name: Test-Results
           path: ${{ steps.testRunner.outputs.artifactsPath }}
-          retention-days: 7
+          retention-days: 5
 
       - name: Upload coverage report
         uses: actions/upload-artifact@v7
@@ -89,5 +109,5 @@ jobs:
         with:
           name: Coverage-Report
           path: ${{ steps.testRunner.outputs.coveragePath }}
-          retention-days: 7
+          retention-days: 5
           if-no-files-found: warn

@@ -25,7 +25,10 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
     {
         #region Private Variables
         [Header("Audio Settings")]
-        [SerializeField] private AudioMixerConfig _audioSettingsConfig;
+        [SerializeField] private AudioMixerConfig _audioMixerConfig;
+
+        [Header("Graphics Settings")]
+        [SerializeField] private GraphicsPresetConfig _graphicsPresetConfig;
 
         [Header("UI")]
         [SerializeField] private UIPanelConfig _uiPanelConfig;
@@ -48,7 +51,8 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
             builder.Register<AppInitializer>(Lifetime.Singleton);
 
             builder.Register<ISettingsRepository, PlayerPrefsSettingsRepository>(Lifetime.Singleton);
-            builder.RegisterInstance(_audioSettingsConfig);
+            builder.RegisterInstance(_audioMixerConfig);
+            builder.RegisterInstance(_graphicsPresetConfig);
             builder.Register<IAudioSettingsApplier, AudioMixerApplier>(Lifetime.Singleton);
             builder.Register<IGraphicsSettingsApplier, UnityGraphicsApplier>(Lifetime.Singleton);
             builder.Register<ILanguageSettingsApplier, LocalizationApplier>(Lifetime.Singleton);

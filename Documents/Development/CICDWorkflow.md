@@ -11,12 +11,14 @@
 | 파일 | 트리거 브랜치 | 역할 |
 |---|---|---|
 | `ci-test.yml` | develop, main | Unity Test Runner 실행 |
-| `ci-build.yml` | develop, main | Android 빌드(서명 AAB + universal APK + 네이티브 심볼) 및 Artifact 업로드. main 빌드 성공 시 `v{bundleVersion}` 태그 푸시 |
+| `ci-build.yml` | main | Android 빌드(서명 AAB + universal APK + 네이티브 심볼) 및 Artifact 업로드. main 빌드 성공 시 `v{bundleVersion}` 태그 푸시 |
 
 두 워크플로우 모두 아래 경로 변경 시에만 실행됨:
 - `Assets/**`
 - `Packages/**`
 - `ProjectSettings/**`
+
+그 외 브랜치의 빌드는 Actions 탭에서 수동 실행
 
 ---
 

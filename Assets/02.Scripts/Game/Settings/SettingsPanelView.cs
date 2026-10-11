@@ -1,6 +1,7 @@
 using CodeJelly.BounceOrBreak.Game.Settings.Audio;
 using CodeJelly.BounceOrBreak.Game.Settings.Graphics;
 using CodeJelly.BounceOrBreak.Game.Settings.Language;
+using CodeJelly.BounceOrBreak.Game.UI.Widgets;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,7 +17,7 @@ namespace CodeJelly.BounceOrBreak.Game.Settings
         /// <summary>
         /// 패널을 닫는 버튼.
         /// </summary>
-        public Button CloseButton => _closeButton;
+        public PushButton CloseButton => _closeButton;
 
         /// <summary>
         /// 패널 외부(Dim 영역) 클릭으로 패널을 닫는 버튼.
@@ -40,7 +41,7 @@ namespace CodeJelly.BounceOrBreak.Game.Settings
 
         #region Private Variables
         [Header("Buttons")]
-        [SerializeField] private Button _closeButton;
+        [SerializeField] private PushButton _closeButton;
         [SerializeField] private Button _dimBackgroundButton;
 
         [Header("Categories")]

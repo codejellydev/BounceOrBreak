@@ -1,3 +1,4 @@
+using CodeJelly.BounceOrBreak.Game.UI;
 using UnityEngine;
 
 namespace CodeJelly.BounceOrBreak.Game
@@ -27,6 +28,56 @@ namespace CodeJelly.BounceOrBreak.Game
                 public const string PAUSE = "Pause";
                 public const string SETTINGS = "Settings";
             }
+
+            /// <summary>
+            /// UI 스프라이트의 PPU. Canvas의 Reference PPU를 이 값에 맞춰 도트 1개 = 1유닛으로 둠
+            /// </summary>
+            public const int PIXELS_PER_UNIT = 16;
+
+            /// <summary>
+            /// 설계 기준 화면 폭 (도트). 실제 화면 폭 ÷ DESIGN_WIDTH = Canvas 배율
+            /// </summary>
+            public const int DESIGN_WIDTH = 180;
+
+            /// <summary>
+            /// 페이드 한 번의 지속 시간 (초)
+            /// </summary>
+            public const float FADE_DURATION = 0.1f;
+
+            /// <summary>
+            /// 연출이 한 프레임에 진행할 수 있는 최대 시간 (초). 긴 프레임 뒤에 연출이 건너뛰는 것을 방지
+            /// </summary>
+            public const float MAX_EFFECT_DELTA_TIME = 1f / 30f;
+
+            /// <summary>
+            /// CanvasLayer 관련 상수
+            /// </summary>
+            public static class CanvasLayers
+            {
+                /// <summary>
+                /// 뒤에서 앞으로의 그리기 순서. 배열에서의 위치가 Canvas의 Sort Order가 됨
+                /// </summary>
+                public static readonly CanvasLayer[] ORDER =
+                {
+                    CanvasLayer.Scene, CanvasLayer.Transition, CanvasLayer.Overlay
+                };
+            }
+        }
+
+        public static class Entry
+        {
+            /// <summary>
+            /// 버전 표기 형식. {0}은 Application.version
+            /// </summary>
+            public const string VERSION_FORMAT = "v{0}";
+        }
+
+        public static class Loading
+        {
+            /// <summary>
+            /// 표시 진행률의 속도 (초당 진행률)
+            /// </summary>
+            public const float PROGRESS_SPEED = 4f;
         }
 
         public static class Stage
@@ -50,6 +101,11 @@ namespace CodeJelly.BounceOrBreak.Game
                 public const string PREFAB = "EggPrefab";
                 public const string REGISTRY = "EggRegistry";
             }
+
+            /// <summary>
+            /// 첫 Egg를 스폰하기까지의 기본 지연 (초)
+            /// </summary>
+            public const float DEFAULT_INITIAL_SPAWN_DELAY = 0.5f;
 
             /// <summary>
             /// Wave 하나가 담당하는 기본 스폰 횟수
@@ -303,12 +359,17 @@ namespace CodeJelly.BounceOrBreak.Game
             }
 
             /// <summary>
-            /// 목표 프레임레이트 (미설정 시 모바일은 30fps로 고정)
+            /// 목표 프레임레이트 대신 기기의 화면 주사율을 쓸 때의 표시 값
             /// </summary>
-            public const int TARGET_FRAME_RATE = 60;
+            public const int DEVICE_MAX_FRAME_RATE = 0;
 
             /// <summary>
-            /// 그래픽 품질 수준. Unity Quality Settings 인덱스에 매핑.
+            /// 기기의 화면 주사율을 읽지 못했을 때의 목표 프레임레이트
+            /// </summary>
+            public const int FALLBACK_FRAME_RATE = 60;
+
+            /// <summary>
+            /// 그래픽 품질 수준. Unity Quality Settings 인덱스이자 GraphicsPresetConfig의 프리셋 인덱스.
             /// </summary>
             public static class Quality
             {
