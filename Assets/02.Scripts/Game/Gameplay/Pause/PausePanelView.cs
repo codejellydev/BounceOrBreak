@@ -1,4 +1,4 @@
-using CodeJelly.BounceOrBreak.Game.Gameplay.Score;
+using CodeJelly.BounceOrBreak.Game.Score;
 using CodeJelly.BounceOrBreak.Game.UI.Widgets;
 using TMPro;
 using UnityEngine;

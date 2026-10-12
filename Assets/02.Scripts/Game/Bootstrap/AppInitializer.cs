@@ -2,6 +2,7 @@ using CodeJelly.BounceOrBreak.Core.Localization;
 using CodeJelly.BounceOrBreak.Core.Logging;
 using CodeJelly.BounceOrBreak.Core.Resource;
 using CodeJelly.BounceOrBreak.Game.Input;
+using CodeJelly.BounceOrBreak.Game.Score;
 using CodeJelly.BounceOrBreak.Game.Settings.Audio;
 using CodeJelly.BounceOrBreak.Game.Settings.Graphics;
 using CodeJelly.BounceOrBreak.Game.Settings.Language;
@@ -23,6 +24,7 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
         private readonly AudioSettingsService _audioSettingsService;
         private readonly GraphicsSettingsService _graphicsSettingsService;
         private readonly LanguageSettingsService _languageSettingsService;
+        private readonly ScoreRecordService _scoreRecordService;
 
         public AppInitializer(
             ResourceManager resourceManager,
@@ -30,7 +32,8 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
             LocalizationManager localizationManager,
             AudioSettingsService audioSettingsService,
             GraphicsSettingsService graphicsSettingsService,
-            LanguageSettingsService languageSettingsService)
+            LanguageSettingsService languageSettingsService,
+            ScoreRecordService scoreRecordService)
         {
             _resourceManager = resourceManager;
             _inputManager = inputManager;
@@ -38,6 +41,7 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
             _audioSettingsService = audioSettingsService;
             _graphicsSettingsService = graphicsSettingsService;
             _languageSettingsService = languageSettingsService;
+            _scoreRecordService = scoreRecordService;
         }
         #endregion
 
@@ -88,6 +92,8 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
             await _audioSettingsService.LoadAsync();
             await _graphicsSettingsService.LoadAsync();
             await _languageSettingsService.LoadAsync();
+
+            await _scoreRecordService.LoadAsync();
 
             // 실패 시에는 플래그를 세우지 않으므로 다음 호출에서 재시도됨
             _isInitialized = true;

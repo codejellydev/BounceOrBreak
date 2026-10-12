@@ -5,6 +5,7 @@ using CodeJelly.BounceOrBreak.Core.Settings;
 using CodeJelly.BounceOrBreak.Core.UI;
 using CodeJelly.BounceOrBreak.Game.Bootstrap;
 using CodeJelly.BounceOrBreak.Game.Input;
+using CodeJelly.BounceOrBreak.Game.Score;
 using CodeJelly.BounceOrBreak.Game.Settings.Audio;
 using CodeJelly.BounceOrBreak.Game.Settings.Graphics;
 using CodeJelly.BounceOrBreak.Game.Settings.Language;
@@ -59,6 +60,7 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
             builder.Register<AudioSettingsService>(Lifetime.Singleton);
             builder.Register<GraphicsSettingsService>(Lifetime.Singleton);
             builder.Register<LanguageSettingsService>(Lifetime.Singleton);
+            builder.Register<ScoreRecordService>(Lifetime.Singleton);
 
             builder.RegisterComponentInNewPrefab(_screenFaderPrefab, Lifetime.Singleton)
                    .UnderTransform(_overlayRoot)

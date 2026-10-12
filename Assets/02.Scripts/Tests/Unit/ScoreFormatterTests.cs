@@ -1,4 +1,4 @@
-using CodeJelly.BounceOrBreak.Game.Gameplay.Score;
+using CodeJelly.BounceOrBreak.Game.Score;
 using NUnit.Framework;
 using System.Globalization;
 
