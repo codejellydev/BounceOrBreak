@@ -15,6 +15,11 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: ff0b6b3515b0c0d49b9d79b23bc248d5
   m_SerializeEntries:
+  - m_GUID: 25b8ba63a242b9b4c8fcca3798fd881d
+    m_Address: ClearRecordConfirmView
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 34922915a13337d45be2b5454d7aece1
     m_Address: DefaultStageConfig
     m_ReadOnly: 0

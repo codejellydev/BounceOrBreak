@@ -5,6 +5,7 @@ using CodeJelly.BounceOrBreak.Game.Settings;
 using CodeJelly.BounceOrBreak.Game.Settings.Audio;
 using CodeJelly.BounceOrBreak.Game.Settings.Graphics;
 using CodeJelly.BounceOrBreak.Game.Settings.Language;
+using CodeJelly.BounceOrBreak.Game.Settings.PlayerData;
 using CodeJelly.BounceOrBreak.Game.UI.Navigation;
 using CodeJelly.BounceOrBreak.Game.UI.Panel;
 using UnityEngine;
@@ -46,11 +47,14 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
                    .As<IUIPanel>();
             builder.Register<SettingsPanelPresenter>(Lifetime.Scoped)
                    .As<IUIPanel>();
+            builder.Register<ClearRecordConfirmPresenter>(Lifetime.Scoped)
+                   .As<IUIPanel>();
 
             // Settings Panel
             builder.Register<AudioSettingsPresenter>(Lifetime.Scoped);
             builder.Register<GraphicsSettingsPresenter>(Lifetime.Scoped);
             builder.Register<LanguageSettingsPresenter>(Lifetime.Scoped);
+            builder.Register<PlayerDataPresenter>(Lifetime.Scoped);
 
 #if UNITY_EDITOR
             // 씬 단독 실행 시의 초기화 대행

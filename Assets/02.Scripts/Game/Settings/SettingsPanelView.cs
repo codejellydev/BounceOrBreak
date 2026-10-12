@@ -1,6 +1,7 @@
 using CodeJelly.BounceOrBreak.Game.Settings.Audio;
 using CodeJelly.BounceOrBreak.Game.Settings.Graphics;
 using CodeJelly.BounceOrBreak.Game.Settings.Language;
+using CodeJelly.BounceOrBreak.Game.Settings.PlayerData;
 using CodeJelly.BounceOrBreak.Game.UI.Widgets;
 using UnityEngine;
 using UnityEngine.UI;
@@ -27,6 +28,7 @@ namespace CodeJelly.BounceOrBreak.Game.Settings
         public AudioSettingsView AudioView => _audioView;
         public GraphicsSettingsView GraphicsView => _graphicsView;
         public LanguageSettingsView LanguageView => _languageView;
+        public PlayerDataView PlayerDataView => _playerDataView;
 
         /// <summary>
         /// View가 유효한지 확인합니다.
@@ -35,7 +37,8 @@ namespace CodeJelly.BounceOrBreak.Game.Settings
                             && _dimBackgroundButton != null
                             && _audioView != null
                             && _graphicsView != null
-                            && _languageView != null;
+                            && _languageView != null
+                            && _playerDataView != null;
         #endregion
 
 
@@ -48,6 +51,7 @@ namespace CodeJelly.BounceOrBreak.Game.Settings
         [SerializeField] private AudioSettingsView _audioView;
         [SerializeField] private GraphicsSettingsView _graphicsView;
         [SerializeField] private LanguageSettingsView _languageView;
+        [SerializeField] private PlayerDataView _playerDataView;
         #endregion
     }
 }

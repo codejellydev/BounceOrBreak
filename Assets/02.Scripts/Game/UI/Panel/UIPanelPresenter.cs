@@ -15,6 +15,11 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Panel
         #region Properties
         public abstract string Key { get; }
         public abstract TResult CancelResult { get; }
+
+        /// <summary>
+        /// 패널이 열려 있는 동안 유효한 토큰
+        /// </summary>
+        protected CancellationToken ShowToken { get; private set; }
         #endregion
 
 
@@ -47,6 +52,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Panel
             // 씬이 끝나면 호출자의 await도 풀려야 하므로 취소를 완료에 연결
             using (ct.Register(() => completion.TrySetCanceled(ct)))
             {
+                ShowToken = ct;
                 Bind(view, _bindings);
 
                 try
@@ -57,6 +63,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Panel
                 {
                     _bindings.Clear();
                     _completion = null;
+                    ShowToken = CancellationToken.None;
 
                     OnClosed();
                 }
