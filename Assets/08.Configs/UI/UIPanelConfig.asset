@@ -37,3 +37,11 @@ MonoBehaviour:
       m_SubObjectGUID: 
       m_EditorAssetChanged: 0
     _lifetime: 0
+  - _key: ClearRecordConfirm
+    _prefab:
+      m_AssetGUID: 25b8ba63a242b9b4c8fcca3798fd881d
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_SubObjectGUID: 
+      m_EditorAssetChanged: 0
+    _lifetime: 1

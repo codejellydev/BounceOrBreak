@@ -1,6 +1,7 @@
 using CodeJelly.BounceOrBreak.Game.Settings.Audio;
 using CodeJelly.BounceOrBreak.Game.Settings.Graphics;
 using CodeJelly.BounceOrBreak.Game.Settings.Language;
+using CodeJelly.BounceOrBreak.Game.Settings.PlayerData;
 using CodeJelly.BounceOrBreak.Game.UI.Panel;
 using R3;
 
@@ -15,15 +16,18 @@ namespace CodeJelly.BounceOrBreak.Game.Settings
         private readonly AudioSettingsPresenter _audioPresenter;
         private readonly GraphicsSettingsPresenter _graphicsPresenter;
         private readonly LanguageSettingsPresenter _languagePresenter;
+        private readonly PlayerDataPresenter _playerDataPresenter;
 
         public SettingsPanelPresenter(
             AudioSettingsPresenter audioPresenter,
             GraphicsSettingsPresenter graphicsPresenter,
-            LanguageSettingsPresenter languagePresenter)
+            LanguageSettingsPresenter languagePresenter,
+            PlayerDataPresenter playerDataPresenter)
         {
             _audioPresenter = audioPresenter;
             _graphicsPresenter = graphicsPresenter;
             _languagePresenter = languagePresenter;
+            _playerDataPresenter = playerDataPresenter;
         }
         #endregion
 
@@ -50,6 +54,7 @@ namespace CodeJelly.BounceOrBreak.Game.Settings
             _audioPresenter.Bind(view.AudioView, disposables);
             _graphicsPresenter.Bind(view.GraphicsView, disposables);
             _languagePresenter.Bind(view.LanguageView, disposables);
+            _playerDataPresenter.Bind(view.PlayerDataView, disposables, ShowToken);
         }
 
         protected override void OnClosed()

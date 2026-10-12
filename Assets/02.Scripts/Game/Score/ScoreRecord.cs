@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace CodeJelly.BounceOrBreak.Game.Gameplay.Score
+namespace CodeJelly.BounceOrBreak.Game.Score
 {
     /// <summary>
     /// 점수 기록 데이터 모델.

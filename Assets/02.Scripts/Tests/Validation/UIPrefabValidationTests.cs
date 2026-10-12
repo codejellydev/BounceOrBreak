@@ -4,6 +4,7 @@ using CodeJelly.BounceOrBreak.Game.Gameplay.Pause;
 using CodeJelly.BounceOrBreak.Game.Gameplay.UI;
 using CodeJelly.BounceOrBreak.Game.Lobby;
 using CodeJelly.BounceOrBreak.Game.Settings;
+using CodeJelly.BounceOrBreak.Game.Settings.PlayerData;
 using NUnit.Framework;
 using System;
 using UnityEditor;
@@ -72,6 +73,15 @@ namespace CodeJelly.BounceOrBreak.Tests.Validation
         public void QuitConfirmView_IsValid()
         {
             AssertAllValid<QuitConfirmView>(view => view.IsValid, "Check its button wiring.");
+        }
+
+        /// <summary>
+        /// UI 프리팹의 모든 ClearRecordConfirmView가 유효합니다.
+        /// </summary>
+        [Test]
+        public void ClearRecordConfirmView_IsValid()
+        {
+            AssertAllValid<ClearRecordConfirmView>(view => view.IsValid, "Check its button wiring.");
         }
 
         /// <summary>

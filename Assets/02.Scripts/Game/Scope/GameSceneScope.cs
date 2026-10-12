@@ -47,7 +47,7 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
             builder.RegisterInstance(_goalPorts);
             builder.RegisterComponent(_trampolineDrawer);
             builder.Register<EggSpawner>(Lifetime.Scoped);
-            builder.Register<ScoreService>(Lifetime.Scoped);
+            builder.Register<RoundScoreService>(Lifetime.Scoped);
             builder.Register<RoundProgress>(Lifetime.Scoped);
 
             // 초기화 순서를 SceneLoader가 구동하므로 EntryPoint가 아닌 Core.Scene 인터페이스로 등록

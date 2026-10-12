@@ -14,18 +14,18 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.UI
         #region Injection
         private readonly GameplayHudView _view;
         private readonly GameFlowController _flowController;
-        private readonly ScoreService _scoreService;
+        private readonly RoundScoreService _roundScoreService;
         private readonly GameSceneNavigator _navigator;
 
         public GameplayHudPresenter(
             GameplayHudView view,
             GameFlowController flowController,
-            ScoreService scoreService,
+            RoundScoreService roundScoreService,
             GameSceneNavigator navigator)
         {
             _view = view;
             _flowController = flowController;
-            _scoreService = scoreService;
+            _roundScoreService = roundScoreService;
             _navigator = navigator;
         }
         #endregion
@@ -66,9 +66,9 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.UI
                            .Subscribe(phase => _view.SetVisible(phase == GamePhase.Playing))
                            .AddTo(_disposables);
 
-            _scoreService.CurrentScore
-                         .Subscribe(_view.UpdateCurrentScore)
-                         .AddTo(_disposables);
+            _roundScoreService.CurrentScore
+                              .Subscribe(_view.UpdateCurrentScore)
+                              .AddTo(_disposables);
 
             _view.PauseButton
                  .OnClick

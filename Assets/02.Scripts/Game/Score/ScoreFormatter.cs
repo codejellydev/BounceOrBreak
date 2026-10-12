@@ -1,6 +1,6 @@
 using System.Globalization;
 
-namespace CodeJelly.BounceOrBreak.Game.Gameplay.Score
+namespace CodeJelly.BounceOrBreak.Game.Score
 {
     /// <summary>
     /// 점수를 화면 표시용 문자열로 바꾸는 클래스.
