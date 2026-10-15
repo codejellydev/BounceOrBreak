@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: UIPanelConfig
   m_EditorClassIdentifier: CodeJelly.BounceOrBreak.Game::CodeJelly.BounceOrBreak.Game.UI.Navigation.UIPanelConfig
   _entries:
-  - _key: QuitConfirm
+  - _key: Message
     _prefab:
-      m_AssetGUID: 75f32aef8b871ff4ba524d87dd54be2d
+      m_AssetGUID: ace04fe1e3c61a143b2f893d8d0dff0c
       m_SubObjectName: 
       m_SubObjectType: 
       m_SubObjectGUID: 
@@ -37,11 +37,3 @@ MonoBehaviour:
       m_SubObjectGUID: 
       m_EditorAssetChanged: 0
     _lifetime: 0
-  - _key: ClearRecordConfirm
-    _prefab:
-      m_AssetGUID: 25b8ba63a242b9b4c8fcca3798fd881d
-      m_SubObjectName: 
-      m_SubObjectType: 
-      m_SubObjectGUID: 
-      m_EditorAssetChanged: 0
-    _lifetime: 1

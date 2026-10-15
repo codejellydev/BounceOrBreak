@@ -1,4 +1,5 @@
 using CodeJelly.BounceOrBreak.Game.UI;
+using CodeJelly.BounceOrBreak.Game.UI.Message;
 using UnityEngine;
 
 namespace CodeJelly.BounceOrBreak.Game
@@ -24,10 +25,47 @@ namespace CodeJelly.BounceOrBreak.Game
             /// </summary>
             public static class Keys
             {
-                public const string QUIT_CONFIRM = "QuitConfirm";
+                public const string MESSAGE = "Message";
                 public const string PAUSE = "Pause";
                 public const string SETTINGS = "Settings";
-                public const string CLEAR_RECORD_CONFIRM = "ClearRecordConfirm";
+            }
+
+            /// <summary>
+            /// MessagePanel 관련 상수
+            /// </summary>
+            public static class MessagePanel
+            {
+                /// <summary>
+                /// 본문 텍스트 위아래 여백의 합 (도트)
+                /// </summary>
+                public const int BODY_PADDING = 5;
+
+                /// <summary>
+                /// 본문이 없을 때 제목과 버튼 사이에 두는 여백 (도트)
+                /// </summary>
+                public const int EMPTY_BODY_GAP = 4;
+            }
+
+            /// <summary>
+            /// MessagePanel에 띄우는 메시지
+            /// </summary>
+            public static class Messages
+            {
+                public static readonly MessageRequest QUIT = new MessageRequest
+                {
+                    Title = "Quit the game?",
+                    PrimaryLabel = "Yes",
+                    SecondaryLabel = "No"
+                };
+
+                public static readonly MessageRequest CLEAR_RECORD = new MessageRequest
+                {
+                    Title = "Clear the record?",
+                    Body = "Your best score will be lost.",
+                    PrimaryLabel = "Clear",
+                    SecondaryLabel = "Cancel",
+                    IsDestructive = true
+                };
             }
 
             /// <summary>

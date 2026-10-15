@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1469020709653771613}
-  - component: {fileID: 7980012810802348978}
+  - component: {fileID: 2703709961235719140}
   m_Layer: 5
-  m_Name: ClearRecordConfirmView
+  m_Name: MessagePanelView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38,7 +38,7 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &7980012810802348978
+--- !u!114 &2703709961235719140
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -47,12 +47,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 597177966917546116}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cc9d46e6e3549a2855894d909c177e2, type: 3}
+  m_Script: {fileID: 11500000, guid: 94ff1c1ef44e495887388c4313bddd59, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: CodeJelly.BounceOrBreak.Game::CodeJelly.BounceOrBreak.Game.Settings.PlayerData.ClearRecordConfirmView
-  _confirmButton: {fileID: 2525212743272608621}
-  _cancelButton: {fileID: 3590542947662548712}
+  m_EditorClassIdentifier: CodeJelly.BounceOrBreak.Game::CodeJelly.BounceOrBreak.Game.UI.Message.MessagePanelView
+  _modal: {fileID: 4327185044569534505}
+  _header: {fileID: 3308345374497497381}
+  _body: {fileID: 7375812711020336318}
+  _footer: {fileID: 9101429044200662239}
+  _titleText: {fileID: 4252116475121290019}
+  _bodyText: {fileID: 1129040196120383835}
+  _primaryButton: {fileID: 2525212743272608621}
+  _primaryFace: {fileID: 1372398664954464798}
+  _primaryLabel: {fileID: 2789475079812775074}
+  _secondaryButton: {fileID: 3590542947662548712}
+  _secondaryLabel: {fileID: 3776625198144618791}
   _dimBackgroundButton: {fileID: 6487777833595935665}
+  _faceColor: {r: 1, g: 1, b: 1, a: 1}
+  _labelColor: {r: 0.078431375, g: 0.07058824, b: 0.101960786, a: 1}
+  _destructiveFaceColor: {r: 0.8509804, g: 0.30980393, b: 0.30980393, a: 1}
+  _destructiveLabelColor: {r: 0.96862745, g: 0.9137255, b: 0.76862746, a: 1}
 --- !u!1 &867976380120710487
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,7 +114,7 @@ GameObject:
   - component: {fileID: 8603781957199903428}
   - component: {fileID: 1129040196120383835}
   m_Layer: 0
-  m_Name: MessageText
+  m_Name: BodyText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -154,7 +167,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Your best score will be lost.
+  m_text: Body
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 015573da50ed04390be9f20287a541d6, type: 2}
   m_sharedMaterial: {fileID: -2237749729835323621, guid: 015573da50ed04390be9f20287a541d6, type: 2}
@@ -291,7 +304,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Clear the record?
+  m_text: Title
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 015573da50ed04390be9f20287a541d6, type: 2}
   m_sharedMaterial: {fileID: -2237749729835323621, guid: 015573da50ed04390be9f20287a541d6, type: 2}
@@ -428,8 +441,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1279929917186987964}
   - {fileID: 224134549828479545}
+  - {fileID: 1279929917186987964}
   m_Father: {fileID: 4327185044569534505}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -553,11 +566,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3521312305080000086, guid: 2c16f44a7fc74782bb1b14c07794ffe9, type: 3}
       propertyPath: m_text
-      value: Cancel
+      value: Secondary
       objectReference: {fileID: 0}
     - target: {fileID: 6117108148273786685, guid: 2c16f44a7fc74782bb1b14c07794ffe9, type: 3}
       propertyPath: m_Name
-      value: CancelButton
+      value: SecondaryButton
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -580,6 +593,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d90c759c3194ab3a02316c6ebb0dcb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: CodeJelly.BounceOrBreak.Game::CodeJelly.BounceOrBreak.Game.UI.Widgets.PushButton
+--- !u!114 &3776625198144618791 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3521312305080000086, guid: 2c16f44a7fc74782bb1b14c07794ffe9, type: 3}
+  m_PrefabInstance: {fileID: 339866164239949681}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1001 &356593505007299195
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -701,15 +725,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 388364535257295082, guid: 2c16f44a7fc74782bb1b14c07794ffe9, type: 3}
       propertyPath: m_Color.b
-      value: 0.30980393
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 388364535257295082, guid: 2c16f44a7fc74782bb1b14c07794ffe9, type: 3}
       propertyPath: m_Color.g
-      value: 0.30980393
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 388364535257295082, guid: 2c16f44a7fc74782bb1b14c07794ffe9, type: 3}
       propertyPath: m_Color.r
-      value: 0.8509804
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1545943051403331789, guid: 2c16f44a7fc74782bb1b14c07794ffe9, type: 3}
       propertyPath: m_Pivot.x
@@ -793,23 +817,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3521312305080000086, guid: 2c16f44a7fc74782bb1b14c07794ffe9, type: 3}
       propertyPath: m_text
-      value: Clear
+      value: Primary
       objectReference: {fileID: 0}
     - target: {fileID: 3521312305080000086, guid: 2c16f44a7fc74782bb1b14c07794ffe9, type: 3}
       propertyPath: m_fontColor.b
-      value: 0.76862746
+      value: 0.101960786
       objectReference: {fileID: 0}
     - target: {fileID: 3521312305080000086, guid: 2c16f44a7fc74782bb1b14c07794ffe9, type: 3}
       propertyPath: m_fontColor.g
-      value: 0.9137255
+      value: 0.07058824
       objectReference: {fileID: 0}
     - target: {fileID: 3521312305080000086, guid: 2c16f44a7fc74782bb1b14c07794ffe9, type: 3}
       propertyPath: m_fontColor.r
-      value: 0.96862745
+      value: 0.078431375
       objectReference: {fileID: 0}
     - target: {fileID: 6117108148273786685, guid: 2c16f44a7fc74782bb1b14c07794ffe9, type: 3}
       propertyPath: m_Name
-      value: ConfirmButton
+      value: PrimaryButton
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -821,6 +845,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1545943051403331789, guid: 2c16f44a7fc74782bb1b14c07794ffe9, type: 3}
   m_PrefabInstance: {fileID: 1614542855312384756}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1372398664954464798 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 388364535257295082, guid: 2c16f44a7fc74782bb1b14c07794ffe9, type: 3}
+  m_PrefabInstance: {fileID: 1614542855312384756}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!114 &2525212743272608621 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3847017120571822489, guid: 2c16f44a7fc74782bb1b14c07794ffe9, type: 3}
@@ -832,6 +867,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d90c759c3194ab3a02316c6ebb0dcb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: CodeJelly.BounceOrBreak.Game::CodeJelly.BounceOrBreak.Game.UI.Widgets.PushButton
+--- !u!114 &2789475079812775074 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3521312305080000086, guid: 2c16f44a7fc74782bb1b14c07794ffe9, type: 3}
+  m_PrefabInstance: {fileID: 1614542855312384756}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
 --- !u!1001 &3306646004956791651
 PrefabInstance:
   m_ObjectHideFlags: 0

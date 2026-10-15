@@ -15,11 +15,6 @@ MonoBehaviour:
   m_GroupName: Default Local Group
   m_GUID: ff0b6b3515b0c0d49b9d79b23bc248d5
   m_SerializeEntries:
-  - m_GUID: 25b8ba63a242b9b4c8fcca3798fd881d
-    m_Address: ClearRecordConfirmView
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 34922915a13337d45be2b5454d7aece1
     m_Address: DefaultStageConfig
     m_ReadOnly: 0
@@ -45,11 +40,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: 75f32aef8b871ff4ba524d87dd54be2d
-    m_Address: QuitConfirmView
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 75fef6d9261f1ba43a00751ab1258ec3
     m_Address: DefaultInputConfig
     m_ReadOnly: 0
@@ -72,6 +62,11 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: a831584289b0eb744a9e89b58014f323
     m_Address: DefaultTrampolineConfig
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ace04fe1e3c61a143b2f893d8d0dff0c
+    m_Address: MessagePanelView
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

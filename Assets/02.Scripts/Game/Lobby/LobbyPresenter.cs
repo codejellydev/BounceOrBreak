@@ -1,6 +1,7 @@
 using CodeJelly.BounceOrBreak.Core.Logging;
 using CodeJelly.BounceOrBreak.Core.Scene;
 using CodeJelly.BounceOrBreak.Game.Input;
+using CodeJelly.BounceOrBreak.Game.UI.Message;
 using CodeJelly.BounceOrBreak.Game.UI.Navigation;
 using Cysharp.Threading.Tasks;
 using R3;
@@ -202,7 +203,7 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
 
             try
             {
-                isConfirmed = await _navigation.ShowAsync<bool>(GameConstants.UI.Keys.QUIT_CONFIRM, ct);
+                isConfirmed = await _navigation.ShowAsync<MessageRequest, bool>(GameConstants.UI.Keys.MESSAGE, GameConstants.UI.Messages.QUIT, ct);
             }
             catch (OperationCanceledException)
             {

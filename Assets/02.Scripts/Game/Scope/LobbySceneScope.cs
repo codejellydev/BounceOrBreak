@@ -6,6 +6,7 @@ using CodeJelly.BounceOrBreak.Game.Settings.Audio;
 using CodeJelly.BounceOrBreak.Game.Settings.Graphics;
 using CodeJelly.BounceOrBreak.Game.Settings.Language;
 using CodeJelly.BounceOrBreak.Game.Settings.PlayerData;
+using CodeJelly.BounceOrBreak.Game.UI.Message;
 using CodeJelly.BounceOrBreak.Game.UI.Navigation;
 using CodeJelly.BounceOrBreak.Game.UI.Panel;
 using UnityEngine;
@@ -43,11 +44,9 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
             // Navigation
             builder.RegisterComponent(_panelRoot);
             builder.RegisterEntryPoint<UIPanelRootRegistrar>();
-            builder.Register<QuitConfirmPresenter>(Lifetime.Scoped)
+            builder.Register<MessagePanelPresenter>(Lifetime.Scoped)
                    .As<IUIPanel>();
             builder.Register<SettingsPanelPresenter>(Lifetime.Scoped)
-                   .As<IUIPanel>();
-            builder.Register<ClearRecordConfirmPresenter>(Lifetime.Scoped)
                    .As<IUIPanel>();
 
             // Settings Panel

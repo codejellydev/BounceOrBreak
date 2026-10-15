@@ -38,4 +38,23 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Panel
         /// <param name="ct">패널이 사라지면(씬 종료) 취소됨</param>
         UniTask<TResult> RunAsync(GameObject instance, CancellationToken ct);
     }
+
+    /// <summary>
+    /// 인자를 받아 결과를 반환하는 패널의 Presenter 인터페이스.
+    /// </summary>
+    public interface IUIPanel<TRequest, TResult> : IUIPanel
+    {
+        /// <summary>
+        /// 취소 경로로 닫혔을 때의 결과
+        /// </summary>
+        TResult CancelResult { get; }
+
+        /// <summary>
+        /// 인스턴스에 바인딩해 닫힐 때까지 상호작용을 진행하고 결과를 반환합니다.
+        /// </summary>
+        /// <param name="instance">패널 인스턴스</param>
+        /// <param name="request">패널에 넘길 인자</param>
+        /// <param name="ct">패널이 사라지면(씬 종료) 취소됨</param>
+        UniTask<TResult> RunAsync(GameObject instance, TRequest request, CancellationToken ct);
+    }
 }

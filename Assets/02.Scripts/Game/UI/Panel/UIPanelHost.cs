@@ -68,16 +68,26 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Panel
         /// </summary>
         public IUIPanel<TResult> GetPanel<TResult>(string key)
         {
-            if (_panels.TryGetValue(key, out IUIPanel panel) == false)
-            {
-                throw new InvalidOperationException($"[UIPanelHost] No panel is registered for '{key}' under {_root.name}.");
-            }
-
-            IUIPanel<TResult> typed = panel as IUIPanel<TResult>;
+            IUIPanel<TResult> typed = FindPanel(key) as IUIPanel<TResult>;
 
             if (typed == null)
             {
                 throw new InvalidOperationException($"[UIPanelHost] Panel '{key}' does not return {typeof(TResult).Name}.");
+            }
+
+            return typed;
+        }
+
+        /// <summary>
+        /// 키에 등록된 Presenter를 인자·결과 타입에 맞춰 반환합니다.
+        /// </summary>
+        public IUIPanel<TRequest, TResult> GetPanel<TRequest, TResult>(string key)
+        {
+            IUIPanel<TRequest, TResult> typed = FindPanel(key) as IUIPanel<TRequest, TResult>;
+
+            if (typed == null)
+            {
+                throw new InvalidOperationException($"[UIPanelHost] Panel '{key}' does not take {typeof(TRequest).Name} and return {typeof(TResult).Name}.");
             }
 
             return typed;
@@ -148,6 +158,16 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Panel
 
 
         #region Private Methods
+        private IUIPanel FindPanel(string key)
+        {
+            if (_panels.TryGetValue(key, out IUIPanel panel) == false)
+            {
+                throw new InvalidOperationException($"[UIPanelHost] No panel is registered for '{key}' under {_root.name}.");
+            }
+
+            return panel;
+        }
+
         /// <summary>
         /// 프리팹을 로드해 루트 밑에 비활성 인스턴스를 만듭니다.
         /// </summary>

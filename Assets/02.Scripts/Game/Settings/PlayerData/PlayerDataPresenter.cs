@@ -1,4 +1,5 @@
 using CodeJelly.BounceOrBreak.Game.Score;
+using CodeJelly.BounceOrBreak.Game.UI.Message;
 using CodeJelly.BounceOrBreak.Game.UI.Navigation;
 using Cysharp.Threading.Tasks;
 using R3;
@@ -48,7 +49,7 @@ namespace CodeJelly.BounceOrBreak.Game.Settings.PlayerData
 
             try
             {
-                isConfirmed = await _navigation.ShowAsync<bool>(GameConstants.UI.Keys.CLEAR_RECORD_CONFIRM, ct);
+                isConfirmed = await _navigation.ShowAsync<MessageRequest, bool>(GameConstants.UI.Keys.MESSAGE, GameConstants.UI.Messages.CLEAR_RECORD, ct);
             }
             catch (OperationCanceledException)
             {
