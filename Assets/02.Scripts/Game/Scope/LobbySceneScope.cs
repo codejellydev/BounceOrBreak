@@ -1,6 +1,7 @@
 using CodeJelly.BounceOrBreak.Core.Scene;
 using CodeJelly.BounceOrBreak.Game.Bootstrap;
 using CodeJelly.BounceOrBreak.Game.Lobby;
+using CodeJelly.BounceOrBreak.Game.Remote;
 using CodeJelly.BounceOrBreak.Game.Settings;
 using CodeJelly.BounceOrBreak.Game.Settings.Audio;
 using CodeJelly.BounceOrBreak.Game.Settings.Graphics;
@@ -40,6 +41,7 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
             builder.RegisterComponent(_diorama);
             builder.RegisterEntryPoint<LobbyPresenter>()
                    .As<ISceneActivatable>();
+            builder.Register<RemoteNoticePresenter>(Lifetime.Scoped);
 
             // Navigation
             builder.RegisterComponent(_panelRoot);

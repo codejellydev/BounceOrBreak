@@ -1,6 +1,7 @@
 using CodeJelly.BounceOrBreak.Core.Logging;
 using CodeJelly.BounceOrBreak.Core.Scene;
 using CodeJelly.BounceOrBreak.Game.Input;
+using CodeJelly.BounceOrBreak.Game.Remote;
 using CodeJelly.BounceOrBreak.Game.UI.Message;
 using CodeJelly.BounceOrBreak.Game.UI.Navigation;
 using Cysharp.Threading.Tasks;
@@ -24,6 +25,7 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
         private readonly SceneTransitionConfig _lobbySceneConfig;
         private readonly InputManager _inputManager;
         private readonly UINavigationService _navigation;
+        private readonly RemoteNoticePresenter _remoteNotice;
 
         public LobbyPresenter(
             LobbyView view,
@@ -31,7 +33,8 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
             SceneLoader sceneLoader,
             SceneTransitionConfig lobbySceneConfig,
             InputManager inputManager,
-            UINavigationService navigation)
+            UINavigationService navigation,
+            RemoteNoticePresenter remoteNotice)
         {
             _view = view;
             _diorama = diorama;
@@ -39,6 +42,7 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
             _lobbySceneConfig = lobbySceneConfig;
             _inputManager = inputManager;
             _navigation = navigation;
+            _remoteNotice = remoteNotice;
         }
         #endregion
 
@@ -70,6 +74,8 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
         public void OnActivated()
         {
             _inputManager.SwitchContext(InputContext.Lobby);
+
+            ShowRemoteNotices(_cts.Token).Forget();
         }
 
         /// <summary>
@@ -142,6 +148,18 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
         private void OnBackPressedAtRoot()
         {
             ConfirmQuit(_cts.Token).Forget();
+        }
+
+        private async UniTaskVoid ShowRemoteNotices(CancellationToken ct)
+        {
+            try
+            {
+                await _remoteNotice.ShowPendingAsync(ct);
+            }
+            catch (OperationCanceledException)
+            {
+                // 씬이 먼저 내려간 것이므로 처리할 결과가 없음
+            }
         }
 
         private async UniTaskVoid InitializeDiorama(CancellationToken ct)

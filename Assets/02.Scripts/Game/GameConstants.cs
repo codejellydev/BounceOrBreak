@@ -1,3 +1,4 @@
+using CodeJelly.BounceOrBreak.Game.Remote;
 using CodeJelly.BounceOrBreak.Game.UI;
 using CodeJelly.BounceOrBreak.Game.UI.Message;
 using UnityEngine;
@@ -71,6 +72,33 @@ namespace CodeJelly.BounceOrBreak.Game
                     SecondaryLabel = "Cancel",
                     IsDestructive = true
                 };
+
+                /// <summary>
+                /// 새 버전 안내
+                /// </summary>
+                public static MessageRequest NewVersion(string version)
+                {
+                    return new MessageRequest
+                    {
+                        Title = "Update available",
+                        Body = $"v{version} is ready to download.",
+                        PrimaryLabel = "Update",
+                        SecondaryLabel = "Later"
+                    };
+                }
+
+                /// <summary>
+                /// 원격 공지
+                /// </summary>
+                public static MessageRequest Notice(RemoteNotice notice)
+                {
+                    return new MessageRequest
+                    {
+                        Title = notice.Title,
+                        Body = notice.Body,
+                        PrimaryLabel = "OK"
+                    };
+                }
             }
 
             /// <summary>
@@ -319,6 +347,37 @@ namespace CodeJelly.BounceOrBreak.Game
             /// 내보내는 방향이 수직에서 벗어날 수 있는 최대 각도 (도)
             /// </summary>
             public const float REJECT_CONE_HALF_ANGLE = 40f;
+        }
+
+        public static class Remote
+        {
+            public static class Keys
+            {
+                /// <summary>
+                /// RemoteNoticeState가 ISettingsRepository에 저장될 때 사용되는 키
+                /// </summary>
+                public const string REPOSITORY_KEY = "RemoteNoticeState";
+            }
+
+            /// <summary>
+            /// 원격 설정 파일의 주소
+            /// </summary>
+            public const string CONFIG_URL = "https://codejellydev.github.io/bounceorbreak/config.json";
+
+            /// <summary>
+            /// 수신 제한 시간 (초). 초과하면 이번 실행은 원격 설정 없이 진행
+            /// </summary>
+            public const float TIMEOUT_SECONDS = 2f;
+
+            /// <summary>
+            /// 이 빌드가 지원하는 RemoteConfig 스키마 버전
+            /// </summary>
+            public const int SCHEMA_VERSION = 1;
+
+            /// <summary>
+            /// 스토어 페이지 주소 형식. {0}은 Application.identifier
+            /// </summary>
+            public const string STORE_URL_FORMAT = "market://details?id={0}";
         }
 
         public static class Score
