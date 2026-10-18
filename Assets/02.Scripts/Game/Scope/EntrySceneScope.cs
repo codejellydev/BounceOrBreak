@@ -1,6 +1,9 @@
 using CodeJelly.BounceOrBreak.Core.Scene;
 using CodeJelly.BounceOrBreak.Game.Bootstrap;
 using CodeJelly.BounceOrBreak.Game.Entry;
+using CodeJelly.BounceOrBreak.Game.UI.Message;
+using CodeJelly.BounceOrBreak.Game.UI.Navigation;
+using CodeJelly.BounceOrBreak.Game.UI.Panel;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -22,17 +25,27 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
 
         [Header("Entry")]
         [SerializeField] private EntryView _entryView;
+
+        [Header("Navigation")]
+        [SerializeField] private UIPanelRoot _panelRoot;
         #endregion
 
 
         #region Protected Methods
         protected override void Configure(IContainerBuilder builder)
         {
+            // Entry
             builder.RegisterInstance(_entrySceneConfig);
             builder.RegisterComponent(_entryView);
-
-            builder.RegisterEntryPoint<Bootstrapper>();
+            builder.RegisterEntryPoint<Bootstrapper>()
+                   .AsSelf();
             builder.RegisterEntryPoint<EntryPresenter>();
+
+            // Navigation
+            builder.RegisterComponent(_panelRoot);
+            builder.RegisterEntryPoint<UIPanelRootRegistrar>();
+            builder.Register<MessagePanelPresenter>(Lifetime.Scoped)
+                   .As<IUIPanel>();
         }
         #endregion
     }

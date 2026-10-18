@@ -36,7 +36,7 @@ namespace CodeJelly.BounceOrBreak.Core.Remote
                 catch (UnityWebRequestException ex)
                 {
                     RemoteResultError error = ex.Result == UnityWebRequest.Result.ProtocolError ? RemoteResultError.HttpError : RemoteResultError.NetworkError;
-                    AppLogger.Warning($"[HttpRemoteConfigSource] Request failed ({error}): {ex.Message}");
+                    AppLogger.Warning($"[HttpRemoteConfigSource] Request failed ({error}): {ex.ResponseCode} {ex.Error}");
                     return RemoteResult<T>.Failure(error);
                 }
 

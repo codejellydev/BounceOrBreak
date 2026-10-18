@@ -73,6 +73,13 @@ namespace CodeJelly.BounceOrBreak.Game
                     IsDestructive = true
                 };
 
+                public static readonly MessageRequest STARTUP_FAILED = new MessageRequest
+                {
+                    Title = "Oops!",
+                    Body = "Something went wrong while starting. Please restart the app.",
+                    PrimaryLabel = "OK"
+                };
+
                 /// <summary>
                 /// 새 버전 안내
                 /// </summary>
