@@ -1,3 +1,4 @@
+using CodeJelly.BounceOrBreak.Core;
 using CodeJelly.BounceOrBreak.Core.Logging;
 using CodeJelly.BounceOrBreak.Core.Scene;
 using CodeJelly.BounceOrBreak.Game.Input;
@@ -8,7 +9,6 @@ using Cysharp.Threading.Tasks;
 using R3;
 using System;
 using System.Threading;
-using UnityEngine;
 using VContainer.Unity;
 
 namespace CodeJelly.BounceOrBreak.Game.Lobby
@@ -91,18 +91,6 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
 
 
         #region Private Methods
-        /// <summary>
-        /// 앱을 종료합니다.
-        /// </summary>
-        private static void QuitApplication()
-        {
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-#else
-            Application.Quit();
-#endif
-        }
-
         /// <summary>
         /// View와 Presenter 간의 이벤트 바인딩을 설정합니다.
         /// </summary>
@@ -235,7 +223,7 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
             }
 
             AppLogger.Info("[LobbyPresenter] Quit confirmed.");
-            QuitApplication();
+            ApplicationUtility.Quit();
         }
         #endregion
     }
