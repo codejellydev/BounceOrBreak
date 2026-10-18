@@ -39,6 +39,28 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Panel
 
                 _panels.Add(panel.Key, panel);
             }
+
+            // 씬에 미리 놓인 인스턴스는 로드 없이 그대로 씀
+            foreach (UIPanelInstance resident in root.GetComponentsInChildren<UIPanelInstance>(true))
+            {
+                if (_panels.ContainsKey(resident.Key) == false)
+                {
+                    AppLogger.Error($"[UIPanelHost] Resident panel '{resident.Key}' under {root.name} has no registered presenter. Ignored.");
+
+                    continue;
+                }
+
+                if (_residents.ContainsKey(resident.Key) == true)
+                {
+                    AppLogger.Error($"[UIPanelHost] Duplicate resident panel '{resident.Key}' under {root.name}. Later one is ignored.");
+
+                    continue;
+                }
+
+                resolver.InjectGameObject(resident.gameObject);
+                resident.gameObject.SetActive(false);
+                _residents.Add(resident.Key, resident.gameObject);
+            }
         }
         #endregion
 
@@ -56,6 +78,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Panel
         private readonly IObjectResolver _resolver;
         private readonly ResourceManager _resourceManager;
         private readonly Dictionary<string, IUIPanel> _panels;
+        private readonly Dictionary<string, GameObject> _residents = new Dictionary<string, GameObject>();
         private readonly Dictionary<string, AsyncLazy<GameObject>> _cached = new Dictionary<string, AsyncLazy<GameObject>>();
         private readonly List<UIPanelConfig.Entry> _loadedEntries = new List<UIPanelConfig.Entry>();
         private readonly CancellationTokenSource _lifetimeCts = new CancellationTokenSource();
@@ -98,6 +121,16 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Panel
         /// </summary>
         public UniTask<GameObject> AcquireAsync(UIPanelConfig.Entry entry, CancellationToken ct)
         {
+            if (_residents.TryGetValue(entry.Key, out GameObject resident) == true)
+            {
+                return UniTask.FromResult(resident);
+            }
+
+            if (entry.Lifetime == UIPanelLifetime.Resident)
+            {
+                throw new InvalidOperationException($"[UIPanelHost] Resident panel '{entry.Key}' is not placed under {_root.name}.");
+            }
+
             // Transient는 열 때마다 새로 만들고 닫으면 파괴하므로 캐시하지 않음
             if (entry.Lifetime == UIPanelLifetime.Transient)
             {
@@ -125,7 +158,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Panel
                 return;
             }
 
-            if (entry.Lifetime != UIPanelLifetime.Transient)
+            if (entry.Lifetime != UIPanelLifetime.Transient || _residents.ContainsKey(entry.Key) == true)
             {
                 instance.SetActive(false);
 

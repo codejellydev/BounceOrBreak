@@ -65,11 +65,6 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: ace04fe1e3c61a143b2f893d8d0dff0c
-    m_Address: MessagePanelView
-    m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d55a8bff700408c42a7e1e794dd461d1
     m_Address: PausePanelView
     m_ReadOnly: 0
