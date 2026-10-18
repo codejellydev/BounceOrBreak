@@ -75,17 +75,23 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Message
         /// </summary>
         public void Show(MessageRequest request)
         {
+            // 제목·본문 높이는 글자 수에 따라 달라지므로 TMP가 계산한 값을 정수 도트로 올림
             _titleText.text = request.Title;
+            _titleText.ForceMeshUpdate();
+
+            float headerHeight = Mathf.Ceil(_titleText.preferredHeight) + GameConstants.UI.MessagePanel.HEADER_PADDING;
+
+            _header.sizeDelta = new Vector2(_header.sizeDelta.x, headerHeight);
 
             bool hasBody = string.IsNullOrEmpty(request.Body) == false;
             float bodyHeight = 0f;
 
             _body.gameObject.SetActive(hasBody);
+            _body.anchoredPosition = new Vector2(_body.anchoredPosition.x, -headerHeight);
             _bodyText.text = request.Body;
 
             if (hasBody == true)
             {
-                // 본문 높이는 글자 수에 따라 달라지므로 TMP가 계산한 값을 정수 도트로 올림
                 _bodyText.ForceMeshUpdate();
                 bodyHeight = Mathf.Ceil(_bodyText.preferredHeight) + GameConstants.UI.MessagePanel.BODY_PADDING;
                 _body.sizeDelta = new Vector2(_body.sizeDelta.x, bodyHeight);
@@ -100,8 +106,9 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Message
             _secondaryButton.gameObject.SetActive(hasSecondary);
             _secondaryLabel.text = request.SecondaryLabel;
 
+            float footerHeight = _footer.rect.height;
             float footerMargin = _footer.anchoredPosition.y;
-            float height = _header.rect.height + bodyHeight + _footer.rect.height + footerMargin;
+            float height = headerHeight + bodyHeight + footerHeight + footerMargin;
 
             if (hasBody == false)
             {

@@ -36,6 +36,11 @@ namespace CodeJelly.BounceOrBreak.Game
             public static class MessagePanel
             {
                 /// <summary>
+                /// 제목 텍스트 위아래 여백의 합 (도트)
+                /// </summary>
+                public const int HEADER_PADDING = 3;
+
+                /// <summary>
                 /// 본문 텍스트 위아래 여백의 합 (도트)
                 /// </summary>
                 public const int BODY_PADDING = 5;
