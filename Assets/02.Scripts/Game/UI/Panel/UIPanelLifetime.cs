@@ -19,5 +19,10 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Panel
         /// 최초 요청 시 로드하고 닫으면 파괴
         /// </summary>
         Transient = 2,
+
+        /// <summary>
+        /// 씬의 UIPanelRoot에 미리 놓여 있어 로드하지 않음
+        /// </summary>
+        Resident = 3,
     }
 }

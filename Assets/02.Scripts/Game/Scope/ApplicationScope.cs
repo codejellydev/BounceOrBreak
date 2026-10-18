@@ -1,10 +1,13 @@
 using CodeJelly.BounceOrBreak.Core.Localization;
+using CodeJelly.BounceOrBreak.Core.Remote;
 using CodeJelly.BounceOrBreak.Core.Resource;
 using CodeJelly.BounceOrBreak.Core.Scene;
 using CodeJelly.BounceOrBreak.Core.Settings;
 using CodeJelly.BounceOrBreak.Core.UI;
 using CodeJelly.BounceOrBreak.Game.Bootstrap;
 using CodeJelly.BounceOrBreak.Game.Input;
+using CodeJelly.BounceOrBreak.Game.Remote;
+using CodeJelly.BounceOrBreak.Game.Score;
 using CodeJelly.BounceOrBreak.Game.Settings.Audio;
 using CodeJelly.BounceOrBreak.Game.Settings.Graphics;
 using CodeJelly.BounceOrBreak.Game.Settings.Language;
@@ -25,7 +28,10 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
     {
         #region Private Variables
         [Header("Audio Settings")]
-        [SerializeField] private AudioMixerConfig _audioSettingsConfig;
+        [SerializeField] private AudioMixerConfig _audioMixerConfig;
+
+        [Header("Graphics Settings")]
+        [SerializeField] private GraphicsPresetConfig _graphicsPresetConfig;
 
         [Header("UI")]
         [SerializeField] private UIPanelConfig _uiPanelConfig;
@@ -48,13 +54,20 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
             builder.Register<AppInitializer>(Lifetime.Singleton);
 
             builder.Register<ISettingsRepository, PlayerPrefsSettingsRepository>(Lifetime.Singleton);
-            builder.RegisterInstance(_audioSettingsConfig);
+            builder.RegisterInstance(_audioMixerConfig);
+            builder.RegisterInstance(_graphicsPresetConfig);
             builder.Register<IAudioSettingsApplier, AudioMixerApplier>(Lifetime.Singleton);
             builder.Register<IGraphicsSettingsApplier, UnityGraphicsApplier>(Lifetime.Singleton);
             builder.Register<ILanguageSettingsApplier, LocalizationApplier>(Lifetime.Singleton);
             builder.Register<AudioSettingsService>(Lifetime.Singleton);
             builder.Register<GraphicsSettingsService>(Lifetime.Singleton);
             builder.Register<LanguageSettingsService>(Lifetime.Singleton);
+            builder.Register<ScoreRecordService>(Lifetime.Singleton);
+
+            builder.Register<IRemoteConfigSource, HttpRemoteConfigSource>(Lifetime.Singleton);
+            builder.Register<RemoteConfigService>(Lifetime.Singleton);
+            builder.Register<RemoteNoticeService>(Lifetime.Singleton)
+                   .WithParameter("currentVersion", Application.version);
 
             builder.RegisterComponentInNewPrefab(_screenFaderPrefab, Lifetime.Singleton)
                    .UnderTransform(_overlayRoot)

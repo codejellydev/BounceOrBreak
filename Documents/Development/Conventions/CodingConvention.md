@@ -12,6 +12,12 @@
   * **적용:** `BgmVolume` (O) / `BGMVolume` (X)
   * **적용:** `AppManager` (O) / `APPManager` (X)
 
+## 🏷️ 필드 표기
+
+* **private·protected·internal 필드:** `_camelCase`
+* **상수(`const`, `static readonly`):** `UPPER_SNAKE_CASE`
+* **public 필드, 프로퍼티:** `PascalCase`
+
 ## 📋 Region 구조
 
 ### Region 순서 (필수)

@@ -39,6 +39,28 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Panel
 
                 _panels.Add(panel.Key, panel);
             }
+
+            // 씬에 미리 놓인 인스턴스는 로드 없이 그대로 씀
+            foreach (UIPanelInstance resident in root.GetComponentsInChildren<UIPanelInstance>(true))
+            {
+                if (_panels.ContainsKey(resident.Key) == false)
+                {
+                    AppLogger.Error($"[UIPanelHost] Resident panel '{resident.Key}' under {root.name} has no registered presenter. Ignored.");
+
+                    continue;
+                }
+
+                if (_residents.ContainsKey(resident.Key) == true)
+                {
+                    AppLogger.Error($"[UIPanelHost] Duplicate resident panel '{resident.Key}' under {root.name}. Later one is ignored.");
+
+                    continue;
+                }
+
+                resolver.InjectGameObject(resident.gameObject);
+                resident.gameObject.SetActive(false);
+                _residents.Add(resident.Key, resident.gameObject);
+            }
         }
         #endregion
 
@@ -56,6 +78,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Panel
         private readonly IObjectResolver _resolver;
         private readonly ResourceManager _resourceManager;
         private readonly Dictionary<string, IUIPanel> _panels;
+        private readonly Dictionary<string, GameObject> _residents = new Dictionary<string, GameObject>();
         private readonly Dictionary<string, AsyncLazy<GameObject>> _cached = new Dictionary<string, AsyncLazy<GameObject>>();
         private readonly List<UIPanelConfig.Entry> _loadedEntries = new List<UIPanelConfig.Entry>();
         private readonly CancellationTokenSource _lifetimeCts = new CancellationTokenSource();
@@ -68,12 +91,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Panel
         /// </summary>
         public IUIPanel<TResult> GetPanel<TResult>(string key)
         {
-            if (_panels.TryGetValue(key, out IUIPanel panel) == false)
-            {
-                throw new InvalidOperationException($"[UIPanelHost] No panel is registered for '{key}' under {_root.name}.");
-            }
-
-            IUIPanel<TResult> typed = panel as IUIPanel<TResult>;
+            IUIPanel<TResult> typed = FindPanel(key) as IUIPanel<TResult>;
 
             if (typed == null)
             {
@@ -84,10 +102,35 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Panel
         }
 
         /// <summary>
+        /// 키에 등록된 Presenter를 인자·결과 타입에 맞춰 반환합니다.
+        /// </summary>
+        public IUIPanel<TRequest, TResult> GetPanel<TRequest, TResult>(string key)
+        {
+            IUIPanel<TRequest, TResult> typed = FindPanel(key) as IUIPanel<TRequest, TResult>;
+
+            if (typed == null)
+            {
+                throw new InvalidOperationException($"[UIPanelHost] Panel '{key}' does not take {typeof(TRequest).Name} and return {typeof(TResult).Name}.");
+            }
+
+            return typed;
+        }
+
+        /// <summary>
         /// 수명 정책에 따라 인스턴스를 가져옵니다. 비활성 상태로 반환됩니다.
         /// </summary>
         public UniTask<GameObject> AcquireAsync(UIPanelConfig.Entry entry, CancellationToken ct)
         {
+            if (_residents.TryGetValue(entry.Key, out GameObject resident) == true)
+            {
+                return UniTask.FromResult(resident);
+            }
+
+            if (entry.Lifetime == UIPanelLifetime.Resident)
+            {
+                throw new InvalidOperationException($"[UIPanelHost] Resident panel '{entry.Key}' is not placed under {_root.name}.");
+            }
+
             // Transient는 열 때마다 새로 만들고 닫으면 파괴하므로 캐시하지 않음
             if (entry.Lifetime == UIPanelLifetime.Transient)
             {
@@ -115,7 +158,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Panel
                 return;
             }
 
-            if (entry.Lifetime != UIPanelLifetime.Transient)
+            if (entry.Lifetime != UIPanelLifetime.Transient || _residents.ContainsKey(entry.Key) == true)
             {
                 instance.SetActive(false);
 
@@ -148,6 +191,16 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Panel
 
 
         #region Private Methods
+        private IUIPanel FindPanel(string key)
+        {
+            if (_panels.TryGetValue(key, out IUIPanel panel) == false)
+            {
+                throw new InvalidOperationException($"[UIPanelHost] No panel is registered for '{key}' under {_root.name}.");
+            }
+
+            return panel;
+        }
+
         /// <summary>
         /// 프리팹을 로드해 루트 밑에 비활성 인스턴스를 만듭니다.
         /// </summary>

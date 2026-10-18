@@ -1,10 +1,13 @@
 using CodeJelly.BounceOrBreak.Core.Scene;
 using CodeJelly.BounceOrBreak.Game.Bootstrap;
 using CodeJelly.BounceOrBreak.Game.Lobby;
+using CodeJelly.BounceOrBreak.Game.Remote;
 using CodeJelly.BounceOrBreak.Game.Settings;
 using CodeJelly.BounceOrBreak.Game.Settings.Audio;
 using CodeJelly.BounceOrBreak.Game.Settings.Graphics;
 using CodeJelly.BounceOrBreak.Game.Settings.Language;
+using CodeJelly.BounceOrBreak.Game.Settings.PlayerData;
+using CodeJelly.BounceOrBreak.Game.UI.Message;
 using CodeJelly.BounceOrBreak.Game.UI.Navigation;
 using CodeJelly.BounceOrBreak.Game.UI.Panel;
 using UnityEngine;
@@ -38,11 +41,12 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
             builder.RegisterComponent(_diorama);
             builder.RegisterEntryPoint<LobbyPresenter>()
                    .As<ISceneActivatable>();
+            builder.Register<RemoteNoticePresenter>(Lifetime.Scoped);
 
             // Navigation
             builder.RegisterComponent(_panelRoot);
             builder.RegisterEntryPoint<UIPanelRootRegistrar>();
-            builder.Register<QuitConfirmPresenter>(Lifetime.Scoped)
+            builder.Register<MessagePanelPresenter>(Lifetime.Scoped)
                    .As<IUIPanel>();
             builder.Register<SettingsPanelPresenter>(Lifetime.Scoped)
                    .As<IUIPanel>();
@@ -51,6 +55,7 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
             builder.Register<AudioSettingsPresenter>(Lifetime.Scoped);
             builder.Register<GraphicsSettingsPresenter>(Lifetime.Scoped);
             builder.Register<LanguageSettingsPresenter>(Lifetime.Scoped);
+            builder.Register<PlayerDataPresenter>(Lifetime.Scoped);
 
 #if UNITY_EDITOR
             // 씬 단독 실행 시의 초기화 대행

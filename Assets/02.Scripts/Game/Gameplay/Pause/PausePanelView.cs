@@ -1,4 +1,4 @@
-using CodeJelly.BounceOrBreak.Game.Gameplay.Score;
+using CodeJelly.BounceOrBreak.Game.Score;
 using CodeJelly.BounceOrBreak.Game.UI.Widgets;
 using TMPro;
 using UnityEngine;
@@ -14,6 +14,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Pause
     {
         #region Properties
         public PushButton ResumeButton => _resumeButton;
+        public PushButton RestartButton => _restartButton;
         public PushButton ExitButton => _exitButton;
 
         /// <summary>
@@ -25,6 +26,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Pause
         /// View가 유효한지 확인합니다.
         /// </summary>
         public bool IsValid => _resumeButton != null
+                            && _restartButton != null
                             && _exitButton != null
                             && _dimBackgroundButton != null
                             && _currentScoreText != null
@@ -39,6 +41,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Pause
 
         [Header("Buttons")]
         [SerializeField] private PushButton _resumeButton;
+        [SerializeField] private PushButton _restartButton;
         [SerializeField] private PushButton _exitButton;
         [SerializeField] private Button _dimBackgroundButton;
         #endregion
