@@ -1,7 +1,9 @@
 # BounceOrBreak
 
 ## Project Information
-**Unity Version**: 6000.3.9f1
+
+- **Unity Version**: 6000.3.9f1
+- **Platform**: Android
 
 ---
 
@@ -54,3 +56,11 @@ When modifying paid assets, update this file manually:
 - **Removing an asset**: Remove the entry from `asset-dependencies.json` and remove the `installPath` from `.gitignore`
 
 The private repository must mirror the `installPath` structure so assets can be placed at the correct location.
+
+---
+
+## License
+
+The source code in this repository is licensed under the [MIT License](/LICENSE).
+
+Game assets are **not** covered by that license: all images, animations, audio, localization text and design data under `Assets/` are copyright CodeJelly, all rights reserved. Third-party assets are not included in this repository (see [External Assets](#external-assets)).
