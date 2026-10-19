@@ -44,6 +44,14 @@ jobs:
         id: version
         run: |
           base="$(sed -n 's/^  bundleVersion: //p' ProjectSettings/ProjectSettings.asset | tr -d '\r')"
+          # versionCode는 bundleVersion에서 유도
+          IFS=. read -r major minor patch <<< "$base"
+          if [ "$major" -ge 100 ] || [ "$minor" -ge 100 ] || [ "$patch" -ge 100 ]; then
+            echo "::error::bundleVersion $base: each component must be below 100."
+            exit 1
+          fi
+          code=$((major * 10000 + minor * 100 + patch))
+          echo "code=$code" >> "$GITHUB_OUTPUT"
           if [ "$GITHUB_REF" = "refs/heads/main" ]; then
             version="$base"
             # 같은 버전이 다른 커밋에 있으면 bundleVersion을 안 올린 것이므로 실패
@@ -58,7 +66,7 @@ jobs:
             echo "create_tag=false" >> "$GITHUB_OUTPUT"
           fi
           echo "version=$version" >> "$GITHUB_OUTPUT"
-          echo "Version: $version"
+          echo "Version: $version (code $code)"
 
       - name: Cache Unity Library
         uses: actions/cache@v6
@@ -79,7 +87,7 @@ jobs:
           targetPlatform: Android
           androidTargetSdkVersion: AndroidApiLevel36
           androidExportType: androidAppBundle
-          androidVersionCode: ${{ github.run_number }}
+          androidVersionCode: ${{ steps.version.outputs.code }}
           androidKeystoreName: bounceorbreak.keystore
           androidKeystoreBase64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
           androidKeystorePass: ${{ secrets.ANDROID_KEYSTORE_PASS }}
