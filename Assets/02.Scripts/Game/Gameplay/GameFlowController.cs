@@ -8,6 +8,7 @@ using CodeJelly.BounceOrBreak.Game.Gameplay.Goal;
 using CodeJelly.BounceOrBreak.Game.Gameplay.Score;
 using CodeJelly.BounceOrBreak.Game.Gameplay.Stage;
 using CodeJelly.BounceOrBreak.Game.Input;
+using CodeJelly.BounceOrBreak.Game.Score;
 using CodeJelly.BounceOrBreak.Game.Trampoline;
 using Cysharp.Threading.Tasks;
 using R3;
@@ -26,7 +27,8 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         private readonly FallDetector _fallDetector;
         private readonly GoalPort[] _goalPorts;
         private readonly EggSpawner _eggSpawner;
-        private readonly ScoreService _scoreService;
+        private readonly RoundScoreService _roundScoreService;
+        private readonly ScoreRecordService _scoreRecordService;
         private readonly RoundProgress _roundProgress;
         private readonly TrampolineDrawer _trampolineDrawer;
         private readonly InputManager _inputManager;
@@ -36,7 +38,8 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
             FallDetector fallDetector,
             GoalPort[] goalPorts,
             EggSpawner eggSpawner,
-            ScoreService scoreService,
+            RoundScoreService roundScoreService,
+            ScoreRecordService scoreRecordService,
             RoundProgress roundProgress,
             TrampolineDrawer trampolineDrawer,
             InputManager inputManager,
@@ -45,7 +48,8 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
             _fallDetector = fallDetector;
             _goalPorts = goalPorts;
             _eggSpawner = eggSpawner;
-            _scoreService = scoreService;
+            _roundScoreService = roundScoreService;
+            _scoreRecordService = scoreRecordService;
             _roundProgress = roundProgress;
             _trampolineDrawer = trampolineDrawer;
             _inputManager = inputManager;
@@ -137,7 +141,6 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
 
             SpawnStageTrampolines();
 
-            await _scoreService.InitializeAsync();
             progress?.Report(1f);
 
             InitializationState = SceneInitializationState.Completed;
@@ -153,35 +156,22 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         }
 
         /// <summary>
-        /// GameOver 상태의 게임을 정리하고 재시작합니다.
+        /// 라운드를 처음부터 다시 시작합니다. 로딩 중이면 무시합니다.
         /// </summary>
         public void RestartRound()
         {
-            if (_phase.Value != GamePhase.GameOver)
+            if (_phase.Value == GamePhase.Loading)
             {
-                AppLogger.Warning($"[GameFlowController] Restart requested in {_phase.Value} phase. Ignored.");
-
-                return;
-            }
-
-            if (_isPaused.Value == true)
-            {
-                AppLogger.Warning("[GameFlowController] Restart requested while paused. Ignored.");
+                AppLogger.Warning("[GameFlowController] Restart requested in Loading phase. Ignored.");
 
                 return;
             }
 
             AppLogger.Info("[GameFlowController] Restarting.");
 
-            // Playing으로 전환되기 전에 리셋해야 리셋 중 발생하는 Arrival 이벤트가 득점으로 처리되지 않음
-            _trampolineDrawer.DespawnAll();
-            _scoreService.ResetScore();
-            SpawnStageTrampolines();
-
-            _phase.Value = GamePhase.Playing;
-            _inputManager.SwitchContext(InputContext.Gameplay);
-
-            StartRound();
+            EndRound();
+            Resume();
+            BeginRound();
         }
 
         /// <summary>
@@ -359,6 +349,25 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
             }
         }
 
+        private void BeginRound()
+        {
+            // Playing으로 전환되기 전에 리셋해야 리셋 중 발생하는 Arrival 이벤트가 득점으로 처리되지 않음
+            _trampolineDrawer.DespawnAll();
+            _roundScoreService.ResetScore();
+            SpawnStageTrampolines();
+
+            _phase.Value = GamePhase.Playing;
+            _inputManager.SwitchContext(InputContext.Gameplay);
+
+            StartRound();
+        }
+
+        private void EndRound()
+        {
+            CancelRound();
+            _eggSpawner.StopSpawning();
+        }
+
         /// <summary>
         /// 진행 중인 Round의 비동기 작업을 모두 취소합니다.
         /// </summary>
@@ -380,25 +389,24 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
             }
 
             _phase.Value = GamePhase.GameOver;
-            AppLogger.Info($"[GameFlowController] Game over. Score: {_scoreService.CurrentScore.CurrentValue}");
+            AppLogger.Info($"[GameFlowController] Game over. Score: {_roundScoreService.CurrentScore.CurrentValue}");
 
             _inputManager.SwitchContext(InputContext.GameOver);
-            CancelRound();
-            _eggSpawner.StopSpawning();
+            EndRound();
 
-            bool isNewBest = _scoreService.TryUpdateBestScore();
+            bool isNewBest = _scoreRecordService.TryUpdateBestScore(_roundScoreService.CurrentScore.CurrentValue);
 
             // 저장 완료를 기다릴 이유가 없으므로 게임오버 처리를 막지 않음
             if (isNewBest == true)
             {
-                _scoreService.SaveBestScoreAsync().Forget();
+                _scoreRecordService.SaveAsync().Forget();
             }
 
             // 값을 스냅샷으로 넘겨 구독자가 RestartRound의 ResetScore에 영향받지 않게 함
             _onRoundEnded.OnNext(new RoundResult
             {
-                Score = _scoreService.CurrentScore.CurrentValue,
-                BestScore = _scoreService.BestScore.CurrentValue,
+                Score = _roundScoreService.CurrentScore.CurrentValue,
+                BestScore = _scoreRecordService.BestScore.CurrentValue,
                 IsNewBest = isNewBest,
                 BrokenEgg = GetBrokenEgg(fallen)
             });
@@ -416,7 +424,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
 
             if (arrival.IsMatched == true)
             {
-                _scoreService.AddScore();
+                _roundScoreService.AddScore();
                 _eggSpawner.Despawn(arrival.Egg);
 
                 return;

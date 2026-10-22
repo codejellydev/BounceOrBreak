@@ -1,0 +1,7 @@
+<linker>
+  <!-- Newtonsoft 역직렬화 대상. 스트리핑 수준을 올려도 setter가 남도록 보존 -->
+  <assembly fullname="CodeJelly.BounceOrBreak.Game">
+    <type fullname="CodeJelly.BounceOrBreak.Game.Remote.RemoteConfig" preserve="all" />
+    <type fullname="CodeJelly.BounceOrBreak.Game.Remote.RemoteNotice" preserve="all" />
+  </assembly>
+</linker>

@@ -1,6 +1,7 @@
 using CodeJelly.BounceOrBreak.Core.Logging;
 using CodeJelly.BounceOrBreak.Core.Scene;
 using Cysharp.Threading.Tasks;
+using R3;
 using System;
 using System.Threading;
 using UnityEngine;
@@ -12,7 +13,7 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
     /// 어플리케이션의 초기화를 담당합니다.
     /// EntryScene에 배치되어 게임 실행 시 가장 먼저 실행됩니다.
     /// </summary>
-    public class Bootstrapper : IAsyncStartable
+    public class Bootstrapper : IAsyncStartable, IDisposable
     {
         #region Injection
         private readonly AppInitializer _appInitializer;
@@ -31,11 +32,35 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
         #endregion
 
 
+        #region Properties
+        /// <summary>
+        /// 초기화나 첫 씬 전환에 실패했을 때 통지됩니다.
+        /// </summary>
+        public Observable<Unit> StartupFailed => _startupFailed;
+        #endregion
+
+
+        #region Private Variables
+        private readonly Subject<Unit> _startupFailed = new Subject<Unit>();
+        #endregion
+
+
         #region VContainer Lifecycle
         public UniTask StartAsync(CancellationToken cancellation = default)
         {
             InitializeAndTransition().Forget();
             return UniTask.CompletedTask;
+        }
+        #endregion
+
+
+        #region Public Methods
+        /// <summary>
+        /// IDisposable.Dispose Implementation
+        /// </summary>
+        public void Dispose()
+        {
+            _startupFailed.Dispose();
         }
         #endregion
 
@@ -93,13 +118,9 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
             }
         }
 
-        /// <summary>
-        /// 초기화 실패 시 처리를 수행합니다.
-        /// TODO: 에러 UI 구현 필요
-        /// </summary>
         private void HandleInitializationFailure()
         {
-
+            _startupFailed.OnNext(Unit.Default);
         }
         #endregion
     }

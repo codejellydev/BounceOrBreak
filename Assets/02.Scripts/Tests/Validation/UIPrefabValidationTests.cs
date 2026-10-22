@@ -2,8 +2,8 @@ using CodeJelly.BounceOrBreak.Core.Viewport;
 using CodeJelly.BounceOrBreak.Game.Entry;
 using CodeJelly.BounceOrBreak.Game.Gameplay.Pause;
 using CodeJelly.BounceOrBreak.Game.Gameplay.UI;
-using CodeJelly.BounceOrBreak.Game.Lobby;
 using CodeJelly.BounceOrBreak.Game.Settings;
+using CodeJelly.BounceOrBreak.Game.UI.Message;
 using NUnit.Framework;
 using System;
 using UnityEditor;
@@ -66,12 +66,12 @@ namespace CodeJelly.BounceOrBreak.Tests.Validation
         }
 
         /// <summary>
-        /// UI 프리팹의 모든 QuitConfirmView가 유효합니다.
+        /// UI 프리팹의 모든 MessagePanelView가 유효합니다.
         /// </summary>
         [Test]
-        public void QuitConfirmView_IsValid()
+        public void MessagePanelView_IsValid()
         {
-            AssertAllValid<QuitConfirmView>(view => view.IsValid, "Check its button wiring.");
+            AssertAllValid<MessagePanelView>(view => view.IsValid, "Check its layout, text and button wiring.");
         }
 
         /// <summary>

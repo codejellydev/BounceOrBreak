@@ -3,6 +3,8 @@ using CodeJelly.BounceOrBreak.Game.UI.Panel;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Reflection;
+using UnityEditor;
+using UnityEngine;
 
 namespace CodeJelly.BounceOrBreak.Tests.Validation
 {
@@ -11,6 +13,11 @@ namespace CodeJelly.BounceOrBreak.Tests.Validation
     /// </summary>
     public class UIPanelConfigValidationTests
     {
+        #region Private Variables
+        private const string PANEL_ROOT_PREFAB_PATH = "Assets/03.Prefabs/UI/Common/UIPanelRoot.prefab";
+        #endregion
+
+
         #region Public Methods
         /// <summary>
         /// 모든 Entry가 유효합니다.
@@ -53,6 +60,39 @@ namespace CodeJelly.BounceOrBreak.Tests.Validation
                     string key = (string)field.GetRawConstantValue();
 
                     Assert.IsTrue(config.TryGetEntry(key, out _), $"'{key}' is used in code but not declared in {config.name}.");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Resident로 선언된 키마다 UIPanelRoot 프리팹에 상주 인스턴스가 있습니다.
+        /// </summary>
+        [Test]
+        public void ResidentEntries_ArePlacedInPanelRootPrefab()
+        {
+            List<UIPanelConfig> configs = new List<UIPanelConfig>(EditorAssetLoader.LoadAll<UIPanelConfig>());
+            GameObject rootPrefab = AssetDatabase.LoadAssetAtPath<GameObject>(PANEL_ROOT_PREFAB_PATH);
+
+            Assert.IsNotEmpty(configs, "No UIPanelConfig asset found.");
+            Assert.IsNotNull(rootPrefab, $"UIPanelRoot prefab not found at {PANEL_ROOT_PREFAB_PATH}.");
+
+            HashSet<string> residentKeys = new HashSet<string>();
+
+            foreach (UIPanelInstance resident in rootPrefab.GetComponentsInChildren<UIPanelInstance>(true))
+            {
+                Assert.IsTrue(residentKeys.Add(resident.Key), $"Duplicate resident panel '{resident.Key}' in {PANEL_ROOT_PREFAB_PATH}.");
+            }
+
+            foreach (UIPanelConfig config in configs)
+            {
+                foreach (UIPanelConfig.Entry entry in config.Entries)
+                {
+                    if (entry.Lifetime != UIPanelLifetime.Resident)
+                    {
+                        continue;
+                    }
+
+                    Assert.IsTrue(residentKeys.Contains(entry.Key), $"'{entry.Key}' is Resident in {config.name} but has no instance in {PANEL_ROOT_PREFAB_PATH}.");
                 }
             }
         }

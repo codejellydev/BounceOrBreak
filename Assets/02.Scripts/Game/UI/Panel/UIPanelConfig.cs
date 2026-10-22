@@ -23,9 +23,9 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Panel
             public UIPanelLifetime Lifetime => _lifetime;
 
             /// <summary>
-            /// 프리팹이 배선돼 있는지 확인합니다.
+            /// 프리팹이 배선돼 있는지 확인합니다. Resident는 프리팹이 없어도 유효합니다.
             /// </summary>
-            public bool IsValid => _prefab != null && _prefab.RuntimeKeyIsValid();
+            public bool IsValid => _lifetime == UIPanelLifetime.Resident || (_prefab != null && _prefab.RuntimeKeyIsValid());
             #endregion
 
 

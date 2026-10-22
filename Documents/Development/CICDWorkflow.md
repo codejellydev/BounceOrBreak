@@ -25,7 +25,7 @@
 ## 버전
 
 - versionName: main은 `bundleVersion` 그대로, 그 외는 `{bundleVersion}-dev.{실행 번호}+{SHA 7자리}` (예: `0.1.0-dev.23+d48e256`)
-- versionCode: 워크플로 실행 번호
+- versionCode: `bundleVersion`에서 유도. `major×10000 + minor×100 + patch` (예: 0.1.4 → 104)
 - Play에는 main 빌드만 올린다. `-dev`가 붙은 빌드는 개발 기기 전용
 
 ---

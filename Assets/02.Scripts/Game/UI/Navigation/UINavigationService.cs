@@ -141,26 +141,22 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Navigation
         /// <param name="ct">씬 스코프 토큰. 씬이 먼저 끝나면 OperationCanceledException</param>
         public async UniTask<TResult> ShowAsync<TResult>(string key, CancellationToken ct)
         {
-            UIPanelHost host = GetCurrentHost();
-            UIPanelConfig.Entry entry = GetEntry(key);
-            IUIPanel<TResult> panel = host.GetPanel<TResult>(key);
+            IUIPanel<TResult> panel = GetCurrentHost().GetPanel<TResult>(key);
 
-            // 중복 열기는 정상 닫힘과 같으므로 CancelResult로 응답
-            if (_showingKeys.Add(key) == false)
-            {
-                AppLogger.Debug($"[UINavigationService] '{key}' is already showing.");
+            return await ShowAsync(key, panel, panel.CancelResult, panel.RunAsync, ct);
+        }
 
-                return panel.CancelResult;
-            }
+        /// <summary>
+        /// 패널에 인자를 넘겨 열고 결과를 기다립니다.
+        /// </summary>
+        /// <param name="key">패널 키</param>
+        /// <param name="request">패널에 넘길 인자</param>
+        /// <param name="ct">씬 스코프 토큰. 씬이 먼저 끝나면 OperationCanceledException</param>
+        public async UniTask<TResult> ShowAsync<TRequest, TResult>(string key, TRequest request, CancellationToken ct)
+        {
+            IUIPanel<TRequest, TResult> panel = GetCurrentHost().GetPanel<TRequest, TResult>(key);
 
-            try
-            {
-                return await OpenAsync(host, entry, panel, ct);
-            }
-            finally
-            {
-                _showingKeys.Remove(key);
-            }
+            return await ShowAsync(key, panel, panel.CancelResult, (instance, token) => panel.RunAsync(instance, request, token), ct);
         }
 
         /// <summary>
@@ -200,10 +196,33 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Navigation
             return entry;
         }
 
+        private async UniTask<TResult> ShowAsync<TResult>(string key, IUIPanel panel, TResult cancelResult, Func<GameObject, CancellationToken, UniTask<TResult>> run, CancellationToken ct)
+        {
+            UIPanelHost host = GetCurrentHost();
+            UIPanelConfig.Entry entry = GetEntry(key);
+
+            // 중복 열기는 정상 닫힘과 같으므로 CancelResult로 응답
+            if (_showingKeys.Add(key) == false)
+            {
+                AppLogger.Debug($"[UINavigationService] '{key}' is already showing.");
+
+                return cancelResult;
+            }
+
+            try
+            {
+                return await OpenAsync(host, entry, panel, cancelResult, run, ct);
+            }
+            finally
+            {
+                _showingKeys.Remove(key);
+            }
+        }
+
         /// <summary>
         /// 패널을 열고 결과를 기다립니다.
         /// </summary>
-        private async UniTask<TResult> OpenAsync<TResult>(UIPanelHost host, UIPanelConfig.Entry entry, IUIPanel<TResult> panel, CancellationToken ct)
+        private async UniTask<TResult> OpenAsync<TResult>(UIPanelHost host, UIPanelConfig.Entry entry, IUIPanel panel, TResult cancelResult, Func<GameObject, CancellationToken, UniTask<TResult>> run, CancellationToken ct)
         {
             using (CancellationTokenSource showCts = CancellationTokenSource.CreateLinkedTokenSource(ct, host.LifetimeToken))
             {
@@ -219,7 +238,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Navigation
                     catch (OperationCanceledException) when (ct.IsCancellationRequested == false && host.LifetimeToken.IsCancellationRequested == false)
                     {
                         // 뒤로가기 취소는 정상 닫힘이므로 CancelResult로 응답
-                        return panel.CancelResult;
+                        return cancelResult;
                     }
                 }
 
@@ -230,7 +249,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Navigation
                 {
                     try
                     {
-                        return await panel.RunAsync(instance, showCts.Token);
+                        return await run(instance, showCts.Token);
                     }
                     finally
                     {

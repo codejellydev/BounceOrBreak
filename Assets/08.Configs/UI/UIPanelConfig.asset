@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: UIPanelConfig
   m_EditorClassIdentifier: CodeJelly.BounceOrBreak.Game::CodeJelly.BounceOrBreak.Game.UI.Navigation.UIPanelConfig
   _entries:
-  - _key: QuitConfirm
+  - _key: Message
     _prefab:
-      m_AssetGUID: 75f32aef8b871ff4ba524d87dd54be2d
+      m_AssetGUID: 
       m_SubObjectName: 
       m_SubObjectType: 
       m_SubObjectGUID: 
       m_EditorAssetChanged: 0
-    _lifetime: 1
+    _lifetime: 3
   - _key: Pause
     _prefab:
       m_AssetGUID: d55a8bff700408c42a7e1e794dd461d1

@@ -1,4 +1,5 @@
 using CodeJelly.BounceOrBreak.Game.Gameplay.Score;
+using CodeJelly.BounceOrBreak.Game.Score;
 using CodeJelly.BounceOrBreak.Game.UI.Panel;
 using R3;
 
@@ -11,11 +12,15 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Pause
     public class PausePanelPresenter : UIPanelPresenter<PausePanelView, PausePanelResult>
     {
         #region Injection
-        private readonly ScoreService _scoreService;
+        private readonly RoundScoreService _roundScoreService;
+        private readonly ScoreRecordService _scoreRecordService;
 
-        public PausePanelPresenter(ScoreService scoreService)
+        public PausePanelPresenter(
+            RoundScoreService roundScoreService,
+            ScoreRecordService scoreRecordService)
         {
-            _scoreService = scoreService;
+            _roundScoreService = roundScoreService;
+            _scoreRecordService = scoreRecordService;
         }
         #endregion
 
@@ -29,17 +34,22 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Pause
         #region Protected Methods
         protected override void Bind(PausePanelView view, CompositeDisposable disposables)
         {
-            _scoreService.CurrentScore
-                         .Subscribe(view.SetCurrentScore)
-                         .AddTo(disposables);
+            _roundScoreService.CurrentScore
+                              .Subscribe(view.SetCurrentScore)
+                              .AddTo(disposables);
 
-            _scoreService.BestScore
-                         .Subscribe(view.SetBestScore)
-                         .AddTo(disposables);
+            _scoreRecordService.BestScore
+                               .Subscribe(view.SetBestScore)
+                               .AddTo(disposables);
 
             view.ResumeButton
                 .OnClick
                 .Subscribe(_ => Complete(PausePanelResult.Resume))
+                .AddTo(disposables);
+
+            view.RestartButton
+                .OnClick
+                .Subscribe(_ => Complete(PausePanelResult.Restart))
                 .AddTo(disposables);
 
             view.ExitButton

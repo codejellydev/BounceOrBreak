@@ -1,4 +1,6 @@
+using CodeJelly.BounceOrBreak.Game.Remote;
 using CodeJelly.BounceOrBreak.Game.UI;
+using CodeJelly.BounceOrBreak.Game.UI.Message;
 using UnityEngine;
 
 namespace CodeJelly.BounceOrBreak.Game
@@ -24,9 +26,86 @@ namespace CodeJelly.BounceOrBreak.Game
             /// </summary>
             public static class Keys
             {
-                public const string QUIT_CONFIRM = "QuitConfirm";
+                public const string MESSAGE = "Message";
                 public const string PAUSE = "Pause";
                 public const string SETTINGS = "Settings";
+            }
+
+            /// <summary>
+            /// MessagePanel 관련 상수
+            /// </summary>
+            public static class MessagePanel
+            {
+                /// <summary>
+                /// 제목 텍스트 위아래 여백의 합 (도트)
+                /// </summary>
+                public const int HEADER_PADDING = 3;
+
+                /// <summary>
+                /// 본문 텍스트 위아래 여백의 합 (도트)
+                /// </summary>
+                public const int BODY_PADDING = 5;
+
+                /// <summary>
+                /// 본문이 없을 때 제목과 버튼 사이에 두는 여백 (도트)
+                /// </summary>
+                public const int EMPTY_BODY_GAP = 4;
+            }
+
+            /// <summary>
+            /// MessagePanel에 띄우는 메시지
+            /// </summary>
+            public static class Messages
+            {
+                public static readonly MessageRequest QUIT = new MessageRequest
+                {
+                    Title = "Quit the game?",
+                    PrimaryLabel = "Yes",
+                    SecondaryLabel = "No"
+                };
+
+                public static readonly MessageRequest CLEAR_RECORD = new MessageRequest
+                {
+                    Title = "Clear the record?",
+                    Body = "Your best score will be lost.",
+                    PrimaryLabel = "Clear",
+                    SecondaryLabel = "Cancel",
+                    IsDestructive = true
+                };
+
+                public static readonly MessageRequest STARTUP_FAILED = new MessageRequest
+                {
+                    Title = "Oops!",
+                    Body = "Something went wrong while starting. Please restart the app.",
+                    PrimaryLabel = "OK"
+                };
+
+                /// <summary>
+                /// 새 버전 안내
+                /// </summary>
+                public static MessageRequest NewVersion(string version)
+                {
+                    return new MessageRequest
+                    {
+                        Title = "Update available",
+                        Body = $"v{version} is ready to download.",
+                        PrimaryLabel = "Update",
+                        SecondaryLabel = "Later"
+                    };
+                }
+
+                /// <summary>
+                /// 원격 공지
+                /// </summary>
+                public static MessageRequest Notice(RemoteNotice notice)
+                {
+                    return new MessageRequest
+                    {
+                        Title = notice.Title,
+                        Body = notice.Body,
+                        PrimaryLabel = "OK"
+                    };
+                }
             }
 
             /// <summary>
@@ -275,6 +354,37 @@ namespace CodeJelly.BounceOrBreak.Game
             /// 내보내는 방향이 수직에서 벗어날 수 있는 최대 각도 (도)
             /// </summary>
             public const float REJECT_CONE_HALF_ANGLE = 40f;
+        }
+
+        public static class Remote
+        {
+            public static class Keys
+            {
+                /// <summary>
+                /// RemoteNoticeState가 ISettingsRepository에 저장될 때 사용되는 키
+                /// </summary>
+                public const string REPOSITORY_KEY = "RemoteNoticeState";
+            }
+
+            /// <summary>
+            /// 원격 설정 파일의 주소
+            /// </summary>
+            public const string CONFIG_URL = "https://codejellydev.github.io/bounceorbreak/config.json";
+
+            /// <summary>
+            /// 수신 제한 시간 (초). 초과하면 이번 실행은 원격 설정 없이 진행
+            /// </summary>
+            public const float TIMEOUT_SECONDS = 2f;
+
+            /// <summary>
+            /// 이 빌드가 지원하는 RemoteConfig 스키마 버전
+            /// </summary>
+            public const int SCHEMA_VERSION = 1;
+
+            /// <summary>
+            /// 스토어 페이지 주소 형식. {0}은 Application.identifier
+            /// </summary>
+            public const string STORE_URL_FORMAT = "market://details?id={0}";
         }
 
         public static class Score

@@ -2,6 +2,8 @@ using CodeJelly.BounceOrBreak.Core.Localization;
 using CodeJelly.BounceOrBreak.Core.Logging;
 using CodeJelly.BounceOrBreak.Core.Resource;
 using CodeJelly.BounceOrBreak.Game.Input;
+using CodeJelly.BounceOrBreak.Game.Remote;
+using CodeJelly.BounceOrBreak.Game.Score;
 using CodeJelly.BounceOrBreak.Game.Settings.Audio;
 using CodeJelly.BounceOrBreak.Game.Settings.Graphics;
 using CodeJelly.BounceOrBreak.Game.Settings.Language;
@@ -23,6 +25,9 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
         private readonly AudioSettingsService _audioSettingsService;
         private readonly GraphicsSettingsService _graphicsSettingsService;
         private readonly LanguageSettingsService _languageSettingsService;
+        private readonly ScoreRecordService _scoreRecordService;
+        private readonly RemoteConfigService _remoteConfigService;
+        private readonly RemoteNoticeService _remoteNoticeService;
 
         public AppInitializer(
             ResourceManager resourceManager,
@@ -30,7 +35,10 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
             LocalizationManager localizationManager,
             AudioSettingsService audioSettingsService,
             GraphicsSettingsService graphicsSettingsService,
-            LanguageSettingsService languageSettingsService)
+            LanguageSettingsService languageSettingsService,
+            ScoreRecordService scoreRecordService,
+            RemoteConfigService remoteConfigService,
+            RemoteNoticeService remoteNoticeService)
         {
             _resourceManager = resourceManager;
             _inputManager = inputManager;
@@ -38,6 +46,9 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
             _audioSettingsService = audioSettingsService;
             _graphicsSettingsService = graphicsSettingsService;
             _languageSettingsService = languageSettingsService;
+            _scoreRecordService = scoreRecordService;
+            _remoteConfigService = remoteConfigService;
+            _remoteNoticeService = remoteNoticeService;
         }
         #endregion
 
@@ -59,6 +70,9 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
             {
                 return true;
             }
+
+            // 네트워크 대기가 긴 원격 설정 수신을 먼저 시작해 두고 마지막에 합류. 실패는 초기화 결과에 영향 없음
+            UniTask remoteFetch = _remoteConfigService.FetchAsync(ct);
 
             // 리소스 시스템 초기화
             if (await _resourceManager.InitializeAsync() == false)
@@ -88,6 +102,11 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
             await _audioSettingsService.LoadAsync();
             await _graphicsSettingsService.LoadAsync();
             await _languageSettingsService.LoadAsync();
+
+            await _scoreRecordService.LoadAsync();
+
+            await remoteFetch;
+            await _remoteNoticeService.LoadAsync();
 
             // 실패 시에는 플래그를 세우지 않으므로 다음 호출에서 재시도됨
             _isInitialized = true;

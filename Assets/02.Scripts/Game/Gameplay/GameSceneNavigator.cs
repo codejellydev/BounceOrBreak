@@ -158,6 +158,13 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
                 return;
             }
 
+            if (result == PausePanelResult.Restart)
+            {
+                _flowController.RestartRound();
+
+                return;
+            }
+
             _flowController.Resume();
         }
         #endregion
