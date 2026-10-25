@@ -1,55 +1,72 @@
 using CodeJelly.BounceOrBreak.Core.Logging;
-using CodeJelly.BounceOrBreak.Core.Pooling;
-using UnityEngine;
-using UnityEngine.ResourceManagement.AsyncOperations;
+using Cysharp.Threading.Tasks;
+using System;
 
 namespace CodeJelly.BounceOrBreak.Core.Resource
 {
     /// <summary>
-    /// Addressables로 로드된 단일 리소스의 생명주기를 관리하는 래퍼 클래스.
-    /// ObjectPool을 통해 재사용되며, 참조 카운팅 방식으로 메모리를 관리합니다.
+    /// 리소스 하나의 로드 상태와 참조 카운트를 관리하는 클래스.
     /// </summary>
-    internal class ResourceNode : IPoolable
+    internal class ResourceNode
     {
+        #region Constructors
+        public ResourceNode(IResourceHandle handle, string key)
+        {
+            _handle = handle;
+            Key = key;
+            ReferenceCount = 1;
+
+            WaitAsync().Forget();
+        }
+        #endregion
+
+
         #region Properties
         /// <summary>
-        /// Addressables 비동기 작업 핸들.
+        /// 로드 완료를 기다리는 작업.
         /// </summary>
-        public AsyncOperationHandle Handle { get; private set; }
+        public UniTask Task => _completion.Task;
 
         /// <summary>
-        /// Addressables 리소스의 키.
+        /// 리소스의 키.
         /// </summary>
-        public string Key { get; private set; }
+        public string Key { get; }
 
         /// <summary>
         /// 현재 리소스를 참조하고 있는 개수.
         /// </summary>
         public int ReferenceCount { get; private set; }
+
+        /// <summary>
+        /// 로드 실패 여부.
+        /// </summary>
+        public bool IsFailed { get; private set; }
+        #endregion
+
+
+        #region Private Variables
+        private readonly IResourceHandle _handle;
+
+        /// <summary>
+        /// 핸들의 작업은 한 번만 await할 수 있으므로 완료를 중계해 여러 대기자에게 전파
+        /// </summary>
+        private readonly UniTaskCompletionSource _completion = new UniTaskCompletionSource();
+
+        private UnityEngine.Object _asset;
         #endregion
 
 
         #region Public Methods
         /// <summary>
-        /// ResourceNode를 초기화합니다.
-        /// </summary>
-        public void Initialize(AsyncOperationHandle handle, string key)
-        {
-            Handle = handle;
-            Key = key;
-            ReferenceCount = 1;
-        }
-
-        /// <summary>
         /// 로드된 에셋을 반환합니다.
         /// </summary>
-        public T GetAsset<T>() where T : Object
+        public T GetAsset<T>() where T : UnityEngine.Object
         {
-            var result = Handle.Result as T;
+            T result = _asset as T;
 
-            if (result == null && Handle.Result != null)
+            if (result == null && _asset != null)
             {
-                AppLogger.Error($"[ResourceNode] Type mismatch: {Key} (Expected: {typeof(T).Name}, Actual: {Handle.Result.GetType().Name})");
+                AppLogger.Error($"[ResourceNode] Type mismatch: {Key} (Expected: {typeof(T).Name}, Actual: {_asset.GetType().Name})");
             }
 
             return result;
@@ -72,30 +89,29 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
         }
 
         /// <summary>
-        /// IPoolable.Get Implementation
-        /// </summary>
-        public void Get()
-        {
-            ReferenceCount = 0;
-        }
-
-        /// <summary>
-        /// IPoolable.Release Implementation
+        /// 리소스를 해제합니다.
         /// </summary>
         public void Release()
         {
-            Handle = default;
-            Key = null;
-            ReferenceCount = 0;
+            _handle.Release();
         }
+        #endregion
 
-        /// <summary>
-        /// IPoolable.Destroy Implementation
-        /// </summary>
-        public void Destroy()
+
+        #region Private Methods
+        private async UniTaskVoid WaitAsync()
         {
-            Handle = default;
-            Key = null;
+            try
+            {
+                _asset = await _handle.Task;
+            }
+            catch (Exception ex)
+            {
+                AppLogger.Exception(ex, $"[ResourceNode] Load Failed: {Key}");
+            }
+
+            IsFailed = _asset == null;
+            _completion.TrySetResult();
         }
         #endregion
     }

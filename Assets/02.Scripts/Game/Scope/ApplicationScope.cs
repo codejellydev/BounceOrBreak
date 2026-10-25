@@ -53,6 +53,7 @@ namespace CodeJelly.BounceOrBreak.Game.Scope
             builder.Register<SceneLoader>(Lifetime.Singleton);
             builder.Register<AppInitializer>(Lifetime.Singleton);
 
+            builder.Register<IResourceLoader, AddressablesResourceLoader>(Lifetime.Singleton);
             builder.Register<ISettingsRepository, PlayerPrefsSettingsRepository>(Lifetime.Singleton);
             builder.RegisterInstance(_audioMixerConfig);
             builder.RegisterInstance(_graphicsPresetConfig);
