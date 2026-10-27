@@ -13,7 +13,7 @@ main
 ### main
 - 출시 가능한 안정 버전
 - 태그로 버전 관리 (v1.0.0, v1.1.0...). CI가 main 빌드 성공 시 생성
-- 머지 전 develop에서 `bundleVersion` 증가. 같은 버전이 이미 태그돼 있으면 빌드 실패
+- 머지 전 develop에서 `bundleVersion` 증가, `CHANGELOG.md`에 그 버전 절 작성. 같은 버전이 이미 태그돼 있으면 빌드 실패
 - 머지 전 develop에서 수동 빌드 권장
 
 ### develop
