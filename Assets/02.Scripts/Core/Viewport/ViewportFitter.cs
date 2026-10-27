@@ -12,10 +12,6 @@ namespace CodeJelly.BounceOrBreak.Core.Viewport
     public class ViewportFitter : MonoBehaviour
     {
         #region Private Variables
-        private const string ORTHOGRAPHIC_SIZE_PROPERTY = "orthographic size";
-        private const string POSITION_X_PROPERTY = "m_LocalPosition.x";
-        private const string POSITION_Y_PROPERTY = "m_LocalPosition.y";
-
         [SerializeField] private ViewportConfig _config;
         [SerializeField] private Camera _camera;
         #endregion
@@ -30,9 +26,9 @@ namespace CodeJelly.BounceOrBreak.Core.Viewport
         private void OnEnable()
         {
             // 에디터에서 화면비에 맞춘 값이 씬에 저장되지 않도록 등록
-            DrivenProperties.Register(this, _camera, ORTHOGRAPHIC_SIZE_PROPERTY);
-            DrivenProperties.Register(this, transform, POSITION_X_PROPERTY);
-            DrivenProperties.Register(this, transform, POSITION_Y_PROPERTY);
+            DrivenProperties.Register(this, _camera, AppConstants.Viewport.Fitter.ORTHOGRAPHIC_SIZE_PROPERTY);
+            DrivenProperties.Register(this, transform, AppConstants.Viewport.Fitter.POSITION_X_PROPERTY);
+            DrivenProperties.Register(this, transform, AppConstants.Viewport.Fitter.POSITION_Y_PROPERTY);
         }
 
         private void Update()

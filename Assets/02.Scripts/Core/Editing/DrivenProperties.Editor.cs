@@ -33,14 +33,10 @@ namespace CodeJelly.BounceOrBreak.Core.Editing
 
 
         #region Private Variables
-        private const string MANAGER_TYPE_NAME = "UnityEngine.DrivenPropertyManager";
-        private const string REGISTER_METHOD_NAME = "TryRegisterProperty";
-        private const string UNREGISTER_ALL_METHOD_NAME = "UnregisterProperties";
+        private static readonly Type MANAGER_TYPE = typeof(Object).Assembly.GetType(AppConstants.DrivenProperties.MANAGER_TYPE_NAME);
 
-        private static readonly Type MANAGER_TYPE = typeof(Object).Assembly.GetType(MANAGER_TYPE_NAME);
-
-        private static readonly Action<Object, Object, string> REGISTER = CreateDelegate<Action<Object, Object, string>>(REGISTER_METHOD_NAME, typeof(Object), typeof(Object), typeof(string));
-        private static readonly Action<Object> UNREGISTER_ALL = CreateDelegate<Action<Object>>(UNREGISTER_ALL_METHOD_NAME, typeof(Object));
+        private static readonly Action<Object, Object, string> REGISTER = CreateDelegate<Action<Object, Object, string>>(AppConstants.DrivenProperties.REGISTER_METHOD_NAME, typeof(Object), typeof(Object), typeof(string));
+        private static readonly Action<Object> UNREGISTER_ALL = CreateDelegate<Action<Object>>(AppConstants.DrivenProperties.UNREGISTER_ALL_METHOD_NAME, typeof(Object));
         #endregion
 
 

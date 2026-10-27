@@ -17,11 +17,6 @@ namespace CodeJelly.BounceOrBreak.Core.Remote
 
 
         #region Private Variables
-        /// <summary>
-        /// 접미사 구분자. 사전 출시 표기(-)와 빌드 메타데이터(+)
-        /// </summary>
-        private static readonly char[] SUFFIX_SEPARATORS = { '-', '+' };
-
         private readonly Version _version;
         #endregion
 
@@ -39,7 +34,7 @@ namespace CodeJelly.BounceOrBreak.Core.Remote
                 return false;
             }
 
-            int suffixIndex = text.IndexOfAny(SUFFIX_SEPARATORS);
+            int suffixIndex = text.IndexOfAny(AppConstants.AppVersion.SUFFIX_SEPARATORS);
             string core = suffixIndex < 0 ? text : text.Substring(0, suffixIndex);
 
             if (Version.TryParse(core, out Version parsed) == false)

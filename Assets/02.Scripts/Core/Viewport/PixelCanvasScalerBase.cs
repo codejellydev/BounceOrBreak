@@ -47,9 +47,6 @@ namespace CodeJelly.BounceOrBreak.Core.Viewport
 
 
         #region Private Variables
-        private const float DEFAULT_SCALE_FACTOR = 1f;
-        private const float DEFAULT_REFERENCE_PIXELS_PER_UNIT = 100f;
-
         private Canvas _canvas;
         #endregion
 
@@ -123,8 +120,8 @@ namespace CodeJelly.BounceOrBreak.Core.Viewport
         /// </summary>
         private void Restore()
         {
-            _canvas.scaleFactor = DEFAULT_SCALE_FACTOR;
-            _canvas.referencePixelsPerUnit = DEFAULT_REFERENCE_PIXELS_PER_UNIT;
+            _canvas.scaleFactor = AppConstants.UI.DEFAULT_SCALE_FACTOR;
+            _canvas.referencePixelsPerUnit = AppConstants.UI.DEFAULT_REFERENCE_PIXELS_PER_UNIT;
         }
 
         /// <summary>
