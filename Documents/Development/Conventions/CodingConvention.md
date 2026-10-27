@@ -18,6 +18,13 @@
 * **상수(`const`, `static readonly`):** `UPPER_SNAKE_CASE`
 * **public 필드, 프로퍼티:** `PascalCase`
 
+## 📦 상수 위치
+
+상수(`const`, `static readonly`)는 클래스 안에 두지 않고 컨테이너에 모은다. Core는 `AppConstants`, Game은 `GameConstants`.
+
+* 묶음은 기능 단위로 짓는다 (ex. `Audio`). 그 안에서 한 클래스 전용 값이 여럿이면 중첩 클래스로 둔다 (ex. `UI.Dialog`)
+* 예외: 실행 시 계산해 채우는 `static readonly`는 캐시이므로 그 클래스에 둔다. Editor·Tests 어셈블리는 대상이 아니다
+
 ## 📋 Region 구조
 
 ### Region 순서 (필수)

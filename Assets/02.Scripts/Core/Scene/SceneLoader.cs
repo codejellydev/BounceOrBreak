@@ -81,11 +81,6 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
 
 
         #region Private Variables
-        /// <summary>
-        /// 로딩 화면의 최소 표시 시간 (초)
-        /// </summary>
-        private const float MIN_LOADING_SCENE_SECONDS = 0.3f;
-
         private readonly ReactiveProperty<float> _transitionProgress;
 
         private SceneInstance _previousSceneInstance;
@@ -474,10 +469,10 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
 
             float elapsed = Time.realtimeSinceStartup - shownTime;
 
-            if (elapsed < MIN_LOADING_SCENE_SECONDS)
+            if (elapsed < AppConstants.Scene.MIN_LOADING_SCENE_SECONDS)
             {
                 await UniTask.Delay(
-                    TimeSpan.FromSeconds(MIN_LOADING_SCENE_SECONDS - elapsed),
+                    TimeSpan.FromSeconds(AppConstants.Scene.MIN_LOADING_SCENE_SECONDS - elapsed),
                     DelayType.UnscaledDeltaTime,
                     cancellationToken: ct);
             }
