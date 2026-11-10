@@ -83,7 +83,7 @@ namespace CodeJelly.BounceOrBreak.Game
                 /// <summary>
                 /// 새 버전 안내
                 /// </summary>
-                public static MessageRequest NewVersion(string version)
+                public static MessageRequest CreateNewVersion(string version)
                 {
                     return new MessageRequest
                     {
@@ -97,7 +97,7 @@ namespace CodeJelly.BounceOrBreak.Game
                 /// <summary>
                 /// 원격 공지
                 /// </summary>
-                public static MessageRequest Notice(RemoteNotice notice)
+                public static MessageRequest CreateNotice(RemoteNotice notice)
                 {
                     return new MessageRequest
                     {

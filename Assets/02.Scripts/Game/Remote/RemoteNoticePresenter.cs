@@ -47,7 +47,7 @@ namespace CodeJelly.BounceOrBreak.Game.Remote
                 return;
             }
 
-            bool isAccepted = await _navigation.ShowAsync<MessageRequest, bool>(GameConstants.UI.Keys.MESSAGE, GameConstants.UI.Messages.NewVersion(version), ct);
+            bool isAccepted = await _navigation.ShowAsync<MessageRequest, bool>(GameConstants.UI.Keys.MESSAGE, GameConstants.UI.Messages.CreateNewVersion(version), ct);
 
             // Update는 기록하지 않는다. 업데이트하기 전까지는 다음 실행에도 다시 안내
             if (isAccepted == true)
@@ -68,7 +68,7 @@ namespace CodeJelly.BounceOrBreak.Game.Remote
                 return;
             }
 
-            await _navigation.ShowAsync<MessageRequest, bool>(GameConstants.UI.Keys.MESSAGE, GameConstants.UI.Messages.Notice(notice), ct);
+            await _navigation.ShowAsync<MessageRequest, bool>(GameConstants.UI.Keys.MESSAGE, GameConstants.UI.Messages.CreateNotice(notice), ct);
             await _noticeService.MarkNoticeSeenAsync(notice.Id);
         }
         #endregion
