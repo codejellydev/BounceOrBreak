@@ -22,7 +22,7 @@
 
 상수(`const`, `static readonly`)는 클래스 안에 두지 않고 컨테이너에 모은다. Core는 `AppConstants`, Game은 `GameConstants`.
 
-* 묶음은 기능 단위로 짓는다 (ex. `Audio`). 그 안에서 한 클래스 전용 값이 여럿이면 중첩 클래스로 둔다 (ex. `UI.Dialog`)
+* 상수 그룹은 기능 단위로 짓는다 (ex. `Audio`). 그 안에서 한 클래스 전용 값이 여럿이면 중첩 클래스로 둔다 (ex. `UI.Dialog`)
 * 예외: 실행 시 계산해 채우는 `static readonly`는 캐시이므로 그 클래스에 둔다. Editor·Tests 어셈블리는 대상이 아니다
 
 ## 📋 Region 구조
@@ -74,6 +74,7 @@ protected event Action OnRefreshed;
 // private event들 (있다면)
 private event Action OnDisposed;
 #endregion
+
 
 #region Properties
 // public 프로퍼티들
@@ -289,100 +290,62 @@ public async UniTaskVoid StartGameSequence()
 }
 ```
 
-## 📝 주석 및 문서화
+## 📝 주석
 
-### Class Summary (필수)
+주석은 한국어로 쓴다. 어휘는 [`Comments/vocabulary.json`](Comments/vocabulary.json)을 따른다.
 
-모든 클래스에 반드시 summary 작성
+### 작성 기준
 
-```csharp
-/// <summary>
-/// 플레이어의 이동을 담당하는 컨트롤러 클래스.
-/// 입력에 따른 이동, 점프, 회전 등의 기능을 제공합니다.
-/// </summary>
-public class PlayerController : MonoBehaviour
-{
-}
-```
+summary는 자명하지 않을 때 쓴다. 이름과 시그니처만으로 역할을 알 수 있으면 자명하다.
+아래는 자명해도 쓴다.
 
-### Interface Summary
-
-**인터페이스 정의:** 복잡하거나 중요한 인터페이스에만 작성 (선택)
+* 클래스 (상수 그룹 제외)
+* 인터페이스 구현 메서드 (Lifecycle 인터페이스 제외): `I인터페이스.메서드 Implementation.`
 
 ```csharp
 /// <summary>
-/// 상호작용 가능한 객체들에 대한 인터페이스.
-/// 플레이어와의 접촉 및 상호작용 로직을 정의합니다.
-/// </summary>
-public interface IInteractable
-{
-    bool IsInteractable { get; }
-    void OnPlayerContact(IPlayer player);
-}
-```
-
-**인터페이스 구현:** 모든 인터페이스 메서드 구현체에 작성 (필수)
-
-```csharp
-/// <summary>
-/// IInteractable.OnPlayerContact Implementation
+/// IInteractable.OnPlayerContact Implementation.
 /// </summary>
 public void OnPlayerContact(IPlayer player)
-{
-    // 구현 로직
-}
+{ }
 ```
 
-**예외: Lifecycle 성격의 인터페이스는 Summary 생략 가능**
-
-Unity Lifecycle(`Awake`, `Start` 등)과 VContainer Lifecycle(`IStartable.Start`, `IAsyncStartable.StartAsync` 등)은 프레임워크가 정의한 잘 알려진 계약이므로 Summary를 생략 가능하다.
-
-### Properties Summary (선택)
-
-복잡한 로직이나 중요한 프로퍼티에만 작성.
-이름만으로 의도가 자명하거나, 간단한 프로퍼티는 생략이 가능하다.
+필드에는 `//`가 아니라 `/// <summary>`를 쓴다.
+backing field에 `[Tooltip]`이 있으면 프로퍼티 summary는 생략한다.
 
 ```csharp
-#region Properties
-/// <summary>
-/// 현재 플레이어가 땅에 닿아있는지 여부.
-/// GroundCheck를 통해 매 프레임 업데이트됨.
-/// </summary>
-public bool IsGrounded => _isGrounded;
-
-// 간단한 프로퍼티는 summary 생략 가능
-public float Speed { get; set; }
-#endregion
-```
-
-Backing field에 `[Tooltip]`이 있고 프로퍼티가 단순 getter라면 summary를 **생략 가능**하다.
-IDE에서 `[Tooltip]` 내용이 프로퍼티 호버 시에도 표시되므로 중복이 된다.
-
-```csharp
-// ✅ 권장 — [Tooltip]이 있으므로 summary 생략
+// ✅ [Tooltip]이 있으므로 프로퍼티 summary 생략
 #region Properties
 public float Speed => _speed;
-public int MaxCount => _maxCount;
 #endregion
+
 
 #region Private Variables
 [Tooltip("이동 속도 (m/s)")]
 [SerializeField] private float _speed = 5f;
-
-[Tooltip("최대 오브젝트 개수")]
-[SerializeField] private int _maxCount = 10;
 #endregion
-
-// ❌ 지양 — [Tooltip]과 동일한 내용의 summary 중복 작성
-/// <summary>
-/// 이동 속도 (m/s).
-/// </summary>
-public float Speed => _speed;
 ```
 
-### 주석 위치
+### 문체
 
-제어 구문 주석은 구문 바로 위에 작성
+첫 문장은 역할을 쓴다. 이름과 시그니처로 알 수 없는 것은 보조 문장으로 덧붙인다.
+
+```csharp
+/// <summary>
+/// 지정한 방향으로 이동합니다.
+/// 땅에 닿아 있지 않으면 속도를 절반으로 줄입니다.
+/// </summary>
+public void Move(Vector2 direction)
+{ }
+```
+
+| 형식 | 첫 문장 | 마침표 | 예시 |
+|---|---|---|---|
+| summary: 메서드 | 합니다체 | 찍는다 | `지정한 방향으로 이동합니다.` |
+| summary: 타입·프로퍼티·필드 | 명사형 | 찍는다 | `플레이어의 이동을 처리하는 클래스.` |
+| `//`, Tooltip | 명사형 | 안 찍는다 | `땅에 닿았을 때만 점프 허용` |
+
+인라인 `//`는 실행문 바로 위에 쓰고, "무엇"이 아니라 "왜"를 쓴다.
 
 ```csharp
 // ✅ 권장
@@ -399,12 +362,10 @@ if (IsGrounded == true) // 땅에 닿았을 때만 점프 허용
 }
 ```
 
-### 주석 용어 표기
+### 어휘
 
-주석은 한국어로 작성한다.
-
-- 타입, 멤버 등 코드를 가리킬 때는 그 이름을 그대로 쓴다 ("생성된 적들"이 아니라 "생성된 Enemy들")
-- 그 외 용어는 프로젝트에서 이미 쓰던 표기를 따른다
+* 코드를 가리킬 때는 그 이름을 그대로 쓴다 ("생성된 적들"이 아니라 "생성된 Enemy들")
+* 서술어는 한자어를 권장한다. 구어체는 쓰지 않는다
 
 ## 🧪 테스트
 
@@ -432,7 +393,7 @@ if (IsGrounded == true) // 땅에 닿았을 때만 점프 허용
 - [ ]  어트리뷰트 변수 상단 배치
 - [ ]  빈 함수 한 줄 표기
 - [ ]  Unity Lifecycle 순서 준수
-- [ ]  인터페이스 구현 메서드에 Summary 작성 (I인터페이스명.메서드명 Implementation / Lifecycle 인터페이스 제외 가능)
+- [ ]  인터페이스 구현 메서드에 Summary 작성 (I인터페이스명.메서드명 Implementation. / Lifecycle 인터페이스 제외 가능)
 - [ ]  비동기 메서드 명명 규칙 준수 (Async 접미사 여부)
 
 ### 코드 리뷰시
@@ -440,6 +401,6 @@ if (IsGrounded == true) // 땅에 닿았을 때만 점프 허용
 - [ ]  Region convention 준수 여부
 - [ ]  변수 정렬 순서 확인
 - [ ]  Class summary 존재 여부
-- [ ]  인터페이스 구현 Summary 형식 확인 (I인터페이스명.메서드명 Implementation)
+- [ ]  인터페이스 구현 Summary 형식 확인 (I인터페이스명.메서드명 Implementation.)
 - [ ]  주석 용어 표기 일관성 (한 용어 = 한 표기)
 - [ ]  코드 스타일 일관성

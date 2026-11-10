@@ -1,0 +1,252 @@
+{
+  "fields": {
+    "round": {
+      "date": "검수한 날",
+      "tool": "검수 방식. chat은 대화, review-page는 검수 페이지, dev-workflow는 검수 도구",
+      "auto": "규칙으로 자동 수정한 수",
+      "asked": "사람에게 물은 수",
+      "overturned": "추천과 다르게 고른 수. 세지 않았으면 null"
+    },
+    "item": {
+      "kind": "주석 종류. process는 주석이 아닌 작업 규칙",
+      "original": "처음 쓴 문장",
+      "chosen": "채택한 문장. 삭제했으면 null",
+      "reason": "그렇게 정한 이유",
+      "promoted": "true면 컨벤션이나 vocabulary.json에 규칙으로 올라간 결정"
+    }
+  },
+  "rounds": [
+    {
+      "date": "2026-10-18",
+      "tool": "chat",
+      "auto": 0,
+      "asked": 24,
+      "overturned": null,
+      "items": [
+        {
+          "kind": "inline",
+          "original": "예외 없이 null로 풀리므로",
+          "chosen": "예외 없이 null이 되므로",
+          "reason": "구어체(풀리다)",
+          "promoted": true
+        },
+        {
+          "kind": "inline",
+          "original": "따로 거름",
+          "chosen": "실패로 처리",
+          "reason": "구어체(거르다)",
+          "promoted": true
+        },
+        {
+          "kind": "summary",
+          "original": "안내를 미룬 것으로",
+          "chosen": "안내를 넘긴 것으로",
+          "reason": "Later = 넘기다로 통일",
+          "promoted": true
+        },
+        {
+          "kind": "summary",
+          "original": "제한 시간을 넘기면",
+          "chosen": "제한 시간을 초과하면",
+          "reason": "넘기다는 Later 전용, 시간은 초과하다",
+          "promoted": true
+        },
+        {
+          "kind": "summary",
+          "original": "원격 설정을 받다 / 조회",
+          "chosen": "원격 설정을 수신하다",
+          "reason": "원격 데이터 맥락",
+          "promoted": true
+        },
+        {
+          "kind": "summary",
+          "original": "~ 꼴",
+          "chosen": "~ 형태",
+          "reason": "",
+          "promoted": true
+        },
+        {
+          "kind": "summary",
+          "original": "~을 돌려줍니다",
+          "chosen": "~을 반환합니다",
+          "reason": "",
+          "promoted": true
+        },
+        {
+          "kind": "summary",
+          "original": "공지가 없는 것으로 봅니다",
+          "chosen": "공지가 없는 것으로 취급합니다",
+          "reason": "데이터 해석은 취급, 서비스 동작만 판정",
+          "promoted": true
+        },
+        {
+          "kind": "summary",
+          "original": "숫자 부분만 취합니다",
+          "chosen": "접미사를 뗀 숫자(ex. \"0.1.4-dev.12+abc1234\"의 0.1.4)로 비교합니다",
+          "reason": "예시는 입력→결과가 보이게",
+          "promoted": false
+        },
+        {
+          "kind": "process",
+          "original": "필드 위 // 주석",
+          "chosen": "/// <summary>",
+          "reason": "문서 규칙",
+          "promoted": true
+        },
+        {
+          "kind": "process",
+          "original": "Injection 생성자 파라미터 2개 한 줄",
+          "chosen": "줄바꿈",
+          "reason": "문서 규칙",
+          "promoted": true
+        }
+      ]
+    },
+    {
+      "date": "2026-10-19",
+      "tool": "chat",
+      "auto": 0,
+      "asked": 23,
+      "overturned": null,
+      "items": [
+        {
+          "kind": "summary",
+          "original": "EntrySceneValidationTests",
+          "chosen": "UIPanelRootValidationTests",
+          "reason": "테스트 클래스는 씬이 아니라 대상 단위로",
+          "promoted": true
+        },
+        {
+          "kind": "inline",
+          "original": "패널의 삶",
+          "chosen": "패널의 수명",
+          "reason": "구어체(삶)",
+          "promoted": true
+        }
+      ]
+    },
+    {
+      "date": "2026-10-26",
+      "tool": "review-page",
+      "auto": 0,
+      "asked": 43,
+      "overturned": 7,
+      "items": [
+        {
+          "kind": "summary",
+          "original": "리소스 관리 클래스.\\n로드는 IResourceLoader에 맡기고 캐시와 참조 카운트를 담당합니다.",
+          "chosen": "리소스를 캐시하고 참조 카운트로 수명을 관리하는 클래스.",
+          "reason": "한 문장이 가능하면 한 문장",
+          "promoted": false
+        },
+        {
+          "kind": "inline",
+          "original": "취소는 이 호출자만 손을 뗀 것. 다른 대기자가 남아 있으면 로드는 이어짐",
+          "chosen": null,
+          "reason": "삭제. 코드가 말하는 것을 반복 + 구어체(손을 떼다)",
+          "promoted": true
+        },
+        {
+          "kind": "inline",
+          "original": "실패한 노드는 null을 받은 대기자가 각자 내리므로 외부 Release 대상이 아님",
+          "chosen": null,
+          "reason": "삭제. 바로 아래 로그 문자열이 설명함",
+          "promoted": false
+        },
+        {
+          "kind": "inline",
+          "original": "실패한 노드는 남은 대기자가 정리하므로 캐시에서만 떼고 새로 로드",
+          "chosen": null,
+          "reason": "삭제. 코드 반복",
+          "promoted": false
+        },
+        {
+          "kind": "inline",
+          "original": "실패 뒤 새 로드가 같은 키를 차지했을 수 있으므로 자기 노드일 때만 캐시에서 제거",
+          "chosen": null,
+          "reason": "삭제. 코드 반복",
+          "promoted": false
+        },
+        {
+          "kind": "summary",
+          "original": "로드 완료를 기다리는 작업. 대기자마다 새로 받습니다.",
+          "chosen": "로드 완료를 기다리는 작업.",
+          "reason": "뒷문장은 구현 사정",
+          "promoted": false
+        },
+        {
+          "kind": "summary",
+          "original": "로드에 실패했는지 확인합니다.",
+          "chosen": "로드 실패 여부.",
+          "reason": "IsValid류가 아닌 bool은 명사형",
+          "promoted": false
+        },
+        {
+          "kind": "summary",
+          "original": "// 대기자가 여럿이라 한 번만 await할 수 있는 핸들의 작업 대신 완료를 중계",
+          "chosen": "/// 핸들의 작업은 한 번만 await할 수 있으므로 완료를 중계해 여러 대기자에게 전파",
+          "reason": "필드 주석은 summary. 원인→결과 순서",
+          "promoted": true
+        },
+        {
+          "kind": "summary",
+          "original": "진행 중이거나 완료된 리소스 로드의 핸들 인터페이스.",
+          "chosen": "리소스 핸들 인터페이스. 로드 완료 대기와 해제를 맡습니다.",
+          "reason": "이름을 짧게 끊고 둘째 문장이 멤버를 말함. 3개 이상 재제시 후 선택",
+          "promoted": false
+        },
+        {
+          "kind": "summary",
+          "original": "로드 완료를 기다리는 작업. 실패하면 null.",
+          "chosen": "로드 완료를 기다리는 작업. 실패하면 null.",
+          "reason": "추천(결과가 null)보다 짧은 원안 유지",
+          "promoted": false
+        },
+        {
+          "kind": "inline",
+          "original": "대기자가 모두 손을 떼 해제된 뒤의 완료는 쓰는 곳이 없음",
+          "chosen": "해제된 뒤 끝난 로드는 결과를 쓰지 않음",
+          "reason": "구어체(손을 떼다) 제거, 짧게",
+          "promoted": true
+        },
+        {
+          "kind": "summary",
+          "original": "테스트용 IResourceLoader 구현체. 완료와 실패는 테스트가 직접 일으킵니다.",
+          "chosen": "테스트용 IResourceLoader 구현체.",
+          "reason": "FakeRemoteConfigSource 선례와 동형",
+          "promoted": false
+        },
+        {
+          "kind": "inline",
+          "original": "// _resourceCache에 key가 없음",
+          "chosen": null,
+          "reason": "삭제. else가 받는 경우가 둘이 돼 문장이 틀림, 로그 문자열이 설명함",
+          "promoted": false
+        },
+        {
+          "kind": "summary",
+          "original": "로드된 단일 리소스의 생명주기를 관리하는 래퍼 클래스.\\n참조 카운팅 방식으로 메모리를 관리합니다.",
+          "chosen": "리소스 하나의 로드 상태와 참조 카운트를 관리하는 클래스.",
+          "reason": "로드 시작 시점에 생기므로 '로드된'이 어긋남. 한 문장",
+          "promoted": false
+        }
+      ]
+    },
+    {
+      "date": "2026-10-27",
+      "tool": "review-page",
+      "auto": 0,
+      "asked": 7,
+      "overturned": 2,
+      "items": [
+        {
+          "kind": "summary",
+          "original": "Canvas 배율의 기본값. PixelCanvasScaler가 꺼질 때 되돌림",
+          "chosen": "Canvas 배율의 기본값. PixelCanvasScaler가 꺼질 때 되돌림",
+          "reason": "추천(되돌리는 Canvas 배율)보다 '기본값'을 앞세운 원안 유지",
+          "promoted": false
+        }
+      ]
+    }
+  ]
+}
