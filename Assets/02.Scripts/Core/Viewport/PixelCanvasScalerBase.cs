@@ -33,7 +33,7 @@ namespace CodeJelly.BounceOrBreak.Core.Viewport
         }
 
         /// <summary>
-        /// 설계 기준 화면 폭 (도트). 실제 화면 폭 ÷ DesignWidth = Canvas 배율
+        /// 설계 기준 화면 폭 (도트). 실제 화면 폭 ÷ DesignWidth = Canvas 배율.
         /// </summary>
         protected abstract int DesignWidth { get; }
 

@@ -11,7 +11,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Panel
     public interface IUIPanel
     {
         /// <summary>
-        /// 패널 키. UIPanelConfig의 Entry와 일치해야 함
+        /// 패널 키. UIPanelConfig의 Entry와 일치해야 함.
         /// </summary>
         string Key { get; }
 
@@ -27,7 +27,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Panel
     public interface IUIPanel<TResult> : IUIPanel
     {
         /// <summary>
-        /// 취소 경로로 닫혔을 때의 결과
+        /// 취소 경로로 닫혔을 때의 결과.
         /// </summary>
         TResult CancelResult { get; }
 
@@ -45,7 +45,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Panel
     public interface IUIPanel<TRequest, TResult> : IUIPanel
     {
         /// <summary>
-        /// 취소 경로로 닫혔을 때의 결과
+        /// 취소 경로로 닫혔을 때의 결과.
         /// </summary>
         TResult CancelResult { get; }
 

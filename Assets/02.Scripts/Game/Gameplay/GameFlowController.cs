@@ -69,7 +69,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
 
         #region Properties
         /// <summary>
-        /// ISceneInitializer.InitializationState Implementation
+        /// ISceneInitializer.InitializationState Implementation.
         /// </summary>
         public SceneInitializationState InitializationState { get; private set; } = SceneInitializationState.None;
 
@@ -84,7 +84,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         public ReadOnlyReactiveProperty<bool> IsPaused => _isPaused.ToReadOnlyReactiveProperty();
 
         /// <summary>
-        /// Round가 끝났을 때 발행
+        /// Round가 끝났을 때 발행.
         /// </summary>
         public Observable<RoundResult> OnRoundEnded => _onRoundEnded;
         #endregion
@@ -104,7 +104,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
 
         #region Public Methods
         /// <summary>
-        /// ISceneInitializer.InitializeAsync Implementation
+        /// ISceneInitializer.InitializeAsync Implementation.
         /// </summary>
         public async UniTask InitializeAsync(IProgress<float> progress, CancellationToken ct)
         {
@@ -147,7 +147,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         }
 
         /// <summary>
-        /// ISceneActivatable.OnActivated Implementation
+        /// ISceneActivatable.OnActivated Implementation.
         /// </summary>
         public void OnActivated()
         {
@@ -225,7 +225,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         }
 
         /// <summary>
-        /// IDisposable.Dispose Implementation
+        /// IDisposable.Dispose Implementation.
         /// </summary>
         public void Dispose()
         {

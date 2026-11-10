@@ -96,7 +96,7 @@ namespace CodeJelly.BounceOrBreak.Game.Settings.Language
         }
 
         /// <summary>
-        /// IDisposable.Dispose Implementation
+        /// IDisposable.Dispose Implementation.
         /// </summary>
         public void Dispose()
         {

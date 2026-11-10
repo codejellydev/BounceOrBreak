@@ -148,7 +148,7 @@ namespace CodeJelly.BounceOrBreak.Game.Input
         }
 
         /// <summary>
-        /// IDisposable.Dispose Implementation 
+        /// IDisposable.Dispose Implementation.
         /// </summary>
         public void Dispose()
         {
@@ -320,7 +320,7 @@ namespace CodeJelly.BounceOrBreak.Game.Input
         void GameInputAction.IPlayerActions.OnPosition(InputAction.CallbackContext context)
         {
             // IPlayerActions.OnTouch, IPlayerActions.OnDrag에서 _playerTouchPosition를 업데이트하기 때문에 중복 업데이트 방지를 위해 비움.
-            // _gameInputAction.Player.Position 접근을 위해 InputAction asset에는 존재 필요.
+            // _gameInputAction.Player.Position 접근을 위해 InputAction asset에는 존재 필요
         }
 
         void GameInputAction.IUIActions.OnTouch(InputAction.CallbackContext context)
@@ -340,7 +340,7 @@ namespace CodeJelly.BounceOrBreak.Game.Input
         void GameInputAction.IUIActions.OnPosition(InputAction.CallbackContext context)
         {
             // IUIActions.OnTouch에서 _playerTouchPosition를 업데이트하기 때문에 중복 업데이트 방지를 위해 비움.
-            // _gameInputAction.UI.Position 접근을 위해 InputAction asset에는 존재 필요.
+            // _gameInputAction.UI.Position 접근을 위해 InputAction asset에는 존재 필요
         }
 
         void GameInputAction.ISystemActions.OnBack(InputAction.CallbackContext context)

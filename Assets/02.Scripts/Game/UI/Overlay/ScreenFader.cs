@@ -14,7 +14,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Overlay
     {
         #region Properties
         /// <summary>
-        /// ScreenFader가 유효한지 확인합니다.
+        /// ScreenFader의 유효 여부.
         /// </summary>
         public bool IsValid => _canvas != null && _canvasGroup != null;
         #endregion
@@ -51,7 +51,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Overlay
 
         #region Public Methods
         /// <summary>
-        /// ITransitionEffect.CoverAsync Implementation
+        /// ITransitionEffect.CoverAsync Implementation.
         /// </summary>
         public UniTask CoverAsync(CancellationToken cancellationToken = default)
         {
@@ -59,7 +59,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Overlay
         }
 
         /// <summary>
-        /// ITransitionEffect.RevealAsync Implementation
+        /// ITransitionEffect.RevealAsync Implementation.
         /// </summary>
         public UniTask RevealAsync(CancellationToken cancellationToken = default)
         {

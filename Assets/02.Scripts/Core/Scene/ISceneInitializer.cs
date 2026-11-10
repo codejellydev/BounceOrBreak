@@ -6,12 +6,12 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
 {
     /// <summary>
     /// 씬의 초기화를 담당하는 인터페이스.
-    /// 순서가 중요한 초기화가 필요한 씬에서 구현합니다. (분할 초기화, 진행률 보고 등 지원)
+    /// 순서가 중요한 초기화가 필요한 씬에서 구현합니다. (분할 초기화, 진행률 보고 등 지원).
     /// </summary>
     public interface ISceneInitializer
     {
         /// <summary>
-        /// 씬 초기화 상태
+        /// 씬 초기화 상태.
         /// </summary>
         SceneInitializationState InitializationState { get; }
 

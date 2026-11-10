@@ -16,7 +16,7 @@ namespace CodeJelly.BounceOrBreak.Tests.Unit
 
         #region Public Methods
         /// <summary>
-        /// ISettingsRepository.LoadAsync Implementation
+        /// ISettingsRepository.LoadAsync Implementation.
         /// </summary>
         public UniTask<SettingsResult<T>> LoadAsync<T>(string key) where T : class, new()
         {
@@ -29,7 +29,7 @@ namespace CodeJelly.BounceOrBreak.Tests.Unit
         }
 
         /// <summary>
-        /// ISettingsRepository.SaveAsync Implementation
+        /// ISettingsRepository.SaveAsync Implementation.
         /// </summary>
         public UniTask<SettingsResult> SaveAsync<T>(string key, T data) where T : class
         {
@@ -39,7 +39,7 @@ namespace CodeJelly.BounceOrBreak.Tests.Unit
         }
 
         /// <summary>
-        /// ISettingsRepository.DeleteAsync Implementation
+        /// ISettingsRepository.DeleteAsync Implementation.
         /// </summary>
         public UniTask<SettingsResult> DeleteAsync(string key)
         {

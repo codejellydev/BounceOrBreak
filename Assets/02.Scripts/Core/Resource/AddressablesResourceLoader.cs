@@ -28,7 +28,7 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
 
             #region Properties
             /// <summary>
-            /// IResourceHandle.Task Implementation
+            /// IResourceHandle.Task Implementation.
             /// </summary>
             public UniTask<UnityEngine.Object> Task { get; }
             #endregion
@@ -43,7 +43,7 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
 
             #region Public Methods
             /// <summary>
-            /// IResourceHandle.Release Implementation
+            /// IResourceHandle.Release Implementation.
             /// </summary>
             public void Release()
             {
@@ -94,7 +94,7 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
 
         #region Public Methods
         /// <summary>
-        /// IResourceLoader.InitializeAsync Implementation
+        /// IResourceLoader.InitializeAsync Implementation.
         /// </summary>
         public async UniTask<bool> InitializeAsync()
         {
@@ -116,7 +116,7 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
         }
 
         /// <summary>
-        /// IResourceLoader.Load Implementation
+        /// IResourceLoader.Load Implementation.
         /// </summary>
         public IResourceHandle Load<T>(string key) where T : UnityEngine.Object
         {

@@ -170,7 +170,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         }
 
         /// <summary>
-        /// IPauseable.Pause Implementation
+        /// IPauseable.Pause Implementation.
         /// </summary>
         public void Pause()
         {
@@ -183,7 +183,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         }
 
         /// <summary>
-        /// IPauseable.Resume Implementation
+        /// IPauseable.Resume Implementation.
         /// </summary>
         public void Resume()
         {
@@ -196,7 +196,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         }
 
         /// <summary>
-        /// IDisposable.Dispose Implementation
+        /// IDisposable.Dispose Implementation.
         /// </summary>
         public void Dispose()
         {

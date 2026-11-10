@@ -26,7 +26,7 @@ namespace CodeJelly.BounceOrBreak.Core.Editing
 
         #region Properties
         /// <summary>
-        /// DrivenProperties가 유효한지 확인합니다.
+        /// DrivenProperties의 유효 여부.
         /// </summary>
         public static bool IsValid => REGISTER != null && UNREGISTER_ALL != null;
         #endregion

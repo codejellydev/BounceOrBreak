@@ -105,7 +105,7 @@ namespace CodeJelly.BounceOrBreak.Game.Score
         }
 
         /// <summary>
-        /// IDisposable.Dispose Implementation
+        /// IDisposable.Dispose Implementation.
         /// </summary>
         public void Dispose()
         {

@@ -12,12 +12,12 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
     {
         #region Properties
         /// <summary>
-        /// IEgg.Data Implementation
+        /// IEgg.Data Implementation.
         /// </summary>
         public EggData Data { get; private set; }
 
         /// <summary>
-        /// EggController가 유효한지 확인합니다.
+        /// EggController의 유효 여부.
         /// </summary>
         public bool IsValid => _renderer != null;
         #endregion
@@ -41,7 +41,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         #region Public Methods
         /// <summary>
         /// IEgg.Initialize Implementation
-        /// TODO: data 기반 IEggBehavior 장착
+        /// TODO: data 기반 IEggBehavior 장착.
         /// </summary>
         /// <param name="data">적용할 타입 데이터</param>
         /// <param name="position">배치할 위치</param>
@@ -66,7 +66,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         }
 
         /// <summary>
-        /// IEgg.Hold Implementation
+        /// IEgg.Hold Implementation.
         /// </summary>
         public void Hold(Vector2 position)
         {
@@ -75,7 +75,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         }
 
         /// <summary>
-        /// IEgg.Eject Implementation
+        /// IEgg.Eject Implementation.
         /// </summary>
         public void Eject(Vector2 direction, float force)
         {
@@ -89,7 +89,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         }
 
         /// <summary>
-        /// IPauseable.Pause Implementation
+        /// IPauseable.Pause Implementation.
         /// </summary>
         public void Pause()
         {
@@ -97,7 +97,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         }
 
         /// <summary>
-        /// IPauseable.Resume Implementation
+        /// IPauseable.Resume Implementation.
         /// </summary>
         public void Resume()
         {
@@ -105,13 +105,13 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         }
 
         /// <summary>
-        /// IPoolable.Get Implementation
+        /// IPoolable.Get Implementation.
         /// </summary>
         public void Get()
         { }
 
         /// <summary>
-        /// IPoolable.Release Implementation
+        /// IPoolable.Release Implementation.
         /// </summary>
         public void Release()
         {
@@ -129,7 +129,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
         }
 
         /// <summary>
-        /// IPoolable.Destroy Implementation
+        /// IPoolable.Destroy Implementation.
         /// </summary>
         public void Destroy()
         {

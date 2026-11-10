@@ -15,12 +15,12 @@ namespace CodeJelly.BounceOrBreak.Tests.Validation
     {
         #region Private Variables
         /// <summary>
-        /// Localization 등 패키지가 생성해 등록 구성을 직접 정할 수 없는 그룹
+        /// Localization 등 패키지가 생성해 등록 구성을 직접 정할 수 없는 그룹.
         /// </summary>
         private static readonly HashSet<string> PACKAGE_MANAGED_GROUPS = new HashSet<string> { "Localization-Locales" };
 
         /// <summary>
-        /// 검사 대상 최상위 폴더의 이름 규칙. 번호 접두사가 없는 외부 패키지 폴더는 제외
+        /// 검사 대상 최상위 폴더의 이름 규칙. 번호 접두사가 없는 외부 패키지 폴더는 제외.
         /// </summary>
         private static readonly Regex PROJECT_FOLDER_PATTERN = new Regex(@"^Assets/[0-9]{2}\.");
 
@@ -41,7 +41,7 @@ namespace CodeJelly.BounceOrBreak.Tests.Validation
 
             foreach (string assetPath in CollectProjectAssetPaths())
             {
-                // AssetReference는 GUID 문자열이라 의존성에 잡히지 않는다
+                // AssetReference는 GUID 문자열이라 의존성에 잡히지 않음
                 foreach (string dependencyPath in AssetDatabase.GetDependencies(assetPath, false))
                 {
                     if (dependencyPath == assetPath)

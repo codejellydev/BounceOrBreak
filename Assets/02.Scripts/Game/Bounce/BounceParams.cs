@@ -5,13 +5,13 @@ namespace CodeJelly.BounceOrBreak.Game.Bounce
 {
     /// <summary>
     /// 튕김 입력 데이터.
-    /// TODO: MemoryPack 직렬화 고려 (성능 최적화 시)
+    /// TODO: MemoryPack 직렬화 고려 (성능 최적화 시).
     /// </summary>
     public struct BounceParams
     {
         #region Properties
         /// <summary>
-        /// 튕긴 표면의 노말 벡터. (정규화된 벡터)
+        /// 튕긴 표면의 노말 벡터. (정규화된 벡터).
         /// </summary>
         public Vector2 Normal
         {
@@ -41,7 +41,7 @@ namespace CodeJelly.BounceOrBreak.Game.Bounce
         public Vector2 VelocityBeforeCollision { get; set; }
 
         /// <summary>
-        /// 노말 방향 가중치 (0 = 완전 반사, 1 = 완전 노말)
+        /// 노말 방향 가중치 (0 = 완전 반사, 1 = 완전 노말).
         /// </summary>
         public float NormalBias { get; set; }
         #endregion

@@ -10,7 +10,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
     {
         #region Properties
         /// <summary>
-        /// ITrampoline.Type Implementation
+        /// ITrampoline.Type Implementation.
         /// </summary>
         public override TrampolineType Type => TrampolineType.Freeform;
         #endregion
@@ -23,7 +23,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
         #region Public Methods
         /// <summary>
-        /// ITrampoline.Initialize Implementation
+        /// ITrampoline.Initialize Implementation.
         /// </summary>
         /// <param name="drawer">Trampoline을 생성한 Drawer</param>
         /// <param name="config">Trampoline 설정</param>
@@ -49,7 +49,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         }
 
         /// <summary>
-        /// IPoolable.Release Implementation
+        /// IPoolable.Release Implementation.
         /// </summary>
         public override void Release()
         {
@@ -59,7 +59,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         }
 
         /// <summary>
-        /// IPoolable.Destroy Implementation
+        /// IPoolable.Destroy Implementation.
         /// </summary>
         public override void Destroy()
         {
@@ -139,7 +139,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
         #region Private Methods
         /// <summary>
-        /// 라인의 총 길이를 계산합니다. (중앙 계산 등에 사용)
+        /// 라인의 총 길이를 계산합니다. (중앙 계산 등에 사용).
         /// </summary>
         private void CalculateLineLength()
         {
@@ -159,7 +159,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
             Vector2 pointVector = point - segmentStart;
 
             float segmentLength = segmentVector.magnitude;
-            Vector2 segmentDirection = segmentVector / segmentLength; // projection 계산에 사용하기 위해 segmentLength를 이미 구했기 때문에 normalized 사용하지 않음.
+            Vector2 segmentDirection = segmentVector / segmentLength; // projection 계산에 사용하기 위해 segmentLength를 이미 구했기 때문에 normalized 사용하지 않음
 
             // Projection 수행
             projectionLength = Vector2.Dot(pointVector, segmentDirection);

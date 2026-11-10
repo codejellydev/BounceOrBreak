@@ -20,7 +20,7 @@ namespace CodeJelly.BounceOrBreak.Game.Settings.Graphics
 
         #region Public Methods
         /// <summary>
-        /// IGraphicsSettingsApplier.ApplyQualityLevel Implementation
+        /// IGraphicsSettingsApplier.ApplyQualityLevel Implementation.
         /// </summary>
         public void ApplyQualityLevel(int qualityLevel)
         {
@@ -32,7 +32,7 @@ namespace CodeJelly.BounceOrBreak.Game.Settings.Graphics
                 return;
             }
 
-            // applyExpensiveChanges=true: 쉐이더/텍스처 재로드까지 즉시 반영.
+            // applyExpensiveChanges=true: 쉐이더/텍스처 재로드까지 즉시 반영
             QualitySettings.SetQualityLevel(qualityLevel, applyExpensiveChanges: true);
             AppLogger.Info($"[UnityGraphicsApplier] Quality level applied: index={qualityLevel}, name='{names[qualityLevel]}', current={QualitySettings.GetQualityLevel()}");
 
@@ -46,7 +46,7 @@ namespace CodeJelly.BounceOrBreak.Game.Settings.Graphics
         }
 
         /// <summary>
-        /// IGraphicsSettingsApplier.ApplyTargetFrameRate Implementation
+        /// IGraphicsSettingsApplier.ApplyTargetFrameRate Implementation.
         /// </summary>
         public void ApplyTargetFrameRate(int targetFrameRate)
         {
@@ -66,7 +66,7 @@ namespace CodeJelly.BounceOrBreak.Game.Settings.Graphics
         }
 
         /// <summary>
-        /// IGraphicsSettingsApplier.ApplySettings Implementation
+        /// IGraphicsSettingsApplier.ApplySettings Implementation.
         /// </summary>
         public void ApplySettings(GraphicsSettings settings)
         {

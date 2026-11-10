@@ -12,7 +12,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
     {
         #region Properties
         /// <summary>
-        /// 등록된 EggData 목록
+        /// 등록된 EggData 목록.
         /// </summary>
         public IReadOnlyList<EggData> Entries => _entries;
         #endregion

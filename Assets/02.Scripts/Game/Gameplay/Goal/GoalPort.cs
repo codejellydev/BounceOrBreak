@@ -24,12 +24,12 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Goal
         public int RequiredSpawnCount => _requiredSpawnCount;
 
         /// <summary>
-        /// Egg가 도달했을 때 발행
+        /// Egg가 도달했을 때 발행.
         /// </summary>
         public Observable<GoalArrival> OnEggArrived => _onEggArrived;
 
         /// <summary>
-        /// GoalPort가 유효한지 확인합니다.
+        /// GoalPort의 유효 여부.
         /// </summary>
         public bool IsValid => _renderer != null && _config != null && _renderer.CanApply;
         #endregion
@@ -114,7 +114,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Goal
         }
 
         /// <summary>
-        /// IPauseable.Pause Implementation
+        /// IPauseable.Pause Implementation.
         /// </summary>
         public void Pause()
         {
@@ -122,7 +122,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Goal
         }
 
         /// <summary>
-        /// IPauseable.Resume Implementation
+        /// IPauseable.Resume Implementation.
         /// </summary>
         public void Resume()
         {

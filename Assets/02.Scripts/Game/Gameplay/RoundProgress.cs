@@ -40,7 +40,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         }
 
         /// <summary>
-        /// IDisposable.Dispose Implementation
+        /// IDisposable.Dispose Implementation.
         /// </summary>
         public void Dispose()
         {

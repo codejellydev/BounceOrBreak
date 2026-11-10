@@ -22,7 +22,7 @@ namespace CodeJelly.BounceOrBreak.Game
         public static class UI
         {
             /// <summary>
-            /// UIPanelConfig에 선언된 패널 키
+            /// UIPanelConfig에 선언된 패널 키.
             /// </summary>
             public static class Keys
             {
@@ -32,28 +32,28 @@ namespace CodeJelly.BounceOrBreak.Game
             }
 
             /// <summary>
-            /// MessagePanel 관련 상수
+            /// MessagePanel 관련 상수.
             /// </summary>
             public static class MessagePanel
             {
                 /// <summary>
-                /// 제목 텍스트 위아래 여백의 합 (도트)
+                /// 제목 텍스트 위아래 여백의 합 (도트).
                 /// </summary>
                 public const int HEADER_PADDING = 3;
 
                 /// <summary>
-                /// 본문 텍스트 위아래 여백의 합 (도트)
+                /// 본문 텍스트 위아래 여백의 합 (도트).
                 /// </summary>
                 public const int BODY_PADDING = 5;
 
                 /// <summary>
-                /// 본문이 없을 때 제목과 버튼 사이에 두는 여백 (도트)
+                /// 본문이 없을 때 제목과 버튼 사이에 두는 여백 (도트).
                 /// </summary>
                 public const int EMPTY_BODY_GAP = 4;
             }
 
             /// <summary>
-            /// MessagePanel에 띄우는 메시지
+            /// MessagePanel에 띄우는 메시지.
             /// </summary>
             public static class Messages
             {
@@ -81,7 +81,7 @@ namespace CodeJelly.BounceOrBreak.Game
                 };
 
                 /// <summary>
-                /// 새 버전 안내
+                /// 새 버전 안내 메시지를 생성합니다.
                 /// </summary>
                 public static MessageRequest CreateNewVersion(string version)
                 {
@@ -95,7 +95,7 @@ namespace CodeJelly.BounceOrBreak.Game
                 }
 
                 /// <summary>
-                /// 원격 공지
+                /// 원격 공지 메시지를 생성합니다.
                 /// </summary>
                 public static MessageRequest CreateNotice(RemoteNotice notice)
                 {
@@ -109,32 +109,32 @@ namespace CodeJelly.BounceOrBreak.Game
             }
 
             /// <summary>
-            /// UI 스프라이트의 PPU. Canvas의 Reference PPU를 이 값에 맞춰 도트 1개 = 1유닛으로 둠
+            /// UI 스프라이트의 PPU. Canvas의 Reference PPU를 이 값에 맞춰 도트 1개 = 1유닛으로 둠.
             /// </summary>
             public const int PIXELS_PER_UNIT = 16;
 
             /// <summary>
-            /// 설계 기준 화면 폭 (도트). 실제 화면 폭 ÷ DESIGN_WIDTH = Canvas 배율
+            /// 설계 기준 화면 폭 (도트). 실제 화면 폭 ÷ DESIGN_WIDTH = Canvas 배율.
             /// </summary>
             public const int DESIGN_WIDTH = 180;
 
             /// <summary>
-            /// 페이드 한 번의 지속 시간 (초)
+            /// 페이드 한 번의 지속 시간 (초).
             /// </summary>
             public const float FADE_DURATION = 0.1f;
 
             /// <summary>
-            /// 연출이 한 프레임에 진행할 수 있는 최대 시간 (초). 긴 프레임 뒤에 연출이 건너뛰는 것을 방지
+            /// 연출이 한 프레임에 진행할 수 있는 최대 시간 (초). 긴 프레임 뒤에 연출이 건너뛰는 것을 방지.
             /// </summary>
             public const float MAX_EFFECT_DELTA_TIME = 1f / 30f;
 
             /// <summary>
-            /// CanvasLayer 관련 상수
+            /// CanvasLayer 관련 상수.
             /// </summary>
             public static class CanvasLayers
             {
                 /// <summary>
-                /// 뒤에서 앞으로의 그리기 순서. 배열에서의 위치가 Canvas의 Sort Order가 됨
+                /// 뒤에서 앞으로의 그리기 순서. 배열에서의 위치가 Canvas의 Sort Order가 됨.
                 /// </summary>
                 public static readonly CanvasLayer[] ORDER =
                 {
@@ -146,7 +146,7 @@ namespace CodeJelly.BounceOrBreak.Game
         public static class Entry
         {
             /// <summary>
-            /// 버전 표기 형식. {0}은 Application.version
+            /// 버전 표기 형식. {0}은 Application.version.
             /// </summary>
             public const string VERSION_FORMAT = "v{0}";
         }
@@ -154,7 +154,7 @@ namespace CodeJelly.BounceOrBreak.Game
         public static class Loading
         {
             /// <summary>
-            /// 표시 진행률의 속도 (초당 진행률)
+            /// 표시 진행률의 속도 (초당 진행률).
             /// </summary>
             public const float PROGRESS_SPEED = 4f;
         }
@@ -162,7 +162,7 @@ namespace CodeJelly.BounceOrBreak.Game
         public static class Stage
         {
             /// <summary>
-            /// Addressables 키
+            /// Addressables 키.
             /// </summary>
             public static class Keys
             {
@@ -173,7 +173,7 @@ namespace CodeJelly.BounceOrBreak.Game
         public static class Egg
         {
             /// <summary>
-            /// Addressables 키
+            /// Addressables 키.
             /// </summary>
             public static class Keys
             {
@@ -182,42 +182,42 @@ namespace CodeJelly.BounceOrBreak.Game
             }
 
             /// <summary>
-            /// 첫 Egg를 스폰하기까지의 기본 지연 (초)
+            /// 첫 Egg를 스폰하기까지의 기본 지연 (초).
             /// </summary>
             public const float DEFAULT_INITIAL_SPAWN_DELAY = 0.5f;
 
             /// <summary>
-            /// Wave 하나가 담당하는 기본 스폰 횟수
+            /// Wave 하나가 담당하는 기본 스폰 횟수.
             /// </summary>
             public const int DEFAULT_WAVE_SPAWN_COUNT = 10;
 
             /// <summary>
-            /// Wave의 기본 스폰 간격 (초)
+            /// Wave의 기본 스폰 간격 (초).
             /// </summary>
             public const float DEFAULT_WAVE_SPAWN_INTERVAL = 3f;
 
             /// <summary>
-            /// 마지막 Wave 이후 스폰마다 줄어드는 기본 간격 (초)
+            /// 마지막 Wave 이후 스폰마다 줄어드는 기본 간격 (초).
             /// </summary>
             public const float DEFAULT_INTERVAL_DECAY_PER_SPAWN = 0.03f;
 
             /// <summary>
-            /// 기본 스폰 간격 하한 (초)
+            /// 기본 스폰 간격 하한 (초).
             /// </summary>
             public const float DEFAULT_MIN_SPAWN_INTERVAL = 1.3f;
 
             /// <summary>
-            /// Egg 오브젝트 Pool의 초기 용량
+            /// Egg 오브젝트 Pool의 초기 용량.
             /// </summary>
             public const int POOL_DEFAULT_CAPACITY = 20;
 
             /// <summary>
-            /// Egg 오브젝트 Pool의 최대 크기
+            /// Egg 오브젝트 Pool의 최대 크기.
             /// </summary>
             public const int POOL_MAX_SIZE = 50;
 
             /// <summary>
-            /// 생성된 Egg들이 배치될 루트 GameObject 이름
+            /// 생성된 Egg들이 배치될 루트 GameObject 이름.
             /// </summary>
             public const string ROOT_NAME = "EggRoot";
         }
@@ -225,7 +225,7 @@ namespace CodeJelly.BounceOrBreak.Game
         public static class Bounce
         {
             /// <summary>
-            /// 유효하지 않은 방향일 때 사용할 기본 방향 (Fallback)
+            /// 유효하지 않은 방향일 때 사용할 기본 방향 (Fallback).
             /// </summary>
             public static readonly Vector2 DEFAULT_DIRECTION = Vector2.up;
         }
@@ -233,7 +233,7 @@ namespace CodeJelly.BounceOrBreak.Game
         public static class Reflect
         {
             /// <summary>
-            /// 기본 속도 감쇠 비율
+            /// 기본 속도 감쇠 비율.
             /// </summary>
             public const float DEFAULT_DAMPING = 0.6f;
         }
@@ -241,7 +241,7 @@ namespace CodeJelly.BounceOrBreak.Game
         public static class Trampoline
         {
             /// <summary>
-            /// Addressables 키
+            /// Addressables 키.
             /// </summary>
             public static class Keys
             {
@@ -250,67 +250,67 @@ namespace CodeJelly.BounceOrBreak.Game
             }
 
             /// <summary>
-            /// 드로잉 중 포인트 간 최소 거리 (너무 밀집된 포인트 방지)
+            /// 드로잉 중 포인트 간 최소 거리 (너무 밀집된 포인트 방지).
             /// </summary>
             public const float MIN_POINT_DISTANCE = 0.1f;
 
             /// <summary>
-            /// 드로잉이 허용되는 좌우 경계의 x좌표 (Wall의 안쪽 면 = 보장 영역 가로 절반 2.5 - Wall 폭 절반 0.1875)
+            /// 드로잉이 허용되는 좌우 경계의 x좌표 (Wall의 안쪽 면 = 보장 영역 가로 절반 2.5 - Wall 폭 절반 0.1875).
             /// </summary>
             public const float DRAW_BOUNDARY_X = 2.125f;
 
             /// <summary>
-            /// 라인에 저장할 수 있는 최대 포인트 개수
+            /// 라인에 저장할 수 있는 최대 포인트 개수.
             /// </summary>
             public const int MAX_LINE_POINTS = 100;
 
             /// <summary>
-            /// Trampoline 생성에 필요한 최소 포인트 개수
+            /// Trampoline 생성에 필요한 최소 포인트 개수.
             /// </summary>
             public const int MIN_DRAW_POINTS = 2;
 
             /// <summary>
-            /// 기본 두께 (4px / PPU 32)
+            /// 기본 두께 (4px / PPU 32).
             /// </summary>
             public const float DEFAULT_THICKNESS = 0.125f;
 
             /// <summary>
-            /// 기본 튕김 세기
+            /// 기본 튕김 세기.
             /// </summary>
             public const float DEFAULT_BOUNCE_FORCE = 10f;
 
             /// <summary>
-            /// 기본 노말 방향 가중치 (0 = 완전 반사, 1 = 완전 노말)
+            /// 기본 노말 방향 가중치 (0 = 완전 반사, 1 = 완전 노말).
             /// </summary>
             public const float DEFAULT_NORMAL_BIAS = 0.5f;
 
             /// <summary>
-            /// 기본 중앙 착지 시 튕김 배율
+            /// 기본 중앙 착지 시 튕김 배율.
             /// </summary>
             public const float DEFAULT_CENTER_BOUNCE_MULTIPLIER = 1.5f;
 
             /// <summary>
-            /// 기본 중앙 판정 범위
+            /// 기본 중앙 판정 범위.
             /// </summary>
             public const float DEFAULT_CENTER_THRESHOLD = 0.2f;
 
             /// <summary>
-            /// 동시에 존재할 수 있는 최대 드로잉 Trampoline 개수 (스테이지 Trampoline 제외)
+            /// 동시에 존재할 수 있는 최대 드로잉 Trampoline 개수 (스테이지 Trampoline 제외).
             /// </summary>
             public const int MAX_DRAWN_COUNT = 3;
 
             /// <summary>
-            /// ITrampoline 오브젝트 Pool의 초기 용량
+            /// ITrampoline 오브젝트 Pool의 초기 용량.
             /// </summary>
             public const int POOL_DEFAULT_CAPACITY = 20;
 
             /// <summary>
-            /// ITrampoline 오브젝트 Pool의 최대 크기
+            /// ITrampoline 오브젝트 Pool의 최대 크기.
             /// </summary>
             public const int POOL_MAX_SIZE = 50;
 
             /// <summary>
-            /// 생성된 Trampoline들이 배치될 루트 GameObject 이름
+            /// 생성된 Trampoline들이 배치될 루트 GameObject 이름.
             /// </summary>
             public const string ROOT_NAME = "TrampolineRoot";
         }
@@ -318,22 +318,22 @@ namespace CodeJelly.BounceOrBreak.Game
         public static class Character
         {
             /// <summary>
-            /// Character가 받을 수 있는 최소 튕김 힘
+            /// Character가 받을 수 있는 최소 튕김 힘.
             /// </summary>
             public const float MIN_BOUNCE_FORCE = 5f;
 
             /// <summary>
-            /// Character가 받을 수 있는 최대 튕김 힘
+            /// Character가 받을 수 있는 최대 튕김 힘.
             /// </summary>
             public const float MAX_BOUNCE_FORCE = 30f;
 
             /// <summary>
-            /// 속도가 튕김 힘에 미치는 영향 계수
+            /// 속도가 튕김 힘에 미치는 영향 계수.
             /// </summary>
             public const float SPEED_BOUNCE_MULTIPLIER = 0.02f;
 
             /// <summary>
-            /// 반사 방향 계산 시 속도 임계값 (이하일 경우 노말 방향으로 Fallback)
+            /// 반사 방향 계산 시 속도 임계값 (이하일 경우 노말 방향으로 Fallback).
             /// </summary>
             public const float MIN_VELOCITY_FOR_REFLECT = 0.01f;
         }
@@ -341,17 +341,17 @@ namespace CodeJelly.BounceOrBreak.Game
         public static class Goal
         {
             /// <summary>
-            /// 거부된 Egg를 내보내기 전까지 머금는 시간 (초)
+            /// 거부된 Egg를 내보내기 전까지 머금는 시간 (초).
             /// </summary>
             public const float REJECT_HOLD_DURATION = 0.4f;
 
             /// <summary>
-            /// 거부된 Egg를 내보내는 힘
+            /// 거부된 Egg를 내보내는 힘.
             /// </summary>
             public const float REJECT_FORCE = 8f;
 
             /// <summary>
-            /// 내보내는 방향이 수직에서 벗어날 수 있는 최대 각도 (도)
+            /// 내보내는 방향이 수직에서 벗어날 수 있는 최대 각도 (도).
             /// </summary>
             public const float REJECT_CONE_HALF_ANGLE = 40f;
         }
@@ -361,28 +361,28 @@ namespace CodeJelly.BounceOrBreak.Game
             public static class Keys
             {
                 /// <summary>
-                /// RemoteNoticeState가 ISettingsRepository에 저장될 때 사용되는 키
+                /// RemoteNoticeState가 ISettingsRepository에 저장될 때 사용되는 키.
                 /// </summary>
                 public const string REPOSITORY_KEY = "RemoteNoticeState";
             }
 
             /// <summary>
-            /// 원격 설정 파일의 주소
+            /// 원격 설정 파일의 주소.
             /// </summary>
             public const string CONFIG_URL = "https://codejellydev.github.io/bounceorbreak/config.json";
 
             /// <summary>
-            /// 수신 제한 시간 (초). 초과하면 이번 실행은 원격 설정 없이 진행
+            /// 수신 제한 시간 (초). 초과하면 이번 실행은 원격 설정 없이 진행.
             /// </summary>
             public const float TIMEOUT_SECONDS = 2f;
 
             /// <summary>
-            /// 이 빌드가 지원하는 RemoteConfig 스키마 버전
+            /// 이 빌드가 지원하는 RemoteConfig 스키마 버전.
             /// </summary>
             public const int SCHEMA_VERSION = 1;
 
             /// <summary>
-            /// 스토어 페이지 주소 형식. {0}은 Application.identifier
+            /// 스토어 페이지 주소 형식. {0}은 Application.identifier.
             /// </summary>
             public const string STORE_URL_FORMAT = "market://details?id={0}";
         }
@@ -392,25 +392,25 @@ namespace CodeJelly.BounceOrBreak.Game
             public static class Keys
             {
                 /// <summary>
-                /// ScoreRecord가 ISettingsRepository에 저장될 때 사용되는 키
+                /// ScoreRecord가 ISettingsRepository에 저장될 때 사용되는 키.
                 /// </summary>
                 public const string REPOSITORY_KEY = "ScoreRecord";
             }
 
             /// <summary>
-            /// EggColor가 일치하는 Egg가 도달했을 때 얻는 점수
+            /// EggColor가 일치하는 Egg가 도달했을 때 얻는 점수.
             /// </summary>
             public const int MATCHED = 1;
 
             public static class Abbreviation
             {
                 /// <summary>
-                /// 이 점수부터 단위를 붙여 축약 표시
+                /// 이 점수부터 단위를 붙여 축약 표시.
                 /// </summary>
                 public const int THRESHOLD = 10000;
 
                 /// <summary>
-                /// 축약에 쓰는 단위. 큰 단위부터 나열
+                /// 축약에 쓰는 단위. 큰 단위부터 나열.
                 /// </summary>
                 public static readonly (int Divisor, string Suffix)[] UNITS =
                 {
@@ -426,23 +426,23 @@ namespace CodeJelly.BounceOrBreak.Game
             public static class Keys
             {
                 /// <summary>
-                /// AudioSettings가 ISettingsRepository에 저장될 때 사용되는 키
+                /// AudioSettings가 ISettingsRepository에 저장될 때 사용되는 키.
                 /// </summary>
                 public const string REPOSITORY_KEY = "AudioSettings";
             }
 
             /// <summary>
-            /// 볼륨 관련 상수
+            /// 볼륨 관련 상수.
             /// </summary>
             public static class Volume
             {
                 /// <summary>
-                /// 볼륨의 기본값 (최대)
+                /// 볼륨의 기본값 (최대).
                 /// </summary>
                 public const float DEFAULT = 1f;
 
                 /// <summary>
-                /// 음소거로 간주할 최소 정규화 볼륨 임계값
+                /// 음소거로 간주할 최소 정규화 볼륨 임계값.
                 /// </summary>
                 public const float MIN_NORMALIZED_THRESHOLD = 0.0001f;
 
@@ -452,7 +452,7 @@ namespace CodeJelly.BounceOrBreak.Game
                 public const float MUTED_DECIBEL = -80f;
 
                 /// <summary>
-                /// 정규화된 볼륨값을 dB로 변환할 때 사용되는 계수. (음향학 표준: 20 * log10(normalizedValue))
+                /// 정규화된 볼륨값을 dB로 변환할 때 사용되는 계수. (음향학 표준: 20 * log10(normalizedValue)).
                 /// </summary>
                 public const float DECIBEL_MULTIPLIER = 20f;
             }
@@ -463,18 +463,18 @@ namespace CodeJelly.BounceOrBreak.Game
             public static class Keys
             {
                 /// <summary>
-                /// GraphicsSettings가 ISettingsRepository에 저장될 때 사용되는 키
+                /// GraphicsSettings가 ISettingsRepository에 저장될 때 사용되는 키.
                 /// </summary>
                 public const string REPOSITORY_KEY = "GraphicsSettings";
             }
 
             /// <summary>
-            /// 목표 프레임레이트 대신 기기의 화면 주사율을 쓸 때의 표시 값
+            /// 목표 프레임레이트 대신 기기의 화면 주사율을 쓸 때의 표시 값.
             /// </summary>
             public const int DEVICE_MAX_FRAME_RATE = 0;
 
             /// <summary>
-            /// 기기의 화면 주사율을 읽지 못했을 때의 목표 프레임레이트
+            /// 기기의 화면 주사율을 읽지 못했을 때의 목표 프레임레이트.
             /// </summary>
             public const int FALLBACK_FRAME_RATE = 60;
 
@@ -496,7 +496,7 @@ namespace CodeJelly.BounceOrBreak.Game
             public static class Keys
             {
                 /// <summary>
-                /// LanguageSettings가 ISettingsRepository에 저장될 때 사용되는 키
+                /// LanguageSettings가 ISettingsRepository에 저장될 때 사용되는 키.
                 /// </summary>
                 public const string REPOSITORY_KEY = "LanguageSettings";
             }
@@ -526,7 +526,7 @@ namespace CodeJelly.BounceOrBreak.Game
 
             /// <summary>
             /// 뒤에서 앞으로의 그리기 순서. TagManager의 리스트 순서와 같아야 함
-            /// <para>TagManager와의 정합성은 SortingLayerValidationTests가 검증</para>
+            /// <para>TagManager와의 정합성은 SortingLayerValidationTests가 검증.</para>
             /// </summary>
             public static readonly string[] ORDER =
             {

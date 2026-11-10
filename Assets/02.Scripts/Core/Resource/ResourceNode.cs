@@ -48,7 +48,7 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
         private readonly IResourceHandle _handle;
 
         /// <summary>
-        /// 핸들의 작업은 한 번만 await할 수 있으므로 완료를 중계해 여러 대기자에게 전파
+        /// 핸들의 작업은 한 번만 await할 수 있으므로 완료를 중계해 여러 대기자에게 전파.
         /// </summary>
         private readonly UniTaskCompletionSource _completion = new UniTaskCompletionSource();
 

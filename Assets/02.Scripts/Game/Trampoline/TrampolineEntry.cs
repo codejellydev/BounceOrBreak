@@ -17,7 +17,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         public AssetReferenceGameObject Prefab => _prefab;
 
         /// <summary>
-        /// Entry가 유효한지 확인합니다.
+        /// Entry의 유효 여부.
         /// </summary>
         public bool IsValid => _prefab != null && _prefab.RuntimeKeyIsValid() == true;
         #endregion

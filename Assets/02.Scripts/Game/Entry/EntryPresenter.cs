@@ -54,7 +54,7 @@ namespace CodeJelly.BounceOrBreak.Game.Entry
 
         #region Public Methods
         /// <summary>
-        /// IDisposable.Dispose Implementation
+        /// IDisposable.Dispose Implementation.
         /// </summary>
         public void Dispose()
         {

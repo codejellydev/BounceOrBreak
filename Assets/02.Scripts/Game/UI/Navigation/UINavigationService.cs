@@ -47,7 +47,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Navigation
 
             #region Public Methods
             /// <summary>
-            /// IDisposable.Dispose Implementation
+            /// IDisposable.Dispose Implementation.
             /// </summary>
             public void Dispose()
             {
@@ -83,7 +83,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Navigation
         private readonly BackHandlerStack _backHandlers = new BackHandlerStack();
 
         /// <summary>
-        /// Additive 전환 중엔 새 씬과 이전 씬의 루트가 잠시 공존하므로 목록으로 두고 마지막을 현재로 봄
+        /// Additive 전환 중엔 새 씬과 이전 씬의 루트가 잠시 공존하므로 목록으로 두고 마지막을 현재로 봄.
         /// </summary>
         private readonly List<RootRegistration> _roots = new List<RootRegistration>();
         private readonly HashSet<string> _showingKeys = new HashSet<string>();
@@ -160,7 +160,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Navigation
         }
 
         /// <summary>
-        /// IDisposable.Dispose Implementation
+        /// IDisposable.Dispose Implementation.
         /// </summary>
         public void Dispose()
         {

@@ -48,7 +48,7 @@ namespace CodeJelly.BounceOrBreak.Core.Remote
         }
 
         /// <summary>
-        /// IComparable.CompareTo Implementation
+        /// IComparable.CompareTo Implementation.
         /// </summary>
         public int CompareTo(AppVersion other)
         {

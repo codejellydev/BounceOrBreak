@@ -7,17 +7,17 @@ namespace CodeJelly.BounceOrBreak.Game.UI
     public enum CanvasLayer
     {
         /// <summary>
-        /// 씬의 화면과 패널
+        /// 씬의 화면과 패널.
         /// </summary>
         Scene = 0,
 
         /// <summary>
-        /// 씬 전환 중에 표시되는 화면
+        /// 씬 전환 중에 표시되는 화면.
         /// </summary>
         Transition = 1,
 
         /// <summary>
-        /// 화면 전체를 덮는 오버레이
+        /// 화면 전체를 덮는 오버레이.
         /// </summary>
         Overlay = 2,
     }

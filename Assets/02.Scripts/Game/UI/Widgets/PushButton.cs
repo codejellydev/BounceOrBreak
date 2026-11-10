@@ -16,7 +16,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Widgets
         public Observable<Unit> OnClick => _onClick;
 
         /// <summary>
-        /// PushButton이 유효한지 확인합니다.
+        /// PushButton의 유효 여부.
         /// </summary>
         public bool IsValid => _face != null;
         #endregion
@@ -63,7 +63,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Widgets
 
         #region Public Methods
         /// <summary>
-        /// IPointerClickHandler.OnPointerClick Implementation
+        /// IPointerClickHandler.OnPointerClick Implementation.
         /// </summary>
         public void OnPointerClick(PointerEventData eventData)
         {

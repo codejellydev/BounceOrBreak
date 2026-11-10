@@ -56,7 +56,7 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
 
         #region Public Methods
         /// <summary>
-        /// IDisposable.Dispose Implementation
+        /// IDisposable.Dispose Implementation.
         /// </summary>
         public void Dispose()
         {

@@ -36,7 +36,7 @@ namespace CodeJelly.BounceOrBreak.Game.Settings.Audio
                 return;
             }
 
-            // SetValueWithoutNotify를 사용해 UI 업데이트 시 OnValueChanged 콜백이 트리거되는 것을 방지.
+            // SetValueWithoutNotify를 사용해 UI 업데이트 시 OnValueChanged 콜백이 트리거되는 것을 방지
             _masterVolumeSlider.SetValueWithoutNotify(settings.MasterVolume);
             _bgmVolumeSlider.SetValueWithoutNotify(settings.BgmVolume);
             _sfxVolumeSlider.SetValueWithoutNotify(settings.SfxVolume);

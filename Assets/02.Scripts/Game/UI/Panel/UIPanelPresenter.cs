@@ -13,7 +13,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Panel
     {
         #region Public Methods
         /// <summary>
-        /// IUIPanel.RunAsync Implementation
+        /// IUIPanel.RunAsync Implementation.
         /// </summary>
         public UniTask<TResult> RunAsync(GameObject instance, CancellationToken ct)
         {
@@ -38,7 +38,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Panel
     {
         #region Public Methods
         /// <summary>
-        /// IUIPanel.RunAsync Implementation
+        /// IUIPanel.RunAsync Implementation.
         /// </summary>
         public UniTask<TResult> RunAsync(GameObject instance, TRequest request, CancellationToken ct)
         {

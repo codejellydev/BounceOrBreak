@@ -11,17 +11,17 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
     public interface ITrampoline : IPoolable, IPauseable
     {
         /// <summary>
-        /// Trampoline의 타입
+        /// Trampoline의 타입.
         /// </summary>
         TrampolineType Type { get; }
 
         /// <summary>
-        /// 현재 사용된 횟수
+        /// 현재 사용된 횟수.
         /// </summary>
         int UsageCount { get; }
 
         /// <summary>
-        /// 생성 후 경과 시간
+        /// 생성 후 경과 시간.
         /// </summary>
         float Lifetime { get; }
 

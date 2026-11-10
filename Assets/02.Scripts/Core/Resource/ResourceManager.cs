@@ -167,7 +167,7 @@ namespace CodeJelly.BounceOrBreak.Core.Resource
         }
 
         /// <summary>
-        /// IDisposable.Dispose Implementation
+        /// IDisposable.Dispose Implementation.
         /// </summary>
         public void Dispose()
         {

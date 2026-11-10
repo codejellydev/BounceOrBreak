@@ -11,7 +11,7 @@ namespace CodeJelly.BounceOrBreak.Game.Entry
     {
         #region Properties
         /// <summary>
-        /// EntryView가 유효한지 확인합니다.
+        /// EntryView의 유효 여부.
         /// </summary>
         public bool IsValid => _versionLabel != null;
         #endregion

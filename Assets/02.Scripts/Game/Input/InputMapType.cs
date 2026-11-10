@@ -8,22 +8,22 @@ namespace CodeJelly.BounceOrBreak.Game.Input
     public enum InputMapType
     {
         /// <summary>
-        /// 아무 Input Map도 활성화하지 않음
+        /// 아무 Input Map도 활성화하지 않음.
         /// </summary>
         None = 0,
 
         /// <summary>
-        /// 플레이어 조작 관련 입력
+        /// 플레이어 조작 관련 입력.
         /// </summary>
         Player = 1 << 0, // 1
 
         /// <summary>
-        /// UI 상호작용 관련 입력
+        /// UI 상호작용 관련 입력.
         /// </summary>
         UI = 1 << 1, // 2
 
         /// <summary>
-        /// 시스템 입력 (뒤로가기, 일시정지 등)
+        /// 시스템 입력 (뒤로가기, 일시정지 등).
         /// </summary>
         System = 1 << 2, // 4
     }

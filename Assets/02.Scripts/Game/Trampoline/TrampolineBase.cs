@@ -20,22 +20,22 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         protected struct ContactInfo
         {
             /// <summary>
-            /// 접촉 지점
+            /// 접촉 지점.
             /// </summary>
             public Vector2 ContactPoint { get; set; }
 
             /// <summary>
-            /// 접촉 지점으로부터 가장 가까운 선분의 인덱스
+            /// 접촉 지점으로부터 가장 가까운 선분의 인덱스.
             /// </summary>
             public int ClosestSegmentIndex { get; set; }
 
             /// <summary>
-            /// 라인의 시작점(0번 인덱스)부터 접촉 지점까지의 거리
+            /// 라인의 시작점(0번 인덱스)부터 접촉 지점까지의 거리.
             /// </summary>
             public float DistanceFromStart { get; set; }
 
             /// <summary>
-            /// 노말 벡터
+            /// 노말 벡터.
             /// </summary>
             public Vector2 Normal { get; set; }
         }
@@ -44,24 +44,24 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
         #region Properties
         /// <summary>
-        /// ITrampoline.Type Implementation
+        /// ITrampoline.Type Implementation.
         /// </summary>
         public abstract TrampolineType Type { get; }
 
         /// <summary>
-        /// ITrampoline.UsageCount Implementation
+        /// ITrampoline.UsageCount Implementation.
         /// </summary>
         public int UsageCount { get; protected set; }
 
         /// <summary>
-        /// ITrampoline.Lifetime Implementation
+        /// ITrampoline.Lifetime Implementation.
         /// </summary>
         public float Lifetime => (_isInitialized == true)
                               ? _lifetimeStopwatch.GetElapsed()
                               : 0f;
 
         /// <summary>
-        /// Trampoline이 유효한지 확인합니다.
+        /// Trampoline의 유효 여부.
         /// </summary>
         public bool IsValid => _renderer != null && _renderer.CanApply;
         #endregion
@@ -133,7 +133,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
         #region Public Methods
         /// <summary>
-        /// ITrampoline.Initialize Implementation
+        /// ITrampoline.Initialize Implementation.
         /// </summary>
         /// <param name="drawer">Trampoline을 생성한 Drawer</param>
         /// <param name="config">Trampoline 설정</param>
@@ -142,13 +142,13 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         public abstract bool Initialize(TrampolineDrawer drawer, TrampolineConfig config, Vector2[] points);
 
         /// <summary>
-        /// IPoolable.Get Implementation
+        /// IPoolable.Get Implementation.
         /// </summary>
         public virtual void Get()
         { }
 
         /// <summary>
-        /// IPoolable.Release Implementation
+        /// IPoolable.Release Implementation.
         /// </summary>
         public virtual void Release()
         {
@@ -171,7 +171,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         }
 
         /// <summary>
-        /// IPoolable.Destroy Implementation
+        /// IPoolable.Destroy Implementation.
         /// </summary>
         public virtual void Destroy()
         {
@@ -189,7 +189,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         }
 
         /// <summary>
-        /// IPauseable.Pause Implementation
+        /// IPauseable.Pause Implementation.
         /// </summary>
         public void Pause()
         {
@@ -197,7 +197,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         }
 
         /// <summary>
-        /// IPauseable.Resume Implementation
+        /// IPauseable.Resume Implementation.
         /// </summary>
         public void Resume()
         {

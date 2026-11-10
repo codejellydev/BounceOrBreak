@@ -214,7 +214,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         }
 
         /// <summary>
-        /// IPauseable.Pause Implementation
+        /// IPauseable.Pause Implementation.
         /// </summary>
         public void Pause()
         {
@@ -227,7 +227,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
         }
 
         /// <summary>
-        /// IPauseable.Resume Implementation
+        /// IPauseable.Resume Implementation.
         /// </summary>
         public void Resume()
         {

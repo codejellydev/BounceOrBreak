@@ -29,7 +29,7 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
 
         #region Properties
         /// <summary>
-        /// LobbyDiorama가 유효한지 확인합니다.
+        /// LobbyDiorama의 유효 여부.
         /// </summary>
         public bool IsValid => _config != null && _config.IsValid;
         #endregion
@@ -144,7 +144,7 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
         }
 
         /// <summary>
-        /// IPauseable.Pause Implementation
+        /// IPauseable.Pause Implementation.
         /// </summary>
         public void Pause()
         {
@@ -152,7 +152,7 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
         }
 
         /// <summary>
-        /// IPauseable.Resume Implementation
+        /// IPauseable.Resume Implementation.
         /// </summary>
         public void Resume()
         {

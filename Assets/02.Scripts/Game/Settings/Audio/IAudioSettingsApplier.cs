@@ -6,17 +6,17 @@ namespace CodeJelly.BounceOrBreak.Game.Settings.Audio
     public interface IAudioSettingsApplier
     {
         /// <summary>
-        /// 마스터 볼륨을 적용합니다. (0.0 ~ 1.0)
+        /// 마스터 볼륨을 적용합니다. (0.0 ~ 1.0).
         /// </summary>
         void ApplyMasterVolume(float normalizedValue);
 
         /// <summary>
-        /// 배경음악 볼륨을 적용합니다. (0.0 ~ 1.0)
+        /// 배경음악 볼륨을 적용합니다. (0.0 ~ 1.0).
         /// </summary>
         void ApplyBgmVolume(float normalizedValue);
 
         /// <summary>
-        /// 효과음 볼륨을 적용합니다. (0.0 ~ 1.0)
+        /// 효과음 볼륨을 적용합니다. (0.0 ~ 1.0).
         /// </summary>
         void ApplySfxVolume(float normalizedValue);
 

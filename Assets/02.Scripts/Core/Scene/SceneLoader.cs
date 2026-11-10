@@ -74,7 +74,7 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
             _transitionProgress.ToReadOnlyReactiveProperty();
 
         /// <summary>
-        /// 현재 씬 전환 중인지 여부
+        /// 현재 씬 전환 중인지 여부.
         /// </summary>
         public bool IsTransitioning { get; private set; }
         #endregion
@@ -162,7 +162,7 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
         }
 
         /// <summary>
-        /// IDisposable.Dispose Implementation
+        /// IDisposable.Dispose Implementation.
         /// </summary>
         public void Dispose()
         {
@@ -396,7 +396,7 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
         {
             if (initializer == null)
             {
-                // 전환 자체는 정상 동작하나, 릴리스 로그 파일에서 "초기화 단계 없이 전환됨"을 추적할 수 있도록 Warning.
+                // 전환 자체는 정상 동작하나, 릴리스 로그 파일에서 "초기화 단계 없이 전환됨"을 추적할 수 있도록 Warning
                 AppLogger.Warning($"[SceneLoader] No ISceneInitializer found in scene: {sceneKey}. Skipping initialization.");
                 return;
             }
@@ -484,13 +484,13 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
 
         /// <summary>
         /// 전환된 씬의 ISceneActivatable에 활성화를 통지합니다.
-        /// OnActivated에서 예외가 발생하더라도 전환 자체는 성공으로 간주합니다. (예외는 로그 처리)
+        /// OnActivated에서 예외가 발생하더라도 전환 자체는 성공으로 간주합니다. (예외는 로그 처리).
         /// </summary>
         private void NotifyActivated(ISceneActivatable activatable, string sceneKey)
         {
             if (activatable == null)
             {
-                // activatable은 선택적이므로 없다고 해서 전환 실패로 간주하지 않음.
+                // activatable은 선택적이므로 없다고 해서 전환 실패로 간주하지 않음
                 AppLogger.Debug($"[SceneLoader] No ISceneActivatable in scene: {sceneKey}. Skipping activation notification.");
                 return;
             }

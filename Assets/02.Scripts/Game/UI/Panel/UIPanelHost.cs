@@ -67,7 +67,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Panel
 
         #region Properties
         /// <summary>
-        /// 루트가 해제될 때 취소되는 토큰
+        /// 루트가 해제될 때 취소되는 토큰.
         /// </summary>
         public CancellationToken LifetimeToken => _lifetimeCts.Token;
         #endregion
@@ -171,7 +171,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Panel
         }
 
         /// <summary>
-        /// IDisposable.Dispose Implementation
+        /// IDisposable.Dispose Implementation.
         /// </summary>
         public void Dispose()
         {

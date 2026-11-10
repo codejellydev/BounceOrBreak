@@ -15,7 +15,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.UI
         public PushButton PauseButton => _pauseButton;
 
         /// <summary>
-        /// View가 유효한지 확인합니다.
+        /// View의 유효 여부.
         /// </summary>
         public bool IsValid => _currentScoreText != null && _pauseButton != null;
         #endregion

@@ -36,7 +36,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Navigation
 
             #region Public Methods
             /// <summary>
-            /// IDisposable.Dispose Implementation
+            /// IDisposable.Dispose Implementation.
             /// </summary>
             public void Dispose()
             {
@@ -49,7 +49,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Navigation
 
         #region Properties
         /// <summary>
-        /// 쌓여 있는 핸들러 개수
+        /// 쌓여 있는 핸들러 개수.
         /// </summary>
         public int Count => _entries.Count;
         #endregion

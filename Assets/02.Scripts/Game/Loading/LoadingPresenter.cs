@@ -50,7 +50,7 @@ namespace CodeJelly.BounceOrBreak.Game.Loading
 
         #region Public Methods
         /// <summary>
-        /// ILoadingDisplay.CompleteAsync Implementation
+        /// ILoadingDisplay.CompleteAsync Implementation.
         /// </summary>
         public UniTask CompleteAsync(CancellationToken ct)
         {

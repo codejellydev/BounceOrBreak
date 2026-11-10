@@ -12,7 +12,7 @@ namespace CodeJelly.BounceOrBreak.Tests.Unit
         private const float TOLERANCE = 0.0001f;
 
         /// <summary>
-        /// 모든 테스트가 공유하는 ViewportContract. 세로 절반은 가로 절반 / 기준 화면비 (2 / 0.5 = 4)
+        /// 모든 테스트가 공유하는 ViewportContract. 세로 절반은 가로 절반 / 기준 화면비 (2 / 0.5 = 4).
         /// </summary>
         private const float HALF_WIDTH = 2f;
         private const float DESIGN_ASPECT = 0.5f;
@@ -23,7 +23,7 @@ namespace CodeJelly.BounceOrBreak.Tests.Unit
         private const float WIDER_ASPECT = 0.8f;
 
         /// <summary>
-        /// 모든 화면비를 훑는 테스트의 검사 범위. 보장 최소 화면비 0.4보다 아래부터 가로로 넓은 화면까지 포함
+        /// 모든 화면비를 훑는 테스트의 검사 범위. 보장 최소 화면비 0.4보다 아래부터 가로로 넓은 화면까지 포함.
         /// </summary>
         private const float SWEEP_MIN_ASPECT = 0.3f;
         private const float SWEEP_MAX_ASPECT = 1.5f;

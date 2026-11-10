@@ -10,7 +10,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Widgets
     {
         #region Properties
         /// <summary>
-        /// ProgressBar가 유효한지 확인합니다.
+        /// ProgressBar의 유효 여부.
         /// </summary>
         public bool IsValid => _fill != null && Mathf.Approximately(_fill.anchorMin.x, 0f);
         #endregion

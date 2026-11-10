@@ -13,7 +13,7 @@ namespace CodeJelly.BounceOrBreak.Tests.Unit
         private const float TOLERANCE = 0.0001f;
 
         /// <summary>
-        /// 모든 테스트가 공유하는 화면 크기. 100px = 5%가 되도록 1000 x 2000
+        /// 모든 테스트가 공유하는 화면 크기. 100px = 5%가 되도록 1000 x 2000.
         /// </summary>
         private const float SCREEN_WIDTH = 1000f;
         private const float SCREEN_HEIGHT = 2000f;

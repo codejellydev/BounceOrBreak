@@ -21,7 +21,7 @@ namespace CodeJelly.BounceOrBreak.Game.Settings.Language
 
         #region Public Methods
         /// <summary>
-        /// ILanguageSettingsApplier.ApplyLanguageAsync Implementation
+        /// ILanguageSettingsApplier.ApplyLanguageAsync Implementation.
         /// </summary>
         public async UniTask ApplyLanguageAsync(string localeCode, CancellationToken cancellationToken = default)
         {
@@ -29,7 +29,7 @@ namespace CodeJelly.BounceOrBreak.Game.Settings.Language
         }
 
         /// <summary>
-        /// ILanguageSettingsApplier.ApplySettingsAsync Implementation
+        /// ILanguageSettingsApplier.ApplySettingsAsync Implementation.
         /// </summary>
         public async UniTask ApplySettingsAsync(LanguageSettings settings, CancellationToken cancellationToken = default)
         {

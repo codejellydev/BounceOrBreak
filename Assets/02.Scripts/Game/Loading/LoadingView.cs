@@ -11,7 +11,7 @@ namespace CodeJelly.BounceOrBreak.Game.Loading
     {
         #region Properties
         /// <summary>
-        /// LoadingView가 유효한지 확인합니다.
+        /// LoadingView의 유효 여부.
         /// </summary>
         public bool IsValid => _progressBar != null && _progressBar.IsValid;
         #endregion

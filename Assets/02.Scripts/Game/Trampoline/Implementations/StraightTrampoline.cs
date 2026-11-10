@@ -10,7 +10,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
     {
         #region Properties
         /// <summary>
-        /// ITrampoline.Type Implementation
+        /// ITrampoline.Type Implementation.
         /// </summary>
         public override TrampolineType Type => TrampolineType.Straight;
         #endregion
@@ -26,7 +26,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
 
         #region Public Methods
         /// <summary>
-        /// ITrampoline.Initialize Implementation
+        /// ITrampoline.Initialize Implementation.
         /// </summary>
         /// <param name="drawer">Trampoline을 생성한 Drawer</param>
         /// <param name="config">Trampoline 설정</param>

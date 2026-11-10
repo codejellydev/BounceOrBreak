@@ -29,7 +29,7 @@ namespace CodeJelly.BounceOrBreak.Core.Scene
         }
 
         /// <summary>
-        /// 씬 참조가 유효한지 확인합니다.
+        /// 씬 참조의 유효 여부.
         /// </summary>
         public bool IsValid => _sceneAsset != null && _sceneAsset.RuntimeKey != null;
         #endregion

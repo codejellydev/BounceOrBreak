@@ -10,7 +10,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Egg
     {
         #region Public Methods
         /// <summary>
-        /// IEggTypeSelector.Select Implementation
+        /// IEggTypeSelector.Select Implementation.
         /// </summary>
         public EggType Select(WaveData wave)
         {

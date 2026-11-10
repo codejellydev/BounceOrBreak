@@ -6,17 +6,17 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Pause
     public enum PausePanelResult
     {
         /// <summary>
-        /// 이어가기
+        /// 이어가기.
         /// </summary>
         Resume = 0,
 
         /// <summary>
-        /// 나가기
+        /// 나가기.
         /// </summary>
         Exit = 1,
 
         /// <summary>
-        /// 다시 시작
+        /// 다시 시작.
         /// </summary>
         Restart = 2,
     }

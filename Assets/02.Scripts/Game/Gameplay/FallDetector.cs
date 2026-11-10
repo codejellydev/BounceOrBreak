@@ -14,7 +14,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
     {
         #region Properties
         /// <summary>
-        /// ICharacter가 낙하 경계에 진입했을 때 발행
+        /// ICharacter가 낙하 경계에 진입했을 때 발행.
         /// </summary>
         public Observable<ICharacter> OnCharacterFell => _onCharacterFell;
         #endregion

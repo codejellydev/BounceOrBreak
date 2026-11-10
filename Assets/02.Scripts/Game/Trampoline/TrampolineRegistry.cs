@@ -12,7 +12,7 @@ namespace CodeJelly.BounceOrBreak.Game.Trampoline
     {
         #region Properties
         /// <summary>
-        /// 등록된 TrampolineEntry 목록
+        /// 등록된 TrampolineEntry 목록.
         /// </summary>
         public IReadOnlyList<TrampolineEntry> Entries => _entries;
         #endregion

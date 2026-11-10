@@ -9,7 +9,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.Goal
     {
         #region Properties
         /// <summary>
-        /// 시각 표현을 적용할 준비가 되어 있는지 확인합니다.
+        /// 시각 표현을 적용할 준비가 되어 있는지 여부.
         /// </summary>
         public bool CanApply => _spriteRenderer != null;
         #endregion

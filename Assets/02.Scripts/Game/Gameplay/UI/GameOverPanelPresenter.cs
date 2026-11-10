@@ -42,7 +42,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay.UI
 
         #region Public Methods
         /// <summary>
-        /// IDisposable.Dispose Implementation
+        /// IDisposable.Dispose Implementation.
         /// </summary>
         public void Dispose()
         {

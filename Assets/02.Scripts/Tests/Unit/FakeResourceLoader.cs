@@ -43,7 +43,7 @@ namespace CodeJelly.BounceOrBreak.Tests.Unit
 
         #region Public Methods
         /// <summary>
-        /// IResourceLoader.InitializeAsync Implementation
+        /// IResourceLoader.InitializeAsync Implementation.
         /// </summary>
         public UniTask<bool> InitializeAsync()
         {
@@ -51,7 +51,7 @@ namespace CodeJelly.BounceOrBreak.Tests.Unit
         }
 
         /// <summary>
-        /// IResourceLoader.Load Implementation
+        /// IResourceLoader.Load Implementation.
         /// </summary>
         public IResourceHandle Load<T>(string key) where T : Object
         {

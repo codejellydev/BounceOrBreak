@@ -27,7 +27,7 @@ namespace CodeJelly.BounceOrBreak.Tests.Unit
 
             #region Public Methods
             /// <summary>
-            /// ILanguageSettingsApplier.ApplyLanguageAsync Implementation
+            /// ILanguageSettingsApplier.ApplyLanguageAsync Implementation.
             /// </summary>
             public UniTask ApplyLanguageAsync(string localeCode, CancellationToken cancellationToken = default)
             {
@@ -38,7 +38,7 @@ namespace CodeJelly.BounceOrBreak.Tests.Unit
             }
 
             /// <summary>
-            /// ILanguageSettingsApplier.ApplySettingsAsync Implementation
+            /// ILanguageSettingsApplier.ApplySettingsAsync Implementation.
             /// </summary>
             public UniTask ApplySettingsAsync(LanguageSettings settings, CancellationToken cancellationToken = default)
             {

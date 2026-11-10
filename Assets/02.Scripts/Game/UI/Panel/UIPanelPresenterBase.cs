@@ -16,7 +16,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Panel
         public abstract TResult CancelResult { get; }
 
         /// <summary>
-        /// 패널이 열려 있는 동안 유효한 토큰
+        /// 패널이 열려 있는 동안 유효한 토큰.
         /// </summary>
         protected CancellationToken ShowToken { get; private set; }
         #endregion
@@ -31,7 +31,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Panel
 
         #region Public Methods
         /// <summary>
-        /// IUIPanel.Cancel Implementation
+        /// IUIPanel.Cancel Implementation.
         /// </summary>
         public void Cancel()
         {

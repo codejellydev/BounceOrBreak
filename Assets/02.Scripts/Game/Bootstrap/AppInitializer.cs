@@ -98,7 +98,7 @@ namespace CodeJelly.BounceOrBreak.Game.Bootstrap
                 return false;
             }
 
-            // 저장된 설정 적용. 언어 적용이 Localization을 쓰므로 그 다음에 수행.
+            // 저장된 설정 적용. 언어 적용이 Localization을 쓰므로 그 다음에 수행
             await _audioSettingsService.LoadAsync();
             await _graphicsSettingsService.LoadAsync();
             await _languageSettingsService.LoadAsync();

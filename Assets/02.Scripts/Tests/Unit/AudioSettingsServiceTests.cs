@@ -24,7 +24,7 @@ namespace CodeJelly.BounceOrBreak.Tests.Unit
 
             #region Public Methods
             /// <summary>
-            /// IAudioSettingsApplier.ApplyMasterVolume Implementation
+            /// IAudioSettingsApplier.ApplyMasterVolume Implementation.
             /// </summary>
             public void ApplyMasterVolume(float normalizedValue)
             {
@@ -32,19 +32,19 @@ namespace CodeJelly.BounceOrBreak.Tests.Unit
             }
 
             /// <summary>
-            /// IAudioSettingsApplier.ApplyBgmVolume Implementation
+            /// IAudioSettingsApplier.ApplyBgmVolume Implementation.
             /// </summary>
             public void ApplyBgmVolume(float normalizedValue)
             { }
 
             /// <summary>
-            /// IAudioSettingsApplier.ApplySfxVolume Implementation
+            /// IAudioSettingsApplier.ApplySfxVolume Implementation.
             /// </summary>
             public void ApplySfxVolume(float normalizedValue)
             { }
 
             /// <summary>
-            /// IAudioSettingsApplier.ApplySettings Implementation
+            /// IAudioSettingsApplier.ApplySettings Implementation.
             /// </summary>
             public void ApplySettings(AudioSettings settings)
             {

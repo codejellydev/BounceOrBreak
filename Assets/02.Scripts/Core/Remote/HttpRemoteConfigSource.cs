@@ -14,7 +14,7 @@ namespace CodeJelly.BounceOrBreak.Core.Remote
     {
         #region Public Methods
         /// <summary>
-        /// IRemoteConfigSource.FetchAsync Implementation
+        /// IRemoteConfigSource.FetchAsync Implementation.
         /// </summary>
         public async UniTask<RemoteResult<T>> FetchAsync<T>(string url, float timeoutSeconds, CancellationToken ct) where T : class
         {

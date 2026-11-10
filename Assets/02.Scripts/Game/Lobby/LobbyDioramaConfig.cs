@@ -18,7 +18,7 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
         public TrampolineSpawnData Trampoline => _trampoline;
 
         /// <summary>
-        /// LobbyDioramaConfig가 유효한지 확인합니다.
+        /// LobbyDioramaConfig의 유효 여부.
         /// </summary>
         public bool IsValid => _egg != null
             && _trampoline != null

@@ -84,7 +84,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
         }
 
         /// <summary>
-        /// IDisposable.Dispose Implementation
+        /// IDisposable.Dispose Implementation.
         /// </summary>
         public void Dispose()
         {
@@ -99,7 +99,7 @@ namespace CodeJelly.BounceOrBreak.Game.Gameplay
 
         #region Private Methods
         /// <summary>
-        /// GameScene의 뒤로가기 기본 동작입니다. (패널이 없을 때)
+        /// GameScene의 뒤로가기 기본 동작입니다. (패널이 없을 때).
         /// </summary>
         private void OnBackPressedAtRoot()
         {

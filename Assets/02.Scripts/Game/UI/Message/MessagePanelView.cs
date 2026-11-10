@@ -21,7 +21,7 @@ namespace CodeJelly.BounceOrBreak.Game.UI.Message
         public Button DimBackgroundButton => _dimBackgroundButton;
 
         /// <summary>
-        /// View가 유효한지 확인합니다.
+        /// View의 유효 여부.
         /// </summary>
         public bool IsValid => _modal != null
                             && _header != null

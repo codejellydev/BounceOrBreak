@@ -4,7 +4,7 @@ namespace CodeJelly.BounceOrBreak.Game.Reflect
 {
     /// <summary>
     /// 반사 입력 데이터.
-    /// TODO: MemoryPack 직렬화 고려 (성능 최적화 시)
+    /// TODO: MemoryPack 직렬화 고려 (성능 최적화 시).
     /// </summary>
     public struct ReflectParams
     {

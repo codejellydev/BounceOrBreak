@@ -24,7 +24,7 @@ namespace CodeJelly.BounceOrBreak.Tests.Unit
 
             #region Public Methods
             /// <summary>
-            /// IGraphicsSettingsApplier.ApplyQualityLevel Implementation
+            /// IGraphicsSettingsApplier.ApplyQualityLevel Implementation.
             /// </summary>
             public void ApplyQualityLevel(int qualityLevel)
             {
@@ -32,13 +32,13 @@ namespace CodeJelly.BounceOrBreak.Tests.Unit
             }
 
             /// <summary>
-            /// IGraphicsSettingsApplier.ApplyTargetFrameRate Implementation
+            /// IGraphicsSettingsApplier.ApplyTargetFrameRate Implementation.
             /// </summary>
             public void ApplyTargetFrameRate(int targetFrameRate)
             { }
 
             /// <summary>
-            /// IGraphicsSettingsApplier.ApplySettings Implementation
+            /// IGraphicsSettingsApplier.ApplySettings Implementation.
             /// </summary>
             public void ApplySettings(GraphicsSettings settings)
             {

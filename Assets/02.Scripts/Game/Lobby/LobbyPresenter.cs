@@ -69,7 +69,7 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
 
         #region Public Methods
         /// <summary>
-        /// ISceneActivatable.OnActivated Implementation
+        /// ISceneActivatable.OnActivated Implementation.
         /// </summary>
         public void OnActivated()
         {
@@ -79,7 +79,7 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
         }
 
         /// <summary>
-        /// IDisposable.Dispose Implementation
+        /// IDisposable.Dispose Implementation.
         /// </summary>
         public void Dispose()
         {
@@ -131,7 +131,7 @@ namespace CodeJelly.BounceOrBreak.Game.Lobby
         }
 
         /// <summary>
-        /// 로비의 뒤로가기 기본 동작입니다. (패널이 없을 때)
+        /// 로비의 뒤로가기 기본 동작입니다. (패널이 없을 때).
         /// </summary>
         private void OnBackPressedAtRoot()
         {

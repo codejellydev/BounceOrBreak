@@ -31,7 +31,7 @@ namespace CodeJelly.BounceOrBreak.Game.Settings
         public PlayerDataView PlayerDataView => _playerDataView;
 
         /// <summary>
-        /// View가 유효한지 확인합니다.
+        /// View의 유효 여부.
         /// </summary>
         public bool IsValid => _closeButton != null
                             && _dimBackgroundButton != null
